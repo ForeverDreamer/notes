@@ -1,0 +1,70 @@
+1.配置信息
+  git config --global user.name "yourname"
+  git config --global user.email "youremail@163.com"
+  获得彩色的 diff 输出:
+  git config --global color.ui auto
+  git config --global core.editor "'/opt/sublime_text_3/sublime_text' -n -w"
+  git config --global push.default upstream
+  git config --global merge.conflictstyle diff3
+
+2.创建仓库
+  su git
+  git init --bare project.git
+  git init project1
+  touch file1.txt
+
+3.复制数据到index
+  git add file1.txt
+  git add .
+
+4.从index删除数据
+  git rm -r --cached log
+  git rm -r --cached *.pb
+  git rm -r --cached *.so
+  git rm -r --cached *.a
+
+5.查看文件版本状态
+  git status
+
+6.提交
+  git commit -m"实现机器人模块主要逻辑，skynet_server部署到外网准备压力测试，简化脚本后台启动步骤(start_db.sh, start_game.sh)"
+  git commit -m"修改玩家和机器人初始金币数量"
+
+7.查看提交日志
+  git log --stat
+  git log --graph --decorate --online
+  q(退出)
+
+8.比较内容
+  # commits
+  git diff commitid_early commitid2_late
+  # working area and index
+  git diff
+  # index and repository
+  git diff --cached
+
+9.查看版本信息
+  git --version
+
+10.检出代码的旧版本
+  git checkout branch
+  git checkout commitid
+
+9.同步到远程服务器
+  git push
+
+10.查看远程服务器
+  git remote
+
+11.git reset
+--soft 不修改working area 和 index
+--mixed  只修改index
+--hard 同时修改working area 和 index
+
+12.新增远程仓库
+1) 远程仓库：git init --bare react-complete-guide.git
+2) 本地仓库：git remote add alicloud doer@127.0.0.1:repos/react-complete-guide.git
+            git remote add gcp doer@127.0.0.1:repos/react-complete-guide.git
+
+13.删除远程仓库
+git remote remove alicloud

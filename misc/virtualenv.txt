@@ -1,0 +1,44 @@
+1.virtualenv
+
+安装
+    linux:  sudo pip install virtualenv
+    windows cmd:  pip install virtualenv
+创建
+    virtualenv amaze
+
+激活
+    linux:  . amaze/bin/activate
+    windows cmd:  amaze\Scripts\activate
+
+退出
+    deactivate
+
+
+2.virtualenvwrapper
+
+安装
+    linux:  sudo pip install virtualenvwrapper
+            vim ~/.profile 
+    windows cmd:  pip install virtualenvwrapper-win
+                  新建环境系统变量:
+                    查看环境变量值：echo %UserProfile% 
+                    键：WORKON_HOME
+                    值：%USERPROFILE%\.virtualenvs
+                    查看环境变量值：echo %WORKON_HOME%
+
+显示所有虚拟环境
+    linux:  workon
+
+切换虚拟环境
+    linux:  workon amaze
+
+创建虚拟环境并绑定工作目录
+    
+    mkvirtualenv crawler_demos
+    cd crawler_demos
+    linux:  setvirtualenvproject
+    windows cmd:  setprojectdir
+
+同时创建虚拟环境和项目并绑定，并自动切换到工作目录
+    linux:  mkproject sample
+    windows cmd:  没有类似命令

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#echo "running git hook" > running1.txt
+
+unset GIT_DIR
+
+NowPath=`pwd`
+DeployPath="/home/git/video_app"
+
+#echo "running git hook" > running2.txt
+
+cd $DeployPath
+git pull origin master
+
+#echo "running git hook" > running3.txt
+
+cd $NowPath
+exit 0

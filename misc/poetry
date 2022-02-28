@@ -1,0 +1,13 @@
+# Switching between environments
+poetry env use C:\Users\micro\anaconda3\envs\rasa\python.exe
+
+
+# Displaying the environment information
+poetry env info
+
+# Listing the environments associated with the project
+poetry env list
+
+
+# Deleting the environments
+poetry env remove rasa-qw5lwdI--py3.8

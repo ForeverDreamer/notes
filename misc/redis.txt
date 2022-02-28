@@ -1,0 +1,271 @@
+# 查找安装目录
+whereis redis-server
+
+# 连接redis-server
+/usr/local/bin/redis-cli
+
+# 清除所有库所有key数据
+flushall
+
+# 清除单个库所有key数据
+flushdb
+
+# 列出所有的key
+keys *
+
+# 列出匹配的key
+redis>keys apple*
+1) apple1
+2) apple2
+
+# 服务器命令
+/etc/init.d/redis-server restart
+/etc/init.d/redis-server stop
+/etc/init.d/redis-server start
+or
+ps aux | grep redis
+sudo kill -9 <process id>
+
+On Mac:
+redis-cli shutdown
+
+# 连接redis-server
+docker container exec -it 30934c8bb046 redis-cli
+
+
+
+
+[redis@centos ~]$ redis-cli 
+
+
+1. Strings
+
+1). String Get and Set
+
+127.0.0.1:6379> set user "name: joe"
+OK
+127.0.0.1:6379> get user
+"name: joe"
+127.0.0.1:6379> set user:1 "{'name': 'joe', 'email': 'joe@joe.com'}"
+OK
+127.0.0.1:6379> get user:1
+"{'name': 'joe', 'email': 'joe@joe.com'}"
+
+2). Incrementing
+
+127.0.0.1:6379> set user:id 1
+OK
+127.0.0.1:6379> get user:id
+"1"
+127.0.0.1:6379> incr user:id
+(integer) 2
+127.0.0.1:6379> get user:id
+"2"
+127.0.0.1:6379> append user:1 "extra data"
+(integer) 49
+127.0.0.1:6379> get user:1
+"{'name': 'joe', 'email': 'joe@joe.com'}extra data"
+
+3). Getrange
+
+127.0.0.1:6379> set customer:1 "ABCDE00123"
+OK
+127.0.0.1:6379> get customer:1
+"ABCDE00123"
+127.0.0.1:6379> get customer
+(nil)
+127.0.0.1:6379> getrange customer:1 5 9
+"00123"
+
+
+4). Mget and Mset
+
+127.0.0.1:6379> mset order:1 "order 1 data" order:2 "order 2 data"
+OK
+127.0.0.1:6379> mget order:1 order:2
+1) "order 1 data"
+2) "order 2 data"
+127.0.0.1:6379> strlen order:1
+(integer) 12
+
+
+2. Lists
+
+1). Lpush and Rpush
+
+127.0.0.1:6379> lpush recentcomments "Comment 1"
+(integer) 1
+127.0.0.1:6379> lrange recentcomments 0 1
+1) "Comment 1"
+127.0.0.1:6379> lpush recentcomments "Comment 2"
+(integer) 2
+127.0.0.1:6379> lrange recentcomments 0 2
+1) "Comment 2"
+2) "Comment 1"
+127.0.0.1:6379> rpush recentcomments "Comment 3"
+(integer) 3
+127.0.0.1:6379> lrange recentcomments 0 3
+1) "Comment 2"
+2) "Comment 1"
+3) "Comment 3"
+127.0.0.1:6379> rpush recentcomments "Comment 4"
+(integer) 4
+127.0.0.1:6379> rpush recentcomments "Comment 5"
+(integer) 5
+127.0.0.1:6379> lrange recentcomments 0 5
+1) "Comment 2"
+2) "Comment 1"
+3) "Comment 3"
+4) "Comment 4"
+5) "Comment 5"
+
+2). Trimming Lists(几乎所有list命令前缀l应该都代表list, 只有lpush中的l代表left)
+
+127.0.0.1:6379> rpush recentcomments "Comment 6"
+(integer) 6
+127.0.0.1:6379> lrange recentcomments 0 6
+1) "Comment 2"
+2) "Comment 1"
+3) "Comment 3"
+4) "Comment 4"
+5) "Comment 5"
+6) "Comment 6"
+127.0.0.1:6379> ltrim recentcomments 0 4
+OK
+127.0.0.1:6379> lrange recentcomments 0 6
+1) "Comment 2"
+2) "Comment 1"
+3) "Comment 3"
+4) "Comment 4"
+5) "Comment 5"
+
+3). Other List Commands
+
+127.0.0.1:6379> lindex recentcomments 2
+"Comment 3"
+127.0.0.1:6379> lrange recentcomments 0 5
+1) "Comment 2"
+2) "Comment 1"
+3) "Comment 3"
+4) "Comment 4"
+5) "Comment 5"
+127.0.0.1:6379> lpop recentcomments
+"Comment 2"
+127.0.0.1:6379> lrange recentcomments 0 5
+1) "Comment 1"
+2) "Comment 3"
+3) "Comment 4"
+4) "Comment 5"
+127.0.0.1:6379> lpop recentcomments
+"Comment 1"
+127.0.0.1:6379> lrange recentcomments 0 5
+1) "Comment 3"
+2) "Comment 4"
+3) "Comment 5"
+
+
+3. Sets
+
+1). Adding to Sets
+
+127.0.0.1:6379> sadd post:1:likes "joe" "bob" "mary"
+(integer) 3
+127.0.0.1:6379> scard post:1:likes
+(integer) 3
+127.0.0.1:6379> smembers post:1:likes
+1) "bob"
+2) "joe"
+3) "mary"
+127.0.0.1:6379> sadd post:2:likes "joe" "tim"
+(integer) 2
+127.0.0.1:6379> smembers post:2:likes
+1) "tim"
+2) "joe"
+127.0.0.1:6379> sdiff post:1:likes post:2:likes
+1) "bob"
+2) "mary"
+127.0.0.1:6379> sinter post:1:likes post:2:likes
+1) "joe"
+
+
+4. Hashes
+
+1). Hashes
+
+127.0.0.1:6379> hset user:1:h name "joe"
+(integer) 1
+127.0.0.1:6379> hget user:1:h name
+"joe"
+127.0.0.1:6379> hmset user:1:h email "joe@joe.com" id 1
+OK
+127.0.0.1:6379> hmget user:1:h name email id
+1) "joe"
+2) "joe@joe.com"
+3) "1"
+
+2). Other Hash Commands
+
+127.0.0.1:6379> hgetall user:1:h
+1) "name"
+2) "joe"
+3) "email"
+4) "joe@joe.com"
+5) "id"
+6) "1"
+127.0.0.1:6379> hkeys user:1:h
+1) "name"
+2) "email"
+3) "id"
+127.0.0.1:6379> hvals user:1:h
+1) "joe"
+2) "joe@joe.com"
+3) "1"
+
+
+5. Sorted Sets(faster than Sets at adding, removing and updating)
+
+1). Adding to a Sorted Set
+
+127.0.0.1:6379> zadd highscore 120 "joe" 100 "bob" 150 "mary" 90 "tim"
+(integer) 4
+127.0.0.1:6379> zrange highscore 0 4
+1) "tim"
+2) "bob"
+3) "joe"
+4) "mary"
+127.0.0.1:6379> zrange highscore 0 4 WITHSCORES
+1) "tim"
+2) "90"
+3) "bob"
+4) "100"
+5) "joe"
+6) "120"
+7) "mary"
+8) "150"
+127.0.0.1:6379> zadd highscore 125 "joe"  # 已经存在则更新
+(integer) 0
+127.0.0.1:6379> zrange highscore 0 4 WITHSCORES
+1) "tim"
+2) "90"
+3) "bob"
+4) "100"
+5) "joe"
+6) "125"
+7) "mary"
+8) "150"
+
+2). Other Sorted Set Commands
+127.0.0.1:6379> zrank highscore bob  # 查看排名
+(integer) 1
+127.0.0.1:6379> zrank highscore tim
+(integer) 0
+127.0.0.1:6379> zrank highscore mary
+(integer) 3
+127.0.0.1:6379> zscore highscore tim  # 查看分数
+"90"
+
+
+6. Pub and Sub(涉及多个客户端，不方便记笔记，具体见课程视频)
+
+
+7. Transactions(涉及多个客户端，不方便记笔记，具体见课程视频)

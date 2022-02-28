@@ -1,0 +1,82 @@
+# 2. Optimizing Your Linux System 
+# 2.2 Monitoring System Resources
+cd /proc
+ls
+clear
+
+less meminfo
+less cpuinfo
+top
+# 退出查看界面
+q
+
+# 可用内存资源
+free
+free -h
+
+# 硬盘资源
+df
+df -t ext4
+df -ht ext4
+
+# 更新apt，安装iftop
+sudo apt update
+sudo apt install iftop
+
+# 网络接口信息
+ip addr
+
+# 网络传输信息
+sudo iftop -i eth0
+
+
+# 2.3 Managing System Processes - Part One
+# Linux ps （英文全拼：process status）命令用于显示当前进程的状态，类似于 windows 的任务管理器。
+ps
+# -aux 显示所有包含其他使用者的行程
+ps aux
+# 统计指定文件中的字节数、字数、行数
+ps aux | wc
+# 匹配包含'docker'的行
+ps aux | grep docker
+
+# 查看sshd文档
+man sshd
+
+# 查看系统日志
+journalctl --since "10 minutes ago"
+cd /var/log
+cat syslog
+cat syslog | grep eth0
+
+
+# 2.4 Managing System Processes - Part Two
+# Linux dmesg（英文全称：display message）命令用于显示开机信息
+dmesg
+
+# 登录远程主机
+ssh doer@35.91.167.108
+
+# 查看snap软件包
+snap list
+
+yes > /dev/null &
+ps
+kill 5894 或者 kill yes
+
+sudo systemctl status apache2
+sudo systemctl disable apache2
+
+
+# 2.5 Managing Process Priorities
+# 指定进程优先级
+nice -19 yes > /dev/null &
+renice 16 -p 1824
+
+
+# 3. Working with Users and Groups in Linux
+# 3.1 Understanding Linux Users and Groups
+# 系统用户信息
+sudo less /etc/shadow
+less /etc/passwd
+less /etc/group

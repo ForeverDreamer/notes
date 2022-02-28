@@ -1,0 +1,213 @@
+注意：把windows上编辑的.sh，dockerfile文件拷贝到linux运行会出现'\r'的问题，想办法处理或直接在linux上编辑文件
+      通过push到github再分别在windows和Linux系统pull，git应该会自动转换换行符，
+      或者在windows编辑器下方手动切换CRLF/LF,再把文件传输到linux系统
+解决方案：zip压缩之后上传/下载之后再解压缩
+
+docker system info
+
+1. image commands
+
+docker image pull docker.io/redis:5.0.4
+
+docker image ls 或者 docker images
+
+docker image ls --digests
+
+docker history redis
+
+docker image inspect redis
+
+# 删除指定镜像(redis)
+docker image rm redis 或者 docker rmi redis
+# 删除所有镜像
+docker rmi $(docker images -q)
+
+# -f: 指定Dockerfile名字或路径, 默认为./Dockerfile, -t: tag
+
+docker image build -t doerlee/crawleruniverse .
+docker image build -f redis.development.dockerfile -t doerlee/redis .
+docker image build -t psweb https://github.com/nigelpoulton/psweb.git
+
+
+2. container commands
+
+# # 查看所有正在运行的容器, -a: 查看所有容器包括停止的
+docker container ls [-a] 或者 docker ps [-a]
+
+
+# 运行容器
+# 运行alpine, 并使用shell登录, -it表示interactive
+docker container run -it alpine sh
+# -d: 后台运行
+docker container run -d alpine sleep 1d
+# --name: 给容器命名, -p: 指定主机与容器的端口映射关系
+docker container run -d --name crawleruniverse -p 8000:8000 doerlee/crawleruniverse
+docker container run --name doerlee_redis -p 6379:6379 doerlee/redis
+# 查看端口映射关系
+docker port web1
+
+# volume, 指定宿主机和容器的volume映射关系，如不指定主机目录则由docker指定默认目录
+# 不指定宿主机
+docker run -d --name doerlee_node -p 8080:3000 -v /var/www doerlee/node
+# 指定宿主机当前目录
+docker run -d --name doerlee_node -p 8080:3000 -v $(pwd):/var/www doerlee/node
+docker inspect doerlee_node
+"Mounts": [
+    {
+        "Tpye": "volume
+        "Name": "...",
+        "Source": "...",
+        "Destination": "/var/www",
+        "Driver": "local",
+        "Mode": "",
+        "RW": true,
+        "Propagation": ""
+    },
+]
+# -w: 指定工作目录（working dir）
+docker run --name doerlee_node -p 8080:3000 -v $(pwd):/var/www -w "/var/www" doerlee/node npm start
+docker run --name doerlee_crawleruniverse -p 8000:8000 -v $(pwd):/var/www -w "/var/www" doerlee/crawleruniverse python manage.py runserver 0.0.0.0:8000
+
+# 停止容器
+docker container stop 2e93d29284de
+
+# 启动停止的容器
+docker container start 2e93d29284de
+
+# 在运行着的容器中执行命令
+docker container exec -it 2e93d29284de sh
+docker container exec 2e93d29284de ls -l
+docker container exec 2e93d29284de ls -l
+
+
+# 删除指定容器, -v: 同时删除对应的volume
+docker container rm [-v] 2e93d29284de 或者 docker rm 2e93d29284de2e93d29284de
+# 强制删除所有容器，包括正在运行的, -a: all, -q: quiet
+docker container rm $(docker container ls -aq) -f
+
+
+3.发布镜像到docker hub
+
+docker login
+
+docker push doerlee/node
+
+
+4.docker网络
+
+# 创建网络
+docker network create --driver bridge isolated_network
+
+# 查看已有网络
+docker network ls
+
+# 查看特定网络信息
+docker network inspect isolated_network
+
+# 在特定网络中运行容器
+docker run -d --net=isolated_network --name mongodb mongo
+
+
+5.docker compose
+# 查看帮助
+docker-compose --help
+
+# 创建或重新创建所有服务
+# Services are built once and then tagged, by default as project_service. For example, composetest_db. If the Compose file specifies an image name, the image is tagged with
+# that name, substituting any variables beforehand. See variable substitution.
+# If you change a service’s Dockerfile or the contents of its build directory, run docker-compose build to rebuild it.
+docker-compose build
+# 创建或重新创建特定服务
+docker-compose build web
+
+# 创建和启动所有服务, -d: 后台运行
+docker-compose up [-d]
+# 只重新创建和重启特定服务，不动其依赖服务
+docker-compose up --no-deps node
+
+# 在运行的service(.yml中的services名字，而不是docker-compose ps显示的名字)中执行命令
+docker-compose exec web ls
+docker-compose exec db pwd
+
+
+
+# 停止并删除所有容器
+# Stops containers and removes containers, networks, volumes, and images created by up.
+# By default, the only things removed are:
+# Containers for services defined in the Compose file
+# Networks defined in the networks section of the Compose file
+# The default network, if one is used
+# Networks and volumes defined as external are never removed.
+docker-compose down
+# 停止并删除所有容器，同时删除所有镜像和volumes
+docker-compose down --rmi all --volumes
+
+docker-compose logs [-f] [webapp]
+
+List images used by the created containers.
+docker-compose images
+docker-compose images web
+
+docker-compose ps
+docker-compose ps web
+
+# Displays the running processes.
+docker-compose top
+docker-compose top web
+
+# Stops running containers without removing them. They can be started again with docker-compose start
+docker-compose stop
+
+# Starts existing containers for a service
+docker-compose start
+
+# Restarts all stopped and running services.
+# If you make changes to your docker-compose.yml configuration these changes are not reflected after running this command.
+# For example, changes to environment variables (which are added after a container is built, but before the container’s command is executed) are not updated after restarting.
+docker-compose restart
+
+# Removes stopped service containers
+# Running the command with no options also removes one-off containers created by docker-compose up or docker-compose run
+docker-compose rm
+
+docker-compose build webapp
+docker-compose stop webapp
+docker-compose up -d webapp
+docker-compose logs -f --tail 20 webapp
+docker-compose logs -t -f --tail 20 web
+# 每个服务展示10条内容
+docker-compose logs -t -f --tail 10
+
+# This is the equivalent of docker exec. With this subcommand you can run arbitrary commands in your services. Commands are by default allocating a TTY, so you can use a 
+# command such as docker-compose exec web sh to get an interactive prompt.
+docker-compose exec webapp ls
+
+# Runs a one-time command against a service. For example, the following command starts the web service and runs bash as its command.
+docker-compose run web ls -la
+docker-compose run web bash
+
+# 如nginx提示不能访问，自己代码又应该没问题就重启nginx
+docker-compose stop nginx
+docker-compose up -d nginx
+docker-compose exec nginx nginx -s reload
+
+# Prints the public port for a port binding
+docker-compose port flower 5555
+
+6.查看容器日志
+docker logs 727abe25557b
+
+
+7.aws安装docker
+sudo yum update -y
+sudo yum install docker -y
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+# 断开终端重新连接
+docker run hello-world
+
+8.启动docker
+sudo systemctl start docker
+
+9.复制文件
+docker cp 'C:\Users\micro\Downloads\elasticsearch-analysis-ik-7.14.2.zip' ruidu_es:/usr/share/elasticsearch

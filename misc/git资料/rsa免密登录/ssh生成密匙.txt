@@ -1,0 +1,56 @@
+密钥对(私钥，公钥)在客户端生成，然后把公钥拷贝到需要免密登录的服务器的授权登录用户的~/.ssh/authorized_keys文件，可以接受多个客户端的免密访问，每个客户端的.pub字符串占一行；可以直接登录服务器后cat id_dsa.pub >> ~/.ssh/authorized_keys，或在客户端ssh-copy-id root@47.91.243.49，然后输入服务器用户登录密码直接添加公钥，服务器用户必须具有登录shell(git用户一般会禁止登录shell，需要修改/etc/passwd文件)
+
+ssh生成密匙：
+ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+ 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+23:e9:91:fa:4a:07:d3:1f:46:44:99:ee:0f:7f:1b:67 root@izj6c2ct08gsllkm9mg1gxz
+The key's randomart image is:
++--[ RSA 2048]----+
+|       .oo       |
+|       .o        |
+|       ..        |
+|     . +.        |
+|    o *.S        |
+|     = =oo       |
+|    o o .+  . E  |
+|   . o    o .+   |
+|    ...    ...   |
++-----------------+
+[root@izj6c2ct08gsllkm9mg1gxz mysql_backup]# ssh-copy-id root@47.91.243.49 (如果禁用了root远程登录就该用能够登录的用户，后边涉及到用户的命令也一样，ssh-copy-id I3pu7R8Vt3M@47.91.243.49)
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@47.91.243.49's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'root@47.91.243.49'"
+and check to make sure that only the key(s) you wanted were added.
+
+[root@izj6c2ct08gsllkm9mg1gxz mysql_backup]# ssh root@47.91.243.49
+Last failed login: Sat Mar 17 17:04:45 CST 2018 from 182.100.67.129 on ssh:notty
+There were 3 failed login attempts since the last successful login.
+Last login: Sat Mar 17 17:01:26 2018 from 117.61.144.79
+
+Welcome to Alibaba Cloud Elastic Compute Service !
+
+[root@izj6cbwlp4pyxy2rkvh2xiz ~]# exit
+logout
+Connection to 47.91.243.49 closed.
+[root@izj6c2ct08gsllkm9mg1gxz mysql_backup]# scp 
+mysql_backup.sh                 wanhao_2018_03_15_19_54_51.sql  wanhao_2018_03_17_16_32_28.sql  wanhao_2018_03_17_16_36_34.sql  wanhao_2018_03_17_16_37_39.sql  
+wanhao_2018_03_12_11_54_27.sql  wanhao_2018_03_17_16_30_12.sql  wanhao_2018_03_17_16_35_55.sql  wanhao_2018_03_17_16_37_25.sql  
+[root@izj6c2ct08gsllkm9mg1gxz mysql_backup]# scp 
+mysql_backup.sh                 wanhao_2018_03_15_19_54_51.sql  wanhao_2018_03_17_16_32_28.sql  wanhao_2018_03_17_16_36_34.sql  wanhao_2018_03_17_16_37_39.sql  
+wanhao_2018_03_12_11_54_27.sql  wanhao_2018_03_17_16_30_12.sql  wanhao_2018_03_17_16_35_55.sql  wanhao_2018_03_17_16_37_25.sql  
+[root@izj6c2ct08gsllkm9mg1gxz mysql_backup]# scp wanhao_2018_03_17_16_3
+wanhao_2018_03_17_16_30_12.sql  wanhao_2018_03_17_16_32_28.sql  wanhao_2018_03_17_16_35_55.sql  wanhao_2018_03_17_16_36_34.sql  wanhao_2018_03_17_16_37_25.sql  wanhao_2018_03_17_16_37_39.sql
+[root@izj6c2ct08gsllkm9mg1gxz mysql_backup]# scp wanhao_2018_03_17_16_37_
+wanhao_2018_03_17_16_37_25.sql  wanhao_2018_03_17_16_37_39.sql  
+[root@izj6c2ct08gsllkm9mg1gxz mysql_backup]# scp wanhao_2018_03_17_16_37_39.sql root@172.31.189.155:/data/mysql_backup
+wanhao_2018_03_17_16_37_39.sql    

@@ -1,0 +1,294 @@
+# 使用时百度或谷歌搜索具体选项
+
+# 查看系统环境变量
+env
+
+# 查看进程信息
+ps -auxe
+ps -e
+ps -f
+ps -ef
+
+# 查看bash路径
+echo $BASH
+
+# 递归查看命令tree
+yum install -y tree
+tree some_dir
+
+# 查看目录或文件
+-a 显示所有文件，包括隐藏文件
+-l 以长格式显示
+-t 按最后修改时间排序
+-R 递归显示
+ls [-altR] dirname/filename
+
+# 查看文件格式信息
+file dirname/filename
+# 查看当前目录所有文件格式信息
+file * 
+
+# 删除文件
+rm -ri
+-r, -R, --recursive   指示rm将参数中列出的全部目录和子目录均递归地删除
+-f, --force    忽略不存在的文件，从不给出提示
+-i, --interactive 进行交互式删除
+
+# 删除空文件夹
+rmdir
+
+# 重命名或移动文件
+mv -i
+
+# 创建目录(一个或多个，用空格分开)
+mkdir
+-p 父目录不存在则创建
+
+# 创建文件，存在则更新修改时间(一个或多个，用空格分开)
+touch
+
+# 清理屏幕
+clear
+reset
+
+# 查看文本文件内容
+cat
+less
+
+# 根据文件格式自动选择合适应用打开文件，图形化界面有效
+open
+
+# 复制文件或目录
+cp -i
+cp -Ri
+
+
+# 通配符
+
+* 匹配任意字符，包括空字符
+ls a*
+ls *a
+ls *at*
+mv *txt text/
+mv *jpg pictures/
+ls -dl D*s
+
+? 仅匹配一个字符
+
+[acd7_] 匹配a/c/d/7/_里边任意一个字符
+[^ax2] 匹配除a,x,2以外的字符
+[a-z],[0-9],[A-C3-5] 匹配字符区间
+rm important_document-v[2-4].doc
+rm important_document-v1[^789].doc
+rm important_document-v?.doc
+
+# 花括号扩展
+touch {a,b,c}.txt -> touch a.txt.b.txt c.txt
+mv file.{txt,jpg} dir/ -> mv file.txt file.jpg dir
+touch {a..c}{1..3}.txt -> touch a1.txt a2.txt ... c2.txt c3.txt
+mv *{txt,jpg} Documents -> mv *txt *jpg Documents
+mv filea?.{jpg,txt} dir -> mv filea?.jpg filea?.jpg dir
+
+touch important_document-v{1..19}.doc
+touch file{a,b,c}{1,2,3}.{jpg,txt.zip}
+
+
+# 输出重定向
+
+> 重定向stdout流到文件, 文件已存在则覆盖
+ls > listing.txt
+cat > story.txt
+
+>> 追加到文件
+echo "buy milk" >> shopping.txt
+echo hello, world >> story.txt
+# 先用echo测试通配符是否匹配到期望内容,再使用mv,rm等破坏性命令
+echo D*
+echo a{1..5} 
+
+
+# 管道pipe
+ls | less
+grep 1978 oscars.tsv | sort > 1978_films.txt
+cut -f 3 oscars.tsv | grep 4 | wc -l
+
+
+# 命令替换
+# 推荐使用方式
+echo "hello, $(whoami)"
+echo "Buy milk" > "note$(date).txt"
+# 旧的使用方式
+echo "you are currently on `hostname`"
+
+
+# 搜索历史命令
+进入搜索模式 Ctrl + r, 反复输入Ctrl + r实现搜索结果切换, 按方向键退出搜索模式，编辑命令
+退出搜索模式 Ctrl + c
+退出当前shell Ctrl + d
+
+
+# 排序,列之间默认以空格分隔,按字符ascii升序排序
+# 默认按第一列排序
+sort math_grades
+# 按第二列排序
+sort -k2 math_grades
+# 解析为数字
+sort -nk2 math_grades
+# 降序
+sort -rnk2 math_grades
+# 去重
+sort math_grades |uniq
+# 统计每条记录数量
+sort math_grades |uniq -c
+sort math_grades |uniq -c |sort -nr
+
+
+# 查看文本文件内容
+# -S按文件大小排序, 默认查看前10行
+ls -lS |head
+# 只查看第1行
+ls -lS |head -n 1
+# -r倒序
+ls -lrS |tail -n 1
+# -t最后修改时间
+ls -lrt |tail -n 1
+# 实时查看文件内容
+tail -f mm.log
+
+
+# 文本统计
+# 默认统计行数，单词数，字节数
+wc demo/alice
+# -l只统计行数
+wc -l demo/alice
+# 统计当前目录下的文件数量，不包括隐藏文件
+ls |wc -l
+# 包括隐藏文件
+ls -a |wc -l
+
+
+# 搜索文本文件，包含特定字符的行
+# 搜索单个文件
+grep Rings oscars.tsv
+# 搜索多个文件
+grep bruce *grades
+# -i忽略大小写
+grep -i steve *grades
+# -v反转匹配行
+grep -v lecture math_attendance |sort |uniq
+# 匹配正则表达式，过滤空行
+grep -v "^$" math_attendance |sort |uniq
+# -E扩展正则表达式，过滤空行和包含"lecture"的行
+grep -Ev "^$|lecture" math_attendance |sort |uniq -c
+# 只显示文件夹c
+ls -l | grep "^d"
+# -c统计匹配行数
+ls -l | grep -c "^d" 
+# 只显示非文件夹
+ls -l | grep -v "^d"
+
+
+# 搜索文件
+# 递归显示目录下所有文件，包括隐藏文件
+find /usr
+# 根据文件名查找
+find /usr -name emacs
+find . -name '*.txt'
+find . -name '*.txt' -exec grep -l curious {} \;
+
+
+# 替换文本内容
+# 把'S'替换为's'
+cat physics_grades | tr S s
+# 输入重定向
+tr S s < physics_grades
+
+
+# 后台任务
+cp /volumes/data-2T/Movie.avi .
+暂停         Ctrl + z
+恢复前台运行 fg
+后台运行     bg
+# 启动程序并后台运行
+./delayed_ls &
+任务id 进程id
+[1]    23837
+# 输出重定向
+./delayed_ls > output_file &
+# 需要用户交互的命令不要后台运行,很多问题
+rm -i oscars.tsv &
+# 列出当前终端的所有任务
+jobs
+# 根据任务id恢复到前台
+bg %1
+bg %2
+# 根据任务id结束进程
+kill %1
+kill %2
+# 根据进程id结束进程
+ps -e | grep calc
+优雅退出，清理资源 kill 进程id
+强制退出 kill -KILL 进程id
+# 图形化界面
+xkill
+# 匹配进程名
+pkill
+# 实时查看进程信息
+top
+u 按用户查看进程
+k 选择结束进程
+esc 退出命令模式
+q 退出top模式
+
+
+# 个性化设置
+# 查看命令别名
+alias
+# 设置别名,等号两边不要留空格
+alias gerp=grep
+alias tomusic="cd /media/data/Music"
+# "\"不使用别名的设置
+\ls
+# 全局设置
+/etc/bashrc
+# 用户设置
+  # login shell, 登录时加载
+  ~/.bash_profile调用~/.bashrc
+  # non-login shell, 非登录启动终端加载
+  ~/.bashrc
+  # mac os不区分login shell和non-login shell
+  ~/.profile
+  # 其它系统不同的脚本名字
+  .bash_login, .bash_profile, .login
+
+
+# 环境变量
+echo $PS1
+[\u@\h \W]\$
+\u 用户
+\h 主机名
+\w 当前工作目录
+\t 当前时间
+PS1="[\u@\h \W \t]\$"
+echo 'PS1="[\u@\h \W \t]\$"' >> ~/.bashrc
+# 自定义的路径再最后插入，避免影响系统命令
+PATH="$PATH:~/bin"
+# 使变量在子进程可见export
+export EDITOR=vim
+# ~/.bashrc
+alias mv='mv -i'
+alias rm='rm -i'
+
+export PATH="$PATH:~/bin:."
+export PS1="[\u \w]\$ "
+export EDITOR=vim
+
+
+# 修改默认shell，使用非bash
+chsh
+echo $SHELL
+
+# 创建用户
+groupadd doer
+useradd doer -g doer
+passwd doer

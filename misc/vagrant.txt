@@ -1,0 +1,48 @@
+# 查看版本
+vagrant -v
+vboxmanage -v
+
+# 初始化环境，从https://cloud.centos.org/centos/7/vagrant/x86_64/images/下载CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box，启动虚拟机
+vagrant init centos/7
+vagrant box add centos/7 CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box
+vagrant up
+  # 同步文件
+
+
+# 连接，退出虚拟机
+vagrant ssh
+exit
+
+# 查看虚拟机
+vboxmanage list runningvms
+vboxmanage list vms
+
+# 重载虚拟机
+vagrant reload
+
+# 休眠，恢复, 关闭, 启动, 销毁虚拟机
+vagrant suspend
+vagrant resume
+vagrant halt
+vagrant up
+vagrant destroy -f
+vagrant status
+
+# 文件同步
+ # windows主机到虚拟机
+ vagrant rsync  # 手动
+ vagrant rsync-auto  # 自动检测
+ # 虚拟机到windows主机, 手动
+ vagrant plugin install vagrant-rsync-back
+ vagrant rsync-back
+
+ # 运行额外的脚本文件
+ vagrant provision
+
+ # 列出本地box
+ vagrant box list
+
+ # how to unlock a vagrant machine while it is being provisioned
+ vagrant ssh
+ ps aux | grep vagrant
+ kill -9 <PID>

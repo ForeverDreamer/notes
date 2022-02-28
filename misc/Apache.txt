@@ -1,0 +1,31 @@
+# Centos 7
+
+# 启动，停止，重启
+systemctl start httpd
+systemctl stop httpd
+systemctl restart httpd
+
+# 开机启动
+systemctl enable httpd
+
+# 查看状态
+systemctl status httpd
+或
+yum install lsof
+lsof -i | grep http
+
+# 日志目录
+ls /var/log/httpd/
+tail -f /var/log/httpd/error_log
+tail -f /var/log/httpd/access_log
+
+# 可用模块
+ls /usr/lib64/httpd/modules/
+
+# 配置文件
+less /etc/httpd/conf/httpd.conf
+vim /etc/httpd/conf/httpd.conf
+
+# 搜索生效的配置项
+grep -v '^#' /etc/httpd/conf/httpd.conf | less
+grep -v '^#' /usr/local/apache/conf/httpd.conf

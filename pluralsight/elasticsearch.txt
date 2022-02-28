@@ -1,0 +1,710 @@
+# Searching and Analyzing Data with Elasticsearch: Getting Started
+
+4.Executing Search Requests Using Elasticsearch Query DSL
+3)Setting up Fake Data for Queries
+# 查询索引列表
+curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+# 删除索引
+curl -XDELETE 'localhost:9200/customers?pretty'
+
+4)Search Using Query Params
+# 可以在浏览器直接输入'localhost:9200/customers/_search?q=wyoming&pretty'
+curl -XGET 'localhost:9200/customers/_search?q=wyoming&pretty'
+curl -XGET 'localhost:9200/customers/_search?q=wyoming&sort=age:desc&pretty'
+curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&sort=age:asc&pretty'
+curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&from=10&size=2&pretty'
+curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&explain&pretty'
+
+curl -XPUT 'http://localhost:9200/customers/_mapping/personal' -H 'Content-Type: application/json' -d '
+{
+  "properties": {
+        "gender": {
+            "type": "text",
+            "fielddata": true
+        }
+    }
+}
+'
+
+
+# Indexing Data in Elasticsearch
+
+# 4 Improving the User Search Experience
+# 5)Demo: Term and Match Queries
+
+curl -XPUT 'localhost:9200/index_one/type_one/1?pretty' -H 'Content-Type: application/json' -d'{
+    "id": "01",
+    "name": "Jane Smith",
+    "status": "true"
+}
+'
+
+curl -XPUT 'localhost:9200/index_one/type_one/2?pretty' -H 'Content-Type: application/json' -d'{
+    "id": "02",
+    "name": "James Smith",
+    "status": "false"
+}
+'
+
+# no match
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'{
+    "query": {
+        "term": {"name": "jane smith"}
+    }
+}
+'
+
+# no match
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'{
+    "query": {
+        "term": {"name": "Jane Smith"}
+    }
+}
+'
+
+# no match
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'{
+    "query": {
+        "term": {"name": "Jane Smith"}
+    }
+}
+'
+
+# no match
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'{
+    "query": {
+        "term": {"name": "Jane"}
+    }
+}
+'
+
+# match
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'{
+    "query": {
+        "match": {"name": "Jane"}
+    }
+}
+'
+
+# match
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'{
+    "query": {
+        "match": {"name": "jane smith"}
+    }
+}
+'
+
+curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+
+curl -XDELETE 'localhost:9200/index_one?pretty'
+
+curl -XPUT 'localhost:9200/index_one?pretty' -H 'Content-Type: application/json' -d'{
+    "mappings": {
+        "type_one": {
+            "properties": {
+                "name": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}
+'
+
+# 重复以上操作，结果相反
+
+# 6)Demo: Case Insensitive Term Searches with Normalizers
+创建case.json输入以下内容:
+{
+    "settings": {
+        "analysis": {
+            "normalizer": {
+                "my_normalizer": {
+                    "type": "custom",
+                    "char_filter": [],
+                    "filter": "lowercase"
+                }
+            }
+        }
+    },
+    "mappings": {
+        "type_one": {
+            "properties": {
+                "name": {
+                    "type": "keyword",
+                    "normalizer": "my_normalizer"
+                }
+            }
+        }
+    }
+}
+
+curl -XPUT 'localhost:9200/index_one?pretty' -H 'Content-Type: application/json' -d @case.json
+
+# 7)Demo: Suggesters
+# Term suggester
+curl -XPUT 'localhost:9200/books/fiction/_bulk?pretty' -H 'Content-Type: application/json' -d'
+{"index": {"_id": "1"}}
+{"id": "01", "title": "Harry Potter and The Chamber of Secrets", "author": "J K Rowling"}
+{"index": {"_id": "2"}}
+{"id": "02", "title": "Harry Potter and The Prisoner of Azkaban", "author": "J K Rowling"}
+{"index": {"_id": "3"}}
+{"id": "03", "title": "Papertowns", "author": "John Green"}
+{"index": {"_id": "4"}}
+{"id": "04", "title": "Paperhouse", "author": "Jean Janzen"}
+{"index": {"_id": "5"}}
+{"id": "05", "title": "Black Beauty", "author": "Anna Sewell"}
+{"index": {"_id": "6"}}
+{"id": "06", "title": "Black Boy", "author": "Richard Wright"}
+'
+
+curl -XPOST 'localhost:9200/books/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "my-suggestion": {
+            "text": "paperhouns",
+            "term": {
+                "field": "title" 
+            }
+        }
+    }
+}
+'
+
+curl -XPOST 'localhost:9200/books/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "my-suggestion": {
+            "text": "pattertowns",
+            "term": {
+                "field": "title" 
+            }
+        }
+    }
+}
+'
+
+curl -XPOST 'localhost:9200/books/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {
+            "title": "blank beauty"
+        }
+    },
+    "suggest": {
+        "my-suggestion": {
+            "text": "blank beauty",
+            "term": {
+                "field": "title" 
+            }
+        }
+    }
+}
+'
+
+curl -XDELETE 'localhost:9200/books?pretty'
+
+# Phrase suggester
+创建suggest1.json
+{
+    "settings": {
+        "index": {
+            "number_of_shards": 1,
+            "analysis": {
+                "analyzer": {
+                    "trigram": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "filter": ["standard", "shingle"]
+                    }
+                }
+            }
+        }
+    },
+    "mappings": {
+        "nonfiction": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "fields": {
+                        "trigram": {
+                            "type": "text",
+                            "analyzer": "trigram"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+curl -XPUT 'localhost:9200/books?pretty' -H 'Content-Type: application/json' -d @suggest1.json
+
+curl -XPOST 'localhost:9200/books/nonfiction?pretty' -H 'Content-Type: application/json' -d'
+{"title": "noble warriors"}
+'
+
+curl -XPOST 'localhost:9200/books/nonfiction?pretty' -H 'Content-Type: application/json' -d'
+{"title": "noble prize"}
+'
+
+创建suggest2.json
+{
+    "suggest": {
+        "text": "noble prize",
+        "simple_phrase": {
+            "phrase": {
+                "field": "title.trigram",
+                "size": 1,
+                "gram_size": 3,
+                "direct_generator": [{
+                    "field": "title.trigram",
+                    "suggest_mode": "always"
+                }]
+            }
+        }
+    }
+}
+
+curl -XPOST 'localhost:9200/books/_search?pretty' -H 'Content-Type: application/json' -d @suggest2.json
+
+# Completion suggester
+curl -XPUT 'localhost:9200/music?pretty' -H 'Content-Type: application/json' -d'
+{
+    "mappings": {
+        "songs": {
+            "properties": {
+                "suggest": {
+                    "type": "completion"
+                },
+                "title": {
+                    "type": "keyword"
+                }
+            }
+        }
+    }
+}
+'
+
+curl -XPUT 'localhost:9200/music/songs/1?refresh&pretty" -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "input": ["Everything has changed", "Everybody knows", "Every night in my dreams"]
+    }
+}
+'
+
+curl -XPOST 'localhost:9200/music/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "song-suggest": {
+            "prefix": "ever",
+            "completion": {
+                "field": "suggest"
+            }
+        }
+    }
+}
+'
+
+# Context suggester
+curl -XPUT 'localhost:9200/place?pretty' -H 'Content-Type: application/json' -d'
+{
+    "mappings": {
+        "shops": {
+            "properties": {
+                "suggest": {
+                    "type": "completion",
+                    "context": [
+                        {
+                            "name": "place_type",
+                            "type": "category"
+                        },
+                        {
+                            "name": "location",
+                            "type": "geo",
+                            "precision": 4
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
+'
+
+curl -XPUT 'localhost:9200/place/shops/1?pretty' -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "input": ["mcdonalds", "big bear", "chicking"],
+        "context": {
+            "place_type": ["cafe", "food"]
+        }
+    }
+}
+'
+
+curl -XPUT 'localhost:9200/place/shops/2?pretty' -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "input": ["drunken monkey", "big pitcher"],
+        "context": {
+            "place_type": ["pub", "food"]
+        }
+    }
+}
+'
+
+curl -XPOST 'localhost:9200/place/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "place_suggestion": {
+            "prefix": "big",
+            "completion": {
+                "field": "suggest",
+                "size": 10,
+                "contexts": {
+                    "place_type": ["cafe", "pub"]
+                }
+            }
+        }
+    }
+}
+'
+
+curl -XPOST 'localhost:9200/place/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "suggest": {
+        "place_suggestion": {
+            "prefix": "big",
+            "completion": {
+                "field": "suggest",
+                "size": 10,
+                "contexts": {
+                     "place_type": [
+                         {"context": "cafe"},
+                         {"context": "pub", "boost": 2}
+                     ]
+                }
+            }
+        }
+    }
+}
+'
+
+# 8)Demo: Fuzzy Search
+curl -XPUT 'localhost:9200/members/?pretty' -H 'Content-Type: application/json' -d'
+{
+    "mappings": {
+        "ppl": {
+            "properties": {
+                "idno": {"type": "keyword"}
+            }
+        }
+    }
+}
+'
+
+curl -XPOST 'localhost:9200/members/ppl/1?pretty' -H 'Content-Type: application/json' -d'
+{
+    "idno": "ABC01"
+}
+'
+
+curl -XPOST 'localhost:9200/members/ppl/1?pretty' -H 'Content-Type: application/json' -d'
+{
+    "idno": "XYZ01"
+}
+'
+
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "fuzzy": {"idno": "BC01"}
+    }
+}
+'
+
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "fuzzy": {"idno": "XYZ0"}
+    }
+}
+'
+
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "fuzzy": {"idno": "AB01"}
+    }
+}
+'
+
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "fuzzy": {"idno": "AB10"}
+    }
+}
+'
+
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "fuzzy": {"idno": "XYZ"}
+    }
+}
+'
+
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "fuzzy": {
+            "idno": {
+                "value": "AB10",
+                "boost": 1.0,
+                "fuzziness": 2,
+                "prefix_length": 0,
+                "max_expansions": 100
+            }
+        }
+    }
+}
+'
+
+curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "fuzzy": {
+            "idno": {
+                "value": "XYZ",
+                "boost": 1.0,
+                "fuzziness": 2,
+                "prefix_length": 0,
+                "max_expansions": 100
+            }
+        }
+    }
+}
+'
+
+# 9)Demo: Autocomplete
+创建auto1.json
+{
+    "settings": {
+        "analysis": {
+            "filter": {
+                "autocomplete_filter": {
+                    "type": "edge_ngram",
+                    "min_gram": 1,
+                    "max_gram": 20
+                }
+            },
+            "analyzer": {
+                "autocomplete": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": [
+                        "lowercase",
+                        "autocomplete_filter"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "post": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "analyzer": "autocomplete,
+                    "search_analyzer": "standard"
+                }
+            }
+        }
+    }
+}
+
+curl -XPUT 'localhost:9200/blog?pretty' -H 'Content-Type: application/json' -d @auto1.json
+
+curl -XPUT 'localhost:9200/blog/post/1?pretty' -H 'Content-Type: application/json' -d'
+{
+    "title": "Pilates vs Yoga",
+    "author": "Jane Smith"
+}
+'
+
+curl -XPUT 'localhost:9200/blog/post/2?pretty' -H 'Content-Type: application/json' -d'
+{
+    "title": "PCOS vs Fitness",
+    "author": "Jane Smith"
+}
+'
+
+curl -XGET 'localhost:9200/blog/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {
+            "title": {
+                "query": "Pilate vs Yo",
+                "operator": "and"
+            }
+        }
+    }
+}
+'
+
+curl -XGET 'localhost:9200/blog/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {
+            "title": {
+                "query": "PCO",
+                "operator": "and"
+            }
+        }
+    }
+}
+'
+
+# 5 Dealing with Human Languages
+# 2)Demo: Creating an Index Per Language
+curl -XPUT 'localhost:9200/blogs-english?pretty' -H 'Content-Type: application/json' -d'
+{
+    "mappings": {
+        "post": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "analyzer": "english"
+                }
+            }
+        }
+    }
+}
+'
+
+curl -XPUT 'localhost:9200/blogs-english/post/1?pretty' -H 'Content-Type: application/json' -d'
+{
+    "id": "01",
+    "title": "The Meaning of Dreams"
+}
+'
+
+curl -XPUT 'localhost:9200/blogs-english/post/s?pretty' -H 'Content-Type: application/json' -d'
+{
+    "id": "02",
+    "title": "The Deja Vu"
+}
+'
+
+curl -XPUT 'localhost:9200/blogs-french?pretty' -H 'Content-Type: application/json' -d'
+{
+    "mappings": {
+        "post": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "analyzer": "french"
+                }
+            }
+        }
+    }
+}
+'
+
+curl -XPUT 'localhost:9200/blogs-french/post/1?pretty' -H 'Content-Type: application/json' -d'
+{
+    "id": "01",
+    "title": "le cortex frontal"
+}
+'
+
+curl -XPUT 'localhost:9200/blogs-french/post/s?pretty' -H 'Content-Type: application/json' -d'
+{
+    "id": "02",
+    "title": "Le Deja Vu"
+}
+'
+
+curl -XGET 'localhost:9200/blogs-*/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {"title": "deja vu"}
+    }
+}
+'
+
+curl -XGET 'localhost:9200/blogs-*/_search?pretty' -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match": {"title": "deja vu"}
+    },
+    "indices_boost": {
+        "blogs-french": 3,
+        "blogs-english": 2
+    }
+}
+'
+
+# 3)Demo: Setting a Per-field Language analyzer
+创建lang1.json
+{
+    "mappings": {
+        "movie": {
+            "properties": {
+                "title": {
+                    "type": "text"
+                },
+                "title_nw": {
+                    "type": "text",
+                    "analyzer": "norwegian"
+                },
+                "title_pg": {
+                    "type": "text",
+                    "analyzer": "portuguese"
+                },
+                "title_fr": {
+                    "type": "text",
+                    "analyzer": "french"
+                },
+                "title_es": {
+                    "type": "text",
+                    "analyzer": "spanish"
+                },
+            }
+        }
+    }
+}
+
+
+# Designing Schema for Elasticsearch
+
+# 2 Modeling Data in Elasticsearch
+
+# 6)Demo: Defaul Mappings
+curl -XPUT 'localhost:9200/books?pretty'
+
+curl -XGET 'localhost:9200/books/_mapping?pretty'
+
+curl -XPOST 'localhost:9200/books/fiction/1?pretty' -H 'Content-Type: application/json' -d @books.json
+
+curl -XPUT 'localhost:9200/books/_mapping?pretty' -H 'Content-Type: application/json' -d'
+{
+    "properties": {
+        "pages": {
+            "type": "integer"
+        }
+    }
+}
+'
+
+curl -XDELETE 'localhost:9200/books?pretty'
+
+# 7)Demo: Numeric and Date Detection
+curl -XPUT 'localhost:9200/my-index/samples/1?pretty' -H 'Content-Type: application/json' -d'
+{"count": "5"}
+'
+
+curl -XGET 'localhost:9200/my-index/_mapping?pretty'

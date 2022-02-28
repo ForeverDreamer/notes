@@ -1,0 +1,644 @@
+# 查看当前db
+db
+
+# 查看数据版本
+db.version()
+
+# 查看当前db的所有集合
+show collections
+
+# 创建一条记录
+db.foo.save({ _id: 1, x: 10 })
+db.foo.save({ _id: 3.14})
+db.foo.save({ _id: "Hello"})
+db.foo.save({ _id: ISODate()})
+db.foo.save({ _id: {a:'x', b:2} })
+db.users.save({Name: 'Bob'})
+
+# 防止重复id使用insert
+db.users.insert({_id: 'bob@bob.bob', Name: 'Bob', Address: { Street: '123 Main', City: 'Paris' }, Music: [ 'blues', 'Alt' ] })
+# 重复id会报错
+db.users.insert({_id: 'bob@bob.bob', Name: 'Bob', Address: { Street: '123 Main', City: 'Paris' }, Music: [ 'blues', 'Alt' ] })
+
+db.users.insert({_id: 'meg@meg.meg', Name: 'Meg', Address: { Cruise: 'Fun', Ship: 'SS Ahoy', Port: 'Marina' }, Music: [ 'blues', 'Alt' ], Logins: [ { ip: 123, t: ISODate('2012-11-10') } ] })
+
+# 查询集合中的所有记录
+db.foo.find().pretty()
+db.users.find()
+
+# 生成一个ObjectId
+ObjectId()
+# 获取时间戳
+ObjectId().getTimestamp()
+
+
+
+# 更新数据
+
+# foo: Collection Name, query: Which Document, update: What Change, options: One? Many? Upsert?
+db.foo.update(query, update, options)
+
+# $inc：加1操作
+db.foo.update({ _id: 1 }, { $inc: { x: 1 } })
+
+# $set: 增加字段
+db.foo.update({ _id: 1 }, { $set: { y: 3 } })
+
+# $unset: 删除字段
+db.foo.update({ _id: 1 }, { $unset: { y: '' } }) 或 db.foo.update({ _id: 1 }, { $unset: { y: 0 } })，y后面的值只起占位左右，没有意义
+
+# $rename: 重命名字段
+db.foo.save({ _id: 2, Naem: 'doer' })
+db.foo.update({ _id: 2 }, { $rename: { 'Naem': 'Name' } })
+
+# 数组操作
+# $push: 数组入操作
+db.foo.update({ _id: 2 }, { $push: { things: 'one' } })
+db.foo.update({ _id: 2 }, { $push: { things: 'two' } })
+db.foo.update({ _id: 2 }, { $push: { things: 'three' } })
+db.foo.update({ _id: 2 }, { $push: { things: 'three' } })
+
+# $addToSet: 数组入操作，已存在则忽略
+db.foo.update({ _id: 2 }, { $addToSet: { things: 'four'}})
+db.foo.update({ _id: 2 }, { $addToSet: { things: 'four'}})
+
+# $pull: 删除所有匹配字段
+db.foo.update({ _id: 2 }, { $pull: { things: 'three' } })
+db.foo.update({ _id: 2 }, { $addToSet: { things: 'three'}})
+
+# $pop: 删除元素
+# 从尾部删除
+db.foo.update({ _id: 2 }, { $pop: { things: 1 } })
+# 从首部删除
+db.foo.update({ _id: 2 }, { $pop: { things: -1 } })
+
+# 批量更新
+db.foo.insert({ _id: 3, things: [ 1, 2, 3 ] })
+db.foo.insert({ _id: 4, things: [ 2, 3 ] })
+db.foo.insert({ _id: 5, things: [ 3 ] })
+db.foo.insert({ _id: 6, things: [ 1, 3 ] })
+
+# 默认只更新一条数据, {}: 匹配任何数据
+db.foo.update({}, { $push: { things: 4 } })
+
+# 更新所有匹配的数据, {}: 匹配任何数据
+db.foo.update({}, { $push: { things: 4 } }, { multi: true })
+
+# things包括2的文档
+db.foo.update({things: 2},  {$push: {things: 888}}, {multi: true})
+
+# Find And Modify, sort: 1升序，-1降序， new: true返回修改后的值，false返回修改前的值
+mod = {query: {things: 1}, update: {$set: {touched: true}}, sort: {_id: -1}}
+db.foo.findAndModify(mod)
+mod = {query: {things: 1}, update: {$set: {touched: false}}, sort: {_id: -1}, new: true}
+db.foo.findAndModify(mod)
+mod = {query: {things: 1}, update: {$set: {touched: false}}, sort: {_id: 1}, new: true}
+db.foo.findAndModify(mod)
+
+
+
+# 查询数据
+# query: Which document? projection: Which fields?
+db.foo.find(query, projection)
+
+
+db.animals.insert({_id: 1, name: 'cat', tags: ['land', 'cute'], info: {type: 'mammal', color: 'red'}})
+# 返回所有字段
+db.animals.find({_id: 1})
+# 只返回_id字段
+db.animals.find({_id: 1}, {_id: 1})
+
+
+# 比较操作符: $gt, $lt, $lte, $gte
+db.foo.find({_id: {$gt: 5}}, {_id: 1})
+db.foo.find({_id: {$lt: 5}}, {_id: 1})
+db.foo.find({_id: {$gte: 5}}, {_id: 1})
+db.foo.find({_id: {$lte: 5}}, {_id: 1})
+
+# 比较操作符区间
+db.foo.find({_id: {$gt: 2, $lt: 4}}, {_id: 1})
+db.foo.find({_id: {$gte: 2, $lt: 4}}, {_id: 1})
+
+
+# 取反操作
+db.foo.find({_id: {$not: {$gt: 2}}}, {_id: 1})
+
+
+# 离散值查询：$in, $nin
+db.foo.find({_id: {$in: [1, 3]}}, {_id: 1})
+db.foo.find({_id: {$nin: [1, 3]}}, {_id: 1})
+
+
+# 数组包含元素查询
+# tags数组元素包含'cute'
+db.animals.find({tags: 'cute'}, {name: 1})
+
+# tags数组元素包含'cute'或'ocean'
+db.animals.find({tags: {$in: ['cute', 'ocean']}}, {name: 1})
+
+# tags数组元素同时包含'cute'和'ocean'
+db.animals.find({tags: {$all: ['cute', 'ocean']}}, {name: 1})
+
+# tags数组元素不包含'cute'
+db.animals.find({tags: {$nin: ['cute']}}, {name: 1})
+
+
+# dot notation
+db.animals.find({'info.canFly': true})
+db.animals.find({'info.canFly': true, 'info.type': 'bird'})
+
+
+# null and $exists
+# 返回info.canFly等于null，或没有info.canFly字段的文档
+db.animals.find({'info.canFly': null}, {name: 1})
+
+# 返回存在info.canFly字段的文档
+db.animals.find({'info.canFly': {$exists: true}}, {name: 1})
+
+# 返回不存在info.canFly字段的文档
+db.animals.find({'info.canFly': {$exists: false}}, {name: 1})
+
+
+# And操作
+db.animals.find({'info.type': 'bird', tags: 'cute'}, {name: 1})
+db.animals.find({'info.type': 'bird', tags: 'ocean'}, {name: 1})
+
+# 返回字段限制(projection), 1表示包含，0表示排除, 1和0不能混合使用(_id是个例外，比较特殊，默认返回，如果不希望返回_id, 必须显式指定_id: 0，可以与1混用)
+db.animals.find({_id: 1}, {_id: 1})
+db.animals.find({_id: 1}, {_id: 1, name: 1})
+db.animals.find({_id: 1}, {_id: 0, name: 0, info: 0})
+
+
+# Cursor游标
+c = db.animals.find({}, {name: 1})
+c.size()
+c.hasNext()
+c.forEach(lamda d: print(d.name))
+
+# sort
+# 1升序, -1降序
+db.animals.find({}, {name: 1}).sort({name: 1})
+db.animals.find({}, {name: 1, 'info.type': 1}).sort({'info.type': 1, name: 1})
+db.animals.find({}, {name: 1, 'info.type': 1}).sort({'info.type': 1, name: -1})
+
+# limit
+# 最多返回3条数据
+db.animals.find({}, {_id: 1}).sort({_id: -1}).limit(3)
+
+# skip
+# 跳过1条数据，最多返回2条数据
+db.animals.find({}, {_id: 1}).sort({_id: -1}).skip(1).limit(2)
+
+
+# 返回1条数据
+db.animals.findOne({_id: 1})
+
+
+
+# Index索引
+# Create Index
+# keys: Which fields, In Which Order, Geo/Text?  options: Name, Build now, Unique, Sparse, TTL, Language?
+db.foo.ensureIndex(keys, options)
+
+# 查询Index
+db.system.indexes.find({ns: 'test.animals'}, {key: 1})
+db.animals.find({name: 'cat'}).explain()
+
+# 1升序，-1降序
+db.animals.ensureIndex({name: 1})
+db.animals.ensureIndex({name: 1}, {Unique: true})
+db.animals.ensureIndex({name: 1, tags: 1})
+
+
+
+# mongodb-the-complete-developers-guide
+
+# 06 Diving Into Create Operations
+use contact_data
+db.dropDatabase()
+use contact_data
+db.persons.insertOne({name: 'Max', age: 30, hobbies: ['Sports', 'Cooking']})
+db.persons.insertOne({name: 'Manuel', age: 31, hobbies: ['Cars', 'Cooking']})
+db.persons.insertMany([
+    {name: 'Anna', age: 29, hobbies: ['Sports', 'Yoga']},
+    {name: 'Maria', age: 31},
+    {name: 'Chris', hobbies: ["do nothing"]}
+])
+db.hobbies.insertMany([
+    {_id: 'sports', name: 'Sports'},
+    {_id: 'cooking', name: 'Cooking'},
+    {_id: 'cars', name: 'Cars'}
+])
+# Ordered: 批量插入时是否按顺序插入，遇到错误立即终止，默认为true, 设置为false则会处理所有的数据并返回处理结果；已插入的数据均不会回滚撤销
+db.hobbies.insertMany([
+    {_id: 'yoga', name: 'Yoga'},
+    {_id: 'cooking', name: 'Cooking'},
+    {_id: 'hiking', name: 'Hiking'}
+], {Ordered: false})
+# writeConcern: w写入实例的数量，j表示是否写入journal确保db服务器挂掉内存数据丢失，重i启后依然可以根据journal继续未完成的写操作, wtimeout表示超时设置
+db.persons.insertOne({name: 'Aliya', age: 22}, {writeConcern: {w: 1, j: true, wtimeout: 200}})
+# 从json文件导入数据, -d指定导入到哪个数据库，-c导入哪个集合，--jsonArray指定导入多条记录, --drop表示如果集合已存在则删除重建，不设置该选项则追加在已有数据后边
+mongoimport tv-show.json -d movie_data -c movies --jsonArray --drop
+
+
+# 07 Read Operations - A Closer Look
+use movie_data
+# 返回第一条数据
+db.movies.findOne()
+db.movies.findOne({runtime: 60})
+db.movies.find() 等同于 db.movies.find({})
+db.movies.find({name: 'The Last Ship'}).pretty()
+db.movies.find({runtime: 60}) 等同于 db.movies.find({runtime: {$eq: 60}})
+db.movies.find({runtime: {$ne: 60}})
+db.movies.find({runtime: {$lt: 60}})
+db.movies.find({runtime: {$lte: 42}})
+db.movies.find({runtime: {$gt: 42}})
+db.movies.find({runtime: {$gte: 42}})
+db.movies.find({'rating.average': {$gt: 7}})
+# 数组字段genres包含'Drama'元素
+db.movies.find({genres: 'Drama'})
+# 数组字段genres等于['Drama']
+db.movies.find({genres: ['Drama']})
+db.movies.find({runtime: {$in: [30, 42]}})
+db.movies.find({runtime: {$nin: [30, 42]}})
+db.movies.find().count()  # 240
+db.movies.find({$or: [{'rating.average': {$lt: 5}}, {'rating.average': {$gt: 9.3}}]}).count()  # 4
+db.movies.find({$nor: [{'rating.average': {$lt: 5}}, {'rating.average': {$gt: 9.3}}]}).count()  # 236
+db.movies.find({$and: [{'rating.average': {$gt: 9}}, {genres: 'Drama'}]}).count()
+等同于
+db.movies.find({'rating.average': {$gt: 9}, genres: 'Drama'}).count()
+db.movies.find({genres: 'Drama', genres: 'Horror'}).count()  # 23, 字段名相同，后边的同名字段会覆盖前边的过滤条件
+等同于
+db.movies.find({genres: 'Horror'}).count() # 23
+db.movies.find({$and: [{genres: 'Drama'}, {genres: 'Horror'}]}).count()   # 17
+db.movies.find({runtime: {$not: {$eq: 60}}}).count()  # 70
+等同于
+db.movies.find({runtime: {$ne: 60}}).count()  # 70
+
+db.users.insertMany([
+    {name: 'Max', hobbies: [{title: 'Sports', frequency: 3}, {title: 'Cooking', frequency: 6}], phone: 18923425555},
+    {name: 'Manuel', hobbies: [{title: 'Cooking', frequency: 5}, {title: 'Cars', frequency: 2}], phone: '(010)43569893', age: 30}
+])
+db.users.find({age: {$exists: true}})  # Max, 存在age字段的文档
+db.users.find({age: {$exists: true, $gte: 30}})  # Manuel
+db.users.insertOne({name: 'Anna', hobbies: [{title: 'Sports', frequency: 2}, {title: 'Yoga', frequency: 3}], phone: '(020)85094289', age: null})
+db.users.find({age: {$exists: true}})  # Manuel and Anna
+db.users.find({age: {$exists: true, $ne: null}})  # Manuel
+db.users.find({phone: {$type: 'number'}})
+db.users.find({phone: {$type: ['double', 'string']}})  # 字段类型匹配数组中任意一个
+
+db.movies.find({summary: {$regex: /musical/}})
+
+use financial_data
+db.sales.insertMany([{volume: 100, target: 120}, {volume: 89, target: 80}, {volume: 200, target: 177}])
+# 同一个文档里边字段值的关系表达式，volume字段值大于target字段值
+db.sales.find({$expr: {$gt: ['$volume', '$target']}}).pretty()
+
+use movie_data
+db.users.find({'hobbies.title': 'Sports'}).pretty()
+db.users.insertOne({name: 'Chris', hobbies: ['Sports', 'Cooking', 'Hiking']})
+db.users.find({hobbies: {$size: 2}}).pretty()
+db.users.find({hobbies: {$size: 3}}).pretty()
+
+# genre数组字段里边包含'action', 'thriller'字段，但顺序可以不一样
+db.moviestars.find({genre: {$all: ['action', 'thriller']}})
+
+use movie_data
+db.users.find($and: [{'hobbies.tile}])
+
+
+# 10 Working with Indexes
+db.persons.getIndexes()  # ns stands for namespace
+db.persons.explain().find({"dob.age": {$gt :60}})
+db.persons.explain("queryPlanner").find({"dob.age": {$gt: 60}})
+db.persons.explain("executionStats").find({"dob.age": {$gt: 60}})
+db.persons.explain("allPlansExecution").find({"dob.age": {$gt: 60}})
+db.persons.createIndex({"dob.age": 1})
+db.persons.dropIndex({"dob.age": 1})
+db.persons.findOne()
+db.persons.createIndex({"gender": 1})
+db.persons.explain("executionStats").find({"gender": "male"})
+db.persons.dropIndex({"gender": 1})
+db.persons.createIndex({"dob.age": 1, "gender": 1})
+db.persons.explain().find({"dob.age": 35, gender: "male"})
+db.persons.explain().find({"dob.age": 35})
+db.persons.explain().find({gender: "male"})
+db.persons.explain().find({"dob.age": 35}).sort()
+db.persons.explain().find({"dob.age": 35}).sort({gender: 1})
+db.persons.createIndex({"email": 1}, {unique: true})
+db.persons.createIndex({"dob.age": 1}, {partialFilterExpression: {gender: "male"}})
+db.persons.createIndex({"dob.age": 1}, {partialFilterExpression: {"dob.age":{$gt :60}}})
+db.persons.explain().find({"dob.age": {$gt :60}})
+
+db.users.insertMany([{name: "Max", email: "max@test.com"}, {name: "Manu"}])
+db.users.createIndex({email: 1}, {unique: true})  # 不存在email字段的文档也会报重复错误
+db.users.getIndexes()
+db.users.insertOne({name: "Anna"})
+db.users.dropIndex({email: 1})
+db.users.createIndex({email: 1}, {unique: true, partialFilterExpression: {email: {$exists: true}}})  # 指定唯一性只约束存在email字段的文档
+
+db.sessions.insertOne({data: "dslkjfklsdjgs", createdAt: new Date()})
+db.sessions.createIndex({createdAt: 1}, {expireAfterSeconds: 10})  # 10秒后过期自动删除
+
+db.customers.insertMany([{name: "Max", age: 29, salary: 3000}, {name: "Manu", age: 30, salary: 4000}])
+db.customers.createIndex({name: 1})
+db.customers.explain("executionStats").find({name: "Max"})
+db.customers.createIndex({age: 1, name: 1})
+db.customers.explain("executionStats").find({name: "Max", age: 30})
+db.customers.explain("allPlansExecution").find({name: "Max", age: 30})
+
+db.contacts.insertOne({name: "Max", hobbies: ["Cooking", "Sports"], addresses: [{street: "Main Street"}, {street: "Second Street"}]})
+db.contacts.getIndexes()
+db.contacts.createIndex({hobbies: 1})
+db.contacts.find({hobbies: "Sports"})
+db.contacts.explain("executionStats").find({hobbies: "Sports"})
+db.contacts.createIndex({addresses: 1})
+db.contacts.explain("executionStats").find({"addresses.street": "Main Street"})  # COLLSCAN
+db.contacts.explain("executionStats").find({addresses: {street: "Main Street"}}) # IXSCAN
+db.contacts.createIndex({"addresses.street": 1})
+db.contacts.explain("executionStats").find({"addresses.street": "Main Street"})  # IXSCAN
+db.contacts.createIndex({name: 1, hobbies: 1})  # ok
+db.contacts.createIndex({addresses: 1, hobbies: 1})  # not ok
+
+
+db.products.getIndexes()
+db.products.insertMany([
+    {title: "A Book", description: "This is an awesome book about a young artist!"},
+    {title: "Red T-Shirt", description: "This T-Shirt is red and it's pretty awesome!"}])
+db.products.createIndex({description: "text"})
+db.products.find({$text: {$search: "awesome"}})
+db.products.find({$text: {$search: "book"}})
+db.products.find({$text: {$search: "red book"}})  # 搜索description字段中包含red或book的文档
+db.products.find({$text: {$search: "\"red book\""}})  # 搜索description字段中包含"red book"的文档
+db.products.find({$text: {$search: "\"awesome book\""}})  # 搜索description字段中包含"awesome book"的文档
+db.products.find({$text: {$search: "awesome t-shirt"}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).pretty()
+db.products.dropIndex("description_text")
+db.products.createIndex({title: "text", description: "text"})
+db.products.find({$text: {$search: "awesome -t-shirt"}}).pretty()  # '-'表示排除't-shirt'关键字
+db.products.dropIndex("title_text_description_text")
+
+
+# 12 Understanding the Aggregation Framework
+
+# 161 Using the Aggregation Framework
+db.persons.aggregate([ { $match: { gender: "female" } } ]).pretty()
+
+# 162 Understanding the Group Stage
+db.persons.aggregate([ 
+    { $match: { gender: "female" } },
+    { $group: { _id: { state: "$location.state" }, totalPersons: { $sum: 1 } } },
+    ]).pretty()
+
+# 163 Diving Deeper Into the Group Stage
+db.persons.aggregate([ 
+    { $match: { gender: "female" } },
+    { $group: { _id: { state: "$location.state" }, totalPersons: { $sum: 1 } } },
+    { $sort: { totalPersons: -1 } }
+    ]).pretty()
+
+# 164 Working with project
+db.persons.aggregate([
+    { $project: { _id: 0, gender: 1, fullName: { $concat: [ "Hello", "World" ] } } }
+]).pretty()
+db.persons.aggregate([
+    { $project: { _id: 0, gender: 1, fullName: { $concat: [ "$name.first", " ", "$name.last" ] } } }
+]).pretty()
+db.persons.aggregate([
+    { $project: { _id: 0, gender: 1, fullName: { $concat: [ { $toUpper: "$name.first" }, " ", { $toUpper: "$name.last" } ] } } }
+]).pretty()
+db.persons.aggregate([
+    { 
+        $project: { 
+            _id: 0, 
+            gender: 1, 
+            fullName: { 
+                $concat: [ 
+                    { $toUpper: { $substrCP:  ["$name.first", 0, 1 ] } },
+                    { 
+                        $substrCP: [ 
+                            "$name.first", 
+                            1, 
+                            { $subtract: [ { $strLenCP: "$name.first" }, 1 ] } 
+                        ] 
+                    },
+                     " ", 
+                    { $toUpper: { $substrCP:  ["$name.last", 0, 1 ] } },
+                    { 
+                        $substrCP: [ 
+                            "$name.last", 
+                            1, 
+                            { $subtract: [ { $strLenCP: "$name.last" }, 1 ] } 
+                        ] 
+                    },
+                ] 
+            } 
+        } 
+    }
+]).pretty()
+
+# 165 Turning the Location Into a geoJSON Object
+db.persons.aggregate([
+    {
+        $project: { 
+            _id: 0, 
+            name: 1, 
+            email: 1, 
+            loc: {
+                type: "Point",
+                coordinates: [
+                    { $convert: { input: "$location.coordinates.longitude", to: "double", onError: 0, onNull: 0.0 }},
+                    "$location.coordinates.latitude"
+                ]
+            }
+        },
+    },
+    { 
+        $project: { 
+            gender: 1,
+            email: 1,
+            loc: 1,
+            fullName: { 
+                $concat: [ 
+                    { $toUpper: { $substrCP:  ["$name.first", 0, 1 ] } },
+                    { 
+                        $substrCP: [ 
+                            "$name.first", 
+                            1, 
+                            { $subtract: [ { $strLenCP: "$name.first" }, 1 ] } 
+                        ] 
+                    },
+                     " ", 
+                    { $toUpper: { $substrCP:  ["$name.last", 0, 1 ] } },
+                    { 
+                        $substrCP: [ 
+                            "$name.last", 
+                            1, 
+                            { $subtract: [ { $strLenCP: "$name.last" }, 1 ] } 
+                        ] 
+                    },
+                ] 
+            } 
+        } 
+    }
+]).pretty()
+
+# 166 Transforming the Birthdate
+db.persons.aggregate([
+    { 
+        $project: { 
+            _id: 0, 
+            birthdate: { $convert: { input: "$dob.date", to: "date" } },
+            age: "$dob.age",
+        },
+    },
+    { 
+        $project: { 
+            birthdate: 1,
+            age: 1,
+        } 
+    }
+]).pretty()
+
+# 167 Using Shortcuts for Transformations
+db.persons.aggregate([
+    { 
+        $project: { 
+            _id: 0, 
+            birthdate: { $toDate: "$dob.date" },
+            age: "$dob.age",
+        },
+    },
+    { 
+        $project: { 
+            birthdate: 1,
+            age: 1,
+        } 
+    }
+]).pretty()
+
+# 168 Understanding the isoWeekYear Operator
+db.persons.aggregate([
+    { 
+        $project: { 
+            _id: 0, 
+            birthdate: { $toDate: "$dob.date" },
+        },
+    },
+    { 
+        $project: { 
+            birthdate: 1,
+        } 
+    },
+    {
+        $group: {
+            _id: { birthYear: { $isoWeekYear: "$birthdate" } },
+            numPersons: { $sum: 1 }
+        }
+    },
+    { $sort: { numPersons: -1 }}
+]).pretty()
+
+# 170 Pushing Elements Into Newly Created Arrays
+db.friends.aggregate([
+    { $group: { _id: { age: "$age" }, allHobbies: { $push: "$hobbies" } } }
+]).pretty()
+
+# 171 Understanding the unwind Stage
+db.friends.aggregate([
+    { $unwind: "$hobbies" },
+]).pretty()
+db.friends.aggregate([
+    { $unwind: "$hobbies" },
+    { $group: { _id: { age: "$age" }, allHobbies: { $push: "$hobbies" } } }
+]).pretty()
+
+# 172 Eliminating Duplicate Values
+db.friends.aggregate([
+    { $unwind: "$hobbies" },
+    { $group: { _id: { age: "$age" }, allHobbies: { $addToSet: "$hobbies" } } }
+]).pretty()
+
+# 173 Using Projection with Arrays
+db.friends.aggregate([
+    { $project: { _id: 0, examScore: { $slice: [ "$examScores", 1 ] } } }
+]).pretty()
+db.friends.aggregate([
+    { $project: { _id: 0, examScore: { $slice: [ "$examScores", -2 ] } } }
+]).pretty()
+db.friends.aggregate([
+    { $project: { _id: 0, examScore: { $slice: [ "$examScores", 2, 1 ] } } }
+]).pretty()
+
+# 174 Getting the Length of an Array
+db.friends.aggregate([
+    { $project: { _id: 0, numScores: { $size: "$examScores" } } }
+]).pretty()
+
+# 175 Using the filter Operator
+db.friends.aggregate([
+    { 
+        $project: { 
+        _id: 0, 
+        scores: { $filter: { input: "$examScores", as: "sc", cond: { $gt: [ "$$sc.score", 60 ] } } } 
+        } 
+    }
+]).pretty()
+
+# 176 Applying Multiple Operations to our Array
+db.friends.aggregate([
+    { $unwind: "$examScores" },
+    { $project: { _id: 1, name: 1, age: 1, score: "$examScores.score" } },
+    { $sort: { score: -1 } },
+    { $group: { _id: "$_id", name: { $first: "$name" }, maxScore: { $max: "$score" } } },
+    { $sort: { maxScore: -1 } }
+]).pretty()
+
+# 177 Understanding bucket
+db.persons.aggregate([
+    { 
+        $bucket: { 
+            groupBy: "$dob.age",
+            boundaries: [0, 18, 30, 50, 80, 120],
+            output: {
+                numPersons: { $sum: 1 },
+                averageAge: { $avg: "$dob.age" },
+            }
+        } 
+    }
+]).pretty()
+db.persons.aggregate([
+    {
+        $bucketAuto: {
+            groupBy: "$dob.age",
+            buckets: 5,
+            output: { 
+                numPersons: { $sum: 1 },
+                averageAge: { $avg: "$dob.age" }
+            }
+        }
+    }
+]).pretty()
+
+# 178 Diving Into Additional Stages
+db.persons.aggregate([
+    { $match: { gender: "male" } },
+    { $project: { _id: 0, name: { $concat: [ "$name.first", " ", "$name.last" ] }, birthdate: { $toDate: "$dob.date" } } },
+    { $sort: { birthdate: 1 } },
+    { $skip: 10 },
+    { $limit: 10 }
+]).pretty()
+
+# 180 Writing Pipeline Results Into a New Collection
+db.persons.aggregate([
+    {
+        $bucketAuto: {
+            groupBy: "$dob.age",
+            buckets: 5,
+            output: { 
+                numPersons: { $sum: 1 },
+                averageAge: { $avg: "$dob.age" }
+            }
+        }
+    },
+    { $out: "transformedPersons" }
+]).pretty()

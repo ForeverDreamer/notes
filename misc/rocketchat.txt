@@ -1,0 +1,14 @@
+# Rocket.Chat Apps CLI
+rc-apps help
+rc-apps deploy --url http://localhost:3000 --username doer --password 123456 --update
+rc-apps deploy --url http://localhost:3000 --username doer --password 123456
+rc-apps deploy --url http://localhost:3000 --userId ZtGPstjsweZgSjMNu --token aKfkmfWOq/2ENvvsxzDwQBPYFJUVV9HmLSzgeaehIbQ=
+rc-apps watch --url http://localhost:3000 --username doer --password 123456
+
+# rasa
+rasa -h
+rasa train --domain .\domain\
+rasa run -vv
+rasa run actions -vv
+
+stack exec duckling-example-exe

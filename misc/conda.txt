@@ -1,0 +1,20 @@
+conda create -n django_learning python=3.7
+conda create -n proxy_pool python=3.5
+pip install django==2.2.1(conda install django，运行项目会报错，估计是conda源有问题)
+
+conda info --envs
+
+conda activate django_learning
+
+conda deactivate
+
+conda remove --name crawler_learning --all
+
+
+conda install django
+
+conda uninstall django
+
+conda search django
+
+conda install django==2.1.7

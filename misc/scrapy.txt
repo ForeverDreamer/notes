@@ -1,0 +1,76 @@
+1.基本命令
+
+# 查看使用帮助
+scrapy
+
+# 测试硬件性能，评估应有的下载效率
+# Spawns a local HTTP server and crawls it at maximum possible speed
+scrapy bench
+
+# 下载网页内容并打印到控制台
+scrapy fetch --nolog https://www.example.com/some/page.html
+
+# 查看项目设置
+scrapy settings
+
+# 查看框架版本
+scrapy version
+
+# Open the URL in the browser the way scrapy will "see" it, Dynamic content is not rendered.
+scrapy view https://quotes.toscrape.com/page/1/
+scrapy view https://pluralsight.com/authors
+
+# 新建项目
+scrapy startproject my_project
+
+
+
+2.scrapy shell
+
+# 控制台交互模式
+scrapy shell https://quotes.toscrape.com/page/1/
+
+# 获取配置项
+settings.get('BOT_NAME')
+
+# 更新shell对象
+fetch('https://www.un.org')
+
+# 查看请求响应信息
+from pprint import pprint
+pprint(response.status)
+pprint(response.url)
+pprint(response.headers)
+pprint(response.text)
+
+# 查看网页静态内容(用浏览器打开后方便按F12查看元素)
+view(response)
+
+# 查看shell可用对象和命令
+shelp()
+
+# 退出shell
+exit()
+
+# 分析本地文件
+scrapy shell file:///C:/Users/doer/AppData/Local/Temp/tmp05uo_mvh.html
+
+
+
+3.telnet debug
+
+# 查看爬虫当前状态
+p(crawler.stats.get_stats())
+
+# 查看scrapy引擎状态
+est()
+
+# 当前请求状态
+p(slot.inprogress)
+
+# 暂停和继续爬虫
+engine.pause()
+engine.unpause()
+
+# 停止爬虫
+engine.stop()

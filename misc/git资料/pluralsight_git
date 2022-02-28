@@ -1,0 +1,51 @@
+# 查看git版本
+git --version
+
+
+# 2 Git Is Not What You Think
+# 初始化仓库
+git init
+
+# 查看仓库状态
+git status
+
+# stage文件或目录
+git add menu.txt
+git add recipes/
+git status
+
+# 提交stage里的文件和目录，写入object database
+git commit -m 'First commit!'
+
+# 查看提交历史
+git log
+
+# 查看单个object信息, -t: 类型，-p: 内容
+git cat-file -t f9ec34ca882ea5785f1d9debaf0386904dce34ce
+git cat-file -p f9ec34ca882ea5785f1d9debaf0386904dce34ce
+
+
+# 3 Branches Demystified
+# 查看分支
+git branch
+
+# 重命名分支
+git branch -m <name>
+
+# 创建<ideas>分支
+git branch ideas
+
+# 切换到<ideas>分支
+git switch ideas  # git checkout ideas(旧版本命令)
+
+# 当前位于<master>分支，合并<ideas>分支
+git merge ideas
+# 当前位于<ideas>分支，合并<master>分支
+git switch ideas
+git merge master
+
+# detached head
+git checkout c0e58bf25cae84d1cf506b12160100955fa754ac
+# 通过创建新分支保留detached head 的commit
+git checkout 901315a
+git branch nogood

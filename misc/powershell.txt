@@ -1,0 +1,26 @@
+# 分页查看服务
+get-service | more
+
+# 只展示停止的服务
+get-service | where-Object Status -eq 'Stopped'
+
+# 只展示Name,Status字段
+get-service | where-Object Status -eq 'Stopped' | select-object Name,Status
+
+# 输入保存到变量
+$data = get-service | where-Object Status -eq 'Stopped' | select-object Name,Status
+
+# 查看变量
+$data
+
+# 变量保存到文件
+$data | out-file .\services.txt
+
+# 用记事本打开文件
+notepad .\services.txt
+
+# 保存为csv文件
+$data | export-csv .\services.csv
+
+# 在控制台查看
+get-content .\services.csv | more

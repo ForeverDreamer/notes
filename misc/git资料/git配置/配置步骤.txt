@@ -1,0 +1,20 @@
+下载必要的文件
+将 此文件保存在你的主目录中（文件名为 git-completion.bash）。
+将 此文件保存在你的主目录中（文件名为 git-prompt.sh）。
+从辅助材料下载 bash_profile_course。
+
+将 bash_profile_course 中的内容复制并粘贴到 .bashrc 的底部。如果没有，将 bash_profile_course 移到你的主目录中，然后将其重命名为 .bash_profile(mac)或.bashrc(linux)。（如果有兴趣详细了解 bash 提示符的工作方式，请参阅此页。）
+确保可从终端启动编辑器
+如果你使用 Sublime Text，则可通过将以下一行添加到 .bashrc 中来这样做（如果 Sublime 安装在其他位置中，则您可能要更改路径）：
+
+alias subl="/opt/sublime_text_3/sublime_text"
+配置 Git
+运行以下 Git 配置命令。如果使用的文本编辑器不是 Sublime，或者 Sublime 安装在其他位置中，则需要修改第一条命令,下面提供的第一条命令适用于Sublime Text3。有关适用于其他多个常见文本编辑器的正确命令，请参阅此页。对于任何其他编辑器，您需要输入从终端启动该编辑器时使用的命令。
+
+git config --global core.editor "'/opt/sublime_text_3/sublime_text' -n -w"
+git config --global push.default upstream
+git config --global merge.conflictstyle diff3
+(你也可以不使用第一条命令，而是使用视频中所示的更简单命令 git config --global core.editor "subl -n -w"，但许多学员发现此命令不起作用。)
+
+新启动终端
+必须关闭终端，然后重新打开它，这样所有更改才会生效。

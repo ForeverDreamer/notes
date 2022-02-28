@@ -1,0 +1,47 @@
+# 查看版本
+kubectl version
+kubectl version --short
+
+# 查看集群信息
+kubectl cluster-info
+
+# 根据配置创建pod
+kubectl apply -f .\pod.yml
+
+# 查看pods状态
+kubectl get pods --watch
+kubectl get pods -o wide
+kubectl get pods --show-labels
+
+# 查看pod详情
+kubectl describe pods hello-pod
+
+# 删除pod
+kubectl delete pod hello-pod
+kubectl delete -f .\pod.yml
+
+# 查看服务
+kubectl get svc
+
+# 删除服务
+kubectl delete svc hello-svc
+
+# 根据配置创建服务
+kubectl apply -f .\svc-lb.yml
+
+# 查看服务详情
+kubectl describe svc ps-lb
+
+# 查看部署
+kubectl get deploy
+kubectl get rs
+kubectl get ep ps-lb
+kubectl describe ep ps-lb
+
+# 滚动更新
+kubectl apply -f .\deploy-complete.yml
+kubectl rollout status deploy web-deploy
+kubectl get rs
+kubectl describe rs web-deploy-566bd8fc84
+kubectl rollout history deploy web-deploy
+kubectl rollout undo deploy web-deploy --to-revision=1

@@ -1,0 +1,76 @@
+django-admin startproject e-commerce
+
+python manage.py runserver 0.0.0.0:8000
+nohup python manage.py runserver 0.0.0.0:8000 &
+
+python manage.py startapp product
+
+
+python manage.py showmigrations
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+python manage.py sqlmigrate gameplay 0001
+
+# 数据库恢复指定应用到指定版本(不用的版本可以手动刪除)
+python manage.py migrate products 0007_product_active
+
+python manage.py dumpdata products  --format json --indent 4 > products/fixtures/products.json
+python manage.py loaddata products/fixtures/products.json
+
+python manage.py dumpdata -a --exclude=auth.permission --exclude=contenttypes --exclude=admin.logentry --exclude=sessions.session --indent 4 -o mm_db.json
+python manage.py loaddata mm_db.json --exclude=auth.permission --exclude=contenttypes --exclude=admin.logentry --exclude=sessions.session
+python manage.py dumpdata -a --indent 4 -o mm_db.json
+python manage.py loaddata mm_db.json
+
+python manage.py collectstatic
+python manage.py collectstatic --noinput
+python manage.py collectstatic --clear --noinput
+python manage.py collectstatic --help
+
+python manage.py shell
+
+python manage.py test
+
+访问http://127.0.0.1:8000/redoc/，Download OpenAPI specification:点击下载重命名为swagger.json
+npx redoc-cli bundle .\swagger.json
+或
+npm install -g redoc-cli
+redoc-cli bundle .\swagger.json
+
+
+python manage.py createsuperuser
+输入用户信息：
+micro
+micro@micro.com
+PassForCfe123
+
+admin
+admin@example.com
+PassForCfe123
+
+cfe
+cfe@cfe.com
+PassForCfe123
+
+
+
+
+
+pip install djangorestframework
+
+
+ALLOWED_HOSTS = ['www.crawleruniverse.com', 'crawleruniverse.com', 'crawlerworld.online', '52.192.68.254']
+
+
+netstat -ntlp
+lsof -t -i tcp:8000 | xargs kill -9
+
+
+username: alice
+passwd: crawleruniverse
+
+username: bob
+passwd: crawleruniverse

@@ -1,0 +1,251 @@
+# 脚本执行权限
+# owner可执行
+chmod u+x filename
+# all users可执行
+chmod a+x filename
+# all users不可执行
+chmod a-x filename
+
+
+# 命令行参数
+$1 第一个参数
+$* 所有参数
+$# 参数数量
+
+
+# 指定执行解释程序
+# 大多数linux推荐方式
+#!/bin/bash
+# Mac OS或其它系统，在用户的PATH中查找bash，不支持选项参数，运行结果依赖用户配置，不推荐使用
+#!/usr/bin/env bash
+
+
+# 给脚本命名之前，查看命令是否存在
+type test
+type ls
+type foo
+
+
+# 调试脚本,打印每一行命令的执行过程
+#!/bin/bash -x
+  or
+开启调试 set -x
+关闭调试 set +x
+
+
+# 条件测试[[ ... ]]，不要使用[ ... ]或test
+字符串是否为空  [[ $str ]]
+字符串是否相等  [[ $str = "something]]
+字符串赋值      [[ $str="something]]
+文件是否存在    [[ -e $filename ]]
+目录是否存在    [[ -d $dirname ]]
+
+
+# 整数测试
+[[ arg1 OP arg2 ]]  OP可以是-eq/ne/lt/gt等
+
+
+# 逻辑测试
+# Not  !
+[[ ! -e $file ]]
+# And  &&
+[[ $# -eq 1 && $1 = "foo" ]]
+# Or   ||
+[[ $a || $b ]]
+# 不要使用-a,-o代替and,or
+
+
+# 输入输出
+
+echo  打印参数到stdout，自动换行
+-n  抑制换行
+-e  允许使用转义序列, 如\t:tab, \b:backspace, \n:换行
+
+printf  比echo功能更复杂强大, 不会自动换行
+printf "hello"
+printf "hello\n"
+printf "hello %s, how are you?\n" $USER
+printf "p%st\n" a e i o u
+printf "%s's home is in %s\n" $USER $HOME
+printf "|%20s |%20s |%20s |\n" $(ls /)
+echo $greeting
+printf -v greeting "hello %s, how are you?\n" $USER
+echo $greeting
+
+read
+读取键盘输入存储到变量 read x
+不指定变量则存储到REPLY变量
+-n 或 -N 指定读取的字符数量
+-s 抑制输入回显，输入密码时使用
+-r 抑制转义序列，读取原始字符串，推荐使用
+IFS 指定读取时的分隔符
+
+read; echo $REPLY
+read -r; echo $REPLY
+read a b
+hi there doer
+echo $a
+hi
+echo $b
+there doer
+IFS=: read a b
+1:2
+echo $a
+1
+echo $b
+2
+
+Standard Streams
+0: Standard Input(stdin)
+/dev/stdin
+1: Standard Output(stdout)
+/dev/stdout
+2: Standard Error(stderr)
+/dev/stderr
+
+/dev/null  丢弃接收的所有数据
+
+# 输入重定向  <
+grep milk < shoppingnotes.txt
+
+# 输入重定向 >, >>
+覆盖  ls > listing.txt
+追加  ls >> listing.txt
+
+# 管道
+ls | grep x
+
+# 丢弃所有的错误信息
+cmd 2> /dev/null
+# stdout重定向到stderr
+>&2 或 1>&2
+# stderr重定向到stdout
+2>&1
+# 重定向stdout和stderr到logfile
+cmd > logfile 2>&1
+# 不要使用cmd >logfile 2> logfile 和 &> or >&
+
+
+# for循环
+[doer ~]$ for i in just a list of words; do echo $i; done
+just
+a
+list
+of
+words
+[doer ~]$ for i in "just a list of words"; do echo $i; done
+just a list of words
+[doer ~]$ s="this variable contains a list of words"
+[doer ~]$ for i in "$s"; do echo $i; done
+this variable contains a list of words
+[doer ~]$ for i in $s; do echo $i; done
+this
+variable
+contains
+a
+list
+of
+words
+
+
+# 变量属性
+declare
+-i  integer
+-r  read only
+-x  export
+-a  array
+-p  print
+
+
+# 整数变量
+[doer ~]$ p="4+5"
+[doer ~]$ echo $p
+4+5
+[doer ~]$ declare -i p
+[doer ~]$ p="4+5"
+[doer ~]$ echo $p
+9
+[doer ~]$ p="2 * 5"
+[doer ~]$ echo $p
+10
+[doer ~]$ p=2 * 5
+-bash: bin: command not found
+[doer ~]$ p=test
+[doer ~]$ echo $p
+0
+[doer ~]$ declare -i x
+[doer ~]$ x=100/2
+[doer ~]$ echo $x
+50
+[doer ~]$ $((++x))
+-bash: 51: command not found
+[doer ~]$ echo $x
+51
+[doer ~]$ ((++x))
+[doer ~]$ echo $x
+52
+[doer ~]$ x=$((x+1))
+[doer ~]$ echo $x
+53
+
+
+# 数学表达式
+(( .. ))
+x=$(( .. ))
+
+
+# 导出变量
+默认情况下，变量只在当前脚本或终端有效
+export可以导出到子进程，但子进程变量无法导出到父进程
+# 仅声明
+export var 或 declare -x var
+# 声明加赋值
+export var="value" 或 declare -x var="value"
+# 变量属性无法导出, 如declare -i/-r
+
+
+# 数组
+[doer ~]$ ar=(this is an array)
+[doer ~]$ declare -p ar
+declare -a ar='([0]="this" [1]="is" [2]="an" [3]="array")'
+[doer ~]$ echo ${ar[2]}
+an
+[doer ~]$ ar[15]=something
+[doer ~]$ declare -p ar
+declare -a ar='([0]="this" [1]="is" [2]="an" [3]="array" [15]="something")'
+[doer ~]$ echo ${#ar[@]}
+5
+[doer ~]$ echo ${!ar[@]}
+0 1 2 3 1
+
+
+# 特殊变量
+位置变量  $1, $2, ..., ${10}, ${25}
+被调用时的脚本名字  $0
+参数数量  $#
+
+# 所有参数, 推荐使用$@
+$@, $* -> $1 $2 $3 ... $N
+"$@"   -> "$1" "$2" "$3" ... "$N"
+"$*"   -> "$1 $2 $3 ... $N"
+
+# echo $0
+[doer ~]$ scriptname 
+/home/doer/bin/scriptname
+[doer ~]$ bin/scriptname 
+bin/scriptname
+[doer ~]$ ../doer/bin/scriptname 
+../doer/bin/scriptname
+[doer ~]$ ln -s bin/scriptname sn
+[doer ~]$ sn
+./sn
+
+
+# shift [n]
+  删除n个参数
+  剩余参数向前移动：
+    $2->$1
+    $3->$2
+    $4->$3
+    etc.
+  $#减1

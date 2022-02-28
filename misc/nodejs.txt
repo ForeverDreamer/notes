@@ -1,0 +1,117 @@
+d:\sorfwares\cmder\Cmder.exe /C %userprofile%\cmder_config
+cd D:\data_files\js_learning
+
+1.node REPL
+
+# 查看帮助
+.help
+
+# 退出REPL
+.exit
+
+# 运行脚本
+node hello_world.js
+
+
+
+2.node选项
+
+# 查看版本
+node -v
+
+# 解释执行字符串
+node -p "os.cpus().length"
+
+# 查看帮助
+node -h
+
+
+3.nvm
+
+# 切换到特定版本的node
+nvm run node --version
+
+# 查看已安装的node版本
+nvm ls
+
+# 退出nvm环境
+nvm deactivate
+
+
+
+4.npm
+
+# 查看npm版本
+npm -v
+
+# 升级npm
+npm install -g npm
+
+# 安装指定包, -g: 安装到全局环境, 默认值安装到当前目录环境; @标签或版本;
+# -D, --save-dev: 只在开发环境安装，生产环境不安装; -S,--save: 安装到生产环境，好像默认是就是--save; -O, --save-optional, 可选依赖；
+npm i(install) [-g] express[@latest]
+npm install -g vue-cli
+npm i -D nodemon  # npm install --production 或 环境变量NODE_ENV设置为production，此时不会安装"devDependencies"下的包
+npm help install  查看可用的install帮助选项
+
+# 卸载指定包
+npm uninstall package_name
+npm uninstall @scope/package_name
+npm uninstall -g package_name
+npm uninstall -g @angular/cli
+
+# 初始化包管理环境, --yes: 默认初始化选项
+npm init [--yes]
+
+# 执行nmp脚本
+npm run script_name
+
+# 查看指定包最新版本的详细信息
+npm show express
+
+# 查看包可用版本信息
+npm show express versions
+
+# 查看包依赖关系
+npm [-g] ls
+npm [-g] ll
+
+# 查看哪些包会被npm update命令更新
+npm outdated
+
+# 根据SemVer规则更新包
+npm update
+
+# 查看全局安装了哪些包
+npm list --depth=0 --global [--json]
+npm ls --depth=0 --global [--json]
+npm ll --depth=0 --global [--json]
+
+# 指定安装源
+npm install --registry=https://registry.npm.taobao.org
+
+# 清空缓存(npm install报错Maximum call stack size exceeded解决办法)
+npm cache clean --force
+npm install
+
+# 配置选项
+npm config list -l | grep init
+npm config set init-author-name 'doer'
+npm config delete init-author-name
+默认安装--save
+npm config set save true
+
+# 搜索packages
+npm search lint
+
+# 锁定包依赖关系，类似于pip的freeze
+npm help shrinkwrap
+
+# 打开包主页
+npm home lodash
+
+# 打开代码仓库
+npm repo lodash
+
+# 清除package.json里边没有，但node_modules里边安装的包
+npm prune

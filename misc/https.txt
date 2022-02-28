@@ -1,0 +1,27 @@
+# 在域名指向的服务器上运行命令，且命令运行时80和443端口对外开放且不能占用，
+# 所以网站服务器端口避免使用80，避免证书续期时需要关闭服务器
+
+# 申请证书
+docker run -it --rm --name certbot \
+            -v "/etc/letsencrypt:/etc/letsencrypt" \
+            -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+            -p 80:80 \
+            certbot/certbot certonly --standalone -d crawleruniverse.com -d www.crawleruniverse.com
+
+
+# 证书续期
+docker run -it --rm --name certbot \
+            -v "/etc/letsencrypt:/etc/letsencrypt" \
+            -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+            -p 80:80 \
+            certbot/certbot renew --standalone
+
+
+# 启动参数
+mod_wsgi-express start-server src/mm/wsgi.py --https-port 443 --https-only --server-name crawleruniverse.com --ssl-certificate-file ./letsencrypt/live/crawleruniverse.com/cert.pem --ssl-certificate-key-file ./letsencrypt/live/crawleruniverse.com/privkey.pem --ssl-certificate-chain-file ./letsencrypt/live/crawleruniverse.com/fullchain.pem --port 8080
+
+openssl pkcs12 -export -out crawleruniverse.pfx -inkey ./letsencrypt/live/crawleruniverse.com/privkey.pem -in ./letsencrypt/live/crawleruniverse.com/cert.pem -certfile ./letsencrypt/live/crawleruniverse.com/fullchain.pem
+
+openssl x509 -outform der -in letsencrypt/live/crawleruniverse.com/cert.pem -out crawleruniverse.crt
+
+openssl pkcs12 -export -in ./letsencrypt/live/crawleruniverse.com/cert.pem -inkey ./letsencrypt/live/crawleruniverse.com/privkey.pem -out crawleruniverse.pfx

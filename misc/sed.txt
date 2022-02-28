@@ -1,0 +1,93 @@
+# 查看版本
+sed --version
+
+
+# 'p': 打印文件内容
+sed 'p' /etc/passwd
+
+# -n: 抑制stdout输出
+sed -n 'p' /etc/passwd
+
+# 限制行数范围
+sed -n '1,5 p' /etc/passwd
+# 打印5至最后1行
+sed -n '5,$ p' /etc/passwd
+
+# 正则表达式
+sed -n '/^user/ p' /etc/passwd
+sed -n '/^a[0-9]/ p' /etc/passwd
+
+# '/^#/ d': 删除注释行, '/^$/ d': 删除空白行
+sed '/^#/ d; /^$/ d' ./httpd.conf
+
+# -i: 编辑修改文件, i.bak, 先创建.bak备份文件
+sed -i.bak '/^#/ d; /^$/ d' ./httpd.conf
+
+
+# 's': 替换命令, sed '[range] s/<string>/<replacement>/' /etc/passwd
+
+# 打印并显示行号
+nl /etc/passwd
+
+# 6至9行开头替换为4个空格, g表示多次替换，^只会匹配一次，所以g在这里没有影响
+sed '6,9 s/^/    /g' parsecsv.sh
+
+# 打印被修改的行
+sed -n '6,9 s/^/    /p' parsecsv.sh
+
+# @是分隔符
+sed -n '/^gretchen/ s@/bin/bash@/bin/sh@p' /etc/passwd
+
+
+# 插入行，追加行，删除行 命令
+
+# 'a'表示追加一行，在以'server 3'开头的行后边追加一行，内容是'server ntp.example.com'
+sed '/^server 3/ a server ntp.example.com' /etc/ntp.conf
+
+# 'i'表示插入一行，在以'server 3'开头的行前边插入一行，内容是'server ntp.example.com'
+sed '/^server 3/ i server ntp.example.com' /etc/ntp.conf
+# 删除匹配行
+sed '/^server\s[0-9]\.ubuntu/d' /etc/ntp.conf
+
+
+# 执行多条命令
+
+# 直接执行
+sed '{
+    /^server 0/ i ntp.example.com
+    /^server\s[0-9]\.ubuntu/d
+}
+'
+
+# 创建sed文件
+$ cat ntp.sed
+/^s/d  # 删除恐慌
+/^\s*#/d  # 删除以#开头，前面可以有0个或多个空字符的行
+/^server 0/ i ntp.example.com
+/^server\s[0-9]\.ubuntu/d
+# -i.bak，先备份再修改文件
+$ sed -i.bak -f ntp.sed /etc/ntp.conf
+
+
+# 远程操作
+
+# 拷贝sed文件
+scp ntp.sed user@192.168.0.105:/tmp
+
+# 运行sed文件, -t让我们可以在sudo操作时输入root密码
+ssh -t user@192.168.0.105 sudo sed -i.bak -f /tmp/ntp.sed /etc/ntp.conf
+
+
+# 分组替换
+# \(,\)：转义小括号， [^,]*：不是逗号的单个字符，重复0次或多次, \U：大写, \1：第一组
+sed 's/\([^,]*\)/\U\1/' employees
+# \L：小写，\2：第二组
+sed 's/\([^,]*\),\([^,]*\)/\U\1,\L\2/' employees
+
+
+# 执行命令
+$ cat file.list
+/etc/hosts
+/etc/services
+sed 's/^/ls -l/e' file.list
+sed 's/^/stat/e' file.list

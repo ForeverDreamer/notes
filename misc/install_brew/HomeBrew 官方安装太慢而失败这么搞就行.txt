@@ -1,0 +1,87 @@
+第一步，获取install文件
+把官网给的脚本拿下来
+curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install >> brew_install
+
+第二步，更改脚本中的资源链接，替换成清华大学的镜像
+就是把这两句
+BREW_REPO = “https://github.com/Homebrew/brew“.freeze
+CORE_TAP_REPO = “https://github.com/Homebrew/homebrew-core“.freeze
+更改为这两句
+BREW_REPO = “https://mirrors.ustc.edu.cn/brew.git “.freeze
+CORE_TAP_REPO = “https://mirrors.ustc.edu.cn/homebrew-core.git“.freeze
+当然如果这个镜像有问题的话，可以换成别的
+
+第三步，执行脚本
+/usr/bin/ruby brew_install
+
+然后可以看到这几句：
+
+==> Tapping homebrew/core
+
+Cloning into '/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core'...
+
+fatal: unable to access 'https://github.com/Homebrew/homebrew-core/': LibreSSL SSL_read: SSL_ERROR_SYSCALL, errno 54
+
+Error: Failure while executing: git clone https://github.com/Homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
+
+Error: Failure while executing: /usr/local/bin/brew tap homebrew/core
+
+liyuanbadeMacBook-Pro:~ liyuanba$ git clone https://github.com/Homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
+
+出现这个原因是因为源不通，代码来不下来，解决方法就是更换国内镜像源：
+
+执行下面这句命令，更换为中科院的镜像：
+
+git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
+
+就下载成功了
+
+然后把homebrew-core的镜像地址也设为中科院的国内镜像
+
+cd "$(brew --repo)"
+
+git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
+
+cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
+
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
+
+执行更新，成功：
+
+brew update
+
+最后用这个命令检查无错误：
+
+brew doctor
+
+这样海外和已经有系统全局代理设置的朋友们就可以直接使用 brew 命令安装软件了。
+
+接着换源：
+直接使用 Homebrew 还需要更改默认源，不然谁用谁想打人，原因你懂的。以下是将默认源替换为国内 USTC 源的方法。
+
+替换核心软件仓库
+
+cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
+
+替换 cask 软件仓库（提供 macOS 应用和大型二进制文件）
+
+cd "$(brew --repo)"/Library/Taps/caskroom/homebrew-cask
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
+
+替换 Bottles 源（Homebrew 预编译二进制软件包）
+
+bash（默认 shell）用户：
+
+echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles' >> ~/.bash_profile
+source ~/.bash_profile
+
+zsh 用户：
+
+echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles' >> ~/.zshrc
+source ~/.zshrc
+--------------------- 
+作者：神经骚栋 
+来源：CSDN 
+原文：https://blog.csdn.net/qq_33591200/article/details/82882562 
+版权声明：本文为博主原创文章，转载请附上博文链接！

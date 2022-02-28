@@ -1,0 +1,22 @@
+安装包
+pip install virtualenv
+pip install Django==2.2.12 -i https://mirrors.aliyun.com/pypi/simple/
+
+卸载包
+pip uninstall virtualenv
+
+列出所有已安装的包
+pip list
+
+查看某个包的信息
+pip show Django
+
+搜索包
+pip search Django
+
+保存当前环境的依赖，包括特定版本(这种方式比较冗余，但能保证开发和生成环境的一致性(推荐发布到生产环境时使用)；自己手写，可以剔除下级依赖包，但很可能自动修改依赖包的版本，导致程序bug(开发测试阶段可以使用))
+pip freeze > requirements.txt
+
+安装文件中列举的所有包, -U: 更新升级现有包
+pip install -r requirements.txt -i https://mirrors.cloud.tencent.com/pypi/simple
+pip install -U -r requirements.txt -i https://mirrors.cloud.tencent.com/pypi/simple
