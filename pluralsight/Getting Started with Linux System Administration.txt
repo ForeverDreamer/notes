@@ -19,6 +19,9 @@ df
 df -t ext4
 df -ht ext4
 
+# 查看目录文件大小, -h或--human-readable 以K，M，G为单位，提高信息的可读性，-s或--summarize 仅显示总计
+du -hs /dir
+
 # 更新apt，安装iftop
 sudo apt update
 sudo apt install iftop
@@ -75,8 +78,89 @@ renice 16 -p 1824
 
 
 # 3. Working with Users and Groups in Linux
-# 3.1 Understanding Linux Users and Groups
+# 3.2 Understanding Linux Users and Groups
 # 系统用户信息
 sudo less /etc/shadow
 less /etc/passwd
+# 类似于role
 less /etc/group
+# 查看用户信息
+id doer
+# 查看用户的最近行为
+who, w, last | less
+
+# 3.3 Administrating Users and Groups
+# 创建新用户
+sudo useradd -m jane
+# 设置密码
+sudo passwd jane
+ls -a /home/jane/
+# 新用户创建home目录的文件模板，创建新用户时拷贝一份到新用户的home目录
+ls -a /etc/skel/
+sudo mkdir /var/secret
+# 创建新组
+sudo groupadd secret
+ll /var/
+# 修改目录所属组，root->secret
+sudo chown :secret /var/secret
+ll /var/
+id jane
+# -a: add, -G group, 添加用户jane到secret组
+sudo usermod -a -G secret jane
+id jane
+# 给group添加此目录的写权限
+sudo chmod g+w /var/secret/
+ll /var/
+
+
+# 4. Securing Your Linux Server
+# 4.2 Applying Object Permissions
+# 切换用户(switch user)
+su jane
+whoami
+cd /var/secret
+touch data.txt
+ls l
+# other增加执行权限
+chmod o+x data.txt
+# 查看当前目录属性信息
+ls -dl
+su doer
+# 修改目录所有权，user: root->doer, group: secret->secret
+sudo chown doer:secret /var/secret
+# 权限表
+Read:    r  4
+Write:   w  2
+Execute: x  1
+# 7=4+2+1
+chmod 777 data.txt
+
+# 4.3 Extending Object Usability
+cd /var/secret
+ls -dl
+# 给目录设置粘附位(sticky bit)，组成员只能删除自己的文件，不能删除其他组员的文件
+sudo chmod +t .
+ls -dl
+# 符号链接（Symbolic Link）
+ln -s /home/doer/myscript.sh /var/secret
+ls -l
+
+# 4.4 Hardening Your Server
+# https://wiki.debian.org/Teams/Dpkg
+# https://usn.ubuntu.com
+
+sudo apt update
+sudo apt upgrade
+
+# apt-get may be considered as lower-level and "back-end", and support other APT-based tools. apt is designed for end-users (human) and its output may be changed between versions.
+# Note from apt(8):
+# The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8)
+sudo apt install nmap 或 sudo apt-get install nmap
+# E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
+sudo apt-get update
+sudo apt-get -f install
+sudo apt install nmap
+
+# 扫描被监听的端口
+# v: verbose, s: scan, T: tcp
+nmap -v -sT localhost
