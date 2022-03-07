@@ -1,0 +1,49 @@
+# 2.Introducing the Linux Foundation and LFCS Certification
+# 2.2 Let's Look at How You Will Learn
+# 查看系统版本
+cat /etc/system-release
+
+# 统计行数, !$ is the "end" of the previous command
+wc -l !$
+echo !$
+
+# 查看当前时间
+date
+date --date "40 days"
+date --date "40 days ago"
+
+# 查看日历
+cal
+cal -3
+cal 7 1996
+
+# 退出终端
+Ctrl+D
+exit
+
+# 清屏
+clear
+Ctrl+L
+
+# 查看当前连接的终端
+tty
+ls -l $(tty)
+
+# display (or do not display) messages from other users
+mesg n
+mesg y
+
+
+# 4.Working at the Command Line
+# 4.2 Accessing Consoles
+# 查看当前目录
+pwd
+
+# 切换目录
+cd
+
+# 显示系统中有哪些使用者正在上面，显示的资料包含了使用者 ID、使用的终端机、从哪边连上来的、上线时间、呆滞时间、CPU 使用量、动作等等
+who
+
+# 显示网卡IP信息
+ip addr show
