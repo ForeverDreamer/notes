@@ -36,14 +36,102 @@ mesg y
 
 # 4.Working at the Command Line
 # 4.2 Accessing Consoles
+# 显示系统中有哪些使用者正在上面，显示的资料包含了使用者 ID、使用的终端机、从哪边连上来的、上线时间、呆滞时间、CPU 使用量、动作等等
+who
+
+# 显示网卡IP信息
+ip addr show
+
+# 4.3 Listing Files
 # 查看当前目录
 pwd
 
 # 切换目录
 cd
 
-# 显示系统中有哪些使用者正在上面，显示的资料包含了使用者 ID、使用的终端机、从哪边连上来的、上线时间、呆滞时间、CPU 使用量、动作等等
-who
+# 查看目录内容
+# The Type command is used to find out the information about a Linux command. You can easily find whether the given command is an alias, shell built-in, file, function, or keyword  using # "type" command. Additionally, you can find the actual path of the command too
+type ls
+ls
+# -a: all files, -F: file type, -l: long listing
+ls -aFl /etc
+# h: make file size human readable, r: reverse, t: timestamp
+# 按时间戳倒序输出
+ls -lhrt
+# 查看目录信息
+ls -ld /etc
 
-# 显示网卡IP信息
-ip addr show
+# 4.4 File Types
+# 查看磁盘分区
+lsblk
+ls -l /dev/xvda*
+ls -l /dev/xvda?
+ls -l /dev/xvda[12]
+ls -l /etc/system-release /etc/centos-release /etc/redhat-release
+cat /etc/system-release
+
+# which指令会在环境变量$PATH设置的目录里查找符合条件的文件
+ls -l $(which python)
+ls -lF $(which python)
+
+# q: query, f: file
+rpm -qf /usr/bin/python
+rpm -qf $(which python)
+
+# 4.3 Working with Files
+# 复制文件
+cp /etc/hosts .
+cp /etc/passwd ./passwd
+# -i: interactive, 覆盖前会提示
+cp -i /etc/hosts ./passwd
+# 移动或重命名
+mv hosts localhosts
+mv localhosts /tmp
+ls /tmp
+cp * /tmp
+rm -i *
+touch hosts localhosts
+rm -i *hosts
+
+# 4.4 Working with Directories
+# 创建目录
+mkdir test
+# -p 确保目录名称存在，不存在的就建一个
+mkdir -p sales/test
+
+# 删除目录
+rmdir test
+# r: recursive, f: force
+rm -rf sales
+
+mkdir one two
+touch one/file{1..5}
+# -r|R：若给出的源文件是一个目录文件，此时将复制该目录下所有的子目录和文件
+cp -r one two
+
+yum install tree
+tree
+
+# The mkdir command by default gives rwx permissions for the current user only.
+# To add read, write, and execute permission for all users, add the -m option with the user 777 when creating a directory.
+mkdir -m 777 d1
+mkdir -m 700 d2
+ls -ld d1 d2
+
+# 4.5 Working with Links
+
+Links Types
+    There are two types of links in Linux/UNIX systems:
+
+    Hard links. You can think a hard link as an additional name for an existing file. Hard links are associating two or more file names with the same inode . 
+    The inode (index node) is a data structure in a Unix-style file system that describes a file-system object such as a file or a directory. Each inode stores the attributes and disk block locations of the object's data.[1] File-system object attributes may include metadata (times of last change,[2] access, modification), as well as owner and permission data.A directory is a list of inodes with their assigned names. The list includes an entry for itself, its parent, and each of its children.
+    You can create one or more hard links for a single file. Hard links cannot be created for directories and files on a different filesystem or partition.
+
+    Soft links. A soft link is something like a shortcut in Windows. It is an indirect pointer to a file or directory. Unlike a hard link, a symbolic link can point to a file or a directory on a different filesystem or partition.
+
+    How to Use the ln Comm
+
+ls -ld /etc
+ls -ldi /etc
+ls -ldi /etc/.
+ln -s source_file symbolic_link
