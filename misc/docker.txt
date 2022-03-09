@@ -170,11 +170,11 @@ docker-compose restart
 # Running the command with no options also removes one-off containers created by docker-compose up or docker-compose run
 docker-compose rm
 
-docker-compose build webapp
-docker-compose stop webapp
-docker-compose up -d webapp
-docker-compose logs -f --tail 20 webapp
-docker-compose logs -t -f --tail 20 web
+docker-compose build web
+docker-compose stop web
+docker-compose up -d web
+docker-compose logs -f --tail 20 web
+docker-compose logs -tf --tail 20 web
 # 每个服务展示10条内容
 docker-compose logs -t -f --tail 10
 

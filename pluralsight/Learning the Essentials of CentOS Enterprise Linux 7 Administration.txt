@@ -135,3 +135,75 @@ ls -ld /etc
 ls -ldi /etc
 ls -ldi /etc/.
 ln -s source_file symbolic_link
+
+
+# 5.Reading Files
+# 5.1 Reading from files
+echo $SSH_CONNECTION
+
+cat /etc/hosts
+cat /etc/hostname
+cat /etc/hosts /etc/hostname
+
+wc -l /etc/services
+
+less /etc/services
+head -n 3 /etc/services
+tail -n 3 /etc/services
+tail /etc/passwd
+
+# 5.2 Regular Expressions and grep
+# 查看已安装的packges
+yum list installed
+# 筛选包含'kernel'的行
+yum list installed | grep kernel
+# 筛选以'kernel'开头的行
+yum list installed | grep ^kernel
+
+yum install ntp
+cat /etc/ntp.conf
+wc -l !$
+cp !$ .
+
+grep server ntp.conf
+type grep
+grep ^server ntp.conf
+grep '\bserver\b' ntp.conf
+
+yum install words
+# -E 或 --extended-regexp : 将样式为延伸的正则表达式来使用
+grep -E 'ion$' /usr/share/dict/words
+grep -E '^po..ute$' /usr/share/dict/words
+grep -E '[aeiou]{5}' /usr/share/dict/words
+
+# 5.3 Using sed to Edit Files
+# 删除注释行和空行
+sed '/^#/d;/^$/d' ntp.conf
+sed -i '/^#/d;/^$/d' ntp.conf
+type ls
+type grep
+type vi
+
+# 5.4 Comparing Files
+cp ntp.conf ntp.new
+echo new >> ntp.new
+diff ntp.conf ntp.new
+# 二进制文件通过计算hash值比较
+md5sum /usr/bin/passwd
+
+# 5.5 Finding Files
+find /usr/share/doc -name '*.pdf' 等同于 find /usr/share/doc -name '*.pdf' -print
+# 把找到的文件复制到当前目录
+find /usr/share/doc -name '*.pdf' -exec cp {} . \;
+# 在当前目录查找
+find -name '*.pdf'
+# 删除找到的文件
+find -name '*.pdf' -delete
+# 查找软连接
+find /etc -type l
+# 限制查找目录层级
+find /etc -maxdepth 1 -type l
+
+df -h /boot
+find /boot -size +10000k -type f
+find /boot -size +10000k -type f -exec du -h {} \;
