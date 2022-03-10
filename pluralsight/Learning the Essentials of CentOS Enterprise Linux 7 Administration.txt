@@ -207,3 +207,102 @@ find /etc -maxdepth 1 -type l
 df -h /boot
 find /boot -size +10000k -type f
 find /boot -size +10000k -type f -exec du -h {} \;
+
+
+# 7.Piping and Redirection
+# 7.2 Redirecting STDOUT
+
+cp ntp.new newfile
+# 当前的stdout覆盖文件内容，相当于清空文件内容
+> newfile
+ls > newfile
+# d: disc, f: free, -h: human readable
+df -h
+df -h > file1 等同于 df -h 1> file1, 1: stdout
+cat file1
+# 追加到文件末尾
+ll 1>> file1
+
+# 7.3 Using the noclobber Option
+# set指令能设置所使用shell的执行方式
+set -o
+# 开启noclobber选项后覆盖文件时会报错，写进/home/.bashrc，登录时会自动设置
+set -o noclobber
+# 关闭noclobber选项
+set +o noclobber
+set -o | grep noclobber
+# bash: file1: cannot overwrite existing file
+date +%F > file1
+# 强行覆盖
+date +%F >| file1
+
+# 搜索最近执行的命令，输入搜索关键字，如 grep，上下箭头选择，Enter执行
+Crtl+r
+
+# 启动新终端
+bash
+set -o | grep noclobber
+ctrl+d 或 exit
+
+# 7.4 Redirecting STDERR
+# stderr重定向到err文件
+ls /etcw 2> err
+
+# 丢弃错误信息
+find /etc -type l 2> /dev/null
+# stdout和stderr都重定向到err.txt
+find /etc -type l &> err.txt
+
+# 7.5 Reading into STDIN
+0: stdin
+1: stdout
+2: stderr
+
+# 磁盘可用空间信息通过邮件发送
+df -hlT > diskfree
+mail -s "Disk Free" doer < diskfree
+mail
+
+# 7.6 Using HERE documents
+# 控制台输入的信息被保存至mynewfile，输入'END'结束
+cat > mynewfile <<END
+
+# 7.7 Command Pipelines
+ls | wc -l
+
+head -n 1 /etc/passwd
+cut -f7 -d: /etc/passwd
+cut -f7 -d: /etc/passwd | sort
+cut -f7 -d: /etc/passwd | sort | uniq
+cut -f7 -d: /etc/passwd | sort | uniq | wc -l
+
+# 7.8 Named Pipes
+ls -l $(tty)
+ls -l /dev/xvda
+
+# 匿名管道应用的一个限制就是只能在具有共同祖先（具有亲缘关系）的进程间通信。
+# 如果我们想在不相关的进程之间交换数据，可以使用FIFO文件来做这项工作，它经常被称为命名管道。
+mkfifo mypipe
+ls -l !$
+
+-F 在列出的文件名称后加一符号；例如可执行档则加 "*", 目录则加 "/"
+ls -F mypipe
+
+# 同时打开两个终端
+# 终端1执行
+ls /etc > mypipe
+# 终端2执行
+wc -l < mypipe
+
+# 7.9 Using the Command tee
+
+ls > f89
+# 重定向的同时将内容显示在终端
+ls | tee f89
+cat f89
+
+sudo echo '127.0.0.1 bob' >> /etc/hosts
+-bash: /etc/hosts: Permission denied
+# -a: append
+echo '127.0.0.1 bob' | sudo tee -a /etc/hosts
+tail -n 1 /etc/hosts
