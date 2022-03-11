@@ -306,3 +306,80 @@ sudo echo '127.0.0.1 bob' >> /etc/hosts
 # -a: append
 echo '127.0.0.1 bob' | sudo tee -a /etc/hosts
 tail -n 1 /etc/hosts
+
+# 8.Archiving Files
+# 8.2 Using the tar Command
+man tar
+
+# -c或--create 建立新的备份文件, -f<备份文件>或--file=<备份文件> 指定备份文件, -v或--verbose 显示指令执行过程
+tar -cvf doc.tar /usr/share/doc
+tar -cvvf doc.tar /usr/share/doc
+
+tar --list --file=doc.tar
+tar -tf doc.tar
+tar -tvf doc.tar
+
+tar --extract --verbose -f doc.tar
+tar --extract --verbose -f doc.tar --directory=/root
+
+mkdir test
+cd test
+cp /etc/hosts .
+cp /etc/hostname .
+cp /etc/services .
+cd ..
+tar -cvf my0.tar -g my.snar test
+echo hi >> test/hosts
+tar -cvf my1.tar -g my.snar test
+rm -rf test/hostname
+tar -cvf my2.tar -g my.snar test
+rm -rf test
+tar -xvf my0.tar -g /dev/null
+tar -xvf my1.tar -g /dev/null
+tar -xvf my2.tar -g /dev/null
+
+# 8.3 Using Compression
+ls -lh
+gzip doc.tar
+file doc.tar.gz
+gunzip doc.tar.gz
+file doc.tar
+
+bzip2 doc.tar
+file doc.tar.bz2
+bunzip2 doc.tar.bz2
+
+# 统计命令运行时间
+time tar -cvf doc.tar $HOME
+time tar -cvzf doc.tar.gz $HOME
+time tar -cvjf doc.tar.bz2 $HOME
+
+tar -xzf doc.tar.gz
+
+# 8.4 Working with cpio
+find /usr/share/doc -name '*.pdf'
+cd /usr/share/doc
+find -name '*.pdf'
+find -name '*.pdf' | cpio -o > /tmp/pdf.cpio
+
+cd ~/Documents
+mkdir pdf
+cd !$
+# -i或--extract 　执行copy-in模式，还原备份档, -d或--make-directories 　如有需要cpio会自行建立目录
+cpio -id < /tmp/pdf.cpio
+
+# 8.5 Imaging with dd
+# i: input, o: output, f: file, 复制 /dev/sr0 -> netinstll.iso
+dd if=/dev/sr0 of=netinstll.iso
+dd if=/dev/sda1 of=boot.img
+
+fdisk -l
+# 执行上一条命令
+!f
+
+# 备份mbr
+dd if=/dev/sda of=sda.mbr count=1 bs=512
+# 删除mbr
+dd if=/dev/zero of=/dev/sda count=1 bs=512
+# 恢复mbr
+dd if=sda.mbr of=/dev/sda
