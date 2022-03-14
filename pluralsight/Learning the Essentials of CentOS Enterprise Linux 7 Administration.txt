@@ -383,3 +383,77 @@ dd if=/dev/sda of=sda.mbr count=1 bs=512
 dd if=/dev/zero of=/dev/sda count=1 bs=512
 # 恢复mbr
 dd if=sda.mbr of=/dev/sda
+
+
+# 10.Understanding File Permissions
+# 10.1 Introduction to Permissions
+Linux mount命令是经常会使用到的命令，它用于挂载Linux系统外的文件
+mount
+mount | grep root
+
+# 10.2 Listing Permissions
+ls -l file1
+
+stat file1
+stat -c %A file1
+stat -c %a file1
+
+# 10.3 Managing Default Permissions
+touch file1
+ls -l file1
+# 查看掩码
+umask
+# 设置掩码，新建文件的默认权限会相应改变
+umask 0
+umask 27
+umask 77
+umask 033
+umask u=rwx,g=rx,o=rx
+umask u=rwx,go=
+
+# 10.4 Setting Permissions
+chmod 467 file1
+chmod u=r,g=rw,o=rwx
+# all 增加 执行权限
+chmod a+x file1
+# all 取消 执行权限
+chmod a-x file1
+# other 取消所有权限
+chmod o= file1
+# all 设置 读/写/执行权限
+chmod 777 file1
+
+# 设置粘附位，只有文件所有者才能删除文件，-m: mode, 1777中的1表示粘附位
+mkdir -m 1777 test
+# 取消粘附位
+chmod o-t test
+
+# s: 组id位，执行时使用group权限
+ls -l $(which wall)
+# s: 用户id位，执行时使用user权限
+ls -l $(which passwd)
+
+# 10.5 Managing File Ownership
+# 查看用户id
+id -u
+# 查看用户名
+id -un
+# 查看primary组id
+id -g
+# 查看primary组名
+id -gn
+# 查看sencond组名
+id -Gn
+
+# 修改组用户
+chgrp doer file1
+# 修改primary group为doer
+newgrp doer
+
+# 切换到root用户
+su
+chown root file1
+chown doer:doer file1
+
+# -a: 保持文件的原始owner和timestamp
+cp -a file1 /root/file2a
