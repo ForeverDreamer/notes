@@ -457,3 +457,103 @@ chown doer:doer file1
 
 # -a: 保持文件的原始owner和timestamp
 cp -a file1 /root/file2a
+
+
+# 11.Accessing the Root Account
+# 11.2 Using su(Substitute User)
+su
+id
+# 仍然时之前的用户
+echo $USER
+exit
+# -l 或 --login 这个参数加了之后，就好像是重新 login 为该使用者一样，大部份环境变数（HOME SHELL USER等等）都是以该使用者（USER）为主，并且工作目录也会改变，如果没有指定 USER ，内定是 root
+su -l
+
+# 11.3 Implementing sudo
+id
+# Ctrl+a: 光标移到开头
+sudo cat /etc/sudoers
+sudo visudo
+sudo sudo -V
+
+# 11.4 Restricting root Access to SSH
+ssh -l root 192.168.56.10
+ssh root@192.168.56.10
+
+vi /etc/ssh/sshd_config
+systemctl restart sshd
+
+exit
+
+# 12.Accessing Servers with SSH
+# 12.2 Configuring the SSH Client
+hostname
+# 用户默认当前用户名
+ssh 192.168.56.10
+# known_hosts保存客户端连接过的ssh服务器的public keys
+cat .ssh/known_hosts
+# 配置ssh服务器的连接信息
+vi .ssh/config
+# 直接使用配置好的Host名称
+ssh server1
+ssh server2
+
+# 12.3 Using Key Based Authentication
+# 生成公钥/私钥对
+ssh-keygen -t rsa
+# 生成文件路径
+~/.ssh/id_rsa
+~/.ssh/id_rsa.pub
+# 把公钥拷贝到ssh服务器, 即authorized_keys文件里新增一行记录
+ssh-copy-id -i id_rsa.pub server1
+# 客户端添加私钥
+ssh-agent bash
+ssh-add
+
+# 12.4 Copy Files Securely
+# 本地到服务器
+scp /etc/hosts server1:/tmp
+# 服务器到本地
+scp server1:/tmp/hosts .
+
+# Using Screen and Script
+# 13.2 Using Script as a Collaboration Tool
+# 开始录制session
+script
+# 结束录制session
+exit
+# 终端1：创建命令管道用于进程间通信(IPC)，执行需要演示的命令
+mkfifo /tmp/mypipe
+script -f /tmp/mypipe
+...
+# 终端2：监控所有命令执行过程
+cat /tmp/mypipe
+
+# 13.3 Running Commands Across Your Estate with Screen
+# 本地主机安装screen, -y: 自动确认提示
+yum install -y screen
+
+# 打开新的终端
+screen
+# 退出
+exit
+
+# 创建配置文件
+vi .screenrc
+# 文件内容
+screen -t master 0 bash  # 本地
+screen -t s1 1 ssh server1  # server1
+screen -t s2 2 ssh server2  # server2
+
+screen
+# Next
+ctrl+a n
+# Previous
+ctrl+a p
+# 双引号，List screens
+ctrl+a "
+
+# 在所有终端同时执行相同命令
+:at "#" stuff "yum install -y zsh^M"
+
+exit
