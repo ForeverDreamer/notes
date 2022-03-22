@@ -6,17 +6,16 @@ DELIMITER //
 -- Create Function
 CREATE FUNCTION RentalCountsbyCust(cust_id INT)
 RETURNS INT
+READS SQL DATA
 BEGIN
+    DECLARE RentalCounts INT;
 
-DECLARE RentalCounts INT;
+    SELECT COUNT(*) NoRentals
+    INTO RentalCounts
+    FROM rental
+    WHERE customer_id = cust_id;
 
-SELECT COUNT(*) NoRentals
-INTO RentalCounts
-FROM rental
-WHERE customer_id = cust_id;
-
-RETURN(RentalCounts);
-
+    RETURN(RentalCounts);
 END//
 
 -- Change Delimiter 

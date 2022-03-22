@@ -1,0 +1,15 @@
+# 安装vim并设置为默认编辑器
+sudo apt install vim
+
+# 设置local variable，只对当前shell可见
+EDITOR=vim
+echo $EDITOR
+
+# $EDITOR对调用命令不可见，不会用vim打开配置文件
+crontab -e
+
+# 设置environment variable，对调用命令可见，会自动用vim打开配置文件
+export EDITOR=vim
+
+# 设置command variable，只对当前调用命令可见
+EDITOR=vim crontab -e

@@ -1,0 +1,9 @@
+# 搜索安装包
+sudo apt search ^zsh$
+sudo apt search ^zsh
+
+# 查看安装包信息
+sudo apt show zsh
+
+# 安装
+sudo apt install zsh

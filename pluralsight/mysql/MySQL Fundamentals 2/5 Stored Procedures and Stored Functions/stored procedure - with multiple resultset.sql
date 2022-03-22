@@ -16,16 +16,3 @@ DELIMITER ;
 CALL WhileLoop();
 
 DROP PROCEDURE WhileLoop;
-
-
-
-
-
-
-
-
-
-
-
-
-

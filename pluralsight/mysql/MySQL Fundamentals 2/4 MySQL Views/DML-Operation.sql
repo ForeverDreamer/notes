@@ -2,12 +2,12 @@ USE sakila;
 -- DML Operation Over View
 
 SELECT language_id, name, last_update
-FROM sakila.language;
+FROM language;
 
 CREATE VIEW DMLOperation
 AS
 SELECT language_id, name, last_update
-FROM sakila.language;
+FROM language;
 
 SELECT *
 FROM DMLOperation;

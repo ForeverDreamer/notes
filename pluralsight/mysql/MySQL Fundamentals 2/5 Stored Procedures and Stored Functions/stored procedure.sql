@@ -1,5 +1,6 @@
-SELECT * FROM sakila.language;
+use sakila;
 
+SELECT * FROM language;
 
 -- Change Delimiter
 DELIMITER //

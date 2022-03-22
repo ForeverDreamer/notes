@@ -13,7 +13,7 @@ WHERE amount <
 			FROM payment pt1
 			WHERE pt1.customer_id = pt.customer_id);
 
-CREATE VIEW CustPayment
+CREATE VIEW vw_custpayment
 AS
 SELECT pt.payment_id, cust.first_name, cust.last_name, amount, pt.rental_id
 FROM payment pt
@@ -24,13 +24,13 @@ WHERE amount <
 			WHERE pt1.customer_id = pt.customer_id);
 
 SELECT *
-FROM CustPayment;
+FROM vw_custpayment;
 
 SELECT *
-FROM CustPayment cp
+FROM vw_custpayment cp
 INNER JOIN Rental r ON r.rental_id = cp.rental_id;
 
-DROP VIEW CustPayment;
+DROP VIEW vw_custpayment;
 
 
 

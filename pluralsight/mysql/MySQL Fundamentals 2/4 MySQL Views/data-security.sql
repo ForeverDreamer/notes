@@ -1,4 +1,4 @@
-
+USE sakila;
 -- Data Security
 
 SELECT 	pt.payment_id, pt.rental_id,

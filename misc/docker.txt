@@ -173,6 +173,7 @@ docker-compose rm
 docker-compose build web
 docker-compose stop web
 docker-compose up -d web
+docker-compose -f docker-compose.debug.yml up
 docker-compose logs -f --tail 20 web
 docker-compose logs -tf --tail 20 web
 # 每个服务展示10条内容

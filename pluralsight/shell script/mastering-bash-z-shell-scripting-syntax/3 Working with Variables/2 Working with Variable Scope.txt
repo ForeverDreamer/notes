@@ -1,0 +1,21 @@
+vim --version
+
+#  查看当前shell的变量设置
+set | less
+
+EDITOR=vim
+# 查看local变量
+set | grep EDITOR
+# 查看environment变量
+env | grep EDITOR
+
+# 将已设置的EDITOR变量导出为environment变量
+export EDITOR
+env | grep EDITOR
+
+# 取消变量设置
+unset EDITOR
+crontab -e
+
+# command变量, !!: 执行前一个命令
+EDITOR=vim !!

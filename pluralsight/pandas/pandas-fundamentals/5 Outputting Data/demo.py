@@ -34,10 +34,10 @@ sheet.conditional_format(cells_range, {'type': '2_color_scale',
 writer.save()
     
 # SQL
-import sqlite3
-
-with sqlite3.connect('my_database.db') as conn:
-    small_df.to_sql('Tate', conn)
+# import sqlite3
+#
+# with sqlite3.connect('my_database.db') as conn:
+#     small_df.to_sql('Tate', conn)
 
 # import sqlalchemy as sa
 # with sa.create_engine('postgresql://localhost/my_data') as conn:

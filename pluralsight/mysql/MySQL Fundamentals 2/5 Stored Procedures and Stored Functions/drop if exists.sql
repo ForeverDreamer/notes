@@ -1,3 +1,5 @@
+use sakila;
+
 -- Change Delimiter
 DELIMITER //
 
@@ -13,14 +15,3 @@ DELIMITER ;
 
 -- Call Stored Procedure
 CALL GetLanguage();
-
-DROP PROCEDURE GetLanguage;
-
-
-
-
-
-
-
-
-
