@@ -1,0 +1,37 @@
+# test is a shell builtin
+# [ is a shell builtin
+# [[ is a shell keyword
+type test [ [[
+
+# -f: 测试普通文件
+test -f /etc/hosts && echo YES
+[[ -f /etc/hosts ]] && echo YES
+
+# -d: 测试目录
+[[ -d /etc ]]
+
+# -L: 测试软连接
+[[ -L /etc/localtime ]]
+
+# -e: For the existence of a file no matter the type
+[[ -e /etc/nologin ]]
+
+# -r: Tests for the read permission, r=read, w=write, x=execute
+[[ -r /etc/hosts ]]
+
+# -k: Tests for the sticky bit
+[[ -k /tmp ]]
+
+# -s: Tests for the SUID bit, use g for the GUID bit
+[[ -s /bin/passwd ]]
+
+test -f /etc
+echo $?
+test -d /etc
+echo $?
+
+test -e dir1 || mkdir dir1
+ls -ld dir1
+
+test -w dir1 && touch dir1/file1
+ls dir1

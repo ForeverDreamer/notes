@@ -1,0 +1,11 @@
+cat /etc/hosts
+# 查看命令执行返回值，0表示true，1表示false
+echo $?
+cat /etc/hostss
+echo $?
+
+getent passwd doer
+# 用户不存在则创建
+getent passwd doer1 || sudo useradd doer1
+# 用户存在则设置密码
+getent passwd doer1 && sudo passwd doer1

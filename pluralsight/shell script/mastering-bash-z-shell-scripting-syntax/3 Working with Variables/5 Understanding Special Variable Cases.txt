@@ -1,0 +1,27 @@
+# 设置只读常量
+declare -r name=bob
+# 输出：bash: name: readonly variable
+name=fred
+
+# 设置整型变量
+declare -i days=30
+days=Monday
+# 输出：declare -i days="0"
+declare -p days
+
+# 设置数组变量(array)
+declare -a user_name
+user_name[0]=bob; user_name[1]=smith
+echo ${user_name[0]}
+echo ${user_name[1]}
+# @: 所有元素
+echo ${user_name[@]}
+
+# 设置字典变量(associative)
+unset user_name; declare -A user_name
+user_name=([first]=bob [last]=smith)
+# 输出：declare -A user_name=([last]="smith" [first]="bob" )
+declare -p user_name
+echo ${user_name[first]}
+echo ${user_name[last]}
+echo ${user_name[@]}

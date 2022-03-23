@@ -1,0 +1,10 @@
+ANSIBLE_CONFIG=/etc/hosts
+declare -p ANSIBLE_CONFIG
+# 导出为环境变量并设为只读
+declare -xr ANSIBLE_CONFIG
+# 输出：declare -rx ANSIBLE_CONFIG="/etc/hosts"
+declare -p ANSIBLE_CONFIG
+# 输出：bash: ANSIBLE_CONFIG: readonly variable
+ANSIBLE_CONFIG=/etc/services
+# 输出：bash: unset: ANSIBLE_CONFIG: cannot unset: readonly variable
+unset ANSIBLE_CONFIG

@@ -1,0 +1,21 @@
+EDITOR=vim
+# 输出：declare -- EDITOR="vim"，"--"表示local变量没有附加选项
+declare -p EDITOR
+
+# 导出为environment变量
+declare -x EDITOR
+# 输出：declare -x EDITOR="vim"，"-x"表示environment变量
+declare -p EDITOR
+
+# 取消environment变量
+declare +x EDITOR
+# 输出：declare -- EDITOR="vim"
+declare -p EDITOR
+
+declare -x -l EDITOR
+# 输出：declare -xl EDITOR="vim"
+declare -p EDITOR
+
+EDITOR=naNo
+# 输出：declare -xl EDITOR="nano"
+declare -p EDITOR

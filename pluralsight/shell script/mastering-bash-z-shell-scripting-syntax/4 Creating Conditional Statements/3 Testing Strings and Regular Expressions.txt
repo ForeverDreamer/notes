@@ -1,0 +1,17 @@
+declare -l user_name
+read user_name
+Bob
+[ $user_name == 'bob' ] && echo "user is bob"
+[ $user_name != 'bob' ] && echo "user is not bob"
+
+declare -l browser
+read browser
+Firefox
+[[ $browser == *fox ]] && echo "The browser's Firefox"
+[[ $browser =~ fox$ ]] && echo "The browser's Firefox"
+
+declare -l test_var
+read test_var
+color
+# ?: 0次或1次, BASH_REMATCH: 系统变量(declare -ar BASH_REMATCH=([0]="color"))
+[[ $test_var =~ colou?r ]] && echo "${BASH_REMATCH[@]}"

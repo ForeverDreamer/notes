@@ -1,0 +1,17 @@
+# 变量设置和查看
+MYVAR=pluralsight
+set | grep MYVAR
+
+export MYENV=utah
+env | grep MYENV
+
+# 同时查看local和environment变量
+declare -p MYVAR MYENV
+
+# -l: value转换为小写, -u: value转换为大写写
+declare -l fruit=Apple
+declare -u fruit=Apple
+declare -p fruit
+
+# 删除变量
+unset fruit

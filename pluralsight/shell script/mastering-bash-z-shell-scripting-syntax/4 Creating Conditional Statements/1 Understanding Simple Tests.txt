@@ -1,0 +1,17 @@
+# OR
+echo hello || echo bye
+
+# AND
+echo hello && echo bye
+
+declare -i days=30
+days=Monday
+# 旧版shell数值比较语法
+if [ $days -lt 1 ] || [ $days -gt 30 ]; then echo "Invalid value"; fi
+# 新版shell数值比较语法
+if (( days < 1 )) || (( days > 30 )); then echo "Invalid value"; fi
+if (( days < 1 )) || (( days > 30 )); then echo "Invalid value"; else echo "All good"; fi
+
+# 接收用户输入赋值
+read days
+if (( days < 1 )); then echo "Enter numeric value"; elif (( days > 30 )); then echo "Too high"; else echo "The value is $days"; fi
