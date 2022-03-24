@@ -1,0 +1,3 @@
+# 导出函数，子shell可见
+declare -xf say_hello
+declare -pF say_hello

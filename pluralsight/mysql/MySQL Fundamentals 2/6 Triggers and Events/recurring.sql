@@ -1,10 +1,13 @@
--- Turn ON Event Scheduler 
+USE sakila;
+
+-- Turn ON Event Scheduler
 SET GLOBAL event_scheduler = ON;
 
-CREATE TABLE Event_Audit
-(ID INT NOT NULL AUTO_INCREMENT, 
-Last_Update TIMESTAMP,
-PRIMARY KEY (ID));
+CREATE TABLE Event_Audit(
+    ID INT NOT NULL AUTO_INCREMENT,
+    Last_Update TIMESTAMP,
+    PRIMARY KEY (ID)
+);
 
 -- Change Delimiter
 DELIMITER //

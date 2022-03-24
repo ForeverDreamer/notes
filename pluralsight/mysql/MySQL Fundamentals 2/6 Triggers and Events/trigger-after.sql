@@ -1,9 +1,14 @@
+USE sakila;
+
 SELECT *
 FROM language;
 
-CREATE TABLE Audit_Language
-(language_id TINYINT(3), name CHAR(20), 
-	last_update TIMESTAMP, RowValue CHAR(20));
+CREATE TABLE Audit_Language(
+    language_id TINYINT(3),
+    name CHAR(20),
+	last_update TIMESTAMP,
+	RowValue CHAR(20)
+);
 
 
 -- Change Delimiter
@@ -28,10 +33,10 @@ DELIMITER ;
 -- Update Value
 UPDATE language
 SET name = 'Spanish-New'
-WHERE language_id = 10;
+WHERE language_id = 11;
 UPDATE language
 SET name = 'Hindi-New'
-WHERE language_id = 11;
+WHERE language_id = 12;
 
 -- Select Data
 SELECT *

@@ -1,5 +1,7 @@
+USE sakila;
+
 SELECT *
-FROM language
+FROM language;
 
 -- Change Delimiter
 DELIMITER //
@@ -8,8 +10,7 @@ CREATE TRIGGER Language_Before_Insert
 BEFORE INSERT on language
 FOR EACH ROW
 BEGIN
-	SET NEW.name = CONCAT(UPPER(SUBSTRING(NEW.name,1,1)),
-						LOWER(SUBSTRING(NEW.name FROM 2)));
+	SET NEW.name = CONCAT(UPPER(SUBSTRING(NEW.name,1,1)), LOWER(SUBSTRING(NEW.name FROM 2)));
 END//
 
 -- Change Delimiter

@@ -1,0 +1,14 @@
+# bad: 依赖执行环境变量
+function print_age() {
+    echo $age
+}
+
+# 删除变量和函数
+unset age; unset -f print_age
+
+# good: 不依赖执行环境变量
+function print_age() {
+    # 避免覆盖执行环境变量
+    local age=$1
+    echo $age
+}

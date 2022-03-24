@@ -1,0 +1,13 @@
+# 定义函数
+function say_hello() {
+    echo hello
+}
+
+# 调用函数
+say_hello
+
+# 查看函数, -F: 显示名字，-f: 显示详情
+declare -F
+declare -F say_hello
+declare -f
+declare -f say_hello
