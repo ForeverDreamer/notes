@@ -96,3 +96,5 @@ target/
 *.pickle
 *.xlsx
 data
+*.pdf
+intellij_idea_demo
