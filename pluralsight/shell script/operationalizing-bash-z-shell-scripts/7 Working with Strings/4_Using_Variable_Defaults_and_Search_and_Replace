@@ -1,0 +1,34 @@
+Script started on 2022-03-30 14:46:31+08:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="86" LINES="35"]
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ unset username
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ declare p[K-p username
+bash: declare: username: not found
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read username
+
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read username[6@declare -p[C[C[C[C[C[C[C[C[C
+declare -- username=""
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ declare -p username[Kecho ${username:-bob{[K}
+bob
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo ${username:-bob}[C[1P-bob}[C[C[C[C[C
+
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ !u
+unset username
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ unset usernameecho ${username-bob}
+bob
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo $ssh[K[K[KSSH_CLIENT
+
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo ""1"9"2"."1"6"8"."0"."9"7" "6"1"9"0"8" "2"2"/"0"/"9"
+192.168.0.97 61908 22/0/9
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo[K[K[K[Kecho "192.168.0.97 61908 22/0/9"[16P$SSH_CLIENT{username-bob}[6Punset usernameecho ${username-bob}:-bob}[2Pdeclare -p username[K[K[K[K[K[K[K[Kssh_client
+bash: declare: ssh_client: not found
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ ssh_client = [K[K[K=192.168.0.97 61908 22"[C[1@"
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ ssh_client="192.168.0.97 61908 22"[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[13Pdeclare -p ssh_clientecho "192.168.0.97 61908 22/0/9"
+192.168.0.97 61908 22/0/9
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo "192.168.0.97 61908 22/0/9"[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cssh_client="192.168.0.97 61908 22"[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[13Pdeclare -p ssh_client^C
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo ${ssh_client/0/9}
+192.168.9.97 61908 22
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo ${ssh_client/0/9}/0/9}
+192.168.9.97 61998 22
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ exit
+exit
+
+Script done on 2022-03-30 14:53:00+08:00 [COMMAND_EXIT_CODE="0"]

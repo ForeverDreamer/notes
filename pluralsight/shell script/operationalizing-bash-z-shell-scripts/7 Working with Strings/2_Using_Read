@@ -1,0 +1,28 @@
+Script started on 2022-03-30 14:32:48+08:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="86" LINES="14"]
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read
+something
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo $REPLAY[K[KY
+something
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read -p "Type in a username: "
+Type in a username: freds
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read -p "Type in a username: " username
+Type in a username: fres ds
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo $username
+freds
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read -n1 -p "Continue y or n: "
+Continue y or n: y]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ 
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read -n1 -p "Continue y or n: " -s
+Continue y or n: ]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ ^C
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read -[Kp[K-p "Enter a uername[K[K[K[K[K[Ksername or 8 or more characters: "u[K usern ame
+Enter a username or 8 or more characters: frea d
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo ${#username}
+4
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo ${#username}read -p "Enter a username or 8 or more characters: " username
+Enter a username or 8 or more characters: reginald
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ read -p "Enter a username or 8 or more characters: " username[A]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ echo ${#username}[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+8
+]0;doer@DESKTOP-213OEJB: ~/bin[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/bin[00m$ exit
+exit
+
+Script done on 2022-03-30 14:38:55+08:00 [COMMAND_EXIT_CODE="0"]

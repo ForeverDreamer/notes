@@ -1,0 +1,12 @@
+[Unit]
+Description=A demo service with pipe
+After=sshd.service
+
+[Service]
+Type=simple
+ExecStart=/root/bin/pipe.sh
+ExecStop=/bin/kill $MAINPID
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

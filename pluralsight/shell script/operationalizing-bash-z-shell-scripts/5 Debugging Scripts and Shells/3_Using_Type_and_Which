@@ -1,0 +1,48 @@
+Script started on 2022-03-30 10:32:27+08:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="86" LINES="33"]
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ type -a pwd
+pwd is a shell builtin
+pwd is /usr/bin/pwd
+pwd is /bin/pwd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ which -a pwd
+/usr/bin/pwd
+/bin/pwd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ pwd
+/home/doer
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -x
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ pwd
++ pwd
+/home/doer
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -[K+[K+x
++ set +x
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ type pwd
+pwd is a shell builtin
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ alias pwd='ls'
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ pwd
+[0m[01;34mbin[0m             [01;34mdata[0m                        key.pem  [01;34mnewdir[0m             rei.sh
+cert.pem        [01;34mdocuments[0m                   my       [01;34mnode-js-fast-test[0m  typescript
+[01;34mcmake_tutorial[0m  [01;34mgetting-started-c-language[0m  [01;34mmydir[0m    [01;34mrasa[0m
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ type pwd
+pwd is aliased to `ls'
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ type pwd-pwdapwd pwd
+pwd is aliased to `ls'
+pwd is a shell builtin
+pwd is /usr/bin/pwd
+pwd is /bin/pwd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ unalie[Kas pwd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ unalias pwdtype -a[C[C[C[C[3Ppwd
+pwd is a shell builtin
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ which -a pwd
+/usr/bin/pwd
+/bin/pwd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ echo $PATH
+/home/doer/bin/:/home/doer/bin/:/home/doer/.vscode-server/bin/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/bin/remote-cli:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.pyenv/shims:/home/doer/.local/bin:/home/doer/bin:/home/doer/bin/:/home/doer/.nvm/versions/node/v14.16.0/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/home/doer/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/redist/intel64_win/compiler:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/redist/intel64/compiler:/mnt/c/Python39/Scripts/:/mnt/c/Python39/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NetSarang/Xshell 7/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/dotnet/:/mnt/c/Program Files (x86)/NetSarang/Xftp 7/:/mnt/c/Program Files/Java/jdk1.8.0_311/bin:/mnt/d/dmdbms/bin:/mnt/d/dmdbms:/mnt/d/dmdbms/drivers/dpi:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/d/tools:/mnt/c/Program Files/Go/bin:/mnt/d/tools/apache-maven-3.8.4/bin:/mnt/c/Users/micro/.poetry/bin:/mnt/c/Users/micro/AppData/Local/Programs/Python/Python310/Scripts/:/mnt/c/Users/micro/AppData/Local/Programs/Python/Python310/:/mnt/c/Users/micro/AppData/Roaming/local/bin:/mnt/c/Users/micro/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/micro/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/micro/AppData/Roaming/npm:/mnt/c/Users/micro/.dotnet/tools:/mnt/c/Users/micro/go/bin:/snap/bin
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ [K]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ [K]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ln -s /usr/share/doc .
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cd doc
+]0;doer@DESKTOP-213OEJB: ~/doc[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/doc[00m$ pwd
+/home/doer/doc
+]0;doer@DESKTOP-213OEJB: ~/doc[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/doc[00m$ /bin/pwd
+/usr/share/doc
+]0;doer@DESKTOP-213OEJB: ~/doc[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~/doc[00m$ exit
+exit
+
+Script done on 2022-03-30 10:39:04+08:00 [COMMAND_EXIT_CODE="0"]

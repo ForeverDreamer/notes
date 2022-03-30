@@ -1,0 +1,39 @@
+Script started on 2022-03-30 10:24:36+08:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="86" LINES="19"]
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat > my <<END
+> echo hello
+> END
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ B[Kbash my
+hello
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ bash -x my
++ echo hello
+hello
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ file my
+my: ASCII text
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ sed -i '1 i\#b[K!/bin/bash' my
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ sed -i '1 i\#!/bin/bash' my[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cfile my[K
+my: Bourne-Again shell script, ASCII text executable
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls
+[0m[01;34mbin[0m             [01;34mdata[0m                        key.pem  [01;34mnewdir[0m             rei.sh
+cert.pem        [01;34mdocuments[0m                   my       [01;34mnode-js-fast-test[0m  typescript
+[01;34mcmake_tutorial[0m  [01;34mgetting-started-c-language[0m  [01;34mmydir[0m    [01;34mrasa[0m
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -x
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls
++ ls --color=auto
+[0m[01;34mbin[0m             [01;34mdata[0m                        key.pem  [01;34mnewdir[0m             rei.sh
+cert.pem        [01;34mdocuments[0m                   my       [01;34mnode-js-fast-test[0m  typescript
+[01;34mcmake_tutorial[0m  [01;34mgetting-started-c-language[0m  [01;34mmydir[0m    [01;34mrasa[0m
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls $HOME
++ ls --color=auto /home/doer
+[0m[01;34mbin[0m             [01;34mdata[0m                        key.pem  [01;34mnewdir[0m             rei.sh
+cert.pem        [01;34mdocuments[0m                   my       [01;34mnode-js-fast-test[0m  typescript
+[01;34mcmake_tutorial[0m  [01;34mgetting-started-c-language[0m  [01;34mmydir[0m    [01;34mrasa[0m
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set +x
++ set +x
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls
+[0m[01;34mbin[0m             [01;34mdata[0m                        key.pem  [01;34mnewdir[0m             rei.sh
+cert.pem        [01;34mdocuments[0m                   my       [01;34mnode-js-fast-test[0m  typescript
+[01;34mcmake_tutorial[0m  [01;34mgetting-started-c-language[0m  [01;34mmydir[0m    [01;34mrasa[0m
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2022-03-30 10:28:43+08:00 [COMMAND_EXIT_CODE="0"]
