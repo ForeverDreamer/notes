@@ -1,0 +1,43 @@
+Script started on 2022-03-31 16:02:38+08:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="86" LINES="20"]
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc/hosts
+/etc/hosts
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc/hosts[K
+ls: cannot access '/etc/host': No such file or directory
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc/hosts /etc/host
+ls: cannot access '/etc/host': No such file or directory
+/etc/hosts
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc/hosts /etc/host >ou[K[K out
+ls: cannot access '/etc/host': No such file or directory
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ a[Kcat out [K
+/etc/hosts
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat out[22@ls /etc/hosts /etc/host >[C[C[C[C[1@2[C[Ceoutroutrout
+/etc/hosts
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat er`[Krout 
+ls: cannot access '/etc/host': No such file or directory
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat errout ls /etc/hosts /etc/host 2> errout[1P[1@&[C[C[C[C[C[1Pout[1Pout[1Pout[C[C[C.txt
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat out.txt 
+ls: cannot access '/etc/host': No such file or directory
+/etc/hosts
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ( ls /etc/hosts ; ls /t[Ketc/host ) > opu[K[Kut1
+ls: cannot access '/etc/host': No such file or directory
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat co[K[Kout1 [K
+/etc/hosts
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ bash > shell.out
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat shell.out 
+bin
+documents
+errout
+file1
+file2
+out
+out.txt
+out1
+shell.out
+typescript
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2022-03-31 16:07:22+08:00 [COMMAND_EXIT_CODE="0"]

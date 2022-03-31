@@ -1,0 +1,7 @@
+# 查看bash版本
+bash --version
+echo $BASH_VERSION
+
+# 搜索bash版本
+sudo apt search bash
+sudo apt search ^bash$

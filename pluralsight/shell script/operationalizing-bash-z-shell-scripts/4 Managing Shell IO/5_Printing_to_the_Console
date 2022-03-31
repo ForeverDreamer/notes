@@ -1,0 +1,20 @@
+Script started on 2022-03-31 16:27:01+08:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="86" LINES="20"]
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ type -a printf
+printf is a shell builtin
+printf is /usr/bin/printf
+printf is /bin/printf
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ username=jo
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ printfd[K ""T"h"e" "u"s"e"r" "i"s":" "%"s"\"n"[C $username
+The user is: jo
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ printf "The user is: %s\n" $username"$username[C[C[C[C[C[C[C[C[C"
+The user is: jo
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ printf "The user is: %s\n" "$username"[2P$username[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cusername=jo[K[K[K"jo smith"
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ username="jo smith"printf "The user is: %s\n" "$username"[2P$username
+The user is: jo
+The user is: smith
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ printf "The user is: %s\n" $username[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[17Pusername="jo smith"printf "The user is: %s\n" "$username"
+The user is: jo smith
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2022-03-31 16:29:57+08:00 [COMMAND_EXIT_CODE="0"]

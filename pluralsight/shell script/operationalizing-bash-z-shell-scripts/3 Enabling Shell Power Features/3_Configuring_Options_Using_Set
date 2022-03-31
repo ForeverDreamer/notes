@@ -1,0 +1,104 @@
+Script started on 2022-03-31 15:11:02+08:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="86" LINES="10"]
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -o
+allexport      	off
+braceexpand    	on
+emacs          	on
+errexit        	off
+errtrace       	off
+functrace      	off
+hashall        	on
+histexpand     	on
+history        	on
+ignoreeof      	off
+interactive-comments	on
+keyword        	off
+monitor        	on
+noclobber      	off
+noexec         	off
+noglob         	off
+nolog          	off
+notify         	off
+nounset        	off
+onecmd         	off
+physical       	off
+pipefail       	off
+posix          	off
+privileged     	off
+verbose        	off
+vi             	off
+xtrace         	off
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ [K]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -o[1Po+o
+set +o allexport
+set -o braceexpand
+set -o emacs
+set +o errexit
+set +o errtrace
+set +o functrace
+set -o hashall
+set -o histexpand
+set -o history
+set +o ignoreeof
+set -o interactive-comments
+set +o keyword
+set -o monitor
+set +o noclobber
+set +o noexec
+set +o noglob
+set +o nolog
+set +o notify
+set +o nounset
+set +o onecmd
+set +o physical
+set +o pipefail
+set +o posix
+set +o privileged
+set +o verbose
+set +o vi
+set +o xtrace
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc > file1
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc > file1
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc > file1
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc > file1
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -o noclobber
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -o noclobber[1Pls /etc > file1
+bash: file1: cannot overwrite existing file
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc > file1[K2
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc > file2
+bash: file2: cannot overwrite existing file
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls
+[0m[01;34mbin[0m  [01;34mdocuments[0m  file1  file2  typescript
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc > file2| file2
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc/*.conf
+/etc/adduser.conf          /etc/ld.so.conf              /etc/popularity-contest.conf
+/etc/ca-certificates.conf  /etc/libaudit.conf           [0m[01;36m/etc/resolv.conf[0m
+/etc/debconf.conf          /etc/logrotate.conf          /etc/rsyslog.conf
+/etc/deluser.conf          /etc/ltrace.conf             /etc/sensors3.conf
+/etc/e2scrub.conf          /etc/mke2fs.conf             /etc/sos.conf
+/etc/fuse.conf             /etc/multipath.conf          /etc/sysctl.conf
+/etc/gai.conf              /etc/nsswitch.conf           /etc/ucf.conf
+/etc/hdparm.conf           /etc/overlayroot.conf        /etc/usb_modeswitch.conf
+/etc/host.conf             /etc/overlayroot.local.conf  /etc/xattr.conf
+/etc/kernel-img.conf       /etc/pam.conf
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -o | grep b[Kglob
+no[01;31m[Kglob[m[K         	off
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set o[K-f
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -fo | grep glob
+no[01;31m[Kglob[m[K         	on
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set -o | grep globf[Ko | grep glob[4Pls /etc/*.conf
+ls: cannot access '/etc/*.conf': No such file or directory
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ ls /etc/*.confset -o | grep globf[K[1Pf+f
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ set +fls /etc/*.conf
+/etc/adduser.conf          /etc/ld.so.conf              /etc/popularity-contest.conf
+/etc/ca-certificates.conf  /etc/libaudit.conf           [0m[01;36m/etc/resolv.conf[0m
+/etc/debconf.conf          /etc/logrotate.conf          /etc/rsyslog.conf
+/etc/deluser.conf          /etc/ltrace.conf             /etc/sensors3.conf
+/etc/e2scrub.conf          /etc/mke2fs.conf             /etc/sos.conf
+/etc/fuse.conf             /etc/multipath.conf          /etc/sysctl.conf
+/etc/gai.conf              /etc/nsswitch.conf           /etc/ucf.conf
+/etc/hdparm.conf           /etc/overlayroot.conf        /etc/usb_modeswitch.conf
+/etc/host.conf             /etc/overlayroot.local.conf  /etc/xattr.conf
+/etc/kernel-img.conf       /etc/pam.conf
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2022-03-31 15:16:10+08:00 [COMMAND_EXIT_CODE="0"]

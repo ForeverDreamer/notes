@@ -3,39 +3,15 @@ using std::cout;
 
 #include "src/Functions.h"
 
-int main()
-{
-	int total = add(3, 4);
-	cout << "3 + 4 is " << total << '\n';
+int main(){
+    const char* my_name = "Zach";
+    const char* friend_name = "Zach";
 
-	double another = add(1.2, 3.4);
+    // Calling a user-defined function
+    bool names_are_equal = are_strings_equal(my_name, friend_name);
 
-	cout << '\n';
-	cout << "1.2 + 3.4 is " << another;
-	cout << '\n';
+    printf("These names are equal: %s\n", names_are_equal ? "true" : "false");
 
-	auto totalofthree = add(1.1, 2.2, 3.3);
-	cout << "1.1 + 2.2 + 3.3 is " << totalofthree;
-	cout << '\n';
-
-	add(0, 0, 0);
-
-	if (test(true))
-	{
-		cout << "true passes the test" << '\n';
-	}
-	if (test(3.2))
-	{
-		cout << "3.2 passes the test" << '\n';
-	}
-
-
-	//if (test(3))
-	//{
-	//	cout << "3 passes the test" << '\n';
-	//}
-
-
-	return 0;
+    return 0;
 }
 

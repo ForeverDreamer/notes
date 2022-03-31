@@ -1,0 +1,16 @@
+Script started on 2022-03-31 16:35:25+08:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="86" LINES="20"]
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat > list1 <<END
+> alice
+> bob
+> END
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cat > list2 <<END
+> bob [K
+> jane
+> END
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ comm -3 <(sort list1) <(sort list2)
+alice
+	jane
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2022-03-31 16:36:11+08:00 [COMMAND_EXIT_CODE="0"]

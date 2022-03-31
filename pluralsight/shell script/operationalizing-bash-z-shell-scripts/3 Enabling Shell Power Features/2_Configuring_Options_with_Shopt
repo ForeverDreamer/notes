@@ -1,0 +1,83 @@
+Script started on 2022-03-31 14:55:49+08:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="86" LINES="21"]
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ s[Kshopt
+autocd         	off
+assoc_expand_once	off
+cdable_vars    	off
+cdspell        	off
+checkhash      	off
+checkjobs      	off
+checkwinsize   	on
+cmdhist        	on
+compat31       	off
+compat32       	off
+compat40       	off
+compat41       	off
+compat42       	off
+compat43       	off
+compat44       	off
+complete_fullquote	on
+direxpand      	off
+dirspell       	off
+dotglob        	off
+execfail       	off
+expand_aliases 	on
+extdebug       	off
+extglob        	on
+extquote       	on
+failglob       	off
+force_fignore  	on
+globasciiranges	on
+globstar       	off
+gnu_errfmt     	off
+histappend     	on
+histreedit     	off
+histverify     	off
+hostcomplete   	off
+huponexit      	off
+inherit_errexit	off
+interactive_comments	on
+lastpipe       	off
+lithist        	off
+localvar_inherit	off
+localvar_unset 	off
+login_shell    	off
+mailwarn       	off
+no_empty_cmd_completion	off
+nocaseglob     	off
+nocasematch    	off
+nullglob       	off
+progcomp       	on
+progcomp_alias 	off
+promptvars     	on
+restricted_shell	off
+shift_verbose  	off
+sourcepath     	on
+xpg_echo       	off
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ shopt autocd
+autocd         	off
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ /etc
+bash: /etc: Is a directory
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ shopt -s autocd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ /etc
+cd -- /etc
+]0;doer@DESKTOP-213OEJB: /etc[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m/etc[00m$ ~
+cd -- /home/doer
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ shopt -s cdspell
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cd -ect[K[K[K[K/etr[K[Kct
+/etc
+]0;doer@DESKTOP-213OEJB: /etc[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m/etc[00m$ cd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ shopt -u autocd
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ shopt -u cdse[K-[Kpell
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ shopt restricted_shell 
+restricted_shell	off
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ rbash
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cd /etc
+rbash: cd: restricted
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ cd mydir
+rbash: cd: restricted
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+]0;doer@DESKTOP-213OEJB: ~[01;32mdoer@DESKTOP-213OEJB[00m:[01;34m~[00m$ exit
+exit
+
+Script done on 2022-03-31 14:58:10+08:00 [COMMAND_EXIT_CODE="1"]

@@ -1,20 +1,7 @@
-double add(double x, double y)
-{
-	return x + y;
-}
+#include <string.h>
 
-double add(double a, double b, double c)
-{
-	return a + b + c;
-	//alternatively: return add(add(a,b),c);
-}
-
-bool test(bool x)
-{
-	return x;
-}
-
-bool test(double x)
-{
-	return x > 0;
+// Helps make strcmp more usable
+bool are_strings_equal(const char* str1, const char* str2) {
+    // Calling a library function
+    return !strcmp(str1, str2);
 }
