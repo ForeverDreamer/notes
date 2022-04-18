@@ -1,0 +1,14 @@
+# 当前登录用户
+who
+
+# 当前runlevel
+who -r
+runlevel
+
+# 默认runlevel
+systemctl get-default
+systemctl set-default graphical.target
+
+# 切换到runlevel
+systemctl isolate multi-user.target
+who -r

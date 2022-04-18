@@ -1,0 +1,8 @@
+# 向登录用户tux发送消息
+write tux
+cat > message <<END
+wall < message
+# 查看是否接收用户消息
+mesg
+# 设置不接收用户消息(对root用户无效)
+mesg n

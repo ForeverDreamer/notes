@@ -1,0 +1,16 @@
+# process status，只展示当前shell的进程
+ps
+ps -f
+ps -F
+ps -l
+ps -ly
+
+# UNIX
+ps -elf
+# BSD
+ps aux
+# GNU
+ps -e --forest
+
+yum -y install psmisc
+pstree

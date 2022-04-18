@@ -1,0 +1,13 @@
+# 查看系统版本信息
+cat /etc/system-release
+cat /etc/centos-release
+lsb_release -d
+rpm -qf $(which lsb_release)
+
+# 查看内核版本信息
+uname -r
+cat /proc/version
+cat /proc/cmdline
+
+# 查看磁盘分区
+lsblk

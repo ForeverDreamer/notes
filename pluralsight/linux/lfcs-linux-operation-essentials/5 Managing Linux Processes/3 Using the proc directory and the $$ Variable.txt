@@ -1,0 +1,19 @@
+cd /proc
+pwd
+ls
+
+# 查看进程id为1,即systems的信息
+ps -p1 -f
+
+# 查看当前运行进程id
+echo $$
+ps -p $$ -F
+cd $$
+ls -l cwd
+ls -l exe
+
+cd /proc
+ps
+# The fifth field is the PID of the process that was most recently created on the system
+cat loadavg
+1.50 1.60 1.60 2/1838 16364

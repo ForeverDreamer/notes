@@ -1,0 +1,561 @@
+# 2.Introducing the Linux Foundation and LFCS Certification
+# 2.2 Let's Look at How You Will Learn
+# 查看系统版本
+cat /etc/system-release
+
+# 统计行数, !$ is the "end" of the previous command
+wc -l !$
+echo !$
+
+# 查看当前时间
+date
+date --date "40 days"
+date --date "40 days ago"
+
+# 查看日历
+cal
+cal -3
+cal 7 1996
+
+# 退出终端
+Ctrl+D
+exit
+
+# 清屏
+clear
+Ctrl+L
+
+# 查看当前连接的终端
+tty
+ls -l $(tty)
+
+# display (or do not display) messages from other users
+mesg n
+mesg y
+
+
+# 4.Working at the Command Line
+# 4.2 Accessing Consoles
+# 显示系统中有哪些使用者正在上面，显示的资料包含了使用者 ID、使用的终端机、从哪边连上来的、上线时间、呆滞时间、CPU 使用量、动作等等
+who
+
+# 显示网卡IP信息
+ip addr show
+
+# 4.3 Listing Files
+# 查看当前目录
+pwd
+
+# 切换目录
+cd
+
+# 查看目录内容
+# The Type command is used to find out the information about a Linux command. You can easily find whether the given command is an alias, shell built-in, file, function, or keyword  using # "type" command. Additionally, you can find the actual path of the command too
+type ls
+ls
+# -a: all files, -F: file type, -l: long listing
+ls -aFl /etc
+# h: make file size human readable, r: reverse, t: timestamp
+# 按时间戳倒序输出
+ls -lhrt
+# 查看目录信息
+ls -ld /etc
+
+# 4.4 File Types
+# 查看磁盘分区
+lsblk
+ls -l /dev/xvda*
+ls -l /dev/xvda?
+ls -l /dev/xvda[12]
+ls -l /etc/system-release /etc/centos-release /etc/redhat-release
+cat /etc/system-release
+
+# which指令会在环境变量$PATH设置的目录里查找符合条件的文件
+ls -l $(which python)
+ls -lF $(which python)
+
+# q: query, f: file
+rpm -qf /usr/bin/python
+rpm -qf $(which python)
+
+# 4.3 Working with Files
+# 复制文件
+cp /etc/hosts .
+cp /etc/passwd ./passwd
+# -i: interactive, 覆盖前会提示
+cp -i /etc/hosts ./passwd
+# 移动或重命名
+mv hosts localhosts
+mv localhosts /tmp
+ls /tmp
+cp * /tmp
+rm -i *
+touch hosts localhosts
+rm -i *hosts
+
+# 4.4 Working with Directories
+# 创建目录
+mkdir test
+# -p 确保目录名称存在，不存在的就建一个
+mkdir -p sales/test
+
+# 删除目录
+rmdir test
+# r: recursive, f: force
+rm -rf sales
+
+mkdir one two
+touch one/file{1..5}
+# -r|R：若给出的源文件是一个目录文件，此时将复制该目录下所有的子目录和文件
+cp -r one two
+
+yum install tree
+tree
+
+# The mkdir command by default gives rwx permissions for the current user only.
+# To add read, write, and execute permission for all users, add the -m option with the user 777 when creating a directory.
+mkdir -m 777 d1
+mkdir -m 700 d2
+ls -ld d1 d2
+
+# 4.5 Working with Links
+
+Links Types
+    There are two types of links in Linux/UNIX systems:
+
+    Hard links. You can think a hard link as an additional name for an existing file. Hard links are associating two or more file names with the same inode . 
+    The inode (index node) is a data structure in a Unix-style file system that describes a file-system object such as a file or a directory. Each inode stores the attributes and disk block locations of the object's data.[1] File-system object attributes may include metadata (times of last change,[2] access, modification), as well as owner and permission data.A directory is a list of inodes with their assigned names. The list includes an entry for itself, its parent, and each of its children.
+    You can create one or more hard links for a single file. Hard links cannot be created for directories and files on a different filesystem or partition.
+
+    Soft links. A soft link is something like a shortcut in Windows. It is an indirect pointer to a file or directory. Unlike a hard link, a symbolic link can point to a file or a directory on a different filesystem or partition.
+
+    How to Use the ln Comm
+
+ls -ld /etc
+ls -ldi /etc
+ls -ldi /etc/.
+ln -s source_file symbolic_link
+
+
+# 5.Reading Files
+# 5.1 Reading from files
+echo $SSH_CONNECTION
+
+cat /etc/hosts
+cat /etc/hostname
+cat /etc/hosts /etc/hostname
+
+wc -l /etc/services
+
+less /etc/services
+head -n 3 /etc/services
+tail -n 3 /etc/services
+tail /etc/passwd
+
+# 5.2 Regular Expressions and grep
+# 查看已安装的packges
+yum list installed
+# 筛选包含'kernel'的行
+yum list installed | grep kernel
+# 筛选以'kernel'开头的行
+yum list installed | grep ^kernel
+
+yum install ntp
+cat /etc/ntp.conf
+wc -l !$
+cp !$ .
+
+grep server ntp.conf
+type grep
+grep ^server ntp.conf
+grep '\bserver\b' ntp.conf
+
+yum install words
+# -E 或 --extended-regexp : 将样式为延伸的正则表达式来使用
+grep -E 'ion$' /usr/share/dict/words
+grep -E '^po..ute$' /usr/share/dict/words
+grep -E '[aeiou]{5}' /usr/share/dict/words
+
+# 5.3 Using sed to Edit Files
+# 删除注释行和空行
+sed '/^#/d;/^$/d' ntp.conf
+sed -i '/^#/d;/^$/d' ntp.conf
+type ls
+type grep
+type vi
+
+# 5.4 Comparing Files
+cp ntp.conf ntp.new
+echo new >> ntp.new
+diff ntp.conf ntp.new
+# 二进制文件通过计算hash值比较
+md5sum /usr/bin/passwd
+
+# 5.5 Finding Files
+find /usr/share/doc -name '*.pdf' 等同于 find /usr/share/doc -name '*.pdf' -print
+# 把找到的文件复制到当前目录
+find /usr/share/doc -name '*.pdf' -exec cp {} . \;
+# 在当前目录查找
+find -name '*.pdf'
+# 删除找到的文件
+find -name '*.pdf' -delete
+# 查找软连接
+find /etc -type l
+# 限制查找目录层级
+find /etc -maxdepth 1 -type l
+# 目录后边不加'/'找不到
+find /lib/ -name '*boost*'
+
+df -h /boot
+find /boot -size +10000k -type f
+find /boot -size +10000k -type f -exec du -h {} \;
+
+
+# 7.Piping and Redirection
+# 7.2 Redirecting STDOUT
+
+cp ntp.new newfile
+# 当前的stdout覆盖文件内容，相当于清空文件内容
+> newfile
+ls > newfile
+# d: disc, f: free, -h: human readable
+df -h
+df -h > file1 等同于 df -h 1> file1, 1: stdout
+cat file1
+# 追加到文件末尾
+ll 1>> file1
+
+# 7.3 Using the noclobber Option
+# set指令能设置所使用shell的执行方式
+set -o
+# 开启noclobber选项后覆盖文件时会报错，写进/home/.bashrc，登录时会自动设置
+set -o noclobber
+# 关闭noclobber选项
+set +o noclobber
+set -o | grep noclobber
+# bash: file1: cannot overwrite existing file
+date +%F > file1
+# 强行覆盖
+date +%F >| file1
+
+# 搜索最近执行的命令，输入搜索关键字，如 grep，上下箭头选择，Enter执行
+Crtl+r
+
+# 启动新终端
+bash
+set -o | grep noclobber
+ctrl+d 或 exit
+
+# 7.4 Redirecting STDERR
+# stderr重定向到err文件
+ls /etcw 2> err
+
+# 丢弃错误信息
+find /etc -type l 2> /dev/null
+# stdout和stderr都重定向到err.txt
+find /etc -type l &> err.txt
+
+# 7.5 Reading into STDIN
+0: stdin
+1: stdout
+2: stderr
+
+# 磁盘可用空间信息通过邮件发送
+df -hlT > diskfree
+mail -s "Disk Free" doer < diskfree
+mail
+
+# 7.6 Using HERE documents
+# 控制台输入的信息被保存至mynewfile，输入'END'结束
+cat > mynewfile <<END
+
+# 7.7 Command Pipelines
+ls | wc -l
+
+head -n 1 /etc/passwd
+cut -f7 -d: /etc/passwd
+cut -f7 -d: /etc/passwd | sort
+cut -f7 -d: /etc/passwd | sort | uniq
+cut -f7 -d: /etc/passwd | sort | uniq | wc -l
+
+# 7.8 Named Pipes
+ls -l $(tty)
+ls -l /dev/xvda
+
+# 匿名管道应用的一个限制就是只能在具有共同祖先（具有亲缘关系）的进程间通信。
+# 如果我们想在不相关的进程之间交换数据，可以使用FIFO文件来做这项工作，它经常被称为命名管道。
+mkfifo mypipe
+ls -l !$
+
+-F 在列出的文件名称后加一符号；例如可执行档则加 "*", 目录则加 "/"
+ls -F mypipe
+
+# 同时打开两个终端
+# 终端1执行
+ls /etc > mypipe
+# 终端2执行
+wc -l < mypipe
+
+# 7.9 Using the Command tee
+
+ls > f89
+# 重定向的同时将内容显示在终端
+ls | tee f89
+cat f89
+
+sudo echo '127.0.0.1 bob' >> /etc/hosts
+-bash: /etc/hosts: Permission denied
+# -a: append
+echo '127.0.0.1 bob' | sudo tee -a /etc/hosts
+tail -n 1 /etc/hosts
+
+# 8.Archiving Files
+# 8.2 Using the tar Command
+man tar
+
+# -c或--create 建立新的备份文件, -f<备份文件>或--file=<备份文件> 指定备份文件, -v或--verbose 显示指令执行过程
+tar -cvf doc.tar /usr/share/doc
+tar -cvvf doc.tar /usr/share/doc
+
+tar --list --file=doc.tar
+tar -tf doc.tar
+tar -tvf doc.tar
+
+tar --extract --verbose -f doc.tar
+tar --extract --verbose -f doc.tar --directory=/root
+
+mkdir test
+cd test
+cp /etc/hosts .
+cp /etc/hostname .
+cp /etc/services .
+cd ..
+tar -cvf my0.tar -g my.snar test
+echo hi >> test/hosts
+tar -cvf my1.tar -g my.snar test
+rm -rf test/hostname
+tar -cvf my2.tar -g my.snar test
+rm -rf test
+tar -xvf my0.tar -g /dev/null
+tar -xvf my1.tar -g /dev/null
+tar -xvf my2.tar -g /dev/null
+
+# 8.3 Using Compression
+ls -lh
+gzip doc.tar
+file doc.tar.gz
+gunzip doc.tar.gz
+file doc.tar
+
+bzip2 doc.tar
+file doc.tar.bz2
+bunzip2 doc.tar.bz2
+
+# 统计命令运行时间
+time tar -cvf doc.tar $HOME
+time tar -cvzf doc.tar.gz $HOME
+time tar -cvjf doc.tar.bz2 $HOME
+
+tar -xzf doc.tar.gz
+
+# 8.4 Working with cpio
+find /usr/share/doc -name '*.pdf'
+cd /usr/share/doc
+find -name '*.pdf'
+find -name '*.pdf' | cpio -o > /tmp/pdf.cpio
+
+cd ~/Documents
+mkdir pdf
+cd !$
+# -i或--extract 　执行copy-in模式，还原备份档, -d或--make-directories 　如有需要cpio会自行建立目录
+cpio -id < /tmp/pdf.cpio
+
+# 8.5 Imaging with dd
+# i: input, o: output, f: file, 复制 /dev/sr0 -> netinstll.iso
+dd if=/dev/sr0 of=netinstll.iso
+dd if=/dev/sda1 of=boot.img
+
+fdisk -l
+# 执行上一条命令
+!f
+
+# 备份mbr
+dd if=/dev/sda of=sda.mbr count=1 bs=512
+# 删除mbr
+dd if=/dev/zero of=/dev/sda count=1 bs=512
+# 恢复mbr
+dd if=sda.mbr of=/dev/sda
+
+
+# 10.Understanding File Permissions
+# 10.1 Introduction to Permissions
+Linux mount命令是经常会使用到的命令，它用于挂载Linux系统外的文件
+mount
+mount | grep root
+
+# 10.2 Listing Permissions
+ls -l file1
+
+stat file1
+stat -c %A file1
+stat -c %a file1
+
+# 10.3 Managing Default Permissions
+touch file1
+ls -l file1
+# 查看掩码
+umask
+# 设置掩码，新建文件的默认权限会相应改变
+umask 0
+umask 27
+umask 77
+umask 033
+umask u=rwx,g=rx,o=rx
+umask u=rwx,go=
+
+# 10.4 Setting Permissions
+chmod 467 file1
+chmod u=r,g=rw,o=rwx
+# all 增加 执行权限
+chmod a+x file1
+# all 取消 执行权限
+chmod a-x file1
+# other 取消所有权限
+chmod o= file1
+# all 设置 读/写/执行权限
+chmod 777 file1
+
+# 设置粘附位，只有文件所有者才能删除文件，-m: mode, 1777中的1表示粘附位
+mkdir -m 1777 test
+# 取消粘附位
+chmod o-t test
+
+# s: 组id位，执行时使用group权限
+ls -l $(which wall)
+# s: 用户id位，执行时使用user权限
+ls -l $(which passwd)
+
+# 10.5 Managing File Ownership
+# 查看用户id
+id -u
+# 查看用户名
+id -un
+# 查看primary组id
+id -g
+# 查看primary组名
+id -gn
+# 查看sencond组名
+id -Gn
+
+# 修改组用户
+chgrp doer file1
+# 修改primary group为doer
+newgrp doer
+
+# 切换到root用户
+su
+chown root file1
+chown doer:doer file1
+
+# -a: 保持文件的原始owner和timestamp
+cp -a file1 /root/file2a
+
+
+# 11.Accessing the Root Account
+# 11.2 Using su(Substitute User)
+su
+id
+# 仍然时之前的用户
+echo $USER
+exit
+# -l 或 --login 这个参数加了之后，就好像是重新 login 为该使用者一样，大部份环境变数（HOME SHELL USER等等）都是以该使用者（USER）为主，并且工作目录也会改变，如果没有指定 USER ，内定是 root
+su -l
+
+# 11.3 Implementing sudo
+id
+# Ctrl+a: 光标移到开头
+sudo cat /etc/sudoers
+sudo visudo
+sudo sudo -V
+
+# 11.4 Restricting root Access to SSH
+ssh -l root 192.168.56.10
+ssh root@192.168.56.10
+
+vi /etc/ssh/sshd_config
+systemctl restart sshd
+
+exit
+
+# 12.Accessing Servers with SSH
+# 12.2 Configuring the SSH Client
+hostname
+# 用户默认当前用户名
+ssh 192.168.56.10
+# known_hosts保存客户端连接过的ssh服务器的public keys
+cat .ssh/known_hosts
+# 配置ssh服务器的连接信息
+vi .ssh/config
+# 直接使用配置好的Host名称
+ssh server1
+ssh server2
+
+# 12.3 Using Key Based Authentication
+# 生成公钥/私钥对
+ssh-keygen -t rsa
+# 生成文件路径
+~/.ssh/id_rsa
+~/.ssh/id_rsa.pub
+# 把公钥拷贝到ssh服务器, 即authorized_keys文件里新增一行记录
+ssh-copy-id -i id_rsa.pub server1
+# 客户端添加私钥
+ssh-agent bash
+ssh-add
+
+# 12.4 Copy Files Securely
+# 本地到服务器
+scp /etc/hosts server1:/tmp
+# 服务器到本地
+scp server1:/tmp/hosts .
+
+# Using Screen and Script
+# 13.2 Using Script as a Collaboration Tool
+# 开始录制session
+script
+# 结束录制session
+exit
+# 终端1：创建命令管道用于进程间通信(IPC)，执行需要演示的命令
+mkfifo /tmp/mypipe
+script -f /tmp/mypipe
+...
+# 终端2：监控所有命令执行过程
+cat /tmp/mypipe
+
+# 13.3 Running Commands Across Your Estate with Screen
+# 本地主机安装screen, -y: 自动确认提示
+yum install -y screen
+
+# 打开新的终端
+screen
+# 退出
+exit
+
+# 创建配置文件
+vi .screenrc
+# 文件内容
+screen -t master 0 bash  # 本地
+screen -t s1 1 ssh server1  # server1
+screen -t s2 2 ssh server2  # server2
+
+screen
+# Next
+ctrl+a n
+# Previous
+ctrl+a p
+# 双引号，List screens
+ctrl+a "
+
+# 在所有终端同时执行相同命令
+:at "#" stuff "yum install -y zsh^M"
+
+exit

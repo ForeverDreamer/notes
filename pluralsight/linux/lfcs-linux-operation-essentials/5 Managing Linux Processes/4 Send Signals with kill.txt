@@ -1,0 +1,27 @@
+# Print or change terminal characteristics
+stty -a
+
+# 查看可用信号
+kill -l
+
+# 结束当前shell
+# The SIGTERM signal is a generic signal used to cause program termination. Unlike SIGKILL , this signal can be blocked, handled, and ignored
+kill $$
+kill -15 $$
+kill -term $$
+kill -sgterm $$
+
+kill -9 $$
+kill -KILL $$
+kill -SIGKILL $$
+
+# 查看sshd相关的进程
+ps aux | grep ssh
+pgrep sshd
+ps -F -p $(pgrep sshd)
+
+pgrep sleep
+# 结束睡眠状态进程
+pkill sleep
+
+top

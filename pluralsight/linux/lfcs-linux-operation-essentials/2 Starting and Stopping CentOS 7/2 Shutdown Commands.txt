@@ -1,0 +1,15 @@
+# 关闭系统
+halt
+poweroff
+reboot
+
+shutdown -h 10 "The system goes home in 10m"
+# 取消关机
+shutdown -c
+
+ls /run/nologin
+cat !$
+
+# centos 6之前版本的命令
+init --help
+telinit --help
