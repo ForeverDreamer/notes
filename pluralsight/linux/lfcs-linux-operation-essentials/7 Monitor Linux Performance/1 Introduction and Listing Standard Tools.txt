@@ -1,0 +1,14 @@
+# 查看procps-ng包的内容，-q: query, -l: list, 
+rpm -ql procps-ng
+
+# 查看文件属于哪个包，-f: file
+rpm -qf /usr/bin/top
+
+# 查看文档，-d: doc，
+rpm -qd procps-ng
+
+# 查看配置文件，-c: config
+rpm -qc procps-ng
+
+rpm -ql procps-ng | grep '^/usr/bin/'
+rpm -ql procps-ng | grep '^/usr/bin/' | wc -l

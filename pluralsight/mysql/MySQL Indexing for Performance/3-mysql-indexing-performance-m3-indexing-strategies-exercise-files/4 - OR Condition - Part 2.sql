@@ -1,3 +1,5 @@
+USE sakila;
+
 -- Displaying Index
 SHOW INDEX FROM film FROM sakila;
 

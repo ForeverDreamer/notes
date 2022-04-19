@@ -1,3 +1,5 @@
+USE sakila;
+
 -- Check Indexes
 SHOW INDEX FROM film FROM sakila;
 SHOW INDEX FROM film;

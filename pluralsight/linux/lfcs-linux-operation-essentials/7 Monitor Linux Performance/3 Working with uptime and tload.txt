@@ -1,0 +1,19 @@
+# Tell how long the system has been running
+uptime
+cat /proc/uptime
+cat /proc/loadavg
+
+# show who is logged on
+who
+
+# Show who is logged on and what they are doing
+w
+
+# display information about the CPU architecture
+lscpu
+
+# execute a program periodically, showing output fullscreen
+watch -n 4 uptime
+
+# graphic representation of system load average
+tload

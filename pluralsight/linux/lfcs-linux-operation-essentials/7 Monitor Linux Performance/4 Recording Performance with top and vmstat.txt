@@ -1,0 +1,12 @@
+# provides a dynamic real-time view of a running system
+top 
+top -b -n1
+top -b -n1 > file1
+less file1
+
+# Report virtual memory statistics
+vmstat
+vmstat -S k
+vmstat -S m
+# 每5秒查询1次，查询3次
+vmstat 5 3

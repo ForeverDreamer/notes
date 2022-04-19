@@ -1,0 +1,27 @@
+# 创建一个后台运行的睡眠进程
+sleep 1000&
+jobs
+
+sleep 1000
+Ctrl+Z
+jobs
+# 后台/前台运行job，不指定job id默认当前job
+bg
+fg
+bg 2
+fg 1
+
+# 打开一个新终端执行命令
+sleep 250 &
+ps -p pid
+ps -F pid
+echo $$
+exit
+
+# 回到旧终端
+# 显示三个sleep进程，新终端得后台进程被托管给systemd(pid=1)
+ps -F -p $(pgrep sleep)
+# 当前终端只有两个
+jobs
+# 结束当前shell的sleep进程
+pkill sleep

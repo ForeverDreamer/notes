@@ -1,0 +1,20 @@
+# 查看内存状况
+# 显示单位K
+free
+# 显示单位M
+free -m
+# 显示单位G
+free -g
+
+# report memory map of a process
+man pmap
+pmap pid
+pmap $$
+
+# report current working directory of a process
+pwdx $$
+pwdx $(pgrep sshd)
+
+cd /proc/$$
+pwd
+ls -l cwd
