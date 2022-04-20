@@ -1,0 +1,10 @@
+# Report CPU statistics and input/output statistics for devices and partitions
+iostat
+iostat -m
+iostat -m 5 3
+
+# Report statistics for Linux tasks
+pidstat -p $$ 5 3
+
+# Report processors related statistics
+mpstat -P ALL 2 3

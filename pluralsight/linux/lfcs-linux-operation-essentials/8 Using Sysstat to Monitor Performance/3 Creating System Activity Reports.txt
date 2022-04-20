@@ -1,0 +1,25 @@
+# System activity report, Collect, report, or save system activity information
+# -u [ ALL ], Report CPU utilization.  The ALL keyword indicates that all the CPU fields should be displayed
+sar -u
+
+# Report memory utilization statistics
+sar -r
+
+# Report I/O and transfer rate statistics
+sar -b
+
+# Report network statistics
+sar -n DEV
+
+# Report queue length and load averages
+sar -q
+
+# sa, system activity
+cd /var/log
+cd sa
+ls
+
+# -s: Set the starting time of the data, -e: Set the ending time of the report. The default ending time  is  18:00:00
+sar -s 10:00:00 -e 10:50:00
+# -f: Extract  records  from  filename
+sar -s 10:00:00 -e 10:50:00 -f /var/log/sa/sa20

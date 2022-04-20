@@ -7,6 +7,7 @@ pip uninstall virtualenv
 
 列出所有已安装的包
 pip list
+pip list | Select-String pymongo
 
 查看某个包的信息
 pip show Django

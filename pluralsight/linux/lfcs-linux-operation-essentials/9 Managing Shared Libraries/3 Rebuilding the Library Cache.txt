@@ -1,0 +1,19 @@
+ls -l /usr/local/lib/pluralsight
+cat showuid.c
+# 找不到动态库
+./showuid
+
+ldconfig -p
+# 搜不到
+ldconfig -p | grep display
+ls -l /etc/ld.so.cache
+# 更新缓存
+ldconfig [-v]
+# 执行成功
+./showuid
+
+chown tux showuid
+chmod u+s showuid
+./showuid
+# 搜到了
+ldconfig -p | grep display

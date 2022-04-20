@@ -1,0 +1,17 @@
+cd /
+ls -l lib lib64
+cd lib
+pwd
+# -P, --physical, avoid all symlinks
+pwd -P
+ls
+
+# 配置自己的动态库目录
+cd /etc/ld.so.conf.d
+mkdir /usr/local/lib/pluralsight
+cp /root/libdisplayuid.so !$
+ls -l !$
+chmod +x !$/libdisplayuid.so
+# 添加一行：/usr/local/lib/pluralsight
+vi pluralsight.conf
+echo $LD_LIBRARY_PYTH
