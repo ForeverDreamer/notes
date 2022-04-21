@@ -1,0 +1,11 @@
+table.dataframe tr:nth-child(even) {
+    background-color: yellow;
+}
+
+table.dataframe tr:nth-child(odd) {
+    background-color: red;
+}
+
+table.dataframe th {
+    background-color: white;
+}

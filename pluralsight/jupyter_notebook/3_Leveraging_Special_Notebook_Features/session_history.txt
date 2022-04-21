@@ -1,0 +1,5 @@
+   6: %%writefile?
+   7: %history?
+   8: %history -n
+   9: %history -no
+  10: %history -n -l 5

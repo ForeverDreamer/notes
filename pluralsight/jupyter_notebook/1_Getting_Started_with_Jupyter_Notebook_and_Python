@@ -1,0 +1,6 @@
+# 启动服务器
+jupyter notebook
+# window
+jupyter notebook --ip=127.0.0.1 --port=8888 --notebook-dir=D:\data_files\notes\pluralsight\jupyter_notebook
+# wsl
+jupyter notebook --port=8888 --notebook-dir=/mnt/d/data_files/notes/pluralsight/jupyter_notebook
