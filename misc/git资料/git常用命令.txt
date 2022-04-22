@@ -64,7 +64,9 @@
 12.新增远程仓库
 1) 远程仓库：git init --bare react-complete-guide.git
 2) 本地仓库：git remote add alicloud doer@127.0.0.1:repos/react-complete-guide.git
-            git remote add gcp doer@127.0.0.1:repos/react-complete-guide.git
+            git remote add gcp doer@127.0.0.1:repos/notes.git
+            git remote add origin https://github.com/ForeverDreamer/rasa.git
+            git remote add upstream https://github.com/RasaHQ/rasa.git
 
 13.删除远程仓库
 git remote remove alicloud
