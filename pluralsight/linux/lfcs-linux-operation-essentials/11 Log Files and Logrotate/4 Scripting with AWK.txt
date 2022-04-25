@@ -1,0 +1,13 @@
+tail -n1 secure
+
+awk '/ssh/ { print $0 } ' secure
+awk '/ssh/ { print $5 } ' secure
+awk '/ssh/ { print $5, $6} ' secure
+awk '/ssh/ { print $5, $6, $10} ' secure
+
+cd
+vim secure.sh
+chmod +x secure.sh
+./secure.sh su: /var/log/secure
+./secure.sh sudo /var/log/secure
+./secure.sh ssh /var/log/secure-20220424

@@ -1,0 +1,7 @@
+su -
+cat /etc/anacrontab
+vi !$
+# 新增一行
+1 45 backup tar -cf /tmp/backup /etc
+
+systemctl status crond

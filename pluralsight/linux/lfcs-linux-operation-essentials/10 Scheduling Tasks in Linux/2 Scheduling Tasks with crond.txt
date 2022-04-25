@@ -1,0 +1,20 @@
+# 切换到root用户
+su -
+ls /etc/cron*
+vim /etc/crontab
+# 增加一行
+45 8-18 * * 1-5 root df -h
+exit
+
+# 查看定时任务
+crontab -l
+
+# 编辑定时任务
+crontab -e
+MAILTO=tux
+*/5 * * * * ls /etc
+0 15 * * 5 /home/tux/df.sh
+
+crontab -l
+# 删除定时任务
+crontab -r

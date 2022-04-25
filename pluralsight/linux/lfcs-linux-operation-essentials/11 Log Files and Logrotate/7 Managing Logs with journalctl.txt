@@ -1,0 +1,13 @@
+journalctl
+journalctl -n
+journalctl -n 20
+journalctl -f
+journalctl -b
+journalctl -u sshd.service
+journalctl --since "2022-04-22 12:00:00"
+journalctl --since "10 minutes ago"
+journalctl --since "8 minutes ago"
+journalctl --list-boots
+ 
+mkdir /var/log/journal
+vim /etc/systemd/journald.conf

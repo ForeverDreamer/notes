@@ -1,0 +1,10 @@
+cd /var/log
+pwd
+ls
+
+ls secure*
+less secure
+
+grep sshd secure*
+grep sudo secure*
+grep su: secure*

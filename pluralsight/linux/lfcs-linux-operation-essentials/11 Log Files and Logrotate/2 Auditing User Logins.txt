@@ -1,0 +1,13 @@
+# reports the most recent login of all users or of a given user
+lastlog
+# 过滤从未登录的用户
+lastlog | grep -v "Never"
+
+# last, lastb - show listing of last logged in users
+last
+last -n 10
+last | grep "still"
+last reboot
+last -n 10 root
+
+lastb

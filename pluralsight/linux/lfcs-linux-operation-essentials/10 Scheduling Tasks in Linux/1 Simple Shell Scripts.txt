@@ -1,0 +1,13 @@
+# report file system disk space usage, -h, --human-readable
+df -h
+df -h > df.txt
+mail -s "df" tux < df.txt
+rm -rf df.txt
+mail
+
+vim df.sh
+chmod u+x df.sh
+./df.sh
+mail
+ls /tmp
+cat df.sh

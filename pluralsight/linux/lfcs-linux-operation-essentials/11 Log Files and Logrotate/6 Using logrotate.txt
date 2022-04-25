@@ -1,0 +1,16 @@
+cd /etc/cron.daily
+ls
+
+cd /etc
+vim logrotate.conf
+# 新增一行
+/var/log/andrew {
+    missingok
+    notifempty
+    size 10
+    compress
+}
+
+ls /var/log/andrew*
+logrotate /etc/logrotate.conf
+ls /var/log/andrew*

@@ -1,0 +1,11 @@
+cd /etc
+ls rsyslog*
+vim rsyslog.conf
+# 新增一行
+local1.info /var/log/andrew
+systemctl restart rsyslog
+systemctl status rsyslog
+
+logger -p local1.warn "Test message"
+tail /var/log/messages
+tail /var/log/andrew

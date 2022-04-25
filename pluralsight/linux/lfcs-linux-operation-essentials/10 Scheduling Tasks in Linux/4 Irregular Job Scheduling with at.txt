@@ -1,0 +1,22 @@
+systemctl status atd
+
+at noon
+at> ls /etc
+at> ls /tmp
+at> <EOT> # Ctrl+D
+
+at wednesday
+at> ls /etc
+at> <EOT>
+
+# 查询
+atq
+
+# 删除任务
+atrm <id>
+
+at 13:23 jun 23
+
+# 添加允许/不允许执行任务的用户名单
+ls /etc/*.allow
+ls /etc/*.deny
