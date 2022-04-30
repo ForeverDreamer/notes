@@ -70,3 +70,6 @@
 
 13.删除远程仓库
 git remote remove alicloud
+
+14.克隆为bare服务器仓库
+git clone --bare https://github.com/ForeverDreamer/rasa.git

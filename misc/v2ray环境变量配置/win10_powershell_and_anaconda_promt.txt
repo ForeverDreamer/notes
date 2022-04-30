@@ -1,0 +1,18 @@
+
+# anaconda_promt
+# 设置环境变量
+set http_proxy=http://127.0.0.1:10809
+set https_proxy=http://127.0.0.1:10809
+或
+set http_proxy=socks5://localhost:10808
+set https_proxy=socks5://localhost:10808
+
+测试：
+curl www.google.com
+
+
+# powershell
+好像不需要特别设置，会自动使用系统代理设置
+
+测试：
+curl www.google.com -UseBasicParsing
