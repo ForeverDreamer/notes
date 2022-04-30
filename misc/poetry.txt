@@ -16,8 +16,53 @@ poetry env list
 poetry env remove rasa-qw5lwdI--py3.8
 
 poetry install
+
+# 安装Jieba时报错：pip subprocess to install build dependencies did not run successfully.
 poetry install --extras "jieba"
 poetry install --extras "jieba spacy"
+
+# 更换国内源
+cd /etc/apt/ sudo cp sources.list sources.list.bak && sudo vim sources.list
+
+# 最后我发现是我软件源配置的是18.04的模板, 然而我是20.04...这里一定要注意不同版本的ubuntu如果软件源的模板没有对应上, 很有可能出现问题
+# The following packages have unmet dependencies:
+#  gdb : Depends: libbabeltrace1 (>= 1.2.1) but it is not going to be installed
+       Recommends: libc-dbg
+# E: Unable to correct problems, you have held broken packages.
+
+
+#  阿里源 Ubuntu 18.04
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+# 中科大源 Ubuntu 20.04
+deb https://mirrors.ustc.edu.cn/ubuntu/ focal main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu/ focal-updates main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-updates main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu/ focal-backports main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-backports main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu/ focal-security main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-security main restricted universe multiverse
+deb https://mirrors.ustc.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse
+deb-src https://mirrors.ustc.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse
+
+sudo apt update
+sudo apt upgrade
+sudo apt install build-essentia
+sudo apt --fix-broken install
+
+# 解决方式：
+sudo apt install -y build-essential g++ gdb make cmake ninja-build rsync zip
+
 
 # rasa
 poetry run rasa train --data examples/concertbot/data -c examples/concertbot/config.yml -d examples/concertbot/domain.yml --out examples/concertbot/models -vv

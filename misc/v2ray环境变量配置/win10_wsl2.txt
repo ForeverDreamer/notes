@@ -13,7 +13,7 @@ nameserver 172.18.176.1
 cat /etc/resolv.conf|grep nameserver|awk '{print $2}'
 
 
-WSL2设置环境变量
+WSL2设置环境变量(启用代理设置前需要安装pip install pysocks，否则执行pip命令时会报不支持socks错误)
 由于上面已经可以获取到Win10的ip, 这个时候就可以很方便的对各种环境变量进行设置, 因为V2ray的默认http端口为10809, socks5端口为10808, 所以可以直接设置环境变量 :
 export windows_host=`cat /etc/resolv.conf|grep nameserver|awk '{print $2}'`
 export ALL_PROXY=socks5://$windows_host:10808
