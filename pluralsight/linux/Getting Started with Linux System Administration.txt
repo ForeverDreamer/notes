@@ -164,3 +164,7 @@ sudo apt install nmap
 # 扫描被监听的端口
 # v: verbose, s: scan, T: tcp
 nmap -v -sT localhost
+
+# 服务器信息查询补充命令
+lshw
+lshw -short
