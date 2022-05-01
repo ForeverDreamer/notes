@@ -21,6 +21,13 @@ poetry install
 poetry install --extras "jieba"
 poetry install --extras "jieba spacy"
 
+poetry shell
+pip3 install git+https://github.com/mit-nlp/MITIE.git
+pip3 install rasa[mitie]
+或
+poetry add git+https://github.com/mit-nlp/MITIE.git
+poetry add rasa[mitie]
+
 # 更换国内源
 cd /etc/apt/ sudo cp sources.list sources.list.bak && sudo vim sources.list
 
@@ -66,11 +73,12 @@ sudo apt install -y build-essential g++ gdb make cmake ninja-build rsync zip
 
 # rasa
 poetry run rasa train --data examples/concertbot/data -c examples/concertbot/config.yml -d examples/concertbot/domain.yml --out examples/concertbot/models -vv
-poetry run rasa train --data examples/xiaoasheng/data -c examples/xiaoasheng/config.yml -d examples/xiaoasheng/domain.yml --out examples/xiaoasheng/models -vv
+poetry run rasa train --data examples/xiaoasheng/data -c examples/xiaoasheng/config.yml -d examples/xiaoasheng/domain --out examples/xiaoasheng/models -vv
 poetry run rasa run -m examples/concertbot/models/20220422-131545-dyadic-helm.tar.gz --endpoints examples/concertbot/endpoints.yml --credentials examples/concertbot/credentials.yml -vv
 poetry run rasa run -m examples/xiaoasheng/models --endpoints examples/xiaoasheng/endpoints.yml --credentials examples/xiaoasheng/credentials.yml --enable-api -vv
 poetry run rasa shell -m examples/concertbot/models/20220422-131545-dyadic-helm.tar.gz --endpoints examples/concertbot/endpoints.yml --credentials examples/concertbot/credentials.yml -vv
 poetry run rasa shell -m examples/xiaoasheng/models --endpoints examples/xiaoasheng/endpoints.yml --credentials examples/xiaoasheng/credentials.yml -vv
+poetry run rasa run actions --actions examples.xiaoasheng.actions
 
 # pycharm不认识远程主机新安装的库解决方案
 删除interpreter，重新添加
