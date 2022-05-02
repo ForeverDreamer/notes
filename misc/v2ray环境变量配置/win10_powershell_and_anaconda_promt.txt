@@ -13,7 +13,8 @@ curl www.google.com
 
 # powershell
 好像不需要特别设置，会自动使用系统代理设置
-参考：
+git config --global --get proxy.https
+git config --global proxy.https socks5://localhost:10808
 
 测试：
 curl www.google.com -UseBasicParsing

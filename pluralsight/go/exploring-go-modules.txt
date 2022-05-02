@@ -1,0 +1,63 @@
+# 初始化
+go init mod github.com/pluralsight/gomodules
+
+# 安装module
+# 网络问题：
+# 1.方案一：IP查找工具：www.ipaddress.com/ip-lookup，查找github.com的ip，修改hosts文件新增："140.82.114.4  github.com"
+# 2.方案二：设置代理：$ go env -w GO111MODULE=on
+#                   $ go env -w GOPROXY=https://goproxy.cn,direct
+# powershell好像不用设置，会自动使用系统代理
+# 查看
+$env:GOPROXY
+# 设置，v2ray开启全局代理模式
+$env:GOPROXY='http://localhost:10809'
+# 删除
+$env:GOPROXY=''
+
+go get -u github.com/gorilla/mux
+
+# 查看module
+go list
+go list all
+go list -m all
+go list -m -versions github.com/gorilla/mux
+
+# 验证module
+go mod verify
+
+# 从go.mod文件移除不需要的modues
+go mod tidy
+
+# Download modules to local cache
+go mod download [-x] [-json] [modules]
+go mod download <module-name>
+
+# 编译生成可执行文件
+go build -o D:\data_files\v2ray-core\windows_v2ray.exe github.com/v2fly/v2ray-core/v5/main
+go build -o /mnt/d/data_files/v2ray-core/wsl_v2ray github.com/v2fly/v2ray-core/v5/main
+
+# 手动运行
+.\windows_v2ray.exe version
+./wsl_v2ray version
+
+# Explain why packages or modules are needed
+go mod why github.com/adrg/xdg
+
+# Print module requirement graph
+go mod graph
+
+# Edit go.mod from tools or scripts
+go mod help edit
+go mod edit -module <new-module-name>
+go mod edit -go 1.12
+go mod edit -require <module-name>
+go mod edit -droprequire <module-name>
+go mod edit -exclude <module-name>
+go mod edit -dropexclude <module-name>
+go mod edit -replace rsc.io/quote@v1.5.2=../quote
+go mod edit -dropreplace rsc.io/quote@v1.5.2
+go mod edit -print
+go mod edit -json
+
+# Make vendored copy of dependencies
+go mod vendor
