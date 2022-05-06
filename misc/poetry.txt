@@ -78,7 +78,7 @@ poetry run rasa run -m examples/concertbot/models/20220422-131545-dyadic-helm.ta
 poetry run rasa run -m examples/xiaoasheng/models --endpoints examples/xiaoasheng/endpoints.yml --credentials examples/xiaoasheng/credentials.yml --enable-api -vv
 poetry run rasa shell -m examples/concertbot/models/20220422-131545-dyadic-helm.tar.gz --endpoints examples/concertbot/endpoints.yml --credentials examples/concertbot/credentials.yml -vv
 poetry run rasa shell -m examples/xiaoasheng/models --endpoints examples/xiaoasheng/endpoints.yml --credentials examples/xiaoasheng/credentials.yml -vv
-poetry run rasa run actions --actions examples.xiaoasheng.actions
+poetry run rasa run actions --actions examples.xiaoasheng.actions -vv
 
 # pycharm不认识远程主机新安装的库解决方案
 删除interpreter，重新添加
