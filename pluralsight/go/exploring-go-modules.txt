@@ -61,3 +61,9 @@ go mod edit -json
 
 # Make vendored copy of dependencies
 go mod vendor
+
+拉取 V2Ray 源代码和依赖
+git clone https://github.com/v2fly/v2ray-core.git
+cd v2ray-core && go mod download
+注意：在无法正常访问 Google 的网络环境，依赖无法被正常拉取，需要先设置 GOPROXY：
+go env -w GOPROXY=https://goproxy.io,direct

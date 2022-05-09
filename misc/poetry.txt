@@ -74,6 +74,7 @@ sudo apt install -y build-essential g++ gdb make cmake ninja-build rsync zip
 # rasa
 cd rasa/
 poetry run rasa train --data examples/concertbot/data -c examples/concertbot/config.yml -d examples/concertbot/domain.yml --out examples/concertbot/models -vv
+# 训练太慢重启一下wsl或windows系统试试，不知道是不是资源占用太高导致，domain.yml修改后训练很快，应该是使用了缓存
 poetry run rasa train --data examples/xiaoasheng/data -c examples/xiaoasheng/config.yml -d examples/xiaoasheng/domain --out examples/xiaoasheng/models -vv
 poetry run rasa run -m examples/concertbot/models/20220422-131545-dyadic-helm.tar.gz --endpoints examples/concertbot/endpoints.yml --credentials examples/concertbot/credentials.yml -vv
 poetry run rasa run -m examples/xiaoasheng/models --endpoints examples/xiaoasheng/endpoints.yml --credentials examples/xiaoasheng/credentials.yml --enable-api -vv
