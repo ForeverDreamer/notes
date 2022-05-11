@@ -1,0 +1,26 @@
+celery --help
+celery <command> --help
+celery beat --help
+
+celery -A clr worker -P solo -l debug -n worker1@%h -E
+celery -A clr beat -l debug --scheduler django_celery_beat.schedulers:DatabaseScheduler
+celery -A clr flower
+
+celery -A examples.app.myapp worker -P solo -l debug -n worker1@%h -E
+python -m celery -A examples.eventlet worker -l INFO --concurrency=500 --pool=eventlet
+python -m celery -A examples.app.myapp worker -P solo -l debug -n worker2@%h -E
+python -m celery -A examples.app.myapp worker -P solo -l info -n worker3@%h -E
+
+celery -A proj inspect --help
+celery -A proj control --help
+celery -A proj inspect active
+celery -A proj inspect active --destination=worker1@DESKTOP-213OEJB
+
+celery -A clr control enable_events
+celery -A clr events --dump
+celery -A clr events
+celery -A clr control disable_events
+celery -A clr status
+
+# flower
+http://192.168.71.20:51212/
