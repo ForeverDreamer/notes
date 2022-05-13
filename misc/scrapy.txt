@@ -22,8 +22,8 @@ scrapy view https://pluralsight.com/authors
 
 # 新建项目
 scrapy startproject my_project
-
-
+python -m scrapy startproject xiaoasheng examples 
+python -m scrapy startproject micro examples 
 
 2.scrapy shell
 
