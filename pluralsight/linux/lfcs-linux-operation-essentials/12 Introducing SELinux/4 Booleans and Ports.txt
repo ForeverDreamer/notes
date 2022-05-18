@@ -1,0 +1,18 @@
+getsebool -a
+getsebool -a | wc -l
+
+semanage boolean -l
+
+getsebool httpd_read_user_content
+setsebool !$ on
+getsebool httpd_read_user_content
+
+ls -l /etc/selinux/targeted/policy/
+
+setsebool -P httpd_read_user_content on
+# 执行上一次ls命令
+!ls
+
+semanage port -l
+semanage port -l | grep ssh
+semanage port -a -t ssh_port_t -p tcp 2222

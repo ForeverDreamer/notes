@@ -1,0 +1,16 @@
+ls -Z /etc/shadow
+
+getenforce
+
+sestatus
+
+cat /etc/selinux/config
+
+setenforce 0
+getenforce
+setenforce 1
+
+id -Z
+
+ps -Z
+ps -Zp $(pgrep sshd)

@@ -1,0 +1,20 @@
+tail /var/log/audit/audit.log
+
+# a tool to query audit daemon logs
+ausearch -m avc
+
+ls -Z /etc/shadow
+# change file SELinux security context
+chcon -t unlabeled_t /etc/shadow
+ls -Z /etc/shadow
+
+ausearch -m avc -ts recent
+
+restorecon /etc/shadow
+ls -Z /etc/shadow
+
+semanage fcontext -l
+semanage fcontext -l | grep /etc/shadow
+
+cd /etc/selinux/targeted/contexts/files/
+ls
