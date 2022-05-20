@@ -20,6 +20,18 @@ curl www.google.com -UseBasicParsing
 git config --global --get proxy.https
 git config --global proxy.https socks5://localhost:10808
 
+# 配置代理
+# export http_proxy=192.168.71.135:8888
+# export https_proxy=192.168.71.135:8888
+# git config --global proxy.http 192.168.71.135:8888
+# git config --global proxy.https 192.168.71.135:8888
+
+# 清除代理
+# unset http_proxy
+# unset https_proxy
+# git config --global --unset proxy.http
+# git config --global --unset proxy.https
+
 
 
 

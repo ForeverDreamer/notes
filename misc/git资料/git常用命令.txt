@@ -7,6 +7,9 @@
   git config --global push.default upstream
   git config --global merge.conflictstyle diff3
 
+  git config -l
+  git config --global -l
+
 2.创建仓库
   su git
   git init --bare project.git

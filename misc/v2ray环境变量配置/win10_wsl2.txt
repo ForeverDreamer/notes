@@ -25,7 +25,11 @@ unset WINDOWS_HOST
 unset ALL_PROXY
 unset HTTP_PROXY
 unset HTTPS_PROXY
-git config --global --unset http.proxy
+# git config --global --unset proxy.http
+# git config --global --unset proxy.https
+
+git config -l
+git config --global -l
 
 
 git也可以设置为使用代理 :
