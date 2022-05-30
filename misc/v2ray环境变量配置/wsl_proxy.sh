@@ -3,6 +3,7 @@ case $1 in
     on )
         # 只对子进程有效，shell父进程无效
         export WINDOWS_HOST=`cat /etc/resolv.conf|grep nameserver|awk '{print $2}'`
+        export WINDOWS_HOST=$(ip route | grep default | awk '{print $3}')
         export ALL_PROXY=socks5://$WINDOWS_HOST:10808
         export HTTP_PROXY=$ALL_PROXY
         export HTTPS_PROXY=$ALL_PROXY

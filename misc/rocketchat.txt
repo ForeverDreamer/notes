@@ -12,3 +12,41 @@ rasa run -vv
 rasa run actions -vv
 
 stack exec duckling-example-exe
+
+
+# ~/.bashrc add for proxy
+export hostip=$(ip route | grep default | awk '{print $3}')
+export hostport=10809
+alias proxy='
+    export ALL_PROXY="http://${hostip}:${hostport}";
+    export HTTPS_PROXY=$ALL_PROXY;
+    export HTTP_PROXY=$ALL_PROXY;
+    git config --global proxy.https $ALL_PROXY;
+    git config --global proxy.http $ALL_PROXY;
+    echo "代理开启";
+    echo "ALL_PROXY: $ALL_PROXY";
+    echo "HTTPS_PROXY: $HTTPS_PROXY";
+    echo "HTTP_PROXY: $HTTP_PROXY";
+    echo "git proxy:";
+    git config --global -l;
+'
+alias unproxy='
+    unset ALL_PROXY;
+    unset HTTPS_PROXY;
+    unset HTTP_PROXY;
+    git config --global --unset proxy.http;
+    git config --global --unset proxy.https;
+    echo "代理关闭";
+    echo "ALL_PROXY: $ALL_PROXY";
+    echo "HTTPS_PROXY: $HTTPS_PROXY";
+    echo "HTTP_PROXY: $HTTP_PROXY";
+    echo "git proxy:";
+    git config --global -l;
+'
+
+alias rcnode='nvm use 14.18.3;'
+alias ltsnode='nvm use 16.15.0;'
+
+.yarnrc.yml添加代理配置：
+httpProxy: "http://172.26.192.1:10809"
+httpsProxy: "http://172.26.192.1:10809"
