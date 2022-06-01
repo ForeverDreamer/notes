@@ -48,5 +48,10 @@ alias rcnode='nvm use 14.18.3;'
 alias ltsnode='nvm use 16.15.0;'
 
 .yarnrc.yml添加代理配置：
-httpProxy: "http://172.26.192.1:10809"
-httpsProxy: "http://172.26.192.1:10809"
+httpProxy: "http://172.30.224.1:10809"
+httpsProxy: "http://172.30.224.1:10809"
+
+# You should work (clone) with Rocket.Chat code under ~ (/home/username) dir, otherwise MongoDB won't start.
+# pwd should return /home/yourusername
+# 试过了，没啥用
+doer@DESKTOP-G6EHSET:~$ ln -s /mnt/d/data_files/Rocket.Chat Rocket.Chat

@@ -134,7 +134,9 @@ Links Types
 ls -ld /etc
 ls -ldi /etc
 ls -ldi /etc/.
-ln -s source_file symbolic_link
+# source_path必须是绝对路径
+ln -s source_path symbolic_link
+doer@DESKTOP-G6EHSET:~$ ln -s /mnt/d/data_files/Rocket.Chat Rocket.Chat
 
 
 # 5.Reading Files
