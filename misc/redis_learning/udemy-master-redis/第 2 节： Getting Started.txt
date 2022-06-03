@@ -1,0 +1,21 @@
+# 连接服务器
+redis-cli
+
+# 测试连通性
+ping
+ping "Hello server"
+
+# 断开连接
+quit
+
+# 获取服务器信息
+info
+info server
+info clients
+info memory
+info stats
+info replication
+info cpu
+info cluster
+info keyspace
+info modules

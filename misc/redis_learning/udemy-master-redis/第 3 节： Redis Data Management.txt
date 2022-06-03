@@ -1,0 +1,11 @@
+# set
+set name "Adnan"
+set fname "Adnan"
+set lname "Waheed"
+
+# get
+get name
+get fname
+get lname
+get lastname
+get "Adnan"

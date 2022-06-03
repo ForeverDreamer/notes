@@ -1,3 +1,40 @@
+sudo systemctl start docker
+docker container rm $(docker container ls -aq) -f
+docker container ls -a
+
+
+docker run -it --rm --name lishenglin-mongodb \
+    -p 27017:27017 \
+    -v $HOME/dbs/mongodb:/data/db \
+    -e MONGO_INITDB_ROOT_USERNAME=root \
+    -e MONGO_INITDB_ROOT_PASSWORD=Root@1234. \
+    -e TZ=Asia/Shanghai \
+    mongo:4.4
+
+docker run -it --rm --name ruidu_mongo -p 27017:27017 -v C:\Users\micro\Documents\中经网\NewRuidu\db_data:/data/db -e TZ=Asia/Shanghai -d mongo:4.4
+docker run -it --rm --name ruidu_es -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e cluster.name=ruidu_cluster -e node.name=ruidu_node_1 -d docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+docker run --name ruiso_es -p 9200:9200 -p 9300:9300 -v D:/data_files/Ruiso/deploy/elasticsearch/plugins:/usr/share/elasticsearch/plugins -v D:/data_files/Ruiso/deploy/elasticsearch/config/analysis:/usr/share/elasticsearch/config/analysis -e "discovery.type=single-node" -e cluster.name=ruiso_cluster -e node.name=ruiso_node_1 -d elasticsearch:7.16.2
+
+docker run -it --rm --name ruidu_mongo -p 58888:27017 -v /data/ruidu/db:/data/db -e TZ=Asia/Shanghai -d mongo:4.4
+docker run --name xr_redis -p 6379:6379 redis:6.0
+docker run --hostname xr_mq --name xr_rabbit -p 5672:5672 rabbitmq:3.9.9
+
+# vscode先启动有可能会占用6379端口，所以先启动redis的docker；或者先关闭vscode，启动redis后再启动vscode
+# 通过端口查看进程Id
+netstat -aon|findstr '6379'
+# 通过进程id查找应用程序名字
+tasklist|findstr '14500'
+
+docker container start lishenglin-mongodb
+docker container stop lishenglin-mongodb
+
+docker run -it --rm --name lishenglin-redis -p 10001:10001 redis 
+
+
+
+
+
+
 注意：把windows上编辑的.sh，dockerfile文件拷贝到linux运行会出现'\r'的问题，想办法处理或直接在linux上编辑文件
       通过push到github再分别在windows和Linux系统pull，git应该会自动转换换行符，
       或者在windows编辑器下方手动切换CRLF/LF,再把文件传输到linux系统
