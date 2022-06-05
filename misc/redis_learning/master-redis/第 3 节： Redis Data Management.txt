@@ -1,0 +1,145 @@
+7. Redis Keys and Values
+set name "Adnan"
+set fname "Adnan"
+set lname "Waheed"
+
+get name
+get fname
+get lname
+get lastname
+get "Adnan"
+
+
+# 9. Deleting Keys
+del name
+
+get name
+
+set key1 value1
+set key2 value2
+set key3 value3
+
+del key1 key2 key3
+
+get key1
+
+# 11. How to check if a key exists or not
+exists fname
+exists lname
+exists fname lname
+exists name
+
+
+# 13. How to define keys with expiration
+# key: 1, value: hello: ex: 过期时间(秒)
+set 1  hello ex 120
+ttl 1
+# 重新设置Key的过期时间(秒)
+expire 1 10
+# ttl: 秒
+ttl 1
+# px: 毫秒
+set 1 hello px 1000
+ttl 1
+# pttl: 毫秒
+pttl 1
+get 1
+set 1 hello px 100000
+pttl 1
+ttl 1
+expire 1 10
+set 1 hello px 1000000
+pttl 1
+# pexpire: 毫秒
+pexpire 1 100
+pttl 1
+
+
+# 15. How to remove expiration from a key
+set 1 hello ex 120
+ttl 1
+# 取消过期，让key一直存在
+persist 1
+ttl 1
+set 2 hello
+persist 2
+set hello ex 10
+ttl 3
+
+
+# 18. Key Spaces
+set key1 value1
+get key1
+# In the same space, 覆盖key1的值
+set key1 value2
+get key1
+# 进入key space index #1(从0开始，默认0)
+select 1
+set key1 value2
+get key1
+
+select 0
+get key1
+set key1 value1
+get key1
+
+# 查看当前key space的所有key
+keys *
+set key2 value2
+keys *
+
+select 0
+keys *
+
+# 删除当前space的所有Key(尽量用del指定需要删除的key)
+flushdb
+keys *
+
+select 0
+flushdb
+keys *
+
+select 1
+select 2
+
+
+# 20. Keys naming conventions
+set userAdam Adam
+set userAmy Amy
+keys *
+
+set user:100 Adam
+set user:101 Amy
+keys *
+
+del userJohn userAdam userAmy
+keys *
+
+set user:100:friends Scott
+set user:101:friends John
+keys *
+
+
+# 22. Keys pattern matching - KEYS
+set hello 1
+set hallo 2
+set hrllo 3
+set heello 4
+set hijllo 5
+
+keys *
+keys *ll*
+keys *e*
+keys h?llo
+keys h*llo
+keys h[ae]llo
+keys h[x]llo
+keys h[ee]llo
+keys h[e]llo
+keys [a-b]llo
+keys [a-z]llo
+keys *
+keys user:*
+keys user:????
+keys user:???:group
+keys user:*:group
