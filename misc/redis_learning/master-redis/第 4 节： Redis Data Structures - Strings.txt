@@ -1,0 +1,82 @@
+# 35. Redis Strings and their use cases
+set otp:use_100 12345 ex 120
+get otp:use_100
+ttl otp:use_100
+
+set app:stats:daily_visitors 1000
+get app:stats:daily_visitors
+
+set app:config:title "KlickAnalytics"
+get app:config:title
+set app:users:types "Billable, Free"
+set app:config:usertimeout 10000
+
+
+# 37. String Key definition for an app, and a shop
+get app:config:title
+set app:config:url "http://www.klickanalytics.com"
+keys *
+set app:config:greetings "Welcome to KlickAnalytics"
+keys *
+set shop:101:name "Pizza Store"
+keys *
+set shop:101:location "123 Broadway"
+set shop:101:country "USA"
+keys *
+keys *shop*
+get shop:101:name
+
+
+# 39. Counting numbers using INCR and DECR
+set student:101:score:math 10
+get student:101:score:math
+type student:101:score:math
+incr student:101:score:math
+incr student:101:score:math
+incr student:101:score:math
+incr student:101:score:math
+incr student:101:score:math
+incr student:101:score:math
+decr student:101:score:math
+decr student:101:score:math
+decr student:101:score:math
+decr student:101:score:math
+decr student:101:score:math
+decr student:101:score:math
+
+set customer:101:balance 100
+get customer:101:balance
+incr customer:101:balance
+incr customer:101:balance
+incr customer:101:balance
+incr customer:101:balance
+decr customer:101:balance
+decr customer:101:balance
+decr customer:101:balance
+decr customer:101:balance
+incrby customer:101:balance 100
+get customer:101:balance
+incrby customer:101:balance 1000
+incrby customer:101:balance 1000
+incrby customer:101:balance 1000
+decrby customer:101:balance 1000
+decrby customer:101:balance 1000
+decrby customer:101:balance 1000
+get customer:101:balance
+
+
+# 41. Counting floating point numbers
+set num 1
+set num 1.5
+get num
+type num
+incrby num 1
+incrbyfloat num 1.2
+decrby num 1
+decrbyfloat num -1.2
+incrbyfloat num -1.2
+
+set app:fees:cc 1.0
+incrbyfloat app:fees:cc 0.2
+incrbyfloat app:fees:cc 2.0
+incrbyfloat app:fees:cc -1.5

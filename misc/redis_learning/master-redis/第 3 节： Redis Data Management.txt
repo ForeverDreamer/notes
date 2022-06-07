@@ -143,3 +143,78 @@ keys user:*
 keys user:????
 keys user:???:group
 keys user:*:group
+
+
+# 24. Saving keys information on server
+set 1 hello1
+set 2 hello2
+get 1
+get 2
+shutdown save
+
+ping
+get 1
+get 2
+set 3 hello3
+shutdown nosave
+
+get 3
+get 1
+get 2
+
+
+# 26. Rename a Key - RENAME
+set name1 "John"
+set name2 "Doe"
+get name1
+get name2
+rename name1 fname
+get name1
+get fname
+rename name2 lname
+get name2
+get lname
+# 不存在则报错
+rename 11 abc
+rename fname lastname
+get fname
+get lname
+# 已存在则覆盖
+rename fname lname
+get fname
+get lname
+
+
+# 28. Rename a key with caution using RENAMENX
+set k1 v1
+set k2 v2
+get k1
+get k2
+# 已存在则不会执行重命名操作
+renamenx k1 k2
+get k1
+get k2
+# 操作成功
+renamenx k1 k3
+get k1
+get k3
+
+
+# 30. Deleting Keys Asynchronously via UNLINK
+set k1 v1
+set k2 v2
+# 同步(阻塞)删除
+del k1 k2
+set k1 v1
+set k2 v2
+# 异步(非阻塞)删除
+unlink k1 k2
+
+# 32. How to find data type of a key value - TYPE
+set name "Joe"
+get name
+type name
+lpush k1 "value"
+type k1
+sadd k2 "value"
+type k2
