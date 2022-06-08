@@ -80,3 +80,182 @@ set app:fees:cc 1.0
 incrbyfloat app:fees:cc 0.2
 incrbyfloat app:fees:cc 2.0
 incrbyfloat app:fees:cc -1.5
+
+
+# 43. Using APPEND as list of timeseries data
+set title "hello"
+
+get title
+strlen title
+
+set website:stats:daily_visitors_log "100"
+get website:stats:daily_visitors_log
+append website:stats:daily_visitors_log "200"
+get website:stats:daily_visitors_log
+set website:stats:daily_visitors_log "100"
+get website:stats:daily_visitors_log
+set website:stats:daily_visitors_log " 200"
+get website:stats:daily_visitors_log
+append website:stats:daily_visitors_log " 3000"
+get website:stats:daily_visitors_log
+
+
+# 45. Setting and getting multiple keys via MSET, MGET, MSETNX
+set k1 v1
+get k1
+mset k1 v1 k2 v2 k3 v3
+keys *
+get k1
+get k2
+mget k1 k2 k3
+mset k1 v10 k2 v2 k3 v3
+get k1
+# set if not exist
+msetnx k1 v20 k2 v2 k3 v3
+get k1
+
+
+# 47. Using GETSET for an atomic reset
+set key1 val1
+get key1
+getset key1 val1.2
+get key1
+keys *keys*
+getset key2 1
+set app:daily_tokens 10
+get app:daily_tokens
+decr app:daily_tokens
+decr app:daily_tokens
+decr app:daily_tokens
+getset app:daily_tokens 10
+get app:daily_tokens
+
+
+# 49. Extract string value via GETRANGE
+set website "KlickAnalytics.com"
+get website
+getrange website 0 1
+getrange website 0 0
+getrange website 0 1
+getrange website 0 2
+getrange website 0 3
+getrange website 0 4
+getrange website 5 13
+getrange website 0 100
+getrange website -1 0
+getrange website 15 17
+getrange website -3 -1
+
+
+# 51. Replace string value using SETRANGE
+set name "Hello World"
+get name
+setrange name 6 "Redis"
+strlen name
+get name
+setrange name 6 " Redis World"
+setrange name2 6 "Wonderful World"
+get name2
+
+
+# 53. Set Key and expiration using SETEX and PSETEX
+set num 1
+get num
+
+expire num 10
+ttl num
+setex num 120 1
+ttl num
+setex app:config:timeout 100 1
+ttl app:config:timeout
+psetnx num 10000 1
+ttl num
+
+
+# 55. Set key if not exists using SETNX
+set num1 100
+get num1
+keys *
+setnx num1 200
+keys *
+get num1
+setnx num2 200
+get num2
+setnx user:101:login_attempt 1
+get user:101:login_attempt
+
+
+# 57. String Encoding types
+set mykey 1233456
+get mykey
+object encoding mykey
+set mykey "test string"
+object encoding mykey
+strlen mykey
+set mykey "This is a a long string defined for redis database structure"
+object encoding mykey
+
+
+# 59. Using serialized JSON data
+set json '{"fname" : "John", "lname" : "Doe"}'
+get json
+
+
+# 61. Scanning Keys with SCAN
+flushdb
+keys *
+# 构造50个key
+debug populate 50
+keys *
+scan 0
+scan 2
+scan 21
+scan 21 count 15
+keys "*keys"
+scan 0 match *
+scan 0 match *key:?
+scan 2 match *key:?
+type key:1
+set hello 1
+type hello
+scan 0 match *h* type string
+scan 0 match *h* type string count 30
+
+geoadd geokey 0 0 value
+type geokey
+scan 0 type zset
+
+
+# 63. Use Cases - Strings
+The Redis string data structure is the most versatile data structures that can be used across multiple use cases;
+For serving static websites pages. Redis.io site uses strings to serve all static page contents
+Caching - To store most common, frequently used data within an application or a website.
+Counters are excellent choice for strings e.g Daily website visitors and more.
+Master Catalog and configuration e.g. You can store all the application default or user based configuration settings in respective strings key e.g.
+SET app:config:website www.KlickAnalytics.com
+
+
+# 64. Quick Reference - Strings
+The Redis String type is the simplest type of value you can associate with a Redis key.
+String is not the best term for this type because it is used to hold numeric types as well.
+Internally it is held as a byte array.
+A string is a simple scalar that can hold a
+single value or
+it can hold an XML or
+a JSON document as well
+A string value can't be bigger than 512 MB.
+
+SET, SETNX, MSET, MSETNX
+Set value, Set value if key does not exist, Set multiple values, Set multiple values if none of the keys exist
+
+GET, MGET, GETSET
+Get value, Get multiple values, Set value, return old value
+
+PSETEX, SETEX
+Set with expiry in seconds and milliseconds
+
+INCR, INCRBY, INCRBYFLOAT
+Increment integer, Add to integer, Add to float
+
+DECR, DECRBY
+Decrement integer, Subtract from integer
