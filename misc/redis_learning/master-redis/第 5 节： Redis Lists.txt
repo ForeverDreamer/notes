@@ -1,10 +1,205 @@
 # 66. Creating a list using LPUSH, RPUSH
+# left(head/start)
 lpush dept "Sales"
 lpush dept "Admin" "HR"
-get deptlrange dept 0 -1
+# 报错，不支持get
+get dept
+lrange dept 0 -1
 lrange dept "Programming"
 lrange dept 0 -1
+# right(tail/end)
 rupsh dept "Marketing"
 lrange dept 0 -1
 lrange dept 1 -1
 lrange dept -3 -1
+
+
+# 68. View latest stock prices via LINDEX
+lrange dept 0 -1
+
+lindex dept 0
+lindex dept 1
+lindex dept 2
+lindex dept 3
+lindex dept -1
+lindex dept -2
+lindex dept 10
+lindex dept -10
+
+lpush MSFT:close_prices 10 10.20 11.00 20.00
+lrange MSFT:close_prices 0 -1
+lindex MSFT:close_prices - 1
+lindex MSFT:close_prices 0
+del MSFT:close_prices
+
+rpush MSFT:close_prices 10 10.20 15.00
+lrange MSFT:close_prices 0 -1
+lindex MSFT:close_prices -1
+lindex MSFT:close_prices -2
+
+
+# 70. Insert an element via LINSERT
+lrange dept 0 -1
+
+linsert dept before "Admin" "Legal"
+lrange dept 0 -1
+
+linsert dept before 0 "Legal"
+lrange dept 0 -1
+
+linsert dept after "Sales" "Social"
+lrange dept 0 -1
+
+
+# 72. Remove elements via LPOP and RPOP
+lpush num 1 2 3 4 5 6 7 8 9 10
+lrange num 0 -1
+del num
+
+lpush num 1 2 3 4 5 6 7 8 9 10
+lrange num 0 -1
+lpop num
+lrange num 0 -1
+rpop num
+rpop num
+lrange num 0 -1
+lpop num 2
+rpop num 1
+lrange num 0 -1
+
+
+# 74. Trim a list using LTRIM
+del num
+lpush num 1 2 3 4 5 6 7 8 9 10
+lrange num 0 -1
+ltrim num 0 -1
+lrange num 0 -1
+ltrim num 1 -1
+lrange num 0 -1
+ltrim num 2 -1
+lrange num 0 -1
+
+
+# 76. Update an element value via LSET
+rpush num 1 2 3 4 5
+lrange num 0 -1
+lset num 2 30
+lrange num 0 -1
+lset num 4 50
+lrange num 0 -1
+lset num -1 50
+lset num -1 100
+lrange num 0 -1
+lset num 100 199
+lrange num 0 -1
+
+
+# 78. Find length of a list via LLEN
+rpush app:config:lst_supported_lang "English" "Japanese"
+rpush app:config:lst_supported_lang "English" "Japanese" "Arabic" "Chinese"
+lrange app:config:lst_supported_lang 0 -1
+llen app:config:lst_supported_lang
+
+
+# 80. Find matching elements via LPOS
+rpush mykey a b a a c d e f a
+lrange mykey 0 -1
+lpos mykey "a"
+lpos mykey "a" rank 0
+lpos mykey "a" rank 1
+lpos mykey "a" rank 2
+lpos mykey "a" rank 3
+lpos mykey "a" rank -1
+lpos mykey "a" rank -2
+lpos mykey "a" count
+lpos mykey "a" count 0
+lpos mykey "a" count 1
+lpos mykey "a" count 2
+lpos mykey "a" count 3
+lpos mykey "a" count 4
+lpos mykey "a" rank 1 count 0
+lpos mykey "a" rank -1 count 0
+lpos mykey "a" rank -1 count 1
+lpos mykey "a" rank -1 count 2
+lpos mykey "a" rank -1 count 2 maxlen 1
+lpos mykey "a" rank 1 count 2 maxlen 1
+lpos mykey "a" rank 1 count 2 maxlen 10
+lpos mykey "a" rank 1 count 2 maxlen 100
+lpos mykey "a" rank 1 count 0 maxlen 5000
+
+
+# 82. Remove element via LREM
+flushdb
+rpush mykey "one" "one" "two" "three" "one"
+lrange mykey 0 -1
+lrem mykey 0 "two"
+lrange mykey 0 -1
+lrem mykey 1 "one"
+lrange mykey 0 -1
+rpush mykey "five"
+lrange mykey 0 -1
+lrem mykey -1 "one"
+lrange mykey 0 -1
+
+
+# 84. Move elements between lists via LMOVE
+rpush jobs:pending "job1" "job2" "job3"
+lrange jobs:pending 0 -1
+lmove jobs:pending jobs:completed left right
+lrange jobs:pending 0 -1
+lrange jobs:completed 0 -1
+lmove jobs:pending jobs:completed left left
+lrange jobs:pending 0 -1
+lrange jobs:completed 0 -1
+rpush orders:pending 1 2 3 4 5
+lmove orders:pending orders:completed right left
+lrange orders:pending 0 -1
+lrange orders:completed 0 -1
+
+
+# 86. Use Cases - Lists
+Lists contain strings that are sorted by their insertion order. With Redis Lists, you can add items to the head or tail of the lists, which is very useful for queueing jobs. Some of use cases for the list may be;
+
+Social Networking Sites: Social platforms like Twitter use Redis Lists to populate their timelines or homepage feeds, and can customize the top of their feeds with trending tweets or stories.
+
+RSS Feeds: We can create news feeds from custom sources where you can pull the latest updates and allow interested followers to subscribe to their favorite RSS feed.
+
+Leaderboards: This is more of high use cases where Forums like Reddit and other voting platforms utilize Redis Lists to add articles to the leaderboard and even sort them by most viewed and voted entries.
+
+
+# 87. Quick Reference - Lists
+A list is just a sequence of ordered elements.
+
+What's the downside? Accessing an element by index is very fast in lists implemented with an Array (constant time indexed access) and not so fast in lists implemented by linked lists (where the operation requires an amount of work proportional to the index of the accessed element).
+
+You can think of list as an array
+
+List are designed in such a way that adding new elements at the end of a list, is really fast.
+
+The downside is that indexing into the list can be slow.
+
+When this is required, Sorted Sets are a better option
+
+LPUSH, RPUSH
+
+Add Value at beginning, Add value at the end
+
+LPUSHX, RPUSHX
+
+Only push if key already exists
+
+LLEN, LRANGE
+
+Get number of values, Get values from Start to Stop
+
+LINDEX, LSET, LINSERT
+
+Get a value by index, Set a value by index, Add a value before or after another
+
+LREM, LTRIM
+
+Delete element from list, Trim list by range
+
+LPOP, RPOP
+
+Delete and Get the first element, Delete and Get the last element
