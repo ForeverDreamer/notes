@@ -30,20 +30,20 @@ es = Elasticsearch()
 #                 f2.write(line)
 
 
-# def gen_customer_data():
-#     with open("customers_full(modified).txt", "r") as f:
-#         i = 1
-#         for doc in f.readlines():
-#             yield {
-#                 '_op_type': 'create',
-#                 '_index': 'customers',
-#                 '_id': i,
-#                 '_source': json.loads(doc.strip())
-#             }
-#             i += 1
-#
-#
-# pp(helpers.bulk(es, gen_customer_data()))
+def gen_customer_data():
+    with open("customers_full(modified).txt", "r") as f:
+        i = 1
+        for doc in f.readlines():
+            yield {
+                '_op_type': 'create',
+                '_index': 'customers',
+                '_id': i,
+                '_source': json.loads(doc.strip())
+            }
+            i += 1
+
+
+pp(helpers.bulk(es, gen_customer_data()))
 
 # Searching and Analyzing Data with Elasticsearch: Getting Started
 
@@ -51,7 +51,7 @@ es = Elasticsearch()
 # 3.Executing CRUD Operations Using the Elasticsearch APIs
 # 1)Introducing the cURL Command Line Utility
 # print(es.cat.indices(params={'v': 'true'}))
-print(es.cat.nodes(params={'v': 'true'}))
+# print(es.cat.nodes(params={'v': 'true'}))
 
 # 2)Creating Indices
 # print(es.indices.create(index='products'))
