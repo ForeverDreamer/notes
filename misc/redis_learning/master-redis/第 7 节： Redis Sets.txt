@@ -1,0 +1,252 @@
+# 112. Are sets are unique, and un-ordered
+sadd cars toyota maserati ford
+sadd cars mazda
+smembers cars
+sadd names Rob Robby Rim John
+smembers names
+sadd numbers 1 2 3
+smembers numbers
+sadd numbers 6
+smembers numbers
+sadd cars ford
+smembers cars
+
+
+# 114. Using SETS for unique data
+scard cars
+smembers cars
+scard numbers
+smembers numbers
+scard a
+
+sadd unique_ips 1.1.1.5
+sadd unique_ips 1.1.1.2
+sadd unique_ips 1.1.1.3
+sadd unique_ips 1.1.1.4
+sadd unique_ips 1.1.1.5
+smembers unique_ips
+sadd unique_ips 1.1.1.0
+smembers unique_ips
+
+sadd amazon:unique_categories electronics computers
+smembers amazon:unique_categories
+sadd amazon:unique_categories handmade gardeing outdoor sports
+smembers amazon:unique_categories
+smembers amazon:unique_categories
+
+sadd twitter:hashtags help money trainings coding database
+smembers twitter:hashtags
+sadd twitter:hashtags help money trainings coding database stockmarkets klickanalytics
+smembers twitter:hashtags
+
+
+# 116. Sets Maintenance - SADD, SREM, SPOP
+sadd subjects math
+smembers subjects
+sadd subjects english science physics
+sadd subjects bingo
+smembers subjects
+srem subjects bingo
+smembers subjects
+srem subjects abc
+smembers subjects
+sadd subjects a b c d
+smembers subjects
+# 随机删除1个元素
+spop subjects
+spop subjects
+spop subjects
+smembers subjects
+# 随机删除2个元素
+spop subjects 2
+spop subjects 2
+spop subjects 2
+spop subjects 2
+
+
+# 118. Checking a membership existence
+smembers cars
+sismember cars ford
+sismember cars FORD
+sismember cars Ford
+sismember cars ford
+smembers subjects
+sadd subjects math ai english
+smembers subjects
+sismember subjects english
+sismember subjects ai
+smembers subjects
+sadd player:online alpha beta gamma
+smembers player:online
+sismember player:online beta
+sismember player:online amazing88
+smismember player:online alpha amazing88
+smismember subjects english technology
+
+
+# 120. Get random elements via SRANDMEMBER
+sadd unique_lottery_num 1 20 30 40 50
+smembers unique_lottery_num
+srandmember unique_lottery_num 2
+srandmember unique_lottery_num 2
+srandmember unique_lottery_num 2
+srandmember unique_lottery_num 2
+
+
+# 122. Moving elements within sets via SMOVE
+sadd num:odd 1 3 5 7 9
+sadd num:even 2 4 6 8 10
+smembers num:odd
+smembers num:even
+smove num:odd num:even
+smove num:odd num:even 1
+smembers num:odd
+smembers num:even
+smove num:odd num:even 1
+smove num:odd num:even 2
+smove num:odd num:even 3
+smembers num:odd
+smove num:odd num:even 5 7
+
+sadd orders:pending 1 2 3
+sadd orders:completed 10 20 30
+smembers orders:pending
+smembers orders:completed
+smove orders:pending orders:completed 1
+smembers orders:completed
+smove orders:pending orders:completed 2
+smove orders:pending orders:completed 3
+smembers orders:completed
+smembers orders:pending
+
+sadd jobs:started 1 2 3
+sadd jobs:in-progress 10 20 30
+sadd jobs:completed 100 200 30
+smembers jobs:started
+smembers jobs:in-progress
+smembers jobs:completed
+smove jobs:started jobs:in-progress 1
+smove jobs:started jobs:in-progress 2
+smove jobs:started jobs:in-progress 3
+smembers jobs:in-progress
+smove jobs:in-progress jobs:completed 2
+smove jobs:in-progress jobs:completed 20
+smembers jobs:completed
+
+sadd tasks:pending a b c d
+sadd tasks:completed x y z
+smembers tasks:pending
+smembers tasks:completed
+smove tasks:pending tasks:completed a
+smove tasks:pending tasks:completed b
+smove tasks:pending tasks:completed c
+smove tasks:pending tasks:completed d
+smembers tasks:pending
+smembers tasks:completed
+
+
+# 124. Sets Operations - Union
+sadd num1 1 2 3 4 5
+sadd num2 2 4 6 8 10
+smembers num1
+smembers num2
+sunion num1 num2
+sadd num3 20 40 50
+sunion num1 num2 num3
+
+sadd tickets:pending 1 2 3 4 5
+sadd tickets:completed 10 20 30 40 50
+smembers tickets:pending
+smembers tickets:completed
+sunion tickets:pending tickets:completed
+
+
+# 126. Sets Operations - Union and store results with SUNIONSTORE
+sunion num1 num2 num3
+sunionstore all_num num1 num2 num3
+smembers all_num
+sunion tasks:pending tasks:completed
+sunionstore tasks_2021_07 tasks:pending tasks:completed
+smembers tasks_2021_07
+
+
+# 128. Sets Operations - Intersection
+sadd k1 a b c d
+sadd k2 c
+sadd k3 a c e
+smembers k1
+smembers k2
+smembers k3
+sinter k1 k2 k3
+
+sadd stocks:gainers AAPL MSFT IBM TSLA
+sadd stocks:vol_gainers AAPL MSFT QQQ
+sadd stocks:analyst AAPL C
+smembers stocks:gainers
+smembers stocks:vol_gainers
+smembers stocks:analyst
+sinter stocks:gainers stocks:vol_gainers stocks:analyst
+sinterstore stocks:best stocks:gainers stocks:vol_gainers stocks:analyst
+smembers stocks:best
+
+
+# 130. Sets Operations - Difference
+smembers k1
+smembers k2
+smembers k3
+sdiff k1 k2 k3
+
+smembers stocks:gainers
+smembers stocks:vol_gainers
+smembers stocks:analyst
+sdiff stocks:gainers stocks:vol_gainers stocks:analyst
+sdiffstore stocks_diff stocks:gainers stocks:vol_gainers stocks:analyst
+smembers stocks_diff
+
+
+# 132. Use Cases - Sets
+Redis Sets can be used in a lot of scenarios like;
+
+Unique user tracking visiting a website
+
+Holding unique list of items like user groups, user avtar names, categories, products names, country codes etc.
+
+Sharded data of unique values for an application
+
+IP Tracking - Storing unique IP addresses to track visitors
+
+Implementing a product recommendation based on a user action, similar to Amazon feature where they display 'People also buy these items'
+
+Analyzing Ecommerce Sales - Many online e-commerce websites use Redis Sets to analyze customer behavior, such as searches or purchases for a specific product category or subcategory. For example, an online bookstore owner can find out how many customers purchased technology books in Technology section.
+
+Inappropriate Content Filtering - For any app that collects user input, it’s a good idea to implement some kind of content filtering for any inappropriate words, and we can do this with Redis Sets by adding words you’d like to filter to a SET key and the SADD command. e.g.
+
+SADD bad_words "word1" "word2"
+
+
+# 133. Quick Reference - Sets
+Redis Sets are unordered collections of strings.
+
+They cannot have duplicate values
+
+Sets are good for expressing relations between objects
+
+SADD, SMOVE, SREM, SPOP
+
+Add one or more members, Move a member from one set to another, Remove one or more members, Remove and return one or multiple random members
+
+SCARD, SMEMBERS, SISMEMBER, SRANDMEMBER
+
+Get number of members, Get all members, Test if member exists, Get one or more random members
+
+SUNION, SUNIONSTORE
+
+Get all keys from all sets, no duplicates, same operation but store results in a new key
+
+SINTER, SINTERSTORE
+
+Get keys that exist in all sets only, same operation but store results in a new key
+
+SDIFF, SDIFFSTORE
+
+Return keys from the first set that are not in the subsequent sets, same operation but store results in a new key
