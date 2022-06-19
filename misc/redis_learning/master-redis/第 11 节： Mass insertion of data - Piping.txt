@@ -1,0 +1,2 @@
+# 163. Insert country codes and stock prices via mass insertion
+cat stock_prices_redis.csv | redis-cli --pipe
