@@ -1,0 +1,18 @@
+# 164. From a RDBMS Table to Redis Data Structure
+hmset employee:1 first_name John last_name Doe age 30 hire_date 2020-01-01 salary 15000
+hmset employee:2 first_name Betty last_name Kim age 30 hire_date 2020-10-01 salary 15000
+hgetall employee:1
+hgetall employee:2
+scan 0 match employee:*
+keys employee:*
+
+
+# 166. From multi primary keys to Redis Structure
+hmset order:product:10248:11 unit_price 14 quantity 12 discount 0
+hmset order:product:10248:42 unit_price 9.8 quantity 10 discount 0
+hgetall order:product:10248:11
+hgetall order:product:10248:42
+keys order:product:10248:*
+keys order:product:*:11
+keys order:product:*:42
+keys order:product:*:*
