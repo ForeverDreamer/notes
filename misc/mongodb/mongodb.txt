@@ -7,6 +7,10 @@ db.version()
 # 查看当前db的所有集合
 show collections
 
+# 客户端连接服务器
+docker container exec -it 2e93d29284de sh
+mongo
+
 # 创建一条记录
 db.foo.save({ _id: 1, x: 10 })
 db.foo.save({ _id: 3.14})
