@@ -1,6 +1,4 @@
-import pika
-
-from utilts import get_channel
+from utilts import *
 
 
 def on_message_queque1(_channel, method, properties, body):
