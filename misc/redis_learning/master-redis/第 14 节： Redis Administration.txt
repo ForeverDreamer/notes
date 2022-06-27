@@ -1,0 +1,80 @@
+# 171. Inspect internal Redis objects via OBJECT
+set hello 1
+set hello1 "Test"
+object refcount hello
+object refcount hello1
+
+object encoding hello
+object encoding hello1
+
+object idletime hello
+object idletime hello1
+
+lpush fruits "banana"
+object refcount fruits
+object encoding fruits
+object idletime fruits
+
+
+# 173. Dump and Restore Keys
+set name "Joe"
+get name
+dump name
+# key已存在，报错
+restore name 0 <paste code for key: name >
+
+get name
+del name
+restore name 0 <paste code for key: name >
+get name
+# 覆盖已存在的Key
+restore name 0 <paste code for key: name > REPLACE
+
+注意：
+dump和restore的redis版本必须完全相同
+dump出来的数据不包含key的过期信息
+
+
+# 175. Checking command history
+1)使用上下方向键
+2)查看用户home目录的.rediscli_history文件
+cd ~
+tail -10 .rediscli_history
+
+
+# 176. Using redis-cli to scan keys
+set name1 1
+set name2 2
+set name3 e
+set name4 4
+debug populate 50
+exit
+
+# 查看帮助
+redis-cli -h
+redis-cli --scan
+redis-cli --scan --pattern '*'
+redis-cli --scan --pattern 'k*'
+redis-cli --scan --pattern '*key*'
+redis-cli --scan --pattern '*name*'
+redis-cli --scan --pattern '*' > keys.csv
+cat keys.csv
+
+
+# 178. Using bash to get all keys and values(创建shell脚本)
+
+#!/bin/bash
+redis-cli --scan > all.keys
+while read -r key
+do
+  value=$(redis-cli get "$key")
+  echo $key '|' $value
+done < all.keys
+
+
+# 179. Using URL, echo to list all keys
+URL=redis://localhost:6379
+echo "KEYS *" | \
+redis-cli -u $URL | \
+sed 's/^/GET /' | \
+redis-cli -u $URL > allkeys_values.txt
