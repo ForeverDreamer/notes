@@ -40,6 +40,9 @@ docker run -it --rm --name lishenglin-redis -p 10001:10001 redis
       或者在windows编辑器下方手动切换CRLF/LF,再把文件传输到linux系统
 解决方案：zip压缩之后上传/下载之后再解压缩
 
+docker --help
+docker ps --help
+
 docker system info
 
 1. image commands
@@ -128,6 +131,8 @@ docker container rm $(docker container ls -aq) -f
 docker login
 
 docker push doerlee/node
+
+docker logout
 
 
 4.docker网络
