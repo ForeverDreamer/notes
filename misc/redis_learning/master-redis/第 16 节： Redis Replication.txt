@@ -1,0 +1,39 @@
+# 183. Setting up Master/Slave Replication
+redis-server --port 6379 --dbfilename db1.rdb
+redis-cli -p 6379
+keys *
+info replication
+# role:master
+# connected_slaves:0
+
+info replication
+# role:master
+# connected_slaves:1
+
+set k1 v1
+get k1
+keys *
+
+redis-server --port 6380 --dbfilename db2.rdb
+redis-cli -p 6380
+keys *
+info replication
+# role:master
+# connected_slaves:0
+
+replicaof localhost 6379
+info replication
+# role:slave
+# master_host: localhost
+# master_port: 6379
+
+keys *
+# 1) "k1"
+get k1
+# "v1"
+
+set k2 v2
+# (error) READONLY You can't write against a read only replica.
+
+# 解绑主从关系
+replicaof no one

@@ -1,0 +1,24 @@
+# 286. Setup RedisJSON via Docker
+1. Make sure you first launch your docker desktop.
+2. Run the following command on terminal
+docker run -p 6379:6379 --name redis-redisjson redislabs/rejson:latest
+
+
+# 288. How to SET and GET a JSON object
+json.set foo . '{"foo":"bar"}'
+json.get foo
+redis-cli --raw
+json.get foo
+json.type foo
+json.type .foo
+json.type foo .foo
+json.type foo
+json.type foo .foo
+json.set foo .test 1
+json.get foo
+json.type foo .test
+json.set user:101 . '{"name":"John"}'
+json.get user:101
+json.set user:101 .age 30
+json.get user:101
+json.type user:101 .age
