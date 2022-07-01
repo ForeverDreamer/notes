@@ -7,7 +7,11 @@ docker run -p 6379:6379 --name redis-redisjson redislabs/rejson:latest
 # 288. How to SET and GET a JSON object
 json.set foo . '{"foo":"bar"}'
 json.get foo
+
+exit
+# 清除转义字符显示
 redis-cli --raw
+
 json.get foo
 json.type foo
 json.type .foo
@@ -22,3 +26,123 @@ json.get user:101
 json.set user:101 .age 30
 json.get user:101
 json.type user:101 .age
+
+
+# 290. How to append string and get length
+json.get foo
+json.strlen foo
+json.type foo
+json.strlen foo .foo
+json.strlen foo .test
+json.type foo .test
+json.strlen user:101
+json.get user:101
+json.strlen user:101 .name
+json.set name . '"John"'
+json.get name
+json.strlen name
+json.strappend name " Doe"
+json.strappend name '" Doe"'
+json.get name
+
+
+# 292. How to get Object Length and Keys
+json.get user:101
+json.strlen user:101
+json.objlen user:101
+json.objkeys user:101
+json.get foo
+json.objkeys foo
+json.get name
+json.objkeys name
+json.objlen name
+json.objkeys foo
+
+
+# 294. Doing atomic operations
+json.set num . 0
+json.get num
+json.numincrby num . 1
+json.numincrby num . 1
+json.numincrby num . 1
+json.numincrby num . 1
+json.numincrby num . 1
+json.numincrby num . 1
+json.numincrby num . -1
+json.numincrby num . -1
+json.numincrby num . -1
+json.numincrby num . -1
+json.nummultby num . 20
+json.nummultby num . 20
+json.get user:101
+json.numincrby user:101 .age 2
+json.get user:101
+json.numincrby user:101 .age -2
+json.get user:101
+json.nummultby user:101 .age 2
+json.numincrby user:101 .age -30
+json.get user:101
+
+
+# 296. How to delete a JSON object
+json.set k1 . '"1"'
+json.get k1
+json.del k1
+keys k1
+json.get k1
+json.set u1 . '[true, {"name":" John"},null]'
+json.get u1
+json.type u1
+json.get u1 [1]
+json.get u1 [1].name
+json.get u1 [0]
+json.get u1 [2]
+json.del u1 [-1]
+json.get u1
+json.del u1 [0]
+json.get u1
+
+
+# 298. How much memory is used for JSON object?
+json.debug memory user:101
+json.debug memory foo
+json.get foo
+json.get user:101
+json.set emptystr . '""'
+json.debug memory emptystr
+json.set arr . '[]'
+json.debug memory arr
+json.set obj . '{}'
+json.debug memory obj
+json.set arr . '[""]'
+json.debug memory arr
+json.set arr . '["","",""]'
+json.debug memory arr
+
+
+# 300. Food Truck System via JSON
+json.set truck:1 . '{"name":"Amazing Delights"}'
+json.set truck:1 .is_open 'true'
+json.set truck:1 .wait_time 10
+json.get truck:1
+json.set truck:1 .location '"123 Broadway"'
+json.get truck:1
+json.set truck:1 .menu '[{"item":"taco","price": 6},{"item":"burito","price":8},{"item":"Chicken Burger","price":10}]'
+json.get truck:1
+json.get truck:1 .menu
+json.get truck:1 .menu[0]
+json.get truck:1 .menu[1]
+json.get truck:1 .menu[2]
+json.get truck:1 .menu[-1]
+json.get truck:1 .menu[0]
+json.objlen truck:1 .menu
+json.objlen truck:1
+json.objlen truck:1 .menu
+json.arrlen truck:1 .menu
+json.arrappend truck:1 .menu '{"item":"Lamb Chops", "price":12}'
+json.get truck:1
+json.numincrby truck:1 .wait_time 10
+json.set truck:1 .special_menu true
+json.del truck:1 .special_menu
+json.arrpop truck:1 .menu 0
+json.arrinsert truck:1 .menu 0 '{"item": "Sushi", "price": 4}'
