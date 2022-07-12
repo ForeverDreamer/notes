@@ -33,9 +33,9 @@ netstat -tunlp | grep 5000
 tcp        0      0 0.0.0.0:5000            0.0.0.0:*               LISTEN      26993/python   
 更多命令：
 
-netstat -ntlp   //查看当前所有tcp端口
-netstat -ntulp | grep 80   //查看所有80端口使用情况
-netstat -ntulp | grep 3306   //查看所有3306端口使用情况
+netstat -tnlp   
+netstat -tunlp | grep 80   
+netstat -tunlp | grep 3306   
 kill
 在查到端口占用的进程后，如果你要杀掉对应的进程可以使用 kill 命令：
 
