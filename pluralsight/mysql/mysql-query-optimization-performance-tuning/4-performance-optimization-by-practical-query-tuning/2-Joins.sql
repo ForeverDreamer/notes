@@ -29,6 +29,7 @@ SHOW STATUS LIKE 'Last_Query_Cost';
 
 -- Complex Query = 10.799000
 -- Multiple Queries = 2.399000 + 2.399000 +2.399000 = 7.197
+-- 注意：分多次查询会增加额外的parse,Optimize, plan, network时间
 
 -- -----------------------------------------------------------------------
 -- Example 1
