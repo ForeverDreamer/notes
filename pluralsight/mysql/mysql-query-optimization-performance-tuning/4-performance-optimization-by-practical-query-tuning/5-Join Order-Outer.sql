@@ -1,6 +1,6 @@
 USE sakila;
 
--- Does table order in join conditions matter with regards to performance?
+-- Does table order in join conditions matter with regards to performance? Yes.
 
 SELECT *
 FROM film f
