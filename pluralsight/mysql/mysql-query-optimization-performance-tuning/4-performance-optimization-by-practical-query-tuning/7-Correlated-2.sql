@@ -85,7 +85,7 @@ CREATE PROCEDURE ExistQ(p1 INT)
 BEGIN
   label1: LOOP
     SET p1 = p1 - 1;
-    IF p1 > 0 THEN		
+    IF p1 > 0 THEN
 		INSERT INTO `sakila`.`inventorycopy`
 		(`inventory_id`,
 		`film_id`,
@@ -131,10 +131,10 @@ delimiter ;
 -- Execution Test
 
 CALL SubQ(1000);
-TRUNCATE TABLE `sakila`.`filmcopy`;
+TRUNCATE TABLE `sakila`.`inventorycopy`;
 
 CALL ExistQ(1000);
-TRUNCATE TABLE `sakila`.`filmcopy`;
+TRUNCATE TABLE `sakila`.`inventorycopy`;
 
 CALL JoinQ(1000);
 
