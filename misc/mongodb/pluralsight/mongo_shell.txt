@@ -1,0 +1,12 @@
+# Shell Invoking Syntax
+
+// single command: --eval
+// 语法：mongo servername/db --eval "..."
+mongo localhost/admin --eval "printjson(db.runCommand({logRotate:1}))"
+
+// run a script: script name
+// 语法：mongo servername *.js
+mongo localhost myDailyChores.js
+
+// run script, then get in shell: --shell
+mongo server1 myDailyChores.js --shell

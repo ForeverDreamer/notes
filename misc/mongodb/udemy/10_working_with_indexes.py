@@ -36,13 +36,13 @@ def adding_a_single_field_index_126(persons):
 def understanding_index_restrictions_128(persons):
     # 返回的数据占比特别高的查询，索引反而会增加查询时间
     # 一般返回的数据占比20%以下，索引能缩短查询时间
-    r = persons.create_index('gender', name='gender')
+    r = persons.create_index('dob.age', name='dob.age')
     pp(r)
     print('--------------------------------------------')
     r = persons.find({'dob.age': {'$gt': 20}}).explain()
     pp(r)
     print('--------------------------------------------')
-    drop_index(persons, 'gender')
+    drop_index(persons, 'dob.age')
     r = persons.find({'dob.age': {'$gt': 20}}).explain()
     pp(r)
     print('--------------------------------------------')
