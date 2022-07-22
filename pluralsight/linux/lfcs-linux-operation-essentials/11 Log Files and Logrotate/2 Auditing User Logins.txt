@@ -1,6 +1,6 @@
 # reports the most recent login of all users or of a given user
 lastlog
-# 过滤从未登录的用户
+# 过滤从未登录的用户, -v, --invert-match: Invert the sense of matching, to select non-matching lines
 lastlog | grep -v "Never"
 
 # last, lastb - show listing of last logged in users

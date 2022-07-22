@@ -6,9 +6,17 @@ ps -l
 ps -ly
 
 # UNIX
-ps -elf
+# -e: Select all processes,Identical to -A, -f: Do full-format listing, -F: Extra full format
+ps -elf | less
+ps -elf | grep sshd
+
 # BSD
 ps aux
+ps aux | grep sshd
+# -n: numerically, -k: sort via a key; KEYDEF gives location and type, -r: reverse the result of comparisons, 3：按cpu排序， 4：mem排序
+ps aux | sort -rn -k 3 | less
+ps aux | sort -rn -k 4 | less
+
 # GNU
 ps -e --forest
 

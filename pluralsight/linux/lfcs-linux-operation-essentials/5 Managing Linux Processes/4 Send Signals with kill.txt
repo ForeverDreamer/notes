@@ -17,11 +17,12 @@ kill -SIGKILL $$
 
 # 查看sshd相关的进程
 ps aux | grep ssh
+# pgrep, pkill - look up or signal processes based on name and other attributes
 pgrep sshd
 ps -F -p $(pgrep sshd)
-
 pgrep sleep
 # 结束睡眠状态进程
 pkill sleep
 
+# The top program provides a dynamic real-time view of a running system
 top

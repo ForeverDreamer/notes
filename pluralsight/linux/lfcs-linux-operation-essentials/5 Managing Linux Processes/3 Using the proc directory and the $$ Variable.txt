@@ -3,7 +3,7 @@ pwd
 ls
 
 # 查看进程id为1,即systems的信息
-ps -p1 -f
+ps -p 1 -f
 
 # 查看当前运行进程id
 echo $$

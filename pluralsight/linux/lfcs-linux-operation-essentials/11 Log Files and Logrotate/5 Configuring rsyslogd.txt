@@ -1,3 +1,4 @@
+# Rsyslog is an open-source software utility used on UNIX and Unix-like computer systems for forwarding log messages in an IP network
 cd /etc
 ls rsyslog*
 vim rsyslog.conf

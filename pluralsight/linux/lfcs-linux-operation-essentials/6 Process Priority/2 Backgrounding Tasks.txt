@@ -3,6 +3,7 @@ sleep 1000&
 jobs
 
 sleep 1000
+# 暂停当前正在前台运行阻塞终端的任务
 Ctrl+Z
 jobs
 # 后台/前台运行job，不指定job id默认当前job
@@ -19,7 +20,7 @@ echo $$
 exit
 
 # 回到旧终端
-# 显示三个sleep进程，新终端得后台进程被托管给systemd(pid=1)
+# 显示三个sleep进程，新终端的后台进程被托管给systemd(pid=1)
 ps -F -p $(pgrep sleep)
 # 当前终端只有两个
 jobs

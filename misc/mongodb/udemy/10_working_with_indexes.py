@@ -7,9 +7,19 @@ from pymongo.errors import OperationFailure, DuplicateKeyError
 from pymongo import ASCENDING, DESCENDING, TEXT
 
 from db_conn import mongo_client
-from utils import utc_now
+from local_utils import utc_now
 
 db_name = 'mongodb_example'
+
+
+def list_indexes(c):
+    pp(list(c.list_indexes()))
+    print('--------------------------------------------------')
+    pp(c.index_information())
+
+
+def index_information(c):
+    pp(c.index_information())
 
 
 def drop_index(persons, index):
@@ -56,7 +66,7 @@ def creating_compound_indexes_129(persons):
     pp(r)
     print('--------------------------------------------')
     drop_index(persons, 'gender')
-    r = persons.create_index([('dob.age', ASCENDING), ('gender', ASCENDING)], name='dob.age_gender')
+    r = persons.create_index([('dob.age', ASCENDING), ('gender', DESCENDING)], name='dob.age_gender')
     pp(r)
     print('--------------------------------------------')
     # 'stage': 'IXSCAN'
@@ -76,9 +86,14 @@ def creating_compound_indexes_129(persons):
 
 # 提升排序速度，且避免数据量太大内存不足排序失败
 def using_indexes_for_sorting_130(persons):
-    r = persons.create_index([('dob.age', ASCENDING), ('gender', ASCENDING)], name='dob.age_gender')
+    # 无索引的stages: COLLSCAN->SORT
+    r = persons.find({'dob.age': 35}).sort('gender', 1).explain()
     pp(r)
     print('--------------------------------------------')
+    r = persons.create_index([('dob.age', ASCENDING), ('gender', DESCENDING)], name='dob.age_gender')
+    pp(r)
+    print('--------------------------------------------')
+    # 有索引的stages: IXSCAN->FETCH
     r = persons.find({'dob.age': 35}).sort('gender', 1).explain()
     pp(r)
     print('--------------------------------------------')
@@ -359,10 +374,11 @@ def building_indexes_145(ratings):
 
 with mongo_client(db_name) as client:
     col = client.get_default_database()['persons']
-    adding_a_single_field_index_126(col)
+    # list_indexes(col)
+    # adding_a_single_field_index_126(col)
     # understanding_index_restrictions_128(col)
     # creating_compound_indexes_129(col)
-    # using_indexes_for_sorting_130(col)
+    using_indexes_for_sorting_130(col)
     # understanding_the_default_index_131(col)
     # configuring_indexes_132(col)
     # understanding_partial_filters_133(col)
