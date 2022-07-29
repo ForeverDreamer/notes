@@ -23,6 +23,8 @@ with get_channel() as channel:
     channel.basic_consume('my.queque1', on_message_queque1)
     channel.basic_consume('my.queque2', on_message_queque2)
     try:
+        print('start_consuming')
         channel.start_consuming()
     except KeyboardInterrupt:
+        print('stop_consuming')
         channel.stop_consuming()

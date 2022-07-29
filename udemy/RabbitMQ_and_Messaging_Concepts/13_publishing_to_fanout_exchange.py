@@ -9,8 +9,8 @@ with get_channel() as channel:
     channel.queue_bind('my.queque1', 'ex.fanout', '')
     channel.queue_bind('my.queque2', 'ex.fanout', '')
 
-    channel.basic_publish('ex.fanout', '', 'Message 1'.encode('utf-8'))
-    channel.basic_publish('ex.fanout', '', 'Message 2'.encode('utf-8'))
+    channel.basic_publish('ex.fanout', '', 'Message 1')
+    channel.basic_publish('ex.fanout', '', 'Message 2')
     input('按任意键退出：')
     channel.queue_delete('my.queque1')
     channel.queue_delete('my.queque2')

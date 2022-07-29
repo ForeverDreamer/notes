@@ -17,9 +17,9 @@ with get_channel() as channel:
     channel.queue_bind(QUEUE2, EXCHANGE, '#.image')
     channel.queue_bind(QUEUE3, EXCHANGE, 'image.#')
 
-    channel.basic_publish(EXCHANGE, 'convert.image.bmp', 'convert.image.bmp'.encode('utf-8'))
-    channel.basic_publish(EXCHANGE, 'convert.bitmap.image', 'convert.bitmap.image'.encode('utf-8'))
-    channel.basic_publish(EXCHANGE, 'image.bitmap.32bit', 'convert.bitmap.32bit'.encode('utf-8'))
+    channel.basic_publish(EXCHANGE, 'convert.image.bmp', f'To {QUEUE1}: convert.image.bmp')
+    channel.basic_publish(EXCHANGE, 'convert.bitmap.image', f'To {QUEUE2}: convert.bitmap.image')
+    channel.basic_publish(EXCHANGE, 'image.bitmap.32bit', f'To {QUEUE3}: convert.bitmap.32bit')
 
     show_message(channel, QUEUE1, *channel.basic_get(QUEUE1))
     show_message(channel, QUEUE2, *channel.basic_get(QUEUE2))

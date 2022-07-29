@@ -20,9 +20,9 @@ with get_channel() as channel:
     channel.queue_bind(QUEUE_WARNINGS, EXCHANGE, ROUTING_KEY_WARNING)
     channel.queue_bind(QUEUE_ERRORS, EXCHANGE, ROUTING_KEY_ERROR)
 
-    channel.basic_publish(EXCHANGE, ROUTING_KEY_INFO, 'Message info'.encode('utf-8'))
-    channel.basic_publish(EXCHANGE, ROUTING_KEY_WARNING, 'Message warning'.encode('utf-8'))
-    channel.basic_publish(EXCHANGE, ROUTING_KEY_ERROR, 'Message error'.encode('utf-8'))
+    channel.basic_publish(EXCHANGE, ROUTING_KEY_INFO, 'Message info')
+    channel.basic_publish(EXCHANGE, ROUTING_KEY_WARNING, 'Message warning')
+    channel.basic_publish(EXCHANGE, ROUTING_KEY_ERROR, 'Message error')
 
     show_message(channel, QUEUE_INFOS, *channel.basic_get(QUEUE_INFOS))
     show_message(channel, QUEUE_WARNINGS, *channel.basic_get(QUEUE_WARNINGS))
