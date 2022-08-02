@@ -1,4 +1,4 @@
-from utilts import get_channel
+from utils import get_channel
 
 QUEUE = 'hello'
 

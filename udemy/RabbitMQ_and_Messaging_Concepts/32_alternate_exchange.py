@@ -1,6 +1,6 @@
 from pika.exchange_type import ExchangeType
 
-from utilts import *
+from utils import *
 
 EX_FANOUT = 'ex.fanout'
 EX_DIRECT = 'ex.direct'
@@ -23,8 +23,8 @@ with get_channel() as channel:
     channel.queue_bind(QUEUE2, EX_DIRECT, KEY_IMAGE)
     channel.queue_bind(QUEUE_DISCARDED, EX_FANOUT, '')
 
-    channel.basic_publish(EX_DIRECT, KEY_VIDEO, 'message video'.encode('utf-8'))
-    channel.basic_publish(EX_DIRECT, KEY_TEXT, 'message text'.encode('utf-8'))
+    channel.basic_publish(EX_DIRECT, KEY_VIDEO, 'message video')
+    channel.basic_publish(EX_DIRECT, KEY_TEXT, 'message text')
 
     show_message(channel, QUEUE1, *channel.basic_get(QUEUE1))
     show_message(channel, QUEUE2, *channel.basic_get(QUEUE2))

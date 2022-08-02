@@ -1,4 +1,4 @@
-from utilts import *
+from utils import *
 
 
 QUEUE1 = 'queue1'

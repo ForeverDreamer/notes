@@ -1,6 +1,6 @@
 from pika.exchange_type import ExchangeType
 
-from utilts import *
+from utils import *
 
 
 EXCHANGE = 'ex.topic'

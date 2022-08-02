@@ -1,6 +1,6 @@
 from pika.exchange_type import ExchangeType
 
-from utilts import *
+from utils import *
 
 EXCHANGE1 = 'exchange1'
 EXCHANGE2 = 'exchange2'
@@ -20,8 +20,8 @@ with get_channel() as channel:
     channel.queue_bind(QUEUE2, EXCHANGE2, KEY2)
     channel.exchange_bind(EXCHANGE2, EXCHANGE1, KEY2)
 
-    channel.basic_publish(EXCHANGE1, KEY1, 'message 1'.encode('utf-8'))
-    channel.basic_publish(EXCHANGE1, KEY2, 'message 2'.encode('utf-8'))
+    channel.basic_publish(EXCHANGE1, KEY1, 'message 1')
+    channel.basic_publish(EXCHANGE1, KEY2, 'message 2')
 
     show_message(channel, QUEUE1, *channel.basic_get(QUEUE1))
     show_message(channel, QUEUE1, *channel.basic_get(QUEUE1))

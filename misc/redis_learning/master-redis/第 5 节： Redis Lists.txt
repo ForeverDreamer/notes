@@ -5,10 +5,10 @@ lpush dept "Admin" "HR"
 # 报错，不支持get
 get dept
 lrange dept 0 -1
-lrange dept "Programming"
+lpush dept "Programming"
 lrange dept 0 -1
 # right(tail/end)
-rupsh dept "Marketing"
+rpush dept "Marketing"
 lrange dept 0 -1
 lrange dept 1 -1
 lrange dept -3 -1
@@ -44,6 +44,7 @@ lrange dept 0 -1
 linsert dept before "Admin" "Legal"
 lrange dept 0 -1
 
+# 不支持此操作
 linsert dept before 0 "Legal"
 lrange dept 0 -1
 
@@ -130,15 +131,16 @@ lpos mykey "a" rank 1 count 0 maxlen 5000
 
 # 82. Remove element via LREM
 flushdb
-rpush mykey "one" "one" "two" "three" "one"
+rpush mykey "one" "one" "two""one" "three" "one" "five" "one"
 lrange mykey 0 -1
-lrem mykey 0 "two"
-lrange mykey 0 -1
+# count > 0: Remove elements equal to element moving from head to tail.
 lrem mykey 1 "one"
 lrange mykey 0 -1
-rpush mykey "five"
-lrange mykey 0 -1
+# count < 0: Remove elements equal to element moving from tail to head.
 lrem mykey -1 "one"
+lrange mykey 0 -1
+# count = 0: Remove all elements equal to element.
+lrem mykey 0 "one"
 lrange mykey 0 -1
 
 

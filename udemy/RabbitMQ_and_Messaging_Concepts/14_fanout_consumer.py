@@ -1,4 +1,4 @@
-from utilts import *
+from utils import *
 
 
 def on_message_queque1(_channel, method, properties, body):

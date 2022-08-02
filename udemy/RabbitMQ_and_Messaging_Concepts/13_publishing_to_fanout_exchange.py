@@ -1,6 +1,6 @@
 from pika.exchange_type import ExchangeType
 
-from utilts import get_channel
+from utils import get_channel
 
 with get_channel() as channel:
     channel.exchange_declare('ex.fanout', ExchangeType.fanout)
