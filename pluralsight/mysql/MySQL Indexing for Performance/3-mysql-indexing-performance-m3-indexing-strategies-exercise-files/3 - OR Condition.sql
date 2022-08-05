@@ -7,12 +7,11 @@ SELECT *
 FROM INFORMATION_SCHEMA.STATISTICS
 WHERE TABLE_NAME = 'film';
 
-
-
 -- SELECT Statement
-EXPLAIN SELECT title, rental_duration, length
+EXPLAIN ANALYZE SELECT title, rental_duration, length
 FROM film
 WHERE rental_duration = 6 OR length = 100;
+SHOW WARNINGS;
 
 -- Creating Index
 CREATE INDEX idx_film_rental_duration ON film (rental_duration);

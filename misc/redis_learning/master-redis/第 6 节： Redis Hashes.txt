@@ -80,8 +80,12 @@ hgetall user:101
 
 # 107. Get random fields via HRANDFIELD
 hkeys user:101
+# 随机返回1个key
 hrandfield user:101
-hrandfield user:101 -1
+hrandfield user:101 1
+# 随机返回2个key
+hrandfield user:101 2
+# 不保证返回key的唯一性，即可能返回重复的key
 hrandfield user:101 -2
 hrandfield user:101 -2 withvalues
 hrandfield user:101 20 withvalues

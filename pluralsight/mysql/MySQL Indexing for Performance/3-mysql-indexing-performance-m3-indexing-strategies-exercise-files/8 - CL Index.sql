@@ -11,6 +11,8 @@ KEY ix_TestTable_FN_LN (FirstName, LastName));
 
 EXPLAIN TestTable;
 
+SHOW INDEX FROM TestTable;
+
 -- Populate Table
 INSERT INTO TestTable (FirstName, LastName, FullName)
 SELECT First_Name, Last_Name, CONCAT(First_Name,' ', Last_Name)
