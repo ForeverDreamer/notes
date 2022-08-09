@@ -7,7 +7,7 @@ from pymongo.errors import OperationFailure, DuplicateKeyError
 from pymongo import ASCENDING, DESCENDING, TEXT
 
 from db_conn import mongo_client
-from local_utils import utc_now
+from utils import utc_now
 
 db_name = 'mongodb_example'
 
