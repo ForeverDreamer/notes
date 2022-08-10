@@ -5,12 +5,13 @@ r = redis.Redis(decode_responses=True)
 # r = redis.Redis(host='hostname', port=port, password='password')
 
 
-def set_key(k, v):
-    r.set(k, v)
+# 2_getting_started
+def ping():
+    return r.ping()
 
 
-def get_key(k):
-    return r.get(k)
+def info(section=None):
+    return r.info(section)
 
 
 # 7_redis_sets
@@ -68,3 +69,41 @@ def sdiff(keys, *args):
 
 def sdiffstore(dest, keys, *args):
     return r.sdiffstore(dest, keys, *args)
+
+
+# 8_redis_sorted_sets
+def zadd(name, mapping):
+    return r.zadd(name, mapping)
+
+
+def zrange(name, start, end, withscores=False):
+    return r.zrange(name, start, end, withscores=withscores)
+
+
+def zrevrange(name, start, end, withscores=False):
+    return r.zrevrange(name, start, end, withscores=withscores)
+
+
+def zincrby(name, amount, value):
+    return r.zincrby(name, amount, value)
+
+
+def zrank(name, value):
+    return r.zrank(name, value)
+
+
+def zrevrank(name, value):
+    return r.zrevrank(name, value)
+
+
+# 9_redis_hyperloglog
+def pfadd(name, *values):
+    return r.pfadd(name, *values)
+
+
+def pfcount(*sources):
+    return r.pfcount(*sources)
+
+
+def pfmerge(dest, *sources):
+    return r.pfmerge(dest, *sources)

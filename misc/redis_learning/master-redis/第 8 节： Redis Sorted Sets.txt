@@ -27,20 +27,17 @@ zrange users:followers 0 -1 withscores
 
 
 # 141. Lexicographical order
-# 成功添加，c在d前边
+# 成功，c先添加，所以排在d前边
 zadd num1:ss 1 a 2 b 3 c 3 d
 zrange num1:ss 0 -1 withscores
 # "3 c"被丢弃
 zadd num2:ss 1 a 2 b 3 c 4 c
 zrange num2:ss 0 -1 withscores
-zadd num3:ss 1 a 2 b 3 c 4 ca
-zrange num3:ss 0 -1 withscores
-zrevrange num3:ss 0 -1 withscores
 
 
 # 143. Rank stocks with ZRANK
 zadd stocks:top 1 AAPL 2 MSFT 3 F 4 QQQ 5 C 6 IBM 7 TSLA 8 AMZN 9 NIO 10 SPCE
-range stocks:top 0 -1 withscores
+zrange stocks:top 0 -1 withscores
 zrevrange stocks:top 0 -1 withscores
 zrange stocks:top 0 -1 withscores
 zrank stocks:top AAPL
