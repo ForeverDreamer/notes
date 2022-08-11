@@ -4,8 +4,8 @@ import pymongo
 
 
 @contextlib.contextmanager
-def mongo_client(d):
-    client = pymongo.MongoClient(f'mongodb://root:PassForCfe123@localhost:27017/{d}?authSource=admin')
+def mongo_client(uri):
+    client = pymongo.MongoClient(uri)
     # print('数据库连接成功！')
     yield client
     client.close()

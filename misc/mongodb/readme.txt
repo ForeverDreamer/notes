@@ -8,3 +8,15 @@ mongo --authenticationDatabase "admin" -u "root" -p
 show dbs
 use admin
 show collections
+
+# 启动replica set
+# windows powershell
+cd D:\data_files\notes\misc\mongodb\mongors
+docker-compose up -d
+# 等待5秒
+docker-compose exec mongo1 /scripts/rs-init.sh
+# 连接终端
+docker exec -it mongo1 sh
+
+# bash
+./startdb.sh
