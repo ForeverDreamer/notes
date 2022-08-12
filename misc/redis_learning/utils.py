@@ -14,6 +14,67 @@ def info(section=None):
     return r.info(section)
 
 
+# 3_redis_data_management
+def kset(name, value, ex=None, px=None, nx=False, xx=False, keepttl=False):
+    return r.set(name, value, ex=ex, px=px, nx=nx, xx=xx, keepttl=keepttl)
+
+
+def get(name):
+    return r.get(name)
+
+
+def delete(*names):
+    return r.delete(*names)
+
+
+def exists(*names):
+    return r.exists(*names)
+
+
+def ttl(name):
+    return r.ttl(name)
+
+
+def expire(name, time):
+    return r.expire(name, time)
+
+
+def pttl(name):
+    return r.pttl(name)
+
+
+def pexpire(name, time):
+    return r.pexpire(name, time)
+
+
+def persist(name):
+    return r.persist(name)
+
+
+def keys(pattern='*'):
+    return r.keys(pattern)
+
+
+def flushdb(asynchronous=False):
+    return r.flushdb(asynchronous)
+
+
+def rename(src, dst):
+    return r.rename(src, dst)
+
+
+def renamenx(src, dst):
+    return r.renamenx(src, dst)
+
+
+def unlink(*names):
+    return r.unlink(*names)
+
+
+def ktype(name):
+    return r.type(name)
+
+
 # 7_redis_sets
 def sadd(name, *values):
     return r.sadd(name, *values)

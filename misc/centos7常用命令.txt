@@ -3,6 +3,7 @@ cat /etc/centos-release
 
 # 查看ip信息
  ip addr
+ hostname -I | awk '{print $1}'
 
 # 开启关闭防火墙
 sudo systemctl status firewalld
@@ -12,6 +13,8 @@ sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 # 开放端口：
 firewall-cmd --permanent --zone=public --add-port=5000/tcp
+firewall-cmd --permanent --zone=public --add-port=27021-27023/tcp
+firewall-cmd --permanent --zone=public --remove-port=27021-27023/tcp
 firewall-cmd --reload  # 端口开放后需要重新加载生效
 firewall-cmd --list-ports
 

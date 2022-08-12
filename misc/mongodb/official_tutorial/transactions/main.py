@@ -5,7 +5,7 @@ from pymongo import WriteConcern
 from db_conn import mongo_client
 
 
-with mongo_client('mongodb://localhost:27021,localhost:27022,localhost:27023/?replicaSet=dbrs') as client:
+with mongo_client('mongodb://mongo1:27021,mongo2:27022,mongo3:27023/?replicaSet=dbrs') as client:
     wc_majority = WriteConcern("majority", wtimeout=1000)
 
     # Prereq: Create collections.

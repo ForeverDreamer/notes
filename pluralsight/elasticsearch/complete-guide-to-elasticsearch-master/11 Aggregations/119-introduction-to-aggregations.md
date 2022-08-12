@@ -34,7 +34,6 @@ PUT /orders
         "type": "keyword"
       },
       "salesman": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "integer"
