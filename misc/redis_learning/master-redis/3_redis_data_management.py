@@ -29,7 +29,7 @@ from utils import *
 # pp(ttl('key1'))
 # pp(pttl('key1'))
 
-# redis-py处于线程安全考虑没有实现SELECT命令
+# redis-py处于线程没有实现SELECT命令
 # However, there is one caveat: the Redis SELECT command. The SELECT command allows you to switch the database currently in use by the connection. That database remains selected until another is selected or until the connection is closed. This creates an issue in that connections could be returned to the pool that are connected to a different database.
 # As a result, redis-py does not implement the SELECT command on client instances. If you use multiple Redis databases within the same application, you should create a separate client instance (and possibly a separate connection pool) for each database.
 # It is not safe to pass PubSub or Pipeline objects between threads.

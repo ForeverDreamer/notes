@@ -24,6 +24,8 @@ git log
 git cat-file -t f9ec34ca882ea5785f1d9debaf0386904dce34ce
 git cat-file -p f9ec34ca882ea5785f1d9debaf0386904dce34ce
 
+# 计算objects数量
+git count-objects
 
 # 3 Branches Demystified
 # 查看分支
