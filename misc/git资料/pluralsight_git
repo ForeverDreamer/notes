@@ -51,3 +51,18 @@ git checkout c0e58bf25cae84d1cf506b12160100955fa754ac
 # 通过创建新分支保留detached head 的commit
 git checkout 901315a
 git branch nogood
+
+# 在ideas分支执行，复制ideas的commits，链接到main上，移动ideas分支到最前面
+git rebase main
+# 在main分支执行，复制main的commits，链接到ideas上，移动main分支到最前面
+git rebase ideas
+
+# 给当前commit贴标签
+# -a: annotated, -m: message
+git tag release_1 -a -m "First release, still unstable"
+# 普通标签
+git tag dinner
+# 查看标签
+git tag
+# 切换到标签
+git checkout release_1
