@@ -75,6 +75,75 @@ def ktype(name):
     return r.type(name)
 
 
+# 4_redis_data_structures_strings
+def incr(name):
+    return r.incr(name)
+
+
+def incrbyfloat(name, amount):
+    return r.incrbyfloat(name, amount)
+
+
+def incrby(name, amount):
+    return r.incrby(name, amount)
+
+
+def decr(name):
+    return r.decr(name)
+
+
+def decrby(name, amount):
+    return r.decrby(name, amount)
+
+
+def strlen(name):
+    return r.strlen(name)
+
+
+def mset(mapping):
+    return r.mset(mapping)
+
+
+def mget(keys, *args):
+    return r.mget(keys, *args)
+
+
+def msetnx(mapping):
+    return r.msetnx(mapping)
+
+
+def getset(name, value):
+    return r.getset(name, value)
+
+
+def getrange(key, start, end):
+    return r.getrange(key, start, end)
+
+
+def setrange(name, offset, value):
+    return r.setrange(name, offset, value)
+
+
+def setex(name, time, value):
+    return r.setex(name, time, value)
+
+
+def psetex(name, time_ms, value):
+    return r.psetex(name, time_ms, value)
+
+
+def setnx(name, value):
+    return r.setnx(name, value)
+
+
+def kobject(infotype, key):
+    return r.object(infotype, key)
+
+
+def scan(cursor=0, match=None, count=None, _type=None):
+    return r.scan(cursor, match, count, _type)
+
+
 # 7_redis_sets
 def sadd(name, *values):
     return r.sadd(name, *values)

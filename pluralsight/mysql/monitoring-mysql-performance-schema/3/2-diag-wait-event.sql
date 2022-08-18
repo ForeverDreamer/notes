@@ -1,5 +1,7 @@
 -- Sample Query
 -- Step 1 - Run Use Case
+SET GLOBAL general_log = 'ON';
+
 SELECT *
 FROM sakila.actor;
 

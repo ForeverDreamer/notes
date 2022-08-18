@@ -47,6 +47,7 @@ docker system info
 
 1. image commands
 
+# registry/repo:image(tag)
 docker image pull docker.io/redis:5.0.4
 
 docker image ls 或者 docker images

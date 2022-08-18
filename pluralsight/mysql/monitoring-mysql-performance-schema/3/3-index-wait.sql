@@ -87,15 +87,14 @@ FROM sakila.actor
 WHERE last_name = 'WEST';
 
 -- Select ALL HISTORICAL wait events for the current threads
-SELECT  DISTINCT esl.EVENT_NAME, (esl.TIMER_END-esl.TIMER_START)/1000000000 as 'DURATION (ms)',
+SELECT DISTINCT esl.EVENT_NAME, (esl.TIMER_END-esl.TIMER_START)/1000000000 as 'DURATION (ms)',
 		esl.SQL_Text, esl.ROWS_EXAMINED, esl.ROWS_AFFECTED, esl.ROWS_SENT,
         esl.NO_INDEX_USED, esl.SELECT_SCAN 
 FROM performance_schema.events_statements_history_long esl
 INNER JOIN performance_schema.threads t ON esl.THREAD_ID = t.THREAD_ID
 INNER JOIN performance_schema.events_waits_history_long ehl ON ehl.THREAD_ID = esl.THREAD_ID
-WHERE PROCESSLIST_ID = CONNECTION_ID()  
- and esl.EVENT_NAME = 'statement/sql/select'
-ORDER BY esl.TIMER_END DESC;
+WHERE PROCESSLIST_ID = CONNECTION_ID() and esl.EVENT_NAME = 'statement/sql/select'
+ORDER BY 'DURATION (ms)' DESC;
 
 -- Clean up
 DROP INDEX idx_actor_first_name ON sakila.actor;
