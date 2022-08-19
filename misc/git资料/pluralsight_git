@@ -1,7 +1,7 @@
 # 查看git版本
 git --version
 
-
+# How Git Works
 # 2 Git Is Not What You Think
 # 初始化仓库
 git init
@@ -52,6 +52,7 @@ git checkout c0e58bf25cae84d1cf506b12160100955fa754ac
 git checkout 901315a
 git branch nogood
 
+# 3 Rebasing Made Simple
 # 在ideas分支执行，复制ideas的commits，链接到main上，移动ideas分支到最前面
 git rebase main
 # 在main分支执行，复制main的commits，链接到ideas上，移动main分支到最前面
@@ -66,3 +67,29 @@ git tag dinner
 git tag
 # 切换到标签
 git checkout release_1
+
+
+# 4 Distributed Version Control
+# 克隆仓库
+git clone https://github.com/nusco/how-git-works
+
+# 查看远程和本地的所有分支
+git branch --all
+
+# 查看所有dev指向的commit
+git show-ref dev
+git show-ref master
+git show-ref main
+
+
+# 同步到远程仓库
+git push
+# -f: force, 覆盖远程仓库中冲突的commit
+git push -f
+
+# git fetch and git merge
+git pull
+
+
+
+# Master Git
