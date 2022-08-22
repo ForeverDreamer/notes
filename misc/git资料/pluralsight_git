@@ -93,3 +93,8 @@ git pull
 
 
 # Master Git
+# 2 The Four Areas: Introduction
+# 比较Working Area和Index
+git diff
+# 比较Index和Repository
+git diff --cached
