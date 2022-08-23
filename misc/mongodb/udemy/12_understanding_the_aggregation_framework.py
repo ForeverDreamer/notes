@@ -93,12 +93,12 @@ def turning_the_location_into_a_geojson_object_165(persons):
                 }
             }
         },
-        {
-            '$project': {
-                'email': 1,
-                'location': 1,
-            }
-        },
+        # {
+        #     '$project': {
+        #         'email': 1,
+        #         'location': 1,
+        #     }
+        # },
     ])
     pp(list(person_cursor))
 
@@ -115,10 +115,10 @@ def transforming_the_birthdate_166(persons):
             },
 
         },
-        {'$count': "num_of_persons"},
-        # {'$sort': {'age': -1}},
-        # {'$skip': 100},
-        # {'$limit': 5},
+        # {'$count': "num_of_persons"},
+        {'$sort': {'age': -1}},
+        {'$skip': 100},
+        {'$limit': 5},
     ])
     pp(list(person_cursor))
 
@@ -300,7 +300,7 @@ with mongo_client(db_name) as client:
     # turning_the_location_into_a_geojson_object_165(col)
     # transforming_the_birthdate_166(col)
     # using_shortcuts_for_transformations_167(col)
-    # understanding_the_isoweekyear_operator_168(col)
+    understanding_the_isoweekyear_operator_168(col)
     # col = client.get_default_database()['friends']
     # pushing_elements_into_newly_created_arrays_170(col)
     # understanding_the_unwind_stage_171(col)
@@ -311,4 +311,4 @@ with mongo_client(db_name) as client:
     # applying_multiple_operations_to_our_array_176(col)
     # understanding_bucket_177(col)
     # diving_into_additional_stages_178(col)
-    writing_pipeline_results_into_a_new_collection_180(col)
+    # writing_pipeline_results_into_a_new_collection_180(col)

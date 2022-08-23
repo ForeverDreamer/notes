@@ -105,6 +105,11 @@ docker inspect doerlee_node
         "Propagation": ""
     },
 ]
+
+# Default processes for new containers
+CMD: Run-time arguments override CMD instructions
+ENTRYPOINT: Run-time arguments are appended to ENTRYPOINT
+
 # -w: 指定工作目录（working dir）
 docker run --name doerlee_node -p 8080:3000 -v $(pwd):/var/www -w "/var/www" doerlee/node npm start
 docker run --name doerlee_crawleruniverse -p 8000:8000 -v $(pwd):/var/www -w "/var/www" doerlee/crawleruniverse python manage.py runserver 0.0.0.0:8000

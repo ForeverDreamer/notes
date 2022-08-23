@@ -98,3 +98,12 @@ git pull
 git diff
 # 比较Index和Repository
 git diff --cached
+
+
+# The Four Areas: Basic Workflow
+# 比较ideas和main两个分支
+git diff ideas main
+# --cached: 从index删除, git add的逆操作, -f: 从Working Area和Index同时删除
+git rm --cached file_name
+# 移动或重命名，同时更新Working Area和Index, 一般不用，用git add, 让git自动识别
+git mv menu.md menu.txt
