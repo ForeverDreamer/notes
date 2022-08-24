@@ -8,12 +8,12 @@ db_name = 'mongodb_example'
 
 def init_db():
     with mongo_client(db_name) as client:
-        client.drop_database(db_name)
+        # client.drop_database(db_name)
         d = client.get_default_database()
-        with open('persons.json', 'rb') as f:
-            persons = json.load(f)
-        d['persons'].insert_many(persons)
-        with open('friends.json', 'rb') as f:
+        # with open('persons.json', 'rb') as f:
+        #     persons = json.load(f)
+        # d['persons'].insert_many(persons)
+        with open('170-array-data.json', 'rb') as f:
             friends = json.load(f)
         d['friends'].insert_many(friends)
 
@@ -291,8 +291,32 @@ def writing_pipeline_results_into_a_new_collection_180(persons):
     pp(list(person_cursor))
 
 
+def update_addfields(friends):
+    friend_cursor = friends.aggregate([
+        {'$match': {'name': 'Max'}},
+        {'$addFields': {'f1': 1, 'f2': ['hello', 'world'], 'f3': {'k': 'v'}}},
+    ])
+    pp(list(friend_cursor))
+
+
+def update_replaceroot(friends):
+    # friend_cursor = friends.aggregate([
+    #     {'$replaceRoot': {'newRoot': {'k1': 'v1', 'k2': 'v2'}}},
+    # ])
+    # friend_cursor = friends.aggregate([
+    #     {'$match': {'name': 'Max'}},
+    #     {'$replaceRoot': {'newRoot': {'$mergeObjects': [{'_id': '$_id', 'name': '$name', 'age': '$age'}]}}},
+    # ])
+    friend_cursor = friends.aggregate([
+        {'$unwind': "$examScores"},
+        {'$match': {'examScores.score': {'$gte': 60}}},
+        {'$replaceRoot': {'newRoot': '$examScores'}},
+    ])
+    pp(list(friend_cursor))
+
+
 with mongo_client(db_name) as client:
-    col = client.get_default_database()['persons']
+    # col = client.get_default_database()['persons']
     # using_the_aggregation_framework_161(col)
     # understanding_the_group_stage_162(col)
     # diving_deeper_into_the_group_stage_163(col)
@@ -300,9 +324,9 @@ with mongo_client(db_name) as client:
     # turning_the_location_into_a_geojson_object_165(col)
     # transforming_the_birthdate_166(col)
     # using_shortcuts_for_transformations_167(col)
-    understanding_the_isoweekyear_operator_168(col)
-    # col = client.get_default_database()['friends']
-    # pushing_elements_into_newly_created_arrays_170(col)
+    # understanding_the_isoweekyear_operator_168(col)
+    col = client.get_default_database()['friends']
+    pushing_elements_into_newly_created_arrays_170(col)
     # understanding_the_unwind_stage_171(col)
     # eliminating_duplicate_values_172(col)
     # using_projection_with_arrays_173(col)
@@ -312,3 +336,5 @@ with mongo_client(db_name) as client:
     # understanding_bucket_177(col)
     # diving_into_additional_stages_178(col)
     # writing_pipeline_results_into_a_new_collection_180(col)
+    # update_addfields(col)
+    # update_replaceroot(col)
