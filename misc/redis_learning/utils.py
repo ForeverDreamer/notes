@@ -144,6 +144,51 @@ def scan(cursor=0, match=None, count=None, _type=None):
     return r.scan(cursor, match, count, _type)
 
 
+# 5_redis_lists
+def lpush(name, *values):
+    return r.lpush(name, *values)
+
+
+def lrange(name, start, end):
+    return r.lrange(name, start, end)
+
+
+def rpush(name, *values):
+    return r.rpush(name, *values)
+
+
+def lindex(name, index):
+    return r.lindex(name, index)
+
+
+def linsert(name, where, refvalue, value):
+    return r.linsert(name, where, refvalue, value)
+
+
+def lpop(name):
+    return r.lpop(name)
+
+
+def rpop(name):
+    return r.rpop(name)
+
+
+def ltrim(name, start, end):
+    return r.ltrim(name, start, end)
+
+
+def lset(name, index, value):
+    return r.lset(name, index, value)
+
+
+def llen(name):
+    return r.llen(name)
+
+
+def lrem(name, count, value):
+    return r.lrem(name, count, value)
+
+
 # 7_redis_sets
 def sadd(name, *values):
     return r.sadd(name, *values)

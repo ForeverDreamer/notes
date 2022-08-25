@@ -1,10 +1,12 @@
 import contextlib
+import sys
 
 import pika
 
 
 @contextlib.contextmanager
 def get_channel():
+    # <ENTER>
     # Set the connection parameters to connect to rabbit-server1 on port 5672
     # on the / virtual host using the username "guest" and password "guest"
     credentials = pika.PlainCredentials('guest', 'guest')
@@ -16,10 +18,17 @@ def get_channel():
     connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
     print('连接开启！')
-    yield channel
-    channel.close()
-    connection.close()
-    print('连接关闭！')
+    try:
+        # Like __enter__()'s return statement
+        yield channel
+        # <NORMAL EXIT>
+        channel.close()
+        connection.close()
+        print('连接关闭！')
+    except Exception:
+        # <EXCEPTIONAL EXIT>
+        print('pika channel: exceptional exit', sys.exc_info())
+        raise
 
 
 def show_message(channel, queue, method, properties, body):

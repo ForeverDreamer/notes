@@ -100,10 +100,22 @@ git diff
 git diff --cached
 
 
-# The Four Areas: Basic Workflow
+# 3 The Four Areas: Basic Workflow
 # 比较ideas和main两个分支
 git diff ideas main
 # --cached: 从index删除, git add的逆操作, -f: 从Working Area和Index同时删除
 git rm --cached file_name
 # 移动或重命名，同时更新Working Area和Index, 一般不用，用git add, 让git自动识别
 git mv menu.md menu.txt
+
+
+# 3 The Four Areas: Git Reset
+# 移动当前分支到指定commit，丢弃前边的commits, 从Repository复制数据到: 1.Index(--mixed)，2.Index和Working Area(--hard)，3.不复制数据(--soft)
+git reset commit_id # 默认--mixed
+git reset --mixed commit_id
+git reset --hard commit_id
+git reset --soft commit_id
+# 从Repository复制数据到Index，等同于git rm --cached
+git reset HEAD
+# 从Repository复制数据到Index和Working Area
+git reset --hard HEAD
