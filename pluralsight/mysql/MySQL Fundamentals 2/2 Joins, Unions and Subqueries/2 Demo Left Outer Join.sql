@@ -47,4 +47,8 @@ SELECT t1.ID AS T1ID, t1.Value AS T1Value,
 FROM table1 t1
 LEFT JOIN table2 t2 on t1.ID=t2.ID;
 
+SELECT t1.ID AS ID, t1.Value AS T1Value, t2.Value AS T2Value
+FROM table1 t1
+LEFT JOIN table2 t2 on t1.ID=t2.ID;
+
 DROP TABLE IF EXISTS table1, table2;

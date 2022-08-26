@@ -1,41 +1,83 @@
 use sakila;
 
-CREATE TABLE students(
-    student_id INT,
-    student_name VARCHAR(10)
-);
+-- Students
+CREATE TABLE Students
+(StudentId INT, StudentName VARCHAR(10));
+INSERT INTO Students (StudentId, StudentName)
+SELECT 1,'John'
+UNION ALL
+SELECT 2,'Matt'
+UNION ALL
+SELECT 3,'James';
 
-INSERT INTO students(student_id, student_name)
-SELECT 1, 'John'
+-- Classes
+CREATE TABLE Classes
+(ClassId INT, ClassName VARCHAR(10));
+INSERT INTO Classes (ClassId, ClassName)
+SELECT 1,'Maths'
 UNION ALL
-SELECT 2, 'Matt'
+SELECT 2,'Arts'
 UNION ALL
-SELECT 3, 'James';
+SELECT 3,'History';
 
-CREATE TABLE classes(
-    class_id INT,
-    class_name VARCHAR(10)
-);
+-- StudentClass
+CREATE TABLE StudentClass
+(StudentId INT, ClassId INT);
+INSERT INTO StudentClass (StudentId, ClassId)
+SELECT 1,1
+UNION ALL
+SELECT 1,2
+UNION ALL
+SELECT 3,1
+UNION ALL
+SELECT 3,2
+UNION ALL
+SELECT 3,3;
 
-INSERT INTO classes(class_id, class_name)
-SELECT 1, 'Maths'
-UNION ALL
-SELECT 2, 'Arts'
-UNION ALL
-SELECT 3, 'History';
+-- Select data
+SELECT *
+FROM Students;
+SELECT *
+FROM Classes;
+SELECT *
+FROM StudentClass;
 
-CREATE TABLE student_class(
-    student_id INT,
-    class_id INT
-);
+/* Question 1:  What will be the best possible join if we want to retrieve 
+all the students who have signed up for the classes in the summer? */
+-- StudentClass有相应的StudentID，INNER JOIN返回的交集
+SELECT st.StudentID, st.StudentName, cl.ClassID, cl.ClassName
+FROM StudentClass sc
+INNER JOIN Classes cl ON cl.ClassID = sc.ClassID
+INNER JOIN Students st ON st.StudentID = sc.StudentID;
 
-INSERT INTO student_class(student_id, class_id)
-SELECT 1, 1
-UNION ALL
-SELECT 1, 2
-UNION ALL
-SELECT 3, 1
-UNION ALL
-SELECT 3, 2
-UNION ALL
-SELECT 3, 3;
+/* Question 2:  What will be the best possible join if we want to retrieve 
+all the students who have signed up for no classes in summer? */
+-- StudentClass没有相应的StudentID，OUTER JOIN时为NULL
+SELECT st.StudentID, st.StudentName, sc.StudentID, sc.ClassID
+FROM Students st
+LEFT JOIN StudentClass sc ON st.StudentID = sc.StudentID;
+
+SELECT st.StudentID, st.StudentName, sc.StudentID, sc.ClassID, cl.ClassID, cl.ClassName
+FROM Students st
+LEFT JOIN StudentClass sc ON st.StudentID = sc.StudentID
+LEFT JOIN Classes cl ON cl.ClassID = sc.ClassID;
+
+SELECT st.StudentID, st.StudentName
+FROM Students st
+LEFT JOIN StudentClass sc ON st.StudentID = sc.StudentID
+LEFT JOIN Classes cl ON cl.ClassID = sc.ClassID
+WHERE cl.ClassID IS NULL;
+
+SELECT st.StudentName
+FROM Students st
+LEFT JOIN StudentClass sc ON st.StudentID = sc.StudentID
+WHERE sc.ClassID IS NULL;
+
+-- Clean up
+DROP TABLE Students;
+DROP TABLE Classes;
+DROP TABLE StudentClass;
+
+
+
+
