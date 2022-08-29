@@ -179,8 +179,8 @@ def eliminating_duplicate_values_172(friends):
 def using_projection_with_arrays_173(friends):
     friend_cursor = friends.aggregate([
         # {'$project': {'_id': 0, 'examscore': {'$slice': ['$examScores', 1]}}},
-        # {'$project': {'_id': 0, 'examscore': {'$slice': ['$examScores', -2]}}},
-        {'$project': {'_id': 0, 'examscore': {'$slice': ['$examScores', 2, 1]}}},
+        {'$project': {'_id': 0, 'examscore': {'$slice': ['$examScores', -2]}}},
+        # {'$project': {'_id': 0, 'examscore': {'$slice': ['$examScores', 2, 1]}}},
     ])
     pp(list(friend_cursor))
 
@@ -196,7 +196,7 @@ def using_the_filter_operator_175(friends):
     friend_cursor = friends.aggregate([
         {'$project': {
             '_id': 0,
-            'scores': {'$filter': {'input': '$examScores', 'as': 'es', 'cond': {'$gt': ['$$es.score', 60]}}}
+            'scores': {'$filter': {'input': '$examScores', 'as': 'sc', 'cond': {'$gt': ['$$sc.score', 60]}}}
         }},
     ])
     pp(list(friend_cursor))
@@ -205,9 +205,7 @@ def using_the_filter_operator_175(friends):
 def applying_multiple_operations_to_our_array_176(friends):
     friend_cursor = friends.aggregate([
         {'$unwind': '$examScores'},
-        # {'$count': "num_of_friends"},
         {'$project': {'_id': 1, 'name': 1, 'age': 1, 'score': '$examScores.score'}},
-        {'$sort': {'score': -1}},
         {'$group': {'_id': '$_id', 'name': {'$first': '$name'}, 'maxscore': {'$max': '$score'}}},
         {'$sort': {'maxscore': -1}},
     ])
@@ -286,7 +284,7 @@ def writing_pipeline_results_into_a_new_collection_180(persons):
                 'location': 1,
             }
         },
-        {'$out': 'transformedPersons'}
+        {'$out': {'db': db_name, 'coll': 'transformedPersons'}}
     ])
     pp(list(person_cursor))
 
@@ -307,6 +305,9 @@ def update_replaceroot(friends):
     #     {'$match': {'name': 'Max'}},
     #     {'$replaceRoot': {'newRoot': {'$mergeObjects': [{'_id': '$_id', 'name': '$name', 'age': '$age'}]}}},
     # ])
+    # friend_cursor = friends.aggregate([
+    #     {'$unwind': "$examScores"},
+    # ])
     friend_cursor = friends.aggregate([
         {'$unwind': "$examScores"},
         {'$match': {'examScores.score': {'$gte': 60}}},
@@ -316,25 +317,25 @@ def update_replaceroot(friends):
 
 
 with mongo_client(db_name) as client:
-    # col = client.get_default_database()['persons']
-    # using_the_aggregation_framework_161(col)
-    # understanding_the_group_stage_162(col)
-    # diving_deeper_into_the_group_stage_163(col)
-    # working_with_project_164(col)
-    # turning_the_location_into_a_geojson_object_165(col)
-    # transforming_the_birthdate_166(col)
-    # using_shortcuts_for_transformations_167(col)
-    # understanding_the_isoweekyear_operator_168(col)
-    col = client.get_default_database()['friends']
-    pushing_elements_into_newly_created_arrays_170(col)
-    # understanding_the_unwind_stage_171(col)
-    # eliminating_duplicate_values_172(col)
-    # using_projection_with_arrays_173(col)
-    # getting_the_length_of_an_array_174(col)
-    # using_the_filter_operator_175(col)
-    # applying_multiple_operations_to_our_array_176(col)
-    # understanding_bucket_177(col)
-    # diving_into_additional_stages_178(col)
-    # writing_pipeline_results_into_a_new_collection_180(col)
-    # update_addfields(col)
-    # update_replaceroot(col)
+    coll = client.get_default_database()['persons']
+    # using_the_aggregation_framework_161(coll)
+    # understanding_the_group_stage_162(coll)
+    # diving_deeper_into_the_group_stage_163(coll)
+    # working_with_project_164(coll)
+    # turning_the_location_into_a_geojson_object_165(coll)
+    # transforming_the_birthdate_166(coll)
+    # using_shortcuts_for_transformations_167(coll)
+    # understanding_the_isoweekyear_operator_168(coll)
+    # coll = client.get_default_database()['friends']
+    # pushing_elements_into_newly_created_arrays_170(coll)
+    # understanding_the_unwind_stage_171(coll)
+    # eliminating_duplicate_values_172(coll)
+    # using_projection_with_arrays_173(coll)
+    # getting_the_length_of_an_array_174(coll)
+    # using_the_filter_operator_175(coll)
+    # applying_multiple_operations_to_our_array_176(coll)
+    # understanding_bucket_177(coll)
+    # diving_into_additional_stages_178(coll)
+    writing_pipeline_results_into_a_new_collection_180(coll)
+    # update_addfields(coll)
+    # update_replaceroot(coll)
