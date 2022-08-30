@@ -233,14 +233,21 @@ db.hobbies.insertMany([
     {_id: 'cooking', name: 'Cooking'},
     {_id: 'cars', name: 'Cars'}
 ])
-# Ordered: 批量插入时是否按顺序插入，遇到错误立即终止，默认为true, 设置为false则会处理所有的数据并返回处理结果；已插入的数据均不会回滚撤销
+# ordered: 批量插入时按顺序插入，遇到错误立即终止，默认为true, 设置为false则会处理所有的数据并返回处理结果；已插入的数据均不会回滚撤销
 db.hobbies.insertMany([
     {_id: 'yoga', name: 'Yoga'},
     {_id: 'cooking', name: 'Cooking'},
     {_id: 'hiking', name: 'Hiking'}
-], {Ordered: false})
-# writeConcern: w写入实例的数量，j表示是否写入journal确保db服务器挂掉内存数据丢失，重i启后依然可以根据journal继续未完成的写操作, wtimeout表示超时设置
+], {ordered: false})
+
+# https://pymongo.readthedocs.io/en/stable/api/pymongo/write_concern.html#pymongo.write_concern.WriteConcern
+# writeConcern: w写入实例的数量，默认1， w=<integer> always includes the replica set primary (e.g. w=3 means write to the primary
+# and wait until replicated to two secondaries), j表示是否写入journal确保db服务器挂掉内存数据丢失，重启后依然可以根据journal
+# 继续未完成的写操作, wtimeout表示超时设置, fsync: If True and the server is running without journaling, blocks until the
+# server has synced all data files to disk.
+
 db.persons.insertOne({name: 'Aliya', age: 22}, {writeConcern: {w: 1, j: true, wtimeout: 200}})
+
 # 从json文件导入数据, -d指定导入到哪个数据库，-c导入哪个集合，--jsonArray指定导入多条记录, --drop表示如果集合已存在则删除重建，不设置该选项则追加在已有数据后边
 mongoimport tv-show.json -d movie_data -c movies --jsonArray --drop
 

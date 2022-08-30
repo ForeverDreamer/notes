@@ -17,6 +17,6 @@ def mongo_client(d):
         # print('关闭数据库！')
     except Exception:
         # <EXCEPTIONAL EXIT>
-        print('mongo_client: exceptional exit', sys.exc_info())
+        # print('mongo_client: exceptional exit', sys.exc_info())
         raise
 
