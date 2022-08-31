@@ -109,7 +109,7 @@ git rm --cached file_name
 git mv menu.md menu.txt
 
 
-# 3 The Four Areas: Git Reset
+# 4 The Four Areas: Git Reset
 # 移动当前分支到指定commit，丢弃前边的commits, 从Repository复制数据到: 1.Index(--mixed)，2.Index和Working Area(--hard)，3.不复制数据(--soft)
 git reset commit_id # 默认--mixed
 git reset --mixed commit_id
@@ -119,3 +119,28 @@ git reset --soft commit_id
 git reset HEAD
 # 从Repository复制数据到Index和Working Area
 git reset --hard HEAD
+
+
+# 5 The Four Areas: Advanced Tools
+# Stash类似于剪贴板(clipboard)
+# 复制Working Area和Index的数据到Stash，然后checkout当前commit
+git stash --include-untracked
+# 查看stash
+git stash list
+# 复制Stash的首条数据到Working Area和Index
+git stash apply
+# 清空Stash
+git stash clear
+
+# Working with Paths
+# 从Repository复制menu.txt到Index，等同于git rm --cached menu.txt
+git reset HEAD menu.txt
+# 从Repository复制menu.txt到Index和Working Area
+git checkout HEAD menu.txt
+
+# Committing Parts of a File
+# 使用git add|checkout|stash|reset|... --patch处理部分文件(hunk)
+git add --patch menu.txt
+
+# 从Repository复制menu.txt到Index，等同于git rm --cached menu.txt
+git restore --staged menu.txt
