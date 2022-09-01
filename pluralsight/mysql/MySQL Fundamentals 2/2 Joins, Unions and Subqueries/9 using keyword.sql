@@ -69,6 +69,18 @@ SELECT 	t1.ID AS T1ID, t1.Value AS T1Value,
 FROM Table1 t1
 LEFT JOIN Table2 t2 USING (ID);
 
+/* LEFT JOIN */
+SELECT 	t1.ID AS T1ID, t1.Value AS T1Value,
+		t2.ID T2ID, t2.Value AS T2Value
+FROM Table1 t1
+LEFT JOIN Table2 t2 ON t1.ID = t2.ID AND t1.Value = t2.Value;
+
+/* LEFT JOIN - USING */
+SELECT 	t1.ID AS T1ID, t1.Value AS T1Value,
+		t2.ID T2ID, t2.Value AS T2Value
+FROM Table1 t1
+LEFT JOIN Table2 t2 USING (ID, Value);
+
 -- Clean up
 DROP TABLE table1;
 DROP TABLE table2;

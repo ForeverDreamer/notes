@@ -24,13 +24,13 @@ SELECT *
 FROM Employee;
 
 -- Inner Join
-SELECT e1.Name EmployeeName, e2.name AS ManagerName
+SELECT e1.EmployeeId EId, e1.Name EmployeeName, e2.EmployeeId MId, e2.name AS ManagerName
 FROM Employee e1
 INNER JOIN Employee e2
 ON e1.ManagerID = e2.EmployeeID;
 
 -- Outer Join
-SELECT e1.Name EmployeeName, IFNULL(e2.name, 'Top Manager') AS ManagerName
+SELECT e1.EmployeeId EId, e1.Name EmployeeName, e2.EmployeeId MId, IFNULL(e2.name, 'Top Manager') AS ManagerName
 FROM Employee e1
 LEFT JOIN Employee e2
 ON e1.ManagerID = e2.EmployeeID;

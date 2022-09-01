@@ -77,7 +77,3 @@ WHERE sc.ClassID IS NULL;
 DROP TABLE Students;
 DROP TABLE Classes;
 DROP TABLE StudentClass;
-
-
-
-
