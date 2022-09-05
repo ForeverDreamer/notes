@@ -2,7 +2,7 @@ import sys
 sys.path.append(r"D:\data_files\notes\udemy\RabbitMQ_and_Messaging_Concepts")
 import time
 
-from utilts import get_channel
+from utils import get_channel
 
 QUEUE = 'task_queue'
 

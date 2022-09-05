@@ -189,6 +189,54 @@ def lrem(name, count, value):
     return r.lrem(name, count, value)
 
 
+# 6_redis_hashes
+def hset(name, key=None, value=None, mapping=None):
+    return r.hset(name, key, value, mapping)
+
+
+def hget(name, key):
+    return r.hget(name, key)
+
+
+def hgetall(name):
+    return r.hgetall(name)
+
+
+def hmget(name, keys, *args):
+    return r.hmget(name, keys, *args)
+
+
+def hlen(name):
+    return r.hlen(name)
+
+
+def hdel(name, *keys):
+    return r.hdel(name, *keys)
+
+
+def hexists(name, key):
+    return r.hexists(name, key)
+
+
+def hkeys(name):
+    return r.hkeys(name)
+
+
+def hvals(name):
+    return r.hvals(name)
+
+
+def hincrby(name, key, amount=1):
+    return r.hincrby(name, key, amount=amount)
+
+
+def hincrbyfloat(name, key, amount=1.0):
+    return r.hincrbyfloat(name, key, amount=amount)
+
+
+def hsetnx(name, key, value):
+    return r.hsetnx(name, key, value)
+
 # 7_redis_sets
 def sadd(name, *values):
     return r.sadd(name, *values)
