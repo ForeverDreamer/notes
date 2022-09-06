@@ -314,8 +314,22 @@ db.users.find({hobbies: {$size: 3}}).pretty()
 # genre数组字段里边包含'action', 'thriller'字段，但顺序可以不一样
 db.moviestars.find({genre: {$all: ['action', 'thriller']}})
 
-use movie_data
-db.users.find($and: [{'hobbies.tile}])
+# 类似于es的nested问题，数组嵌套文档内部字段的联系丢失，多个嵌套文档共同满足条件也会被查出来
+db.users.find($and: [{'hobbies.tile': 'Sports'}, {'hobbies.frequency': {$gte: 2}])
+db.users.find($and: [{'hobbies.tile': 'Sports'}, {'hobbies.frequency': {$gte: 3}}])
+# 解决上述问题，限制必须至少一个文档单独满足条件
+db.users.find(hobbies: {$elemMatch: {title: 'Sports', frequency: {$gte: 3}}）
+
+# 只提取部分数组元素
+db.movies.find({genres: 'Drama'}, {'genres.$': 1})
+db.movies.find({genres: 'Drama'}, {genres: {$elemMatch: {$eq: 'Horror'}}})
+db.movies.find({'rating.average': {$gt: 9}}, {genres: {$slice: [1, 2]}, name: 1})
+
+
+# 08 Update Operations
+
+
+# 09 Understanding Delete Operations
 
 
 # 10 Working with Indexes

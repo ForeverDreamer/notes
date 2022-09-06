@@ -18,7 +18,7 @@ done
 echo 遇到目录退出
 for file in *; do
     if [[ -d $file ]]; then
-        continue
+        break
     fi
     stat -c "%n %F" "$file"
 done
@@ -26,7 +26,7 @@ done
 echo 遇到普通文件退出
 for file in *; do
     if [[ -f $file ]]; then
-        continue
+        break
     fi
     stat -c "%n %F" "$file"
 done
