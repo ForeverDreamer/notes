@@ -44,6 +44,7 @@ publish topstocks "top2"
 
 subscribe news1
 
+# 查看活跃channels，即既有Publish，又有subscribe的channel
 pubsub channels *
 pubsub channels news*
 
@@ -52,6 +53,7 @@ subscribe new2
 pubsub channels top*
 pubsub channels news1
 
+# 查看channel news1的subscriber数量
 pubsub numsub news1
 
 

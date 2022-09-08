@@ -154,6 +154,9 @@ docker network inspect isolated_network
 
 # 在特定网络中运行容器
 docker run -d --net=isolated_network --name mongodb mongo
+docker container run --rm -d --name web -p 8080:80 nginx
+# 查看端口映射情况
+docker port web
 
 
 5.docker compose

@@ -8,21 +8,21 @@ CREATE VIEW DMLOperation
 AS
 SELECT language_id, name, last_update
 FROM language
-WHERE last_update = '2006-02-15 05:02:19'
+WHERE last_update = '2006-02-15 13:02:19'
 WITH CHECK OPTION;
 
 SELECT *
 FROM DMLOperation;
 
--- Insert 
+-- Insert [HY000][1369] CHECK OPTION failed 'sakila.dmloperation'，last_update跟DMLOperation不一致
 INSERT INTO DMLOperation 
 		(name, last_update)
-VALUES ('Hindi', '2013-02-15 05:02:19');
+VALUES ('Hindi', '2013-02-15 13:02:19');
 
--- Insert 
+-- Insert 成功
 INSERT INTO DMLOperation 
 		(name, last_update)
-VALUES ('Hindi', '2006-02-15 05:02:19');
+VALUES ('Hindi', '2006-02-15 13:02:19');
 
 SELECT *
 FROM DMLOperation;
@@ -30,14 +30,15 @@ FROM DMLOperation;
 SELECT *
 FROM language;
 
--- Update
+-- Update [HY000][1369] CHECK OPTION failed 'sakila.dmloperation'
 UPDATE DMLOperation
-SET last_update = '2013-02-15 05:02:19'
+SET last_update = '2013-02-15 13:02:19'
 WHERE name = 'Hindi';
 
 SELECT *
 FROM DMLOperation;
 
+-- [HY000][1369] CHECK OPTION failed 'sakila.dmloperation'
 UPDATE DMLOperation
 SET name = 'Spanish'
 WHERE name = 'Hindi';
@@ -45,27 +46,32 @@ WHERE name = 'Hindi';
 SELECT *
 FROM DMLOperation;
 
--- Delete
+-- WITH CHECK OPTION不检查Delete，成功
 DELETE
 FROM DMLOperation
-WHERE name = 'Spanish';
+WHERE name = 'Hindi';
 
 SELECT *
 FROM DMLOperation;
 
--- Remember: Base Table DML
+-- 不检查 Base Table DML
 -- Insert 
 INSERT INTO language 
 		(name, last_update)
-VALUES ('New Lang', '2013-02-15 05:02:19');
+VALUES ('New Lang', '2006-02-15 13:02:19');
 
 SELECT language_id, name, last_update
 FROM language;
 
 UPDATE language
-SET last_update = '2013-02-15 05:02:19'
+SET last_update = '2022-02-15 13:02:19'
 WHERE name = 'German';
 
+# 视图里查不到German
+SELECT language_id, name, last_update
+FROM DMLOperation;
+
+# Base Table查得到German
 SELECT language_id, name, last_update
 FROM language;
 

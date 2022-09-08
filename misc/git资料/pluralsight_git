@@ -144,3 +144,44 @@ git add --patch menu.txt
 
 # 从Repository复制menu.txt到Index，等同于git rm --cached menu.txt
 git restore --staged menu.txt
+
+
+# 6 History: Exploring the Past
+git log --graph --decorate --oneline
+# 查看commit的详细信息
+git show commit_id
+git show branch_name
+git show HEAD
+# parent commit
+git show HEAD^
+# parent of parent commit
+git show HEAD^^
+# HEAD之前第5个commit
+git show HEAD~5
+# HEAD之前第2个commit的第二个parent commit
+git show HEAD~2^2
+# 1个月之前HEAD的位置
+git show HEAD@{"1 month ago"}
+
+# shows where the lines in a file are coming from
+git blame recipes/apple_pie.txt
+# 对比commits
+git diff HEAD HEAD~2
+# 对比branches
+git diff nogood master
+
+git help log
+# commits文本变更详情
+git log --patch
+# 根据commit评论过滤，评论包含"apples"的commit
+git log --grep apples --oneline
+# 变更文本包含"apples"的commit
+git log -Gapples --patch
+# git grep用法
+git help grep
+# 查看最近3条commits
+git log -3 --oneline
+# 查看第5条至parent的commits
+git log HEAD~5..HEAD^ --oneline
+# nogood至master的commits
+git log nogood..master --oneline
