@@ -6,7 +6,7 @@ ps -l
 ps -ly
 
 # UNIX
-# -e: Select all processes,Identical to -A, -f: Do full-format listing, -F: Extra full format
+# -e: Select all processes,Identical to -A, -l: Long format, -f: Do full-format listing, -F: Extra full format
 ps -elf | less
 ps -elf | grep sshd
 

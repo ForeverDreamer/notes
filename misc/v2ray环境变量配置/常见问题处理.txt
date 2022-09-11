@@ -1,0 +1,8 @@
+# v2ray客户端测试连接超时
+ping一下域名，看看解析有没有问题
+
+# bash: /dev/fd/63: No such file or directory
+You have to make sure you're logged in as root before you run the command.
+sudo -i
+Then run the command (as root).
+bash <(curl -s https://raw.githubusercontent.com/VilhelmPrytz/pterodactyl-installer/master/install-panel.sh)
