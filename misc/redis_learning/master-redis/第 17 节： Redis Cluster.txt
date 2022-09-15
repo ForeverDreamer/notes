@@ -1,0 +1,30 @@
+# 190. Setup and configuration of 6 nodes
+# n1_redis.conf
+port 7001
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-time-out 5000
+appendonly yes
+
+# launching server in the background
+redis-server n1_conf &
+
+#Check running redis instances
+ps -ef|grep redis
+
+
+# 192. Launch a cluster with nodes
+# creating replicas
+redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 127.0.0.1:7006 --cluster-replicas 1
+
+# Connecting to replicas
+redis-cli -c -p 7001
+
+# Other commands
+info
+
+
+# 195. High availability in cluster
+redis-cli --cluster check 127.0.0.1:7001
+redis-cli -p 7001 cluster
+redis-cli -p 7001 cluster nodes
