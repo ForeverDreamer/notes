@@ -5,8 +5,8 @@ DELIMITER //
 
 -- Create Function
 CREATE FUNCTION RentalCountsbyCust(cust_id INT)
-RETURNS INT
-READS SQL DATA
+    RETURNS INT
+    READS SQL DATA
 BEGIN
     DECLARE RentalCounts INT;
 
@@ -15,15 +15,16 @@ BEGIN
     FROM rental
     WHERE customer_id = cust_id;
 
-    RETURN(RentalCounts);
+    RETURN (RentalCounts);
 END//
 
 -- Change Delimiter 
 DELIMITER ;
 
 -- Call Function
-SELECT first_name, last_name, 
-		RentalCountsbyCust(customer_id) TotalMovieRented
+SELECT first_name,
+       last_name,
+       RentalCountsbyCust(customer_id) TotalMovieRented
 FROM customer;
 
 DROP FUNCTION RentalCountsbyCust;

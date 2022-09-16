@@ -15,3 +15,5 @@ DELIMITER ;
 
 -- Call Stored Procedure
 CALL GetLanguage();
+
+DROP PROCEDURE GetLanguage;

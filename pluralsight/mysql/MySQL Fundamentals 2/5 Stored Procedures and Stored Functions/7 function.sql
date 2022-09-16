@@ -5,8 +5,8 @@ DELIMITER //
 
 -- Create Function
 CREATE FUNCTION GetLanguage(lang_id INT)
-RETURNS VARCHAR(100)
-READS SQL DATA
+    RETURNS VARCHAR(100)
+    READS SQL DATA
 BEGIN
     DECLARE LangName VARCHAR(100);
 
@@ -15,7 +15,7 @@ BEGIN
     FROM language
     WHERE language_id = lang_id;
 
-    RETURN(LangName);
+    RETURN (LangName);
 END//
 
 -- Change Delimiter 

@@ -185,3 +185,27 @@ git log -3 --oneline
 git log HEAD~5..HEAD^ --oneline
 # nogood至master的commits
 git log nogood..master --oneline
+
+
+# 6 History: Fixing Mistakes
+# 与最近的一个commit合并
+git commit --amend
+
+# 互动式rebase，从origin/master后一个commit开始往上(从远期到近期)编辑
+# https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
+git rebase -i origin/master
+
+# 查看变更日志
+git reflog HEAD
+git reflog refs/heads/master
+# 查看commit，找到无法追踪的commit，可以创建分支或贴上标签防止被垃圾回收
+git show HEAD@{15}
+
+
+# filter-branch是旧命令，会逐步弃用，建议filter-repo
+git help filter-repo
+# 从所有commits中删除menu.txt
+git filter-repo --path menu.txt --invert-paths
+
+# write a new commit with new data that is the opposite of existing data
+git revert 5720fdf
