@@ -8,27 +8,20 @@
 
 import sys
 
-def generate_resp(ips):
+PATTERN = '*3\r\n$3\r\nSET\r\n${0}\r\n{1}\r\n$1\r\n1\r\n'
 
-    # print (ips) 
-
-    pattern = '*3\r\n$3\r\nSET\r\n${0}\r\n{1}\r\n$1\r\n1\r\n'
-
-    for ip in ips:
-        sys.stdout.write(pattern.format(len(ip), ip))
 
 if __name__ == '__main__':
 
-    data = ''
-
-    with open('ips.txt', 'rt') as f:
-
-        data = f.read()
-
-    ips = data.split('\n')
-
-    generate_resp(ips)
-
+    with open("ips.txt", "rt") as f1:
+        ips = f1.readlines()
+        # with open("resp.txt", "wt") as f2:
+        #     for ip in ips:
+        #         ip = ip.strip()
+        #         f2.write(PATTERN.format(len(ip), ip))
+        for ip in ips:
+            ip = ip.strip()
+            sys.stdout.write(PATTERN.format(len(ip), ip))
 
 # 执行命令
 # python block_ips.py | redis-cli --pipe
