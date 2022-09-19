@@ -330,3 +330,56 @@ def pfcount(*sources):
 
 def pfmerge(dest, *sources):
     return r.pfmerge(dest, *sources)
+
+
+# 23_redisjson
+def json_set(name, path, obj):
+    return r.json().set(name, path, obj)
+
+
+def json_get(name, *args):
+    return r.json().get(name, *args)
+
+
+def json_type(name):
+    return r.json().type(name)
+
+
+def json_strlen(name, path):
+    return r.json().strlen(name, path)
+
+
+def json_strappend(name, value, path):
+    return r.json().strappend(name, value, path)
+
+
+def json_objlen(name, path):
+    return r.json().objlen(name, path)
+
+
+def json_objkeys(name, path):
+    return r.json().objkeys(name, path)
+
+
+def json_numincrby(name, path, number):
+    return r.json().numincrby(name, path, number)
+
+
+def json_delete(name, path):
+    return r.json().delete(name, path)
+
+
+def json_debug(name, path, subcommand='MEMORY'):
+    return r.json().debug(subcommand, name, path)
+
+
+def json_arrlen(name, path):
+    return r.json().arrlen(name, path)
+
+
+def json_arrpop(name, path, index):
+    return r.json().arrpop(name, path, index)
+
+
+def json_arrinsert(name, path, index, *args):
+    return r.json().arrinsert(name, path, index, *args)

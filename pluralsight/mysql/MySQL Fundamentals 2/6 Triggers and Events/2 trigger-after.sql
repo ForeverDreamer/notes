@@ -32,7 +32,7 @@ DELIMITER ;
 
 -- Update Value
 UPDATE language
-SET name = 'Spanish-New'
+SET name = 'Spanish'
 WHERE language_id = 11;
 UPDATE language
 SET name = 'Hindi-New'
