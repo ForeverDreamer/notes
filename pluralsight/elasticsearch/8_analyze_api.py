@@ -2,9 +2,10 @@ from pprint import pprint as pp
 
 from elasticsearch import Elasticsearch
 
-from elasticsearch_learning.es_utils import *
+from es_utils import *
 
-es = Elasticsearch()
+# es = Elasticsearch()
+es = Elasticsearch('http://192.168.71.20:9200')
 
 # 人物和组织名称需要作为专有词处理
 # ik_max_word: 何, 立, 峰, 穆, 虹, 离, 退, 局, 外商投资, 外商, 投资, 办公厅, 办公, 厅
@@ -26,10 +27,10 @@ es = Elasticsearch()
 # print(', '.join([t['token'] for t in res['tokens']]))
 
 
-# pp_tokens(analyze(es, 'services', {
-#     "text": "外债规模",
-#     "analyzer": "pinyin_analyzer"
-# }))
+pp_tokens(analyze(es, 'services', {
+    "text": "外债规模",
+    "analyzer": "pinyin_analyzer"
+}))
 
 # pp_tokens(analyze(es, 'news', {
 #     # "text": ["周杰伦", "李连杰", "成龙"],

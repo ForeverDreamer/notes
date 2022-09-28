@@ -3,7 +3,7 @@ from pprint import pprint as pp
 
 from elasticsearch import Elasticsearch
 
-from elasticsearch_learning.es_utils import *
+from es_utils import *
 
 es = Elasticsearch()
 

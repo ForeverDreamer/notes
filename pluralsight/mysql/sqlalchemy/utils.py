@@ -1,11 +1,11 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey
-
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey, insert, select, bindparam
+from sqlalchemy.orm import registry, relationship, Session
 from constants import CONNECTION_STRING
 
+engine = create_engine(CONNECTION_STRING, echo=True, future=True)
 
-def init_core(echo=True):
-    engine = create_engine(CONNECTION_STRING, echo=echo, future=True)
 
+def init_core():
     metadata_obj = MetaData()
 
     user_table = Table(
@@ -27,4 +27,62 @@ def init_core(echo=True):
     metadata_obj.drop_all(engine)
     metadata_obj.create_all(engine)
 
-    return engine, user_table, address_table
+    return user_table, address_table
+
+
+def init_orm():
+    mapper_registry = registry()
+    Base = mapper_registry.generate_base()
+
+    class User(Base):
+        __tablename__ = 'user_account'
+
+        id = Column(Integer, primary_key=True)
+        name = Column(String(30))
+        fullname = Column(String(50))
+        addresses = relationship("Address", back_populates="user")
+
+        def __repr__(self):
+            return f"User(id={self.id!r}, name={self.name!r}, fullname={self.fullname!r})"
+
+    class Address(Base):
+        __tablename__ = 'address'
+
+        id = Column(Integer, primary_key=True)
+        email_address = Column(String(50), nullable=False)
+        user_id = Column(Integer, ForeignKey('user_account.id'))
+        user = relationship("User", back_populates="addresses")
+
+        def __repr__(self):
+            return f"Address(id={self.id!r}, email_address={self.email_address!r})"
+
+    mapper_registry.metadata.drop_all(engine)
+    mapper_registry.metadata.create_all(engine)
+
+    return User, Address
+
+
+def populate_orm_data(User, Address):
+    with Session(engine) as session:
+        session.execute(
+            insert(User),
+            [
+                {"name": "spongebob", "fullname": "Spongebob Squarepants"},
+                {"name": "sandy", "fullname": "Sandy Cheeks"},
+                {"name": "patrick", "fullname": "Patrick Star"}
+            ]
+        )
+        scalar_subq = (
+            select(User.id).
+                where(User.name == bindparam('username')).
+                scalar_subquery()
+        )
+        session.execute(
+            insert(Address).values(user_id=scalar_subq),
+            [
+                {"username": 'spongebob', "email_address": "spongebob@sqlalchemy.org"},
+                {"username": 'sandy', "email_address": "sandy@sqlalchemy.org"},
+                {"username": 'patrick', "email_address": "patrick@sqlalchemy.org"},
+            ]
+        )
+        session.commit()

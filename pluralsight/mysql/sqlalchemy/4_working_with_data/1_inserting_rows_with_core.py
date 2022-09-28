@@ -4,6 +4,7 @@ from utils import init_core
 
 
 engine, user_table, address_table = init_core()
+
 print('================================================')
 stmt = insert(user_table).values(name='spongebob', fullname="Spongebob Squarepants")
 print(stmt)
