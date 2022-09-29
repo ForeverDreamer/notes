@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select, bindparam
+from sqlalchemy import select, and_, or_
 from sqlalchemy.orm import Session
 
 from utils import engine, init_orm, populate_orm_data
@@ -43,3 +43,19 @@ with Session(engine) as session:
         order_by(Address.id)
     ).all()
     print(rows)
+
+print('================================================')
+print(
+    select(Address.email_address).
+    where(
+        and_(
+            or_(User.name == 'squidward', User.name == 'sandy'),
+            Address.user_id == User.id
+        )
+    )
+)
+
+print('================================================')
+print(
+    select(User).filter_by(name='spongebob', fullname='Spongebob Squarepants')
+)

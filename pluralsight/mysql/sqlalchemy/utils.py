@@ -30,6 +30,32 @@ def init_core():
     return user_table, address_table
 
 
+def populate_core_data(user_table, address_table):
+    with engine.connect() as conn:
+        conn.execute(
+            insert(user_table),
+            [
+                {"name": "spongebob", "fullname": "Spongebob Squarepants"},
+                {"name": "sandy", "fullname": "Sandy Cheeks"},
+                {"name": "patrick", "fullname": "Patrick Star"}
+            ]
+        )
+        scalar_subq = (
+            select(user_table.c.id).
+                where(user_table.c.name == bindparam('username')).
+                scalar_subquery()
+        )
+        conn.execute(
+            insert(address_table).values(user_id=scalar_subq),
+            [
+                {"username": 'spongebob', "email_address": "spongebob@sqlalchemy.org"},
+                {"username": 'sandy', "email_address": "sandy@sqlalchemy.org"},
+                {"username": 'patrick', "email_address": "patrick@sqlalchemy.org"},
+            ]
+        )
+        conn.commit()
+
+
 def init_orm():
     mapper_registry = registry()
     Base = mapper_registry.generate_base()
