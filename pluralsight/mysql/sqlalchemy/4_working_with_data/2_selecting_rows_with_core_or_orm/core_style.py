@@ -121,3 +121,23 @@ print('================================================')
 print(
     select(user_table).join(address_table, full=True)
 )
+
+print('================================================')
+print(select(user_table).order_by(user_table.c.name))
+
+print('================================================')
+count_fn = func.count(user_table.c.id)
+print(count_fn)
+
+print('================================================')
+user_alias_1 = user_table.alias()
+user_alias_2 = user_table.alias()
+stmt = (
+    select(user_alias_1.c.name, user_alias_2.c.name).
+    join_from(user_alias_1, user_alias_2, user_alias_1.c.id > user_alias_2.c.id)
+)
+print(stmt)
+with engine.connect() as conn:
+    print('================================================')
+    for row in conn.execute(stmt):
+        print(row)
