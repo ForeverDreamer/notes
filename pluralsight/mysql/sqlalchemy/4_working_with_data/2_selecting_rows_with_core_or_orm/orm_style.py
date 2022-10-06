@@ -3,7 +3,7 @@ from pprint import pprint as pp
 from sqlalchemy import insert, select, bindparam, and_, or_, func, desc
 from sqlalchemy.orm import Session, aliased
 
-from utils import engine, init_orm, populate_orm_data
+from utils import engine, init_orm, populate_orm_data, print_separator
 
 User, Address = init_orm()
 
@@ -132,3 +132,30 @@ with Session(engine) as session:
     print('================================================')
     result = session.execute(stmt)
     pp(result.all())
+
+
+print_separator()
+subq = select(Address).where(~Address.email_address.like("%@gmail.org")).subquery()
+address_subq = aliased(Address, subq)
+stmt = (
+    select(User, address_subq)
+    .join_from(User, address_subq)
+    .order_by(User.id, address_subq.id)
+)
+with Session(engine) as session:
+    for user, address in session.execute(stmt):
+        print(f"{user} {address}")
+
+print_separator()
+cte_obj = select(Address).where(~Address.email_address.like("%@gmail.org")).cte()
+address_cte = aliased(Address, cte_obj)
+stmt = (
+    select(User, address_cte)
+    .join_from(User, address_cte)
+    .order_by(User.id, address_cte.id)
+)
+with Session(engine) as session:
+    for user, address in session.execute(stmt):
+        print(f"{user} {address}")
+
+

@@ -1,6 +1,6 @@
 from sqlalchemy import select, text, literal_column, func
 
-from utils import engine, init_core, populate_core_data
+from utils import engine, init_core, populate_core_data, print_separator
 
 
 user_table, address_table = init_core()
@@ -141,3 +141,36 @@ with engine.connect() as conn:
     print('================================================')
     for row in conn.execute(stmt):
         print(row)
+
+print_separator()
+subq = (
+    select(func.count(address_table.c.id).label("count"), address_table.c.user_id)
+    .group_by(address_table.c.user_id)
+    .subquery()
+)
+print(subq)
+
+print_separator()
+print(select(subq.c.user_id, subq.c.count))
+
+print_separator()
+stmt = select(user_table.c.name, user_table.c.fullname, subq.c.count).join_from(
+    user_table, subq
+)
+print(stmt)
+
+print_separator()
+subq = (
+    select(func.count(address_table.c.id).label("count"), address_table.c.user_id)
+    .group_by(address_table.c.user_id)
+    .cte()
+)
+stmt = select(user_table.c.name, user_table.c.fullname, subq.c.count).join_from(
+    user_table, subq
+)
+print(stmt)
+
+
+
+
+

@@ -112,3 +112,7 @@ def populate_orm_data(User, Address):
             ]
         )
         session.commit()
+
+
+def print_separator(token='='):
+    print(token*50)
