@@ -2,6 +2,7 @@ import sys
 import random
 import math
 from pprint import pprint as pp
+import json
 
 from pymongo.errors import OperationFailure, DuplicateKeyError
 from pymongo import ASCENDING, DESCENDING, TEXT
@@ -9,7 +10,19 @@ from pymongo import ASCENDING, DESCENDING, TEXT
 from db_conn import mongo_client
 from utils import utc_now
 
-db_name = 'mongodb_example'
+db_name = 'examples'
+
+
+# def init_db():
+#     with mongo_client(db_name) as client:
+#         client.drop_database(db_name)
+#         d = client.get_default_database()
+#         with open('126 persons.json', 'rb') as f:
+#             persons = json.load(f)
+#         d['persons'].insert_many(persons)
+#
+#
+# init_db()
 
 
 def list_indexes(c):
@@ -375,10 +388,10 @@ def building_indexes_145(ratings):
 with mongo_client(db_name) as client:
     col = client.get_default_database()['persons']
     # list_indexes(col)
-    # adding_a_single_field_index_126(col)
+    adding_a_single_field_index_126(col)
     # understanding_index_restrictions_128(col)
     # creating_compound_indexes_129(col)
-    using_indexes_for_sorting_130(col)
+    # using_indexes_for_sorting_130(col)
     # understanding_the_default_index_131(col)
     # configuring_indexes_132(col)
     # understanding_partial_filters_133(col)

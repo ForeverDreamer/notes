@@ -1,5 +1,8 @@
 # 启动服务器
+# Windows
 docker run --name my_mongodb -d -p 27017:27017 -v D:\mongodb:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=PassForCfe123 -e TZ=Asia/Shanghai mongo:4.4
+# Linux（虚拟机需要关闭再启动，不能暂停保存状态，docker运行着的container会出错）
+docker run --name my_mongodb -d -p 27017:27017 -v /home/$USER/data/:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=PassForCfe123 -e TZ=Asia/Shanghai mongo:4.4
 
 # 启动客户端
 mongo [--host localhost] [--port 27017]
