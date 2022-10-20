@@ -170,6 +170,82 @@ stmt = select(user_table.c.name, user_table.c.fullname, subq.c.count).join_from(
 )
 print(stmt)
 
+print_separator()
+subq = select(func.count(address_table.c.id)).\
+            where(user_table.c.id == address_table.c.user_id).\
+            scalar_subquery()
+print(subq)
+stmt = select(user_table.c.name, subq.label("address_count"))
+print(stmt)
+with engine.connect() as conn:
+    print_separator()
+    for row in conn.execute(stmt):
+        print(row)
+
+print_separator()
+subq = select(func.count(address_table.c.id)).\
+            where(user_table.c.id == address_table.c.user_id).\
+            scalar_subquery().correlate(user_table)
+print(subq)
+with engine.connect() as conn:
+    stmt = select(
+        user_table.c.name,
+        address_table.c.email_address,
+        subq.label("address_count")
+    ).\
+        join_from(user_table, address_table).\
+        order_by(user_table.c.id, address_table.c.id)
+    print_separator()
+    print(stmt)
+    result = conn.execute(stmt)
+    print_separator()
+    print(result.all())
+
+print_separator()
+subq = (
+  select(
+      func.count(address_table.c.id).label("address_count"),
+      address_table.c.email_address,
+      address_table.c.user_id
+  ).
+      where(user_table.c.id == address_table.c.user_id).
+      lateral()
+)
+stmt = select(
+    user_table.c.name,
+    subq.c.address_count,
+    subq.c.email_address
+). \
+    join_from(user_table, subq). \
+    order_by(user_table.c.id, subq.c.email_address)
+print(stmt)
+
+print_separator()
+from sqlalchemy import union_all
+stmt1 = select(user_table).where(user_table.c.name == 'sandy')
+stmt2 = select(user_table).where(user_table.c.name == 'spongebob')
+u = union_all(stmt1, stmt2)
+print(u)
+with engine.connect() as conn:
+    print_separator()
+    result = conn.execute(u)
+    print(result.all())
+
+print_separator()
+u_subq = u.subquery()
+print(u_subq)
+stmt = (
+    select(u_subq.c.name, address_table.c.email_address).
+    join_from(address_table, u_subq).
+    order_by(u_subq.c.name, address_table.c.email_address)
+)
+print_separator()
+print(stmt)
+with engine.connect() as conn:
+    print_separator()
+    result = conn.execute(stmt)
+    print(result.all())
+
 
 
 

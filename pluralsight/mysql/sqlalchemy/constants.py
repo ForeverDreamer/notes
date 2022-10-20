@@ -3,7 +3,7 @@ CONNECTION_STRING = "{drivername}+{dbapi}://{user}:{passwd}@{host}:{port}/{db_na
      dbapi="mysqldb",
      user="root",
      passwd="my-secret-pw",
-     host="192.168.80.129",
+     host="localhost",
      port="3306",
      db_name="examples",
 )

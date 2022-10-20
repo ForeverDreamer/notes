@@ -147,7 +147,7 @@ with Session(engine) as session:
         print(f"{user} {address}")
 
 print_separator()
-cte_obj = select(Address).where(~Address.email_address.like("%@gmail.org")).cte()
+cte_obj = select(Address).where(~Address.email_address.like("%@sqlalchemy.org")).cte()
 address_cte = aliased(Address, cte_obj)
 stmt = (
     select(User, address_cte)
@@ -158,4 +158,25 @@ with Session(engine) as session:
     for user, address in session.execute(stmt):
         print(f"{user} {address}")
 
+print_separator()
+stmt1 = select(User).where(User.name == 'sandy')
+stmt2 = select(User).where(User.name == 'spongebob')
+from sqlalchemy import union_all
+u = union_all(stmt1, stmt2)
+print(u)
+orm_stmt = select(User).from_statement(u)
+print_separator()
+print(orm_stmt)
+with Session(engine) as session:
+    print_separator()
+    for obj in session.execute(orm_stmt).scalars():
+        print(obj)
 
+print_separator()
+user_alias = aliased(User, u.subquery())
+orm_stmt = select(user_alias).order_by(user_alias.id)
+print(orm_stmt)
+with Session(engine) as session:
+    print_separator()
+    for obj in session.execute(orm_stmt).scalars():
+        print(obj)
