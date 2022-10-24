@@ -246,6 +246,33 @@ with engine.connect() as conn:
     result = conn.execute(stmt)
     print(result.all())
 
+print_separator()
+subq = (
+    select(func.count(address_table.c.id)).
+    where(user_table.c.id == address_table.c.user_id).
+    group_by(address_table.c.user_id).
+    having(func.count(address_table.c.id) > 0)
+).exists()
+print(subq)
+with engine.connect() as conn:
+    print_separator()
+    result = conn.execute(
+        select(user_table.c.name).where(subq)
+    )
+    print(result.all())
+
+print_separator()
+subq = (
+    select(address_table.c.id).
+    where(user_table.c.id == address_table.c.user_id)
+).exists()
+print(subq)
+with engine.connect() as conn:
+    result = conn.execute(
+        select(user_table.c.name).where(~subq)
+    )
+    print(result.all())
+
 
 
 

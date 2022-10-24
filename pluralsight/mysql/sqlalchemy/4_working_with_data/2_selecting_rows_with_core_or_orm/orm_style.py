@@ -180,3 +180,25 @@ with Session(engine) as session:
     print_separator()
     for obj in session.execute(orm_stmt).scalars():
         print(obj)
+
+print_separator()
+stmt1 = select(User).where(User.name == 'sandy')
+stmt2 = select(User).where(User.name == 'spongebob')
+u = union_all(stmt1, stmt2)
+orm_stmt = select(User).from_statement(u)
+print(orm_stmt)
+with Session(engine) as session:
+    print_separator()
+    for obj in session.execute(orm_stmt).scalars():
+        print(obj)
+
+print_separator()
+user_alias = aliased(User, u.subquery())
+orm_stmt = select(user_alias).order_by(user_alias.id)
+print(orm_stmt)
+with Session(engine) as session:
+    print_separator()
+    for obj in session.execute(orm_stmt).scalars():
+        print(obj)
+
+
