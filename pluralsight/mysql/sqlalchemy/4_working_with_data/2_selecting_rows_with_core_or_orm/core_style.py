@@ -1,4 +1,4 @@
-from sqlalchemy import select, text, literal_column, func
+from sqlalchemy import select, text, literal_column, func, Column, Integer, String
 
 from utils import engine, init_core, populate_core_data, print_separator
 
@@ -273,7 +273,122 @@ with engine.connect() as conn:
     )
     print(result.all())
 
+# Working with SQL Functions
+print_separator()
+print(select(func.count()).select_from(user_table))
 
+print_separator()
+print(select(func.lower("A String With Much UPPERCASE")))
 
+print_separator()
+stmt = select(func.now())
+print(stmt)
+with engine.connect() as conn:
+    print_separator()
+    result = conn.execute(stmt)
+    print(result.all())
 
+print_separator()
+print(select(func.some_crazy_function(user_table.c.name, 17)))
 
+print_separator()
+from sqlalchemy.dialects import postgresql
+print(select(func.now()).compile(dialect=postgresql.dialect()))
+print_separator()
+from sqlalchemy.dialects import oracle
+print(select(func.now()).compile(dialect=oracle.dialect()))
+
+# Functions Have Return Types
+print_separator()
+print(func.now().type)
+
+print_separator()
+from sqlalchemy import JSON
+function_expr = func.json_object('{a, 1, b, "def", c, 3.5}', type_=JSON)
+stmt = select(function_expr["def"])
+print(stmt)
+
+# Built-in Functions Have Pre-Configured Return Types
+print_separator()
+m1 = func.max(Column("some_int", Integer))
+print(m1.type)
+
+print_separator()
+m2 = func.max(Column("some_str", String))
+print(m2.type)
+
+print_separator()
+print(func.now().type)
+print(func.current_date().type)
+
+print_separator()
+print(func.concat("x", "y").type)
+
+print_separator()
+print(func.upper("lowercase").type)
+
+print_separator()
+print(select(func.upper("lowercase") + " suffix"))
+
+# Advanced SQL Function Techniques
+# Using Window Functions
+print_separator()
+stmt = select(
+    func.row_number().over(partition_by=user_table.c.name),
+    user_table.c.name,
+    address_table.c.email_address
+).select_from(user_table).join(address_table)
+print(stmt)
+with engine.connect() as conn:
+    print_separator()
+    result = conn.execute(stmt)
+    print(result.all())
+
+print_separator()
+stmt = select(
+    func.count().over(order_by=user_table.c.name),
+    user_table.c.name,
+    address_table.c.email_address).select_from(user_table).join(address_table)
+print(stmt)
+with engine.connect() as conn:
+    print_separator()
+    result = conn.execute(stmt)
+    print(result.all())
+
+# Table-Valued Functions
+from sqlalchemy import select, func
+print_separator()
+stmt = select(func.json_array_elements('["one", "two"]').column_valued("x"))
+print(stmt)
+
+from sqlalchemy.dialects import oracle
+print_separator()
+stmt = select(func.scalar_strings(5).column_valued("s"))
+print(stmt.compile(dialect=oracle.dialect()))
+
+# Data Casts and Type Coercion
+from sqlalchemy import cast
+print_separator()
+stmt = select(cast(user_table.c.id, String))
+print(stmt)
+with engine.connect() as conn:
+    print_separator()
+    result = conn.execute(stmt)
+    print(result.all())
+
+from sqlalchemy import JSON
+print_separator()
+print(cast("{'a': 'b'}", JSON)["a"])
+
+# type_coerce() - a Python-only “cast”
+import json
+from sqlalchemy import JSON
+from sqlalchemy import type_coerce
+from sqlalchemy.dialects import mysql
+print_separator()
+s = select(
+    type_coerce(
+        {'some_key': {'foo': 'bar'}}, JSON
+    )['some_key']
+)
+print(s.compile(dialect=mysql.dialect()))
