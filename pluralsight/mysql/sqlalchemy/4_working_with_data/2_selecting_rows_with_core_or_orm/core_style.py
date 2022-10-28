@@ -392,3 +392,125 @@ s = select(
     )['some_key']
 )
 print(s.compile(dialect=mysql.dialect()))
+
+
+# Updating and Deleting Rows with Core
+# The update() SQL Expression Construct
+from sqlalchemy import update
+stmt = (
+    update(user_table)
+    .where(user_table.c.name == "patrick")
+    .values(fullname="Patrick the Star")
+)
+print_separator()
+print(stmt)
+
+print_separator()
+stmt = update(user_table).values(fullname="Username: " + user_table.c.name)
+print(stmt)
+
+print_separator()
+from sqlalchemy import bindparam
+stmt = (
+    update(user_table)
+    .where(user_table.c.name == bindparam("oldname"))
+    .values(name=bindparam("newname"))
+)
+print(stmt)
+with engine.begin() as conn:
+    print_separator()
+    conn.execute(
+        stmt,
+        [
+            {"oldname": "jack", "newname": "ed"},
+            {"oldname": "wendy", "newname": "mary"},
+            {"oldname": "jim", "newname": "jake"},
+        ],
+    )
+
+# Correlated Updates
+scalar_subq = (
+    select(address_table.c.email_address)
+    .where(address_table.c.user_id == user_table.c.id)
+    .order_by(address_table.c.id)
+    .limit(1)
+    .scalar_subquery()
+)
+update_stmt = update(user_table).values(fullname=scalar_subq)
+print_separator()
+print(update_stmt)
+
+# UPDATE..FROM
+update_stmt = (
+    update(user_table)
+    .where(user_table.c.id == address_table.c.user_id)
+    .where(address_table.c.email_address == "patrick@aol.com")
+    .values(fullname="Pat")
+)
+print_separator()
+print(update_stmt)
+
+update_stmt = (
+    update(user_table)
+    .where(user_table.c.id == address_table.c.user_id)
+    .where(address_table.c.email_address == "patrick@aol.com")
+    .values(
+        {user_table.c.fullname: "Pat", address_table.c.email_address: "pat@aol.com"}
+    )
+)
+from sqlalchemy.dialects import mysql
+print_separator()
+print(update_stmt.compile(dialect=mysql.dialect()))
+
+# Parameter Ordered Updates
+# update_stmt = update(some_table).ordered_values(
+#     (some_table.c.y, 20), (some_table.c.x, some_table.c.y + 10)
+# )
+# print(update_stmt)
+
+# The delete() SQL Expression Construct
+from sqlalchemy import delete
+stmt = delete(user_table).where(user_table.c.name == "patrick")
+print_separator()
+print(stmt)
+
+# Multiple Table Deletes
+delete_stmt = (
+    delete(user_table)
+    .where(user_table.c.id == address_table.c.user_id)
+    .where(address_table.c.email_address == "patrick@aol.com")
+)
+from sqlalchemy.dialects import mysql
+print_separator()
+print(delete_stmt.compile(dialect=mysql.dialect()))
+
+# Getting Affected Row Count from UPDATE, DELETE
+with engine.begin() as conn:
+    print_separator()
+    result = conn.execute(
+        update(user_table)
+        .values(fullname="Patrick McStar")
+        .where(user_table.c.name == "patrick")
+    )
+    print(result.rowcount)
+
+# Using RETURNING with UPDATE, DELETE
+update_stmt = (
+    update(user_table)
+    .where(user_table.c.name == "patrick")
+    .values(fullname="Patrick the Star")
+    .returning(user_table.c.id, user_table.c.name)
+)
+print_separator()
+print(update_stmt)
+
+
+delete_stmt = (
+    delete(user_table)
+    .where(user_table.c.name == "patrick")
+    .returning(user_table.c.id, user_table.c.name)
+)
+print_separator()
+print(delete_stmt)
+
+
