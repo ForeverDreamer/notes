@@ -1,6 +1,6 @@
-CONNECTION_STRING = "{drivername}+{dbapi}://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
-     drivername="mysql",
-     dbapi="mysqldb",
+CONNECTION_STRING = "{dialect}+{driver}://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
+     dialect="mysql",
+     driver="mysqldb",
      user="root",
      passwd="my-secret-pw",
      host="localhost",

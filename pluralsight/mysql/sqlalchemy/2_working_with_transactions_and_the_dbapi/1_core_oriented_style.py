@@ -1,12 +1,15 @@
 from sqlalchemy import create_engine, text
 
 from constants import CONNECTION_STRING
+from utils import *
 
 engine = create_engine(CONNECTION_STRING, echo=True, future=True)
 
+# Getting a Connection
 with engine.connect() as conn:
+    print_separator()
     result = conn.execute(text("select 'hello world'"))
-    print('========================================')
+    print_separator()
     print(result.all())
 
 # "commit as you go"
