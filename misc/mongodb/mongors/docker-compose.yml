@@ -5,7 +5,7 @@ services:
     container_name: mongo1
     image: mongo:4.4
     volumes:
-      - D:/mongors/data1:/data/db
+      - $HOME/data/mongors/mongo1:/data/db
       - ./rs-init.sh:/scripts/rs-init.sh
     networks:
       - mongors-network
@@ -20,7 +20,7 @@ services:
     container_name: mongo2
     image: mongo:4.4
     volumes:
-      - D:/mongors/data2:/data/db
+      - $HOME/data/mongors/mongo2:/data/db
     networks:
       - mongors-network
     ports:
@@ -31,7 +31,7 @@ services:
     container_name: mongo3
     image: mongo:4.4
     volumes:
-      - D:/mongors/data3:/data/db
+      - $HOME/data/mongors/mongo3:/data/db
     networks:
       - mongors-network
     ports:

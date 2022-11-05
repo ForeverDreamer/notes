@@ -1,7 +1,7 @@
 import redis
 
-r = redis.Redis(decode_responses=True)
-# r = redis.Redis(host='127.0.0.1', port=6379)
+# r = redis.Redis(decode_responses=True)
+r = redis.Redis(host='192.168.80.129', port=6379, decode_responses=True)
 # r = redis.Redis(host='hostname', port=port, password='password')
 
 

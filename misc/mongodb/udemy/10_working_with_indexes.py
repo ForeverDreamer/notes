@@ -13,16 +13,16 @@ from utils import utc_now
 db_name = 'examples'
 
 
-# def init_db():
-#     with mongo_client(db_name) as client:
-#         client.drop_database(db_name)
-#         d = client.get_default_database()
-#         with open('126 persons.json', 'rb') as f:
-#             persons = json.load(f)
-#         d['persons'].insert_many(persons)
-#
-#
-# init_db()
+def init_db():
+    with mongo_client(db_name) as client:
+        client.drop_database(db_name)
+        d = client.get_default_database()
+        with open('126 persons.json', 'rb') as f:
+            persons = json.load(f)
+        d['persons'].insert_many(persons)
+
+
+init_db()
 
 
 def list_indexes(c):
@@ -388,7 +388,7 @@ def building_indexes_145(ratings):
 with mongo_client(db_name) as client:
     col = client.get_default_database()['persons']
     # list_indexes(col)
-    adding_a_single_field_index_126(col)
+    # adding_a_single_field_index_126(col)
     # understanding_index_restrictions_128(col)
     # creating_compound_indexes_129(col)
     # using_indexes_for_sorting_130(col)
