@@ -1,33 +1,27 @@
-#includepath "../utils;"
-#include "json.jsx"
+#includepath "../utils;";
+#include "json.jsx";
+#include "share.jsx";
+// #include "extendscript-es5-shim.js";
 
-var path = "D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/test.json";
-
-// // var data = {compName: "My Comp", width: 1920, height: 1080, numlayers: 3};
-// // createJSONFile(data);
-
-// data = jsonIO.read(path);
-// $.writeln(JSON.stringify(data));
-// $.writeln(data.position.x);
-
-// if (app.project.activeItem == null || !(app.project.activeItem instanceof CompItem)) {
-//     alert("Please select a composition first");
-// } else {
-//     app.beginUndoGroup("Process");
-
-//     var mainComp = app.project.activeItem;
-//     $.writeln(mainComp.numLayers);
-//     app.endUndoGroup();
+// for (var k1 in conf) {
+//     $.writeln(k1);
+//     for (var i = 0; i < conf[k1].length; i++) {
+//         for (var k2 in conf[k1]) {
+//             $.writeln(k2);
+//         }
+//     }
+//     $.writeln("=================================");
 // }
+
 var project = app.project;
 var comp = project.activeItem;
 
-function createShapeLayer(name, pos) {
+function createShapeLayer(name, elem, pos) {
     var shapeLayer = comp.layers.addShape();
     shapeLayer("Transform")("Position").setValue(pos)
-    shapeLayer.name = name;
+    shapeLayer.name = name + "." + elem;
     var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-    shapeGroup.name = name;
+    shapeGroup.name = elem;
     pathProp = shapeGroup("Contents").addProperty("ADBE Vector Shape - Rect")
     pathProp("Size").setValue([50, 50])
     strokeProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
@@ -37,16 +31,17 @@ function createShapeLayer(name, pos) {
     return shapeLayer
 }
 
-function createTextLayer(text, parent) {
-    var textLayer = comp.layers.addText(text);
+function createTextLayer(name, elem, parent) {
+    var textLayer = comp.layers.addText(elem);
     textLayer("Transform")("Position").setValue([0, 0])
     textLayer.setParentWithJump(parent)
-    textLayer.name = text;
+    textLayer.name = name + "." + elem;
     var textProp = textLayer("Source Text");
     textDocument = textProp.value;  
     textDocument.resetCharStyle();
     textDocument.resetParagraphStyle();
-    textDocument.font = "MicrosoftYaHeiUI-Bold";
+    // textDocument.font = "MicrosoftYaHeiUI-Bold";
+    textDocument.font = "Arial-BoldItalicMT";
     textDocument.fontSize = 40;
     // textProp.expression = 'text.sourceText.style.setFauxBold(true).setText(' + text + ')'
     textDocument.fillColor = [0, 0, 0];
@@ -57,8 +52,8 @@ function createTextLayer(text, parent) {
     textDocument.applyFill = true;
     // textDocument.text = "Changed String";
     textDocument.justification = ParagraphJustification.CENTER_JUSTIFY;
-    textDocument.tracking = 50;
-    textDocument.leading = 500;
+    textDocument.tracking = -110;
+    // textDocument.leading = 500;
 
     textProp.setValue(textDocument);
     var value = textLayer("Transform")("Position").value
@@ -68,20 +63,50 @@ function createTextLayer(text, parent) {
 }
 
 
-function createQueue(pos, length){
-    for (var i = 0; i < length; i++) {
-        shapeLayer = createShapeLayer(i.toString(), [pos[0]+50*i, pos[1], pos[2]])
-        createTextLayer(i.toString(), shapeLayer)
+function createQueue(name, pos, elems){
+    for (var i = 0; i < elems.length; i++) {
+        shapeLayer = createShapeLayer(name, elems[i].toString(), [pos[0]+50*i, pos[1], pos[2]])
+        createTextLayer(name, elems[i].toString(), shapeLayer)
     }
 }
 
 function main(){
-    if (app.project.activeItem == null || !(app.project.activeItem instanceof CompItem)) {
-        alert("Please select a composition first");
-        return;
+    if (comp == null || !(comp instanceof CompItem)) {
+        comp = project.items.addComp("Main", 1920, 1080, 1, 10, 30);
     }
     comp.openInViewer();
-    createQueue([100, 100, 0], 10)
+    var bgLayer = comp.layers.addSolid([1,1,1], "BG", 1920, 1080, 1);
+    bgLayer.moveToEnd()
+    // var path = "D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json";
+
+    // // var data = {compName: "My Comp", width: 1920, height: 1080, numlayers: 3};
+    // // createJSONFile(data);
+
+    conf = jsonIO.read("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json");
+    // $.writeln(JSON.stringify(data));
+    var queues = conf['queues']
+    for (var i = 0; i < queues.length; i++) {
+        var name = queues[i]['name']
+        var pos = queues[i]['pos']
+        var elems = queues[i]['elems']
+        // $.writeln(name, pos, elems);
+        // $.writeln("=================================");
+        createQueue(name, pos, elems)
+    }
+    var files = conf['files']
+    for (var i = 0; i < files.length; i++) {
+        var path = files[i]['path']
+        var import_as_type = files[i]['import_as_type']
+        var pos = files[i]['pos']
+        var importOptions = new ImportOptions();
+        importOptions.file = new File(path);
+        importOptions.importAs = importAsType(import_as_type)
+        var codePhotoItem = project.importFile(importOptions);
+        codePhotoLayer = comp.layers.add(codePhotoItem)
+        codePhotoLayer.moveBefore(bgLayer)
+        codePhotoLayer("Transform")("Position").setValue(pos)
+    }
+
 }
 
 app.beginUndoGroup("Process");
