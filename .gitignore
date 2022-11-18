@@ -9,7 +9,7 @@
 .springBeans
 
 ### vscode ###
-.vscode
+# .vscode
 
 ### IntelliJ IDEA ###
 .idea

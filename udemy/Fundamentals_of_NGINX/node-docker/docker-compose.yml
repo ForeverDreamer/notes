@@ -2,7 +2,7 @@ version: '3.7'
 services:
   nginx:
     image: nginx:1.22
-    container_name: my_nginx
+    # container_name: my_nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./www:/etc/nginx/www
@@ -17,7 +17,7 @@ services:
 
   web_1:
     build: ./web
-    container_name: my_web_1
+    # container_name: my_web_1
     expose:
       - 9999
     volumes:
