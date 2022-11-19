@@ -1,6 +1,8 @@
 #includepath "../utils;";
 #include "json.jsx";
 #include "share.jsx";
+#include "color.jsx";
+
 // #include "extendscript-es5-shim.js";
 
 // for (var k1 in conf) {
@@ -21,7 +23,7 @@ function createShapeLayer(name, elem, pos) {
     shapeLayer("Transform")("Position").setValue(pos)
     shapeLayer.name = name + "." + elem;
     var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-    shapeGroup.name = elem;
+    // shapeGroup.name = elem;
     pathProp = shapeGroup("Contents").addProperty("ADBE Vector Shape - Rect")
     pathProp("Size").setValue([50, 50])
     strokeProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
@@ -37,7 +39,7 @@ function createTextLayer(name, elem, parent) {
     textLayer.setParentWithJump(parent)
     textLayer.name = name + "." + elem;
     var textProp = textLayer("Source Text");
-    textDocument = textProp.value;  
+    textDocument = textProp.value;
     textDocument.resetCharStyle();
     textDocument.resetParagraphStyle();
     // textDocument.font = "MicrosoftYaHeiUI-Bold";
@@ -63,26 +65,29 @@ function createTextLayer(name, elem, parent) {
 }
 
 
-function createQueue(name, pos, elems){
+function createQueue(name, pos, elems, queuesDic) {
+    queuesDic[name] = []
     for (var i = 0; i < elems.length; i++) {
-        shapeLayer = createShapeLayer(name, elems[i].toString(), [pos[0]+50*i, pos[1], pos[2]])
-        createTextLayer(name, elems[i].toString(), shapeLayer)
+        shapeLayer = createShapeLayer(name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
+        textLayer = createTextLayer(name, elems[i].toString(), shapeLayer)
+        queuesDic[name].push([shapeLayer, textLayer])
     }
 }
 
-function main(){
+function main() {
     if (comp == null || !(comp instanceof CompItem)) {
         comp = project.items.addComp("Main", 1920, 1080, 1, 10, 30);
     }
     comp.openInViewer();
-    var bgLayer = comp.layers.addSolid([1,1,1], "BG", 1920, 1080, 1);
+    var bgLayer = comp.layers.addSolid([1, 1, 1], "BG", 1920, 1080, 1);
     bgLayer.moveToEnd()
     // var path = "D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json";
 
     // // var data = {compName: "My Comp", width: 1920, height: 1080, numlayers: 3};
     // // createJSONFile(data);
 
-    conf = jsonIO.read("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json");
+    conf = jsonUtil.read("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json");
+    var queuesDic = {};
     // $.writeln(JSON.stringify(data));
     var queues = conf['queues']
     for (var i = 0; i < queues.length; i++) {
@@ -91,8 +96,11 @@ function main(){
         var elems = queues[i]['elems']
         // $.writeln(name, pos, elems);
         // $.writeln("=================================");
-        createQueue(name, pos, elems)
+        createQueue(name, pos, elems, queuesDic)
     }
+    (queuesDic["preorder"][0][0]("Contents")("Group 1")("Contents")("Fill 1")("Color")
+        .setValuesAtTimes([0, 0.5, 1], [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)])
+    )
     var files = conf['files']
     for (var i = 0; i < files.length; i++) {
         var path = files[i]['path']
@@ -100,7 +108,7 @@ function main(){
         var pos = files[i]['pos']
         var importOptions = new ImportOptions();
         importOptions.file = new File(path);
-        importOptions.importAs = importAsType(import_as_type)
+        importOptions.importAs = shareUtil.importAsType(import_as_type)
         var codePhotoItem = project.importFile(importOptions);
         codePhotoLayer = comp.layers.add(codePhotoItem)
         codePhotoLayer.moveBefore(bgLayer)

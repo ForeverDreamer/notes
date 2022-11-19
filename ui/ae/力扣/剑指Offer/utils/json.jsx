@@ -1,13 +1,13 @@
-function JsonIO() {}
+function JsonUtil() {}
 
-JsonIO.prototype.write = function(path) {
+JsonUtil.prototype.write = function(path) {
     var file = File(path);
     file.open("w");
     file.write(JSON.stringify(data));
     file.close();
 }
 
-JsonIO.prototype.read = function(path) {
+JsonUtil.prototype.read = function(path) {
     var file = File(path);
     file.open("r");
     var data = file.read();
@@ -16,8 +16,8 @@ JsonIO.prototype.read = function(path) {
 }
 
 
-if (typeof jsonIO === "undefined") {
-    const jsonIO = new JsonIO();
+if (typeof jsonUtil === "undefined") {
+    const jsonUtil = new JsonUtil();
 }
 // $.writeln(p);
 

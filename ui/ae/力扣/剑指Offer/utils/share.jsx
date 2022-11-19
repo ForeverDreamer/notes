@@ -1,4 +1,6 @@
-function importAsType(type){
+function ShareUtil() {}
+
+ShareUtil.prototype.importAsType = function(type) {
     var t;
     switch (type) {
     case 'COMP_CROPPED_LAYERS':
@@ -14,4 +16,8 @@ function importAsType(type){
         t = ImportAsType.FOOTAGE;
     }
     return t
+}
+
+if (typeof shareUtil === "undefined") {
+    const shareUtil = new ShareUtil();
 }
