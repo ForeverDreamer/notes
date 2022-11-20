@@ -29,6 +29,16 @@ ColorUtil.prototype.hexToRgb = function(hex, normalize) {
     return rgb;
 }
 
+ColorUtil.prototype.hexToRgb1 = function(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return this.rgbNormalize(parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16));
+}
+
+ColorUtil.prototype.hexToRgb255 = function(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)];
+}
+
 // ColorUtil.prototype.hexToRgb255 = function(hex) {
 //     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 //     r = parseInt(result[1], 16)

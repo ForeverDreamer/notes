@@ -16,9 +16,31 @@
 // }
 
 var project = app.project;
+
+// function delItems(items) {
+//     numItems = items.length
+//     for (var i = numItems; i >= 1; i--) {
+//         item = items[i]
+//         // if (item instanceof FolderItem) {
+//         //     delItems(item.items);
+//         // } else {
+//         //     item.remove()
+//         // }
+//         item.remove()
+//     }
+// }
+
+shareUtil.delItems(project.items)
+// for (var i = 1; i <= project.numItems; i++) {
+//     if (item instanceof FolderItem) {
+//         delFolder(item);
+//     } 
+//     project.item(i).remove()
+// }
+
 var comp = project.activeItem;
 
-function createShapeLayer(name, elem, pos) {
+function createQueueShapeLayer(name, elem, pos) {
     var shapeLayer = comp.layers.addShape();
     shapeLayer("Transform")("Position").setValue(pos)
     shapeLayer.name = name + "." + elem;
@@ -33,7 +55,7 @@ function createShapeLayer(name, elem, pos) {
     return shapeLayer
 }
 
-function createTextLayer(name, elem, parent) {
+function overlayTextLayer(name, elem, parent) {
     var textLayer = comp.layers.addText(elem);
     textLayer("Transform")("Position").setValue([0, 0])
     textLayer.setParentWithJump(parent)
@@ -65,14 +87,46 @@ function createTextLayer(name, elem, parent) {
 }
 
 
-function createQueue(name, pos, elems, queuesDic) {
-    queuesDic[name] = []
+function createQueue(name, pos, elems, queuesObj) {
+    queuesObj[name] = []
     for (var i = 0; i < elems.length; i++) {
-        shapeLayer = createShapeLayer(name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
-        textLayer = createTextLayer(name, elems[i].toString(), shapeLayer)
-        queuesDic[name].push([shapeLayer, textLayer])
+        shapeLayer = createQueueShapeLayer(name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
+        var dropShadowEffect = shapeLayer.Effects.addProperty("ADBE Drop Shadow");
+        dropShadowEffect("Softness").setValue(4);
+        textLayer = overlayTextLayer(name, elems[i].toString(), shapeLayer)
+        queuesObj[name].push([shapeLayer, textLayer])
     }
 }
+
+
+function createTextLayer(name, payload) {
+    var textLayer = comp.layers.addText(payload["text"]);
+    textLayer.name = name;
+    var textProp = textLayer("Source Text");
+    textDocument = textProp.value;
+    textDocument.resetCharStyle();
+    textDocument.resetParagraphStyle();
+    textDocument.font = payload["font"] ? payload["font"] : "Arial-BoldItalicMT";
+    textDocument.fontSize = payload["fontSize"] ? payload["fontSize"] : 40;
+    textDocument.fillColor = payload["fillColor"] ? payload["fillColor"] : [0, 0, 0];
+    textDocument.strokeColor = payload["strokeColor"] ? payload["strokeColor"] : [1, 1, 1];
+    textDocument.strokeWidth = payload["strokeWidth"] ? payload["strokeWidth"] : 0;
+    textDocument.strokeOverFill = payload["strokeOverFill"] ? payload["strokeOverFill"] : true;
+    textDocument.applyStroke = payload["applyStroke"] ? payload["applyStroke"] : true;
+    textDocument.applyFill = payload["applyFill"] ? payload["applyFill"] : true;
+    textDocument.justification = payload["justification"] ? payload["justification"] : ParagraphJustification.CENTER_JUSTIFY;
+    textDocument.tracking = payload["tracking"] ? payload["tracking"] : 0;
+    // textDocument.leading = 500;
+    var left = textLayer.sourceRectAtTime(0, true).left
+    var anchorPointProp = textLayer("Transform")("Anchor Point")
+    var value = anchorPointProp.value
+    value[0] = left
+    anchorPointProp.setValue(value)
+    textLayer("Transform")("Position").setValue(payload["pos"])
+    textProp.setValue(textDocument);
+    return textLayer
+}
+
 
 function main() {
     if (comp == null || !(comp instanceof CompItem)) {
@@ -87,7 +141,7 @@ function main() {
     // // createJSONFile(data);
 
     conf = jsonUtil.read("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json");
-    var queuesDic = {};
+    var queuesObj = {};
     // $.writeln(JSON.stringify(data));
     var queues = conf['queues']
     for (var i = 0; i < queues.length; i++) {
@@ -96,25 +150,47 @@ function main() {
         var elems = queues[i]['elems']
         // $.writeln(name, pos, elems);
         // $.writeln("=================================");
-        createQueue(name, pos, elems, queuesDic)
+        createQueue(name, pos, elems, queuesObj)
     }
-    (queuesDic["preorder"][0][0]("Contents")("Group 1")("Contents")("Fill 1")("Color")
-        .setValuesAtTimes([0, 0.5, 1], [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)])
-    )
-    var files = conf['files']
-    for (var i = 0; i < files.length; i++) {
-        var path = files[i]['path']
-        var import_as_type = files[i]['import_as_type']
-        var pos = files[i]['pos']
-        var importOptions = new ImportOptions();
-        importOptions.file = new File(path);
-        importOptions.importAs = shareUtil.importAsType(import_as_type)
-        var codePhotoItem = project.importFile(importOptions);
-        codePhotoLayer = comp.layers.add(codePhotoItem)
-        codePhotoLayer.moveBefore(bgLayer)
-        codePhotoLayer("Transform")("Position").setValue(pos)
+    // (queuesObj["preorder"][0][0]("Contents")("Group 1")("Contents")("Fill 1")("Color")
+    //     .setValuesAtTimes([0, 1.5, 3], [colorUtil.hexToRgb1("#FF0000"), colorUtil.hexToRgb1("#00FF18"), colorUtil.hexToRgb1("#005FB8")])
+    // )
+    colorProp = queuesObj["preorder"][0][0]("Contents")("Group 1")("Contents")("Fill 1")("Color")
+    colorProp.setValuesAtTimes([0, 1.5, 3], [colorUtil.hexToRgb1("#FADED8"), colorUtil.hexToRgb1("#CEF2ED"), colorUtil.hexToRgb1("#0573E1")])
+    for (var i = 1; i <= colorProp.numKeys; i++) {
+        colorProp.setInterpolationTypeAtKey(i, KeyframeInterpolationType.HOLD)
     }
-
+    // var files = conf['files']
+    // for (var i = 0; i < files.length; i++) {
+    //     var path = files[i]['path']
+    //     var import_as_type = files[i]['import_as_type']
+    //     var pos = files[i]['pos']
+    //     var importOptions = new ImportOptions();
+    //     importOptions.file = new File(path);
+    //     importOptions.importAs = shareUtil.importAsType(import_as_type)
+    //     var codePhotoItem = project.importFile(importOptions);
+    //     codePhotoLayer = comp.layers.add(codePhotoItem)
+    //     codePhotoLayer.moveBefore(bgLayer)
+    //     codePhotoLayer("Transform")("Position").setValue(pos)
+    // }
+    var codes = conf["codes"]
+    var codesArr = []
+    var start_x = 400
+    var start_y = 50
+    var pos_x = start_x;
+    var pos_y = start_y;
+    for (var i = 0; i < codes.length; i++) {
+        var pair = codes[i]
+        for (var j = 0; j < pair.length; j++) {
+            if (pair[j][0]==="") {
+                continue
+            }
+            var pos_x = start_x + pair[j][1]*80
+            var textLayer = createTextLayer("Code"+"."+i+"."+j, {"text": pair[j][0], "pos": [pos_x, pos_y], "fontSize": 30});
+            pos_y += 43
+            codesArr.push(textLayer)
+        }
+    }
 }
 
 app.beginUndoGroup("Process");
