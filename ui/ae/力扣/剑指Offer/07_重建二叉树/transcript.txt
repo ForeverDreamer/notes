@@ -1,0 +1,4 @@
+# 时间单位是秒[start:end]，方便脚本设置字幕出现和隐藏的关键帧
+[0:5]大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"
+[6:10]题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果
+[https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/]

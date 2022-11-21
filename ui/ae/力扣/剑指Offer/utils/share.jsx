@@ -31,6 +31,7 @@ ShareUtil.prototype.delItems = function(items) {
   }
 }
 
-if (typeof shareUtil === "undefined") {
-    const shareUtil = new ShareUtil();
-}
+var shareUtil = new ShareUtil();
+// if (typeof shareUtil === "undefined") {
+//     var shareUtil = new ShareUtil();
+// }

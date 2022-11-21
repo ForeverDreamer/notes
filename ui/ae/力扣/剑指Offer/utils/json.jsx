@@ -15,10 +15,10 @@ JsonUtil.prototype.read = function(path) {
     return JSON.parse(data)
 }
 
-
-if (typeof jsonUtil === "undefined") {
-    const jsonUtil = new JsonUtil();
-}
+var jsonUtil = new JsonUtil();
+// if (typeof jsonUtil === "undefined") {
+//     var jsonUtil = new JsonUtil();
+// }
 // $.writeln(p);
 
 // function createJSONFile(data) {

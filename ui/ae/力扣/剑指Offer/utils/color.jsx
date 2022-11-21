@@ -47,7 +47,7 @@ ColorUtil.prototype.hexToRgb255 = function(hex) {
 //     return result ? [r, g, b] : null;
 // }
 
-
-if (typeof colorUtil === "undefined") {
-    const colorUtil = new ColorUtil();
-}
+var colorUtil = new ColorUtil();
+// if (typeof colorUtil === "undefined") {
+//     var colorUtil = new ColorUtil();
+// }
