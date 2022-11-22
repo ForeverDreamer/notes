@@ -87,13 +87,36 @@ function overlayTextLayer(name, elem, parent) {
 }
 
 
-function createQueue(name, pos, elems, queuesObj) {
+function createQueue(conf, queuesObj) {
+    var name = conf['name']
+    var pos = conf['pos']
+    var elems = conf['elems']
+    var effects = conf['effects']
+    var keyframes = conf['keyframes']
     queuesObj[name] = []
     for (var i = 0; i < elems.length; i++) {
-        shapeLayer = createQueueShapeLayer(name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
+        var shapeLayer = createQueueShapeLayer(name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
         var dropShadowEffect = shapeLayer.Effects.addProperty("ADBE Drop Shadow");
         dropShadowEffect("Softness").setValue(4);
-        textLayer = overlayTextLayer(name, elems[i].toString(), shapeLayer)
+        var textLayer = overlayTextLayer(name, elems[i].toString(), shapeLayer)
+        // 嵌套循环计数变量i,j等不要同名，会有意想不到的bug
+        for (var j = 0; j < keyframes.length; j++) {
+            for (var k in keyframes[j]) {
+                var timeValue = keyframes[j][k]
+                if (k === "Opacity") {
+                    timeValue[0][1] += i*0.25
+                    timeValue[0][2] += i*0.25
+                }
+                shapeLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
+                textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
+            }
+        }
+        // var opacityProp = shapeLayer("Transform")("Opacity")
+        // var timeArr = [0, 1+i*0.25, 2+i*0.25]
+        // opacityProp.setValuesAtTimes(timeArr, [0, 0, 100])
+        // textLayer = overlayTextLayer(name, elems[i].toString(), shapeLayer)
+        // opacityProp = textLayer("Transform")("Opacity")
+        // opacityProp.setValuesAtTimes(timeArr, [0, 0, 100])
         queuesObj[name].push([shapeLayer, textLayer])
     }
 }
@@ -145,12 +168,9 @@ function main() {
     // $.writeln(JSON.stringify(data));
     var queues = conf['queues']
     for (var i = 0; i < queues.length; i++) {
-        var name = queues[i]['name']
-        var pos = queues[i]['pos']
-        var elems = queues[i]['elems']
         // $.writeln(name, pos, elems);
         // $.writeln("=================================");
-        createQueue(name, pos, elems, queuesObj)
+        createQueue(queues[i], queuesObj)
     }
     // (queuesObj["preorder"][0][0]("Contents")("Group 1")("Contents")("Fill 1")("Color")
     //     .setValuesAtTimes([0, 1.5, 3], [colorUtil.hexToRgb1("#FF0000"), colorUtil.hexToRgb1("#00FF18"), colorUtil.hexToRgb1("#005FB8")])
