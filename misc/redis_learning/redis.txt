@@ -1,6 +1,6 @@
 # 启动服务器
 docker run --name xr_redis -p 6379:6379 redis:6.0
-docker run --name redis_with_modules -p 6379:6379 -d redislabs/redismod
+docker run --name redis_with_modules --restart always -p 6379:6379 -d redislabs/redismod
 # 启动客户端
 方法1：docker desktop 的container实例，点击">-"图标打开终端窗口，运行redis-cli
 方法2: vscode安装docker插件后找到container实例，右键"Attach Shell"，运行redis-cli

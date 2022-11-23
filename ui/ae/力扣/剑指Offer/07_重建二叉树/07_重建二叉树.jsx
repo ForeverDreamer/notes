@@ -131,7 +131,7 @@ function createTextLayer(name, payload) {
     textDocument.resetParagraphStyle();
     textDocument.font = payload["font"] ? payload["font"] : "Arial-BoldItalicMT";
     textDocument.fontSize = payload["fontSize"] ? payload["fontSize"] : 40;
-    textDocument.fillColor = payload["fillColor"] ? payload["fillColor"] : [0, 0, 0];
+    textDocument.fillColor = payload["fillColor"] ? colorUtil.hexToRgb1(payload["fillColor"]) : [0, 0, 0];
     textDocument.strokeColor = payload["strokeColor"] ? payload["strokeColor"] : [1, 1, 1];
     textDocument.strokeWidth = payload["strokeWidth"] ? payload["strokeWidth"] : 0;
     textDocument.strokeOverFill = payload["strokeOverFill"] ? payload["strokeOverFill"] : true;
@@ -140,13 +140,14 @@ function createTextLayer(name, payload) {
     textDocument.justification = payload["justification"] ? payload["justification"] : ParagraphJustification.CENTER_JUSTIFY;
     textDocument.tracking = payload["tracking"] ? payload["tracking"] : 0;
     // textDocument.leading = 500;
+    textProp.setValue(textDocument);
     var left = textLayer.sourceRectAtTime(0, true).left
     var anchorPointProp = textLayer("Transform")("Anchor Point")
     var value = anchorPointProp.value
     value[0] = left
     anchorPointProp.setValue(value)
     textLayer("Transform")("Position").setValue(payload["pos"])
-    textProp.setValue(textDocument);
+
     return textLayer
 }
 
@@ -193,22 +194,48 @@ function main() {
     //     codePhotoLayer.moveBefore(bgLayer)
     //     codePhotoLayer("Transform")("Position").setValue(pos)
     // }
-    var codes = conf["codes"]
-    var codesArr = []
-    var start_x = 400
-    var start_y = 50
-    var pos_x = start_x;
-    var pos_y = start_y;
-    for (var i = 0; i < codes.length; i++) {
-        var pair = codes[i]
-        for (var j = 0; j < pair.length; j++) {
-            if (pair[j][0]==="") {
-                continue
+    // var codes = conf["codes"]
+    // var codesArr = []
+    // var start_x = 400
+    // var start_y = 50
+    // var pos_x = start_x;
+    // var pos_y = start_y;
+    // for (var i = 0; i < codes.length; i++) {
+    //     var pair = codes[i]
+    //     for (var j = 0; j < pair.length; j++) {
+    //         if (pair[j][0]==="") {
+    //             continue
+    //         }
+    //         var pos_x = start_x + pair[j][1]*80
+    //         var textLayer = createTextLayer("Code"+"."+i+"."+j, {"text": pair[j][0], "pos": [pos_x, pos_y, 0], "fontSize": 30});
+    //         pos_y += 43
+    //         codesArr.push(textLayer)
+    //     }
+    // }
+    var transcript = conf["transcript"]
+    // var lines = transcript.concat(annotations)
+    for (var i = 0; i < transcript.length; i++) {
+        var text = transcript[i]["text"]
+        var keyframes = transcript[i]["keyframes"]
+        var textLayer = createTextLayer("transcript"+"."+i, {"text": text, "pos": [80, 1000, 0], "fontSize": 50});
+        for (var j = 0; j < keyframes.length; j++) {
+            for (var k in keyframes[j]) {
+                var timeValue = keyframes[j][k]
+                textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
             }
-            var pos_x = start_x + pair[j][1]*80
-            var textLayer = createTextLayer("Code"+"."+i+"."+j, {"text": pair[j][0], "pos": [pos_x, pos_y], "fontSize": 30});
-            pos_y += 43
-            codesArr.push(textLayer)
+        }
+    }
+    var annotations = conf["annotations"]
+    for (var i = 0; i < annotations.length; i++) {
+        var text = annotations[i]["text"]
+        var pos = annotations[i]["pos"]
+        var keyframes = annotations[i]["keyframes"]
+        var textLayer = createTextLayer("annotations"+"."+i, {"text": text, "pos": pos, "fontSize": 50, "fillColor": "#FFA119"});
+        for (var j = 0; j < keyframes.length; j++) {
+            for (var k in keyframes[j]) {
+                var timeValue = keyframes[j][k]
+                textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
+            }
         }
     }
 }

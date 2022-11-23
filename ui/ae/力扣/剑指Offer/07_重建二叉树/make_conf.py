@@ -65,19 +65,27 @@ while i < len(lines):
 
 data = {
     'queues': [
-        {'name': 'preorder', 'pos': [100, 100, 0], 'elems': [3, 9, 20, 15, 7], 'effects': [{'name': 'ADBE Drop Shadow'}], 'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]},
-        {'name': 'inorder', 'pos': [100, 200, 0], 'elems': [9, 3, 15, 20, 7], 'effects': [], 'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]},
+        {
+            'name': 'preorder', 'pos': [100, 100, 0], 'elems': [3, 9, 20, 15, 7],
+            'effects': [{'name': 'ADBE Drop Shadow'}],
+            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]},
+        {
+            'name': 'inorder', 'pos': [100, 200, 0], 'elems': [9, 3, 15, 20, 7],
+            'effects': [],
+            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]
+         },
     ],
     'codes': pairs,
     'files': [
         {'path': f'{BASE_DIR}代码.jpg', 'import_as_type': IMPORT_AS_TYPE[1], 'pos': [1398, 540, 0]}
     ],
     'transcript': [
-        {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'effects': [], 'start': 0, 'end': 3},
-        {'text': '题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果"', 'effects': [], 'start': 4, 'end': 7},
+        # Opacity属性可通过Python音频库分析配音后自动生成
+        {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'keyframes': [{'Opacity': [[0, 0.5, 3, 3.5], [0, 100, 100, 0]]}]},
+        {'text': '题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果', 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
     ],
     'annotations': [
-        {'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/', 'pos': [300, 800, 0], 'start': 0, 'end': 3},
+        {'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/', 'pos': [85, 800, 0], 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
     ],
 }
 

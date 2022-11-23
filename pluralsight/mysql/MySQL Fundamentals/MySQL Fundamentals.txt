@@ -9,9 +9,9 @@ docker run --network mysql-net -it --rm mysql:8 mysql -hsome-mysql -uroot -p
 mysql -uroot -p
 
 # Windows
-docker run --name some-mysql -v D:/mysql:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -e TZ=Asia/Shanghai -d mysql:8
+docker run --name some-mysql --restart always -v D:/mysql:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -e TZ=Asia/Shanghai -d mysql:8
 # linux（虚拟机需要关闭再启动，不能暂停保存状态，docker运行着的container会出错）
-docker run --name some-mysql -v /home/$USER/data/mysql:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -e TZ=Asia/Shanghai -d mysql:8
+docker run --name some-mysql --restart always -v /home/$USER/data/mysql:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -e TZ=Asia/Shanghai -d mysql:8
 
 # 查看帮助
 help
