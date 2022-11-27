@@ -14,7 +14,7 @@
 //     }
 //     $.writeln("=================================");
 // }
-
+app.purge(PurgeTarget.ALL_CACHES)
 var project = app.project;
 
 // function delItems(items) {
@@ -38,9 +38,9 @@ shareUtil.delItems(project.items)
 //     project.item(i).remove()
 // }
 
-var comp = project.activeItem;
+var mainComp = project.activeItem;
 
-function createQueueShapeLayer(name, elem, pos) {
+function createQueueShapeLayer(comp, name, elem, pos) {
     var shapeLayer = comp.layers.addShape();
     shapeLayer("Transform")("Position").setValue(pos)
     shapeLayer.name = name + "." + elem;
@@ -55,9 +55,9 @@ function createQueueShapeLayer(name, elem, pos) {
     return shapeLayer
 }
 
-function overlayTextLayer(name, elem, parent) {
+function overlayTextLayer(comp, name, elem, parent) {
     var textLayer = comp.layers.addText(elem);
-    textLayer("Transform")("Position").setValue([0, 0])
+    textLayer("Transform")("Position").setValue([0, 0, 0])
     textLayer.setParentWithJump(parent)
     textLayer.name = name + "." + elem;
     var textProp = textLayer("Source Text");
@@ -87,7 +87,7 @@ function overlayTextLayer(name, elem, parent) {
 }
 
 
-function createQueue(conf, queuesObj) {
+function createQueue(comp, conf, queuesObj) {
     var name = conf['name']
     var pos = conf['pos']
     var elems = conf['elems']
@@ -95,10 +95,14 @@ function createQueue(conf, queuesObj) {
     var keyframes = conf['keyframes']
     queuesObj[name] = []
     for (var i = 0; i < elems.length; i++) {
-        var shapeLayer = createQueueShapeLayer(name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
-        var dropShadowEffect = shapeLayer.Effects.addProperty("ADBE Drop Shadow");
-        dropShadowEffect("Softness").setValue(4);
-        var textLayer = overlayTextLayer(name, elems[i].toString(), shapeLayer)
+        // var shapeLayer = createQueueShapeLayer(comp, name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
+        var shapeLayer = createQueueShapeLayer(comp, name, elems[i].toString(), [25 + 50 * i, 25, 0])
+        // shapeLayer.threeDLayer = true
+        // var dropShadowEffect = shapeLayer.Effects.addProperty("ADBE Drop Shadow");
+        // dropShadowEffect("Softness").setValue(4);
+        // shapeLayer.Effects.addProperty("PESS2");
+        var textLayer = overlayTextLayer(comp, name, elems[i].toString(), shapeLayer)
+        // textLayer.threeDLayer = true
         // 嵌套循环计数变量i,j等不要同名，会有意想不到的bug
         for (var j = 0; j < keyframes.length; j++) {
             for (var k in keyframes[j]) {
@@ -119,10 +123,11 @@ function createQueue(conf, queuesObj) {
         // opacityProp.setValuesAtTimes(timeArr, [0, 0, 100])
         queuesObj[name].push([shapeLayer, textLayer])
     }
+    return comp
 }
 
 
-function createTextLayer(name, payload) {
+function createTextLayer(comp, name, payload) {
     var textLayer = comp.layers.addText(payload["text"]);
     textLayer.name = name;
     var textProp = textLayer("Source Text");
@@ -147,31 +152,52 @@ function createTextLayer(name, payload) {
     value[0] = left
     anchorPointProp.setValue(value)
     textLayer("Transform")("Position").setValue(payload["pos"])
-
+    // textLayer.threeDLayer = true
     return textLayer
 }
 
 
 function main() {
-    if (comp == null || !(comp instanceof CompItem)) {
-        comp = project.items.addComp("Main", 1920, 1080, 1, 10, 30);
+    if (mainComp == null || !(mainComp instanceof CompItem)) {
+        mainComp = project.items.addComp("Main", 1920, 1080, 1, 10, 30);
     }
-    comp.openInViewer();
-    var bgLayer = comp.layers.addSolid([1, 1, 1], "BG", 1920, 1080, 1);
+    mainComp.openInViewer();
+    var bgLayer = mainComp.layers.addSolid([1, 1, 1], "BG", 1920, 1080, 1);
     bgLayer.moveToEnd()
     // var path = "D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json";
 
     // // var data = {compName: "My Comp", width: 1920, height: 1080, numlayers: 3};
     // // createJSONFile(data);
 
+
     conf = jsonUtil.read("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json");
     var queuesObj = {};
+    var queueLayers = {};
     // $.writeln(JSON.stringify(data));
-    var queues = conf['queues']
+    var queues = conf['queues'];
     for (var i = 0; i < queues.length; i++) {
         // $.writeln(name, pos, elems);
         // $.writeln("=================================");
-        createQueue(queues[i], queuesObj)
+        var name = queues[i]['name']
+        var pos = queues[i]['pos']
+        var queueComp = project.items.addComp(queues[i]['name'], 250, 50, 1, 10, 30);
+        createQueue(queueComp, queues[i], queuesObj);
+        var queueLayer = mainComp.layers.add(queueComp);
+        // var dropShadowEffect = queueLayer.Effects.addProperty("ADBE Drop Shadow");
+        // dropShadowEffect("Softness").setValue(4);
+        var left = queueLayer.sourceRectAtTime(0, true).left
+        var anchorPointProp = queueLayer("Transform")("Anchor Point")
+        var value = anchorPointProp.value
+        value[0] = left
+        anchorPointProp.setValue(value)
+        var dropShadowEffect = queueLayer.Effects.addProperty("ADBE Drop Shadow");
+        dropShadowEffect("Distance").setValue(10);
+        dropShadowEffect("Softness").setValue(30);
+        // 该属性内部有个自己的换算比例，100=39%，255约等于100%
+        dropShadowEffect("Opacity").setValue(255);
+        // queueLayer.Effects.addProperty("PESS2");
+        queueLayer("Transform")("Position").setValue(pos)
+        queueLayers[name] = queueLayer;
     }
     // (queuesObj["preorder"][0][0]("Contents")("Group 1")("Contents")("Fill 1")("Color")
     //     .setValuesAtTimes([0, 1.5, 3], [colorUtil.hexToRgb1("#FF0000"), colorUtil.hexToRgb1("#00FF18"), colorUtil.hexToRgb1("#005FB8")])
@@ -194,6 +220,21 @@ function main() {
     //     codePhotoLayer.moveBefore(bgLayer)
     //     codePhotoLayer("Transform")("Position").setValue(pos)
     // }
+    var audios = conf['audios']
+    for (var i = 0; i < audios.length; i++) {
+        var path = audios[i]['path']
+        var import_as_type = audios[i]['import_as_type']
+        var importOptions = new ImportOptions();
+        importOptions.file = new File(path);
+        importOptions.importAs = shareUtil.importAsType(import_as_type)
+        var audioItem = project.importFile(importOptions);
+        audioLayer = mainComp.layers.add(audioItem)
+        audioLayer.startTime = audios[i]['startTime']
+        // audioLayer.inPoint = span['inPoint']
+        // audioLayer.outPoint = span['outPoint']
+        // codePhotoLayer.moveBefore(bgLayer)
+        // codePhotoLayer("Transform")("Position").setValue(pos)
+    }
     // var codes = conf["codes"]
     // var codesArr = []
     // var start_x = 400
@@ -214,29 +255,43 @@ function main() {
     // }
     var transcript = conf["transcript"]
     // var lines = transcript.concat(annotations)
+    var textLayer = createTextLayer(mainComp, "视频字幕", {"text": transcript[i]["text"], "pos": [80, 1000, 0], "font": "KaiTi", "fontSize": 50});
+    var dropShadowEffect = textLayer.Effects.addProperty("ADBE Drop Shadow");
+    dropShadowEffect("Distance").setValue(10);
+    dropShadowEffect("Softness").setValue(20);
+    // 该属性内部有个自己的换算比例，100=39%，255约等于100%
+    dropShadowEffect("Opacity").setValue(180);
+    // textLayer.Effects.addProperty("PESS2");
     for (var i = 0; i < transcript.length; i++) {
         var text = transcript[i]["text"]
-        var keyframes = transcript[i]["keyframes"]
-        var textLayer = createTextLayer("transcript"+"."+i, {"text": text, "pos": [80, 1000, 0], "fontSize": 50});
-        for (var j = 0; j < keyframes.length; j++) {
-            for (var k in keyframes[j]) {
-                var timeValue = keyframes[j][k]
-                textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
-            }
-        }
+        var start = transcript[i]["start"]
+        // var keyframes = transcript[i]["keyframes"]
+        // var textLayer = createTextLayer(mainComp, "transcript"+"."+i, {"text": text, "pos": [80, 1000, 0], "fontSize": 50});
+        // for (var j = 0; j < keyframes.length; j++) {
+        //     for (var k in keyframes[j]) {
+        //         var timeValue = keyframes[j][k]
+        //         textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
+        //     }
+        // }
+        textLayer("Source Text").setValuesAtTimes([start], [text])
     }
     var annotations = conf["annotations"]
     for (var i = 0; i < annotations.length; i++) {
+        var name = annotations[i]["name"]
         var text = annotations[i]["text"]
         var pos = annotations[i]["pos"]
+        var span = annotations[i]["span"]
         var keyframes = annotations[i]["keyframes"]
-        var textLayer = createTextLayer("annotations"+"."+i, {"text": text, "pos": pos, "fontSize": 50, "fillColor": "#FFA119"});
+        var textLayer = createTextLayer(mainComp, name, {"text": text, "pos": pos, "fontSize": 50, "fillColor": "#FFA119"});
+        textLayer.inPoint = span['inPoint']
+        textLayer.outPoint = span['outPoint']
         for (var j = 0; j < keyframes.length; j++) {
             for (var k in keyframes[j]) {
                 var timeValue = keyframes[j][k]
                 textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
             }
         }
+        textLayer.Effects.addProperty("PESS2");
     }
 }
 

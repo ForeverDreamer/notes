@@ -79,13 +79,19 @@ data = {
     'files': [
         {'path': f'{BASE_DIR}代码.jpg', 'import_as_type': IMPORT_AS_TYPE[1], 'pos': [1398, 540, 0]}
     ],
+    'audios': [
+        # {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'span': {'inPoint': 1.2, 'outPoint': 7.5}},
+        {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2}
+    ],
     'transcript': [
         # Opacity属性可通过Python音频库分析配音后自动生成
-        {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'keyframes': [{'Opacity': [[0, 0.5, 3, 3.5], [0, 100, 100, 0]]}]},
-        {'text': '题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果', 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
+        # {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'keyframes': [{'Opacity': [[0, 0.5, 3, 3.5], [0, 100, 100, 0]]}]},
+        # {'text': '题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果', 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
+        {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'start': 1, 'end': 4},
+        {'text': '题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果', 'start': 5, 'end': 8},
     ],
     'annotations': [
-        {'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/', 'pos': [85, 800, 0], 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
+        {'name': '题目官网链接', 'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/', 'pos': [85, 800, 0], 'span': {'inPoint': 4, 'outPoint': 7.5}, 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
     ],
 }
 
