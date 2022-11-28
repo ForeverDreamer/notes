@@ -162,8 +162,20 @@ function main() {
         mainComp = project.items.addComp("Main", 1920, 1080, 1, 10, 30);
     }
     mainComp.openInViewer();
+
     var bgLayer = mainComp.layers.addSolid([1, 1, 1], "BG", 1920, 1080, 1);
+    // bgLayer.threeDLayer = true
     bgLayer.moveToEnd()
+
+    var cameraLayer = mainComp.layers.addCamera("Camera", [960, 540])
+    cameraLayer("Transform")("Position").setValue([960, 540, -800])
+    cameraLayer("Camera Options")("Zoom").setValue(800)
+    cameraLayer("Camera Options")("Focus Distance").setValue(800)
+    cameraLayer("Camera Options")("Aperture").setValue(7.6)
+    cameraLayer("Transform")("Point of Interest").setValuesAtTimes([1, 2, 6, 7], [[960, 540, 0], [960, 300, 0], [960, 300, 0], [960, 540, 0]])
+    cameraLayer("Transform")("Position").setValuesAtTimes([1, 2, 6, 7], [[960, 540, -800], [960, 300, -800], [960, 300, -800], [960, 540, -800]])
+    cameraLayer("Camera Options")("Zoom").setValuesAtTimes([1, 2, 6, 7], [800, 1500, 1500, 800])
+    cameraLayer.moveBefore(bgLayer)
     // var path = "D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json";
 
     // // var data = {compName: "My Comp", width: 1920, height: 1080, numlayers: 3};
@@ -197,6 +209,7 @@ function main() {
         dropShadowEffect("Opacity").setValue(255);
         // queueLayer.Effects.addProperty("PESS2");
         queueLayer("Transform")("Position").setValue(pos)
+        // queueLayer.threeDLayer = true
         queueLayers[name] = queueLayer;
     }
     // (queuesObj["preorder"][0][0]("Contents")("Group 1")("Contents")("Fill 1")("Color")
@@ -207,19 +220,20 @@ function main() {
     for (var i = 1; i <= colorProp.numKeys; i++) {
         colorProp.setInterpolationTypeAtKey(i, KeyframeInterpolationType.HOLD)
     }
-    // var files = conf['files']
-    // for (var i = 0; i < files.length; i++) {
-    //     var path = files[i]['path']
-    //     var import_as_type = files[i]['import_as_type']
-    //     var pos = files[i]['pos']
-    //     var importOptions = new ImportOptions();
-    //     importOptions.file = new File(path);
-    //     importOptions.importAs = shareUtil.importAsType(import_as_type)
-    //     var codePhotoItem = project.importFile(importOptions);
-    //     codePhotoLayer = comp.layers.add(codePhotoItem)
-    //     codePhotoLayer.moveBefore(bgLayer)
-    //     codePhotoLayer("Transform")("Position").setValue(pos)
-    // }
+    var files = conf['files']
+    for (var i = 0; i < files.length; i++) {
+        var path = files[i]['path']
+        var import_as_type = files[i]['import_as_type']
+        var pos = files[i]['pos']
+        var importOptions = new ImportOptions();
+        importOptions.file = new File(path);
+        importOptions.importAs = shareUtil.importAsType(import_as_type)
+        var fileItem = project.importFile(importOptions);
+        fileLayer = mainComp.layers.add(fileItem)
+        fileLayer.moveBefore(bgLayer)
+        fileLayer("Transform")("Position").setValue(pos)
+        fileLayer.threeDLayer = true
+    }
     var audios = conf['audios']
     for (var i = 0; i < audios.length; i++) {
         var path = audios[i]['path']
@@ -256,6 +270,7 @@ function main() {
     var transcript = conf["transcript"]
     // var lines = transcript.concat(annotations)
     var textLayer = createTextLayer(mainComp, "视频字幕", {"text": transcript[i]["text"], "pos": [80, 1000, 0], "font": "KaiTi", "fontSize": 50});
+    // textLayer.threeDLayer = true
     var dropShadowEffect = textLayer.Effects.addProperty("ADBE Drop Shadow");
     dropShadowEffect("Distance").setValue(10);
     dropShadowEffect("Softness").setValue(20);
@@ -291,7 +306,8 @@ function main() {
                 textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
             }
         }
-        textLayer.Effects.addProperty("PESS2");
+        // textLayer.threeDLayer = true
+        // textLayer.Effects.addProperty("PESS2");
     }
 }
 
