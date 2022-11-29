@@ -129,30 +129,30 @@ function createQueue(comp, conf, queuesObj) {
 }
 
 
-function createTextLayer(comp, name, payload) {
-    if (payload["box"]) {
-        var textLayer = comp.layers.addBoxText(payload["rect"]);
-        payload["justification"] = ParagraphJustification.LEFT_JUSTIFY
+function createTextLayer(comp, name, props) {
+    if (props["box"]) {
+        var textLayer = comp.layers.addBoxText(props["rect"]);
+        props["justification"] = ParagraphJustification.LEFT_JUSTIFY
     } else {
-        var textLayer = comp.layers.addText(payload["text"]);
+        var textLayer = comp.layers.addText(props["text"]);
     }
     textLayer.name = name;
     var textProp = textLayer("Source Text");
     textDocument = textProp.value;
     textDocument.resetCharStyle();
     textDocument.resetParagraphStyle();
-    textDocument.font = payload["font"] ? payload["font"] : "Arial-BoldMT";
-    textDocument.fontSize = payload["fontSize"] ? payload["fontSize"] : 50;
-    textDocument.fillColor = payload["fillColor"] ? colorUtil.hexToRgb1(payload["fillColor"]) : [0, 0, 0];
-    textDocument.strokeColor = payload["strokeColor"] ? payload["strokeColor"] : [1, 1, 1];
-    textDocument.strokeWidth = payload["strokeWidth"] ? payload["strokeWidth"] : 0;
-    textDocument.strokeOverFill = payload["strokeOverFill"] ? payload["strokeOverFill"] : true;
-    textDocument.applyStroke = payload["applyStroke"] ? payload["applyStroke"] : true;
-    textDocument.applyFill = payload["applyFill"] ? payload["applyFill"] : true;
-    textDocument.justification = payload["justification"] ? payload["justification"] : ParagraphJustification.CENTER_JUSTIFY;
-    textDocument.tracking = payload["tracking"] ? payload["tracking"] : 0;
+    textDocument.font = props["font"] ? props["font"] : "Arial-BoldMT";
+    textDocument.fontSize = props["fontSize"] ? props["fontSize"] : 50;
+    textDocument.fillColor = props["fillColor"] ? colorUtil.hexToRgb1(props["fillColor"]) : [0, 0, 0];
+    textDocument.strokeColor = props["strokeColor"] ? props["strokeColor"] : [1, 1, 1];
+    textDocument.strokeWidth = props["strokeWidth"] ? props["strokeWidth"] : 0;
+    textDocument.strokeOverFill = props["strokeOverFill"] ? props["strokeOverFill"] : true;
+    textDocument.applyStroke = props["applyStroke"] ? props["applyStroke"] : true;
+    textDocument.applyFill = props["applyFill"] ? props["applyFill"] : true;
+    textDocument.justification = props["justification"] ? props["justification"] : ParagraphJustification.CENTER_JUSTIFY;
+    textDocument.tracking = props["tracking"] ? props["tracking"] : 0;
     // textDocument.leading = 500;
-    textDocument.text = payload["text"];
+    textDocument.text = props["text"];
     textProp.setValue(textDocument);
     var left = textLayer.sourceRectAtTime(0, true).left
     var width = textLayer.sourceRectAtTime(0, true).width
@@ -160,7 +160,7 @@ function createTextLayer(comp, name, payload) {
     var value = anchorPointProp.value
     value[0] = left + width/2
     anchorPointProp.setValue(value)
-    textLayer("Transform")("Position").setValue(payload["pos"])
+    textLayer("Transform")("Position").setValue(props["pos"])
     // textLayer.threeDLayer = true
     return textLayer
 }
@@ -300,15 +300,15 @@ function main() {
     }
     var annotations = conf["annotations"]
     for (var i = 0; i < annotations.length; i++) {
-        var obj = annotations[i]
-        var name = obj["name"]
-        var text = obj["text"]
-        var pos = obj["pos"]
-        var span = obj["span"]
-        var keyframes = obj["keyframes"]
-        var presets = obj["presets"]
+        var props = annotations[i]
+        var name = props["name"]
+        var text = props["text"]
+        var pos = props["pos"]
+        var span = props["span"]
+        var keyframes = props["keyframes"]
+        var presets = props["presets"]
         // var textLayer = createTextLayer(mainComp, name, {"text": text, "pos": pos, "fontSize": 50, "fillColor": "#FFA119"});
-        var textLayer = createTextLayer(mainComp, name, obj);
+        var textLayer = createTextLayer(mainComp, name, props);
         textLayer.inPoint = span['inPoint']
         textLayer.outPoint = span['outPoint']
         if (keyframes) {
