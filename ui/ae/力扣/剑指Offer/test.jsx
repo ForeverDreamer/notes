@@ -5,20 +5,36 @@
 
 var project = app.project;
 var comp = project.activeItem;
+// var preorderLayer = comp.layer(5)
+// $.writeln(preorderLayer("Masks").numProperties)
+// newMask = preorderLayer.Masks.addProperty("Mask");
+// newMask.inverted = true;
+// myMaskShape = newMask("maskShape");
+// myShape = myMaskShape.value;
+// myShape.vertices = [[5,5],[5,45],[45,45],[45,5]];
+// myShape.closed = true;
+// myMaskShape.setValue(myShape);
 // var shapeLayer = comp.layer(1)
 // shapeLayer.selected = true;
 
-var path = shapeLayer("Contents")("Group 1")("Contents")("Path 1")("Path")
-path.selected = true;
-app.executeCommand(19); //Copy
-shapeLayer.selected = false;
+// var path = shapeLayer("Contents")("Polystar 1")("Contents")("Path 1")("Path").value
+// $.writeln(path)
+// $.writeln(path.vertices)
+// $.writeln(path.inTangents)
+// $.writeln(path.outTangents)
+// $.writeln(path.featherSegLoc)
+// $.writeln(path.featherRelSegLoc)
+// $.writeln(path.featherRadii)
+// path.selected = true;
+// app.executeCommand(19); //Copy
+// shapeLayer.selected = false;
 
-var inorderLayer = comp.layer(5)
-inorderLayer.selected = true;
-var posPorp = inorderLayer("Transform")("Position")
-posPorp.selected = true;
-app.executeCommand(20); //Paste
-inorderLayer.selected = false;
+// var inorderLayer = comp.layer(5)
+// inorderLayer.selected = true;
+// var posPorp = inorderLayer("Transform")("Position")
+// posPorp.selected = true;
+// app.executeCommand(20); //Paste
+// inorderLayer.selected = false;
 
 // var myShape = new Shape();
 // myShape.vertices = [[300,50], [200,150],[300,250],[400,150]];
@@ -28,10 +44,11 @@ inorderLayer.selected = false;
 // $.writeln(myShape.vertices)
 // [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)]
 // $.writeln(colorUtil.hexToRgb("#005FB8", true))
-// var effects = app.effects
-// for (var i = 0; i < effects.length; i++) {
-//     $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
-// }
+var effects = app.effects
+// $.writeln(effects.length)
+for (var i = 0; i < effects.length; i++) {
+    $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
+}
 
 // var taskId = app.scheduleTask('$.writeln(app.findMenuCommandId("AtomX"))', 1000, true)
 // $.writeln(taskId)
@@ -43,9 +60,10 @@ inorderLayer.selected = false;
 // var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
 // pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
 // var myShape = new Shape();
-// myShape.vertices = [[300,50], [200,150],[300,250],[400,150]];
-// myShape.inTangents = [[55.23,0],[0,-55.23],[-55.23,0],[0,55.23]];
-// myShape.outTangents = [[-55.23,0],[0,55.23],[55.23,0],[0,-55.23]];
+// myShape.vertices = path.vertices;
+// myShape.inTangents = path.inTangents;
+// myShape.outTangents = path.outTangents;
+// myShape.featherRelSegLoc = path.featherRelSegLoc;
 // myShape.closed = true;
 // pathGroup("Path").setValue(myShape);
 // strokeProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")

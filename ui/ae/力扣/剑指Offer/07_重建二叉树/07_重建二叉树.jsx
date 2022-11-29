@@ -2,6 +2,8 @@
 #include "json.jsx";
 #include "share.jsx";
 #include "color.jsx";
+#include "effects.jsx";
+#include "presets.jsx"
 
 // #include "extendscript-es5-shim.js";
 
@@ -128,14 +130,19 @@ function createQueue(comp, conf, queuesObj) {
 
 
 function createTextLayer(comp, name, payload) {
-    var textLayer = comp.layers.addText(payload["text"]);
+    if (payload["box"]) {
+        var textLayer = comp.layers.addBoxText(payload["rect"]);
+        payload["justification"] = ParagraphJustification.LEFT_JUSTIFY
+    } else {
+        var textLayer = comp.layers.addText(payload["text"]);
+    }
     textLayer.name = name;
     var textProp = textLayer("Source Text");
     textDocument = textProp.value;
     textDocument.resetCharStyle();
     textDocument.resetParagraphStyle();
-    textDocument.font = payload["font"] ? payload["font"] : "Arial-BoldItalicMT";
-    textDocument.fontSize = payload["fontSize"] ? payload["fontSize"] : 40;
+    textDocument.font = payload["font"] ? payload["font"] : "Arial-BoldMT";
+    textDocument.fontSize = payload["fontSize"] ? payload["fontSize"] : 50;
     textDocument.fillColor = payload["fillColor"] ? colorUtil.hexToRgb1(payload["fillColor"]) : [0, 0, 0];
     textDocument.strokeColor = payload["strokeColor"] ? payload["strokeColor"] : [1, 1, 1];
     textDocument.strokeWidth = payload["strokeWidth"] ? payload["strokeWidth"] : 0;
@@ -145,11 +152,13 @@ function createTextLayer(comp, name, payload) {
     textDocument.justification = payload["justification"] ? payload["justification"] : ParagraphJustification.CENTER_JUSTIFY;
     textDocument.tracking = payload["tracking"] ? payload["tracking"] : 0;
     // textDocument.leading = 500;
+    textDocument.text = payload["text"];
     textProp.setValue(textDocument);
     var left = textLayer.sourceRectAtTime(0, true).left
+    var width = textLayer.sourceRectAtTime(0, true).width
     var anchorPointProp = textLayer("Transform")("Anchor Point")
     var value = anchorPointProp.value
-    value[0] = left
+    value[0] = left + width/2
     anchorPointProp.setValue(value)
     textLayer("Transform")("Position").setValue(payload["pos"])
     // textLayer.threeDLayer = true
@@ -159,7 +168,7 @@ function createTextLayer(comp, name, payload) {
 
 function main() {
     if (mainComp == null || !(mainComp instanceof CompItem)) {
-        mainComp = project.items.addComp("Main", 1920, 1080, 1, 10, 30);
+        mainComp = project.items.addComp("Main", 1920, 1080, 1, 300, 30);
     }
     mainComp.openInViewer();
 
@@ -172,9 +181,9 @@ function main() {
     cameraLayer("Camera Options")("Zoom").setValue(800)
     cameraLayer("Camera Options")("Focus Distance").setValue(800)
     cameraLayer("Camera Options")("Aperture").setValue(7.6)
-    cameraLayer("Transform")("Point of Interest").setValuesAtTimes([1, 2, 6, 7], [[960, 540, 0], [960, 300, 0], [960, 300, 0], [960, 540, 0]])
-    cameraLayer("Transform")("Position").setValuesAtTimes([1, 2, 6, 7], [[960, 540, -800], [960, 300, -800], [960, 300, -800], [960, 540, -800]])
-    cameraLayer("Camera Options")("Zoom").setValuesAtTimes([1, 2, 6, 7], [800, 1500, 1500, 800])
+    cameraLayer("Transform")("Point of Interest").setValuesAtTimes([1, 2, 3, 7], [[960, 540, 0], [960, 300, 0], [960, 300, 0], [960, 700, 0]])
+    cameraLayer("Transform")("Position").setValuesAtTimes([1, 2, 3, 7], [[960, 540, -800], [960, 300, -800], [960, 300, -800], [960, 700, -800]])
+    cameraLayer("Camera Options")("Zoom").setValuesAtTimes([1, 2, 7], [800, 1500, 1500])
     cameraLayer.moveBefore(bgLayer)
     // var path = "D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json";
 
@@ -202,11 +211,7 @@ function main() {
         var value = anchorPointProp.value
         value[0] = left
         anchorPointProp.setValue(value)
-        var dropShadowEffect = queueLayer.Effects.addProperty("ADBE Drop Shadow");
-        dropShadowEffect("Distance").setValue(10);
-        dropShadowEffect("Softness").setValue(30);
-        // 该属性内部有个自己的换算比例，100=39%，255约等于100%
-        dropShadowEffect("Opacity").setValue(255);
+        effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
         // queueLayer.Effects.addProperty("PESS2");
         queueLayer("Transform")("Position").setValue(pos)
         // queueLayer.threeDLayer = true
@@ -225,11 +230,14 @@ function main() {
         var path = files[i]['path']
         var import_as_type = files[i]['import_as_type']
         var pos = files[i]['pos']
+        var span = files[i]["span"]
         var importOptions = new ImportOptions();
         importOptions.file = new File(path);
         importOptions.importAs = shareUtil.importAsType(import_as_type)
         var fileItem = project.importFile(importOptions);
         fileLayer = mainComp.layers.add(fileItem)
+        fileLayer.inPoint = span['inPoint']
+        fileLayer.outPoint = span['outPoint']
         fileLayer.moveBefore(bgLayer)
         fileLayer("Transform")("Position").setValue(pos)
         fileLayer.threeDLayer = true
@@ -269,13 +277,13 @@ function main() {
     // }
     var transcript = conf["transcript"]
     // var lines = transcript.concat(annotations)
-    var textLayer = createTextLayer(mainComp, "视频字幕", {"text": transcript[i]["text"], "pos": [80, 1000, 0], "font": "KaiTi", "fontSize": 50});
+    var textLayer = createTextLayer(mainComp, "视频字幕", {"text": transcript[i]["text"], "pos": [960, 1050, 0], "font": "KaiTi", "fontSize": 50});
     // textLayer.threeDLayer = true
-    var dropShadowEffect = textLayer.Effects.addProperty("ADBE Drop Shadow");
-    dropShadowEffect("Distance").setValue(10);
-    dropShadowEffect("Softness").setValue(20);
+    effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});
+    // dropShadowEffect("Distance").setValue(10);
+    // dropShadowEffect("Softness").setValue(20);
     // 该属性内部有个自己的换算比例，100=39%，255约等于100%
-    dropShadowEffect("Opacity").setValue(180);
+    // dropShadowEffect("Opacity").setValue(180);
     // textLayer.Effects.addProperty("PESS2");
     for (var i = 0; i < transcript.length; i++) {
         var text = transcript[i]["text"]
@@ -292,18 +300,28 @@ function main() {
     }
     var annotations = conf["annotations"]
     for (var i = 0; i < annotations.length; i++) {
-        var name = annotations[i]["name"]
-        var text = annotations[i]["text"]
-        var pos = annotations[i]["pos"]
-        var span = annotations[i]["span"]
-        var keyframes = annotations[i]["keyframes"]
-        var textLayer = createTextLayer(mainComp, name, {"text": text, "pos": pos, "fontSize": 50, "fillColor": "#FFA119"});
+        var obj = annotations[i]
+        var name = obj["name"]
+        var text = obj["text"]
+        var pos = obj["pos"]
+        var span = obj["span"]
+        var keyframes = obj["keyframes"]
+        var presets = obj["presets"]
+        // var textLayer = createTextLayer(mainComp, name, {"text": text, "pos": pos, "fontSize": 50, "fillColor": "#FFA119"});
+        var textLayer = createTextLayer(mainComp, name, obj);
         textLayer.inPoint = span['inPoint']
         textLayer.outPoint = span['outPoint']
-        for (var j = 0; j < keyframes.length; j++) {
-            for (var k in keyframes[j]) {
-                var timeValue = keyframes[j][k]
-                textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
+        if (keyframes) {
+            for (var j = 0; j < keyframes.length; j++) {
+                for (var k in keyframes[j]) {
+                    var timeValue = keyframes[j][k]
+                    textLayer("Transform")(k).setValuesAtTimes(timeValue[0], timeValue[1])
+                }
+            }
+        }
+        if (presets) {
+            for (var i = 0; i < presets.length; i++) {
+                presetsUtil.add(textLayer, presets[i])
             }
         }
         // textLayer.threeDLayer = true
