@@ -1,66 +1,100 @@
 function ShareUtil() { }
 
-ShareUtil.prototype.importAsType = function (type) {
-  var t;
-  switch (type) {
-    case 'COMP_CROPPED_LAYERS':
-      t = ImportAsType.COMP_CROPPED_LAYERS;
-      break;
-    case 'PROJECT':
-      t = ImportAsType.PROJECT;
-      break;
-    case 'COMP':
-      t = ImportAsType.COMP;
-      break;
-    default:
-      t = ImportAsType.FOOTAGE;
-  }
-  return t
+ShareUtil.prototype.importFile = function (project, conf) {
+	var importOptions = new ImportOptions();
+	importOptions.file = new File(conf["path"]);
+	switch (conf["import_as_type"]) {
+		case 'COMP_CROPPED_LAYERS':
+			importOptions.importAs = ImportAsType.COMP_CROPPED_LAYERS;
+			break;
+		case 'PROJECT':
+			importOptions.importAs = ImportAsType.PROJECT;
+			break;
+		case 'COMP':
+			importOptions.importAs = ImportAsType.COMP;
+			break;
+		default:
+			importOptions.importAs = ImportAsType.FOOTAGE;
+	}
+	return project.importFile(importOptions);
+}
+
+ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
+	var layer;
+	if (item) {
+		layer = layers.add(item)
+	} else {
+		layer = layers.add(this.findItemByName(items, conf["name"]))
+	}
+	if (conf['startTime']) {
+		layer.startTime = conf['startTime']
+	}
+	if (conf["span"]) {
+		layer.inPoint = conf["span"]['inPoint']
+		layer.outPoint = conf["span"]['outPoint']
+	}
+	if (conf['pos']) {
+		layer("Transform")("Position").setValue(conf["pos"])
+	}
+	if (conf['3D']) {
+		layer.threeDLayer = true
+	}
+	return layer;
 }
 
 ShareUtil.prototype.delItems = function (items) {
-  numItems = items.length
-  for (var i = numItems; i >= 1; i--) {
-    item = items[i]
-    // if (item instanceof FolderItem) {
-    //     delItems(item.items);
-    // } else {
-    //     item.remove()
-    // }
-    item.remove()
-  }
+	var numItems = items.length;
+	for (var i = numItems; i >= 1; i--) {
+		var item = items[i];
+		// if (item instanceof FolderItem) {
+		//     delItems(item.items);
+		// } else {
+		//     item.remove()
+		// }
+		item.remove();
+	}
+}
+
+ShareUtil.prototype.findItemByName = function (items, name) {
+	for (var i = 1; i <= items.length; i++) {
+		var item = items[i];
+		if (item.name == name) {
+			return item;
+		}
+	}
+	return null;
 }
 
 ShareUtil.prototype.configProps = function (props) {
-  if (!props) {
-    return
-  }
-  for (var k in props) {
-    var propChain = k.split(".")
-    var prop = layer(propChain[0]);
-    for (var i = 1; i < propChain.length; i++) {
-      prop = prop(propChain[i])
-    }
-    prop.setValue(props[k]);
-  }
+	if (!props) {
+		return
+	}
+	for (var k in props) {
+		var propChain = k.split(".")
+		var prop = layer(propChain[0]);
+		for (var i = 1; i < propChain.length; i++) {
+			prop = prop(propChain[i])
+		}
+		prop.setValue(props[k]);
+	}
 }
 
 ShareUtil.prototype.configKeyframes = function (keyframes) {
-  if (!keyframes) {
-    return
-  }
-  for (var k in keyframes) {
-    var propChain = k.split(".")
-    var prop = layer(propChain[0]);
-    for (var i = 1; i < propChain.length; i++) {
-        prop = prop(propChain[i])
-    }
-    var numKeys = prop.numKeys 
-    for (var i = numKeys; i >= 1; i--) {
-        prop.removeKey(i)
-    }
-    prop.setValuesAtTimes(keyframes[k]["times"], keyframes[k]["values"]);
-}
+	if (!keyframes) {
+		return
+	}
+	for (var k in keyframes) {
+		var propChain = k.split(".")
+		var prop = layer(propChain[0]);
+		for (var i = 1; i < propChain.length; i++) {
+			prop = prop(propChain[i])
+		}
+		var numKeys = prop.numKeys
+		for (var i = numKeys; i >= 1; i--) {
+			prop.removeKey(i)
+		}
+		prop.setValuesAtTimes(keyframes[k]["times"], keyframes[k]["values"]);
+	}
 }
 
 var shareUtil = new ShareUtil();

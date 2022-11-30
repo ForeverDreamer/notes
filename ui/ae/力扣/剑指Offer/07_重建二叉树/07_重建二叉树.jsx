@@ -4,89 +4,13 @@
 #include "color.jsx";
 #include "effects.jsx";
 #include "presets.jsx"
+#include "text.jsx"
+#include "shape.jsx"
 
-// #include "extendscript-es5-shim.js";
-
-// for (var k1 in conf) {
-//     $.writeln(k1);
-//     for (var i = 0; i < conf[k1].length; i++) {
-//         for (var k2 in conf[k1]) {
-//             $.writeln(k2);
-//         }
-//     }
-//     $.writeln("=================================");
-// }
 app.purge(PurgeTarget.ALL_CACHES)
 var project = app.project;
-
-// function delItems(items) {
-//     numItems = items.length
-//     for (var i = numItems; i >= 1; i--) {
-//         item = items[i]
-//         // if (item instanceof FolderItem) {
-//         //     delItems(item.items);
-//         // } else {
-//         //     item.remove()
-//         // }
-//         item.remove()
-//     }
-// }
-
 shareUtil.delItems(project.items)
-// for (var i = 1; i <= project.numItems; i++) {
-//     if (item instanceof FolderItem) {
-//         delFolder(item);
-//     } 
-//     project.item(i).remove()
-// }
-
 var mainComp = project.activeItem;
-
-function createQueueShapeLayer(comp, name, elem, pos) {
-    var shapeLayer = comp.layers.addShape();
-    shapeLayer("Transform")("Position").setValue(pos)
-    shapeLayer.name = name + "." + elem;
-    var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-    // shapeGroup.name = elem;
-    pathProp = shapeGroup("Contents").addProperty("ADBE Vector Shape - Rect")
-    pathProp("Size").setValue([50, 50])
-    strokeProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
-    strokeProp("Color").setValue([0, 0, 0])
-    fillProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Fill")
-    fillProp("Color").setValue([1, 1, 1])
-    return shapeLayer
-}
-
-function overlayTextLayer(comp, name, elem, parent) {
-    var textLayer = comp.layers.addText(elem);
-    textLayer("Transform")("Position").setValue([0, 0, 0])
-    textLayer.setParentWithJump(parent)
-    textLayer.name = name + "." + elem;
-    var textProp = textLayer("Source Text");
-    textDocument = textProp.value;
-    textDocument.resetCharStyle();
-    textDocument.resetParagraphStyle();
-    // textDocument.font = "MicrosoftYaHeiUI-Bold";
-    textDocument.font = "Arial-BoldItalicMT";
-    textDocument.fontSize = 40;
-    // textProp.expression = 'text.sourceText.style.setFauxBold(true).setText(' + text + ')'
-    textDocument.fillColor = [0, 0, 0];
-    textDocument.strokeColor = [1, 1, 1];
-    textDocument.strokeWidth = 2;
-    textDocument.strokeOverFill = true
-    textDocument.applyStroke = true;
-    textDocument.applyFill = true;
-    // textDocument.text = "Changed String";
-    textDocument.justification = ParagraphJustification.CENTER_JUSTIFY;
-    textDocument.tracking = -110;
-    // textDocument.leading = 500;
-
-    textProp.setValue(textDocument);
-    var value = textLayer("Transform")("Position").value
-    value[1] = 15
-    textLayer("Transform")("Position").setValue(value)
-    return textLayer
-}
 
 
 function createQueue(comp, conf, queuesObj) {
@@ -97,13 +21,15 @@ function createQueue(comp, conf, queuesObj) {
     var keyframes = conf['keyframes']
     queuesObj[name] = []
     for (var i = 0; i < elems.length; i++) {
-        // var shapeLayer = createQueueShapeLayer(comp, name, elems[i].toString(), [pos[0] + 50 * i, pos[1], pos[2]])
-        var shapeLayer = createQueueShapeLayer(comp, name, elems[i].toString(), [25 + 50 * i, 25, 0])
+        var shapeLayer = shapeUtil.add(comp, "Shape"+elems[i], {"pos": [25 + 50 * i, 25, 0]})
         // shapeLayer.threeDLayer = true
         // var dropShadowEffect = shapeLayer.Effects.addProperty("ADBE Drop Shadow");
         // dropShadowEffect("Softness").setValue(4);
         // shapeLayer.Effects.addProperty("PESS2");
-        var textLayer = overlayTextLayer(comp, name, elems[i].toString(), shapeLayer)
+        conf["text"] = elems[i];
+        conf["font"] = "Arial-BoldItalicMT";
+        conf["fontSize"] = 40;
+        var textLayer = textUtil.overlay(comp, shapeLayer, "Text"+elems[i], conf)
         // textLayer.threeDLayer = true
         // 嵌套循环计数变量i,j等不要同名，会有意想不到的bug
         for (var j = 0; j < keyframes.length; j++) {
@@ -126,43 +52,6 @@ function createQueue(comp, conf, queuesObj) {
         queuesObj[name].push([shapeLayer, textLayer])
     }
     return comp
-}
-
-
-function createTextLayer(comp, name, props) {
-    if (props["box"]) {
-        var textLayer = comp.layers.addBoxText(props["rect"]);
-        props["justification"] = ParagraphJustification.LEFT_JUSTIFY
-    } else {
-        var textLayer = comp.layers.addText(props["text"]);
-    }
-    textLayer.name = name;
-    var textProp = textLayer("Source Text");
-    textDocument = textProp.value;
-    textDocument.resetCharStyle();
-    textDocument.resetParagraphStyle();
-    textDocument.font = props["font"] ? props["font"] : "Arial-BoldMT";
-    textDocument.fontSize = props["fontSize"] ? props["fontSize"] : 50;
-    textDocument.fillColor = props["fillColor"] ? colorUtil.hexToRgb1(props["fillColor"]) : [0, 0, 0];
-    textDocument.strokeColor = props["strokeColor"] ? props["strokeColor"] : [1, 1, 1];
-    textDocument.strokeWidth = props["strokeWidth"] ? props["strokeWidth"] : 0;
-    textDocument.strokeOverFill = props["strokeOverFill"] ? props["strokeOverFill"] : true;
-    textDocument.applyStroke = props["applyStroke"] ? props["applyStroke"] : true;
-    textDocument.applyFill = props["applyFill"] ? props["applyFill"] : true;
-    textDocument.justification = props["justification"] ? props["justification"] : ParagraphJustification.CENTER_JUSTIFY;
-    textDocument.tracking = props["tracking"] ? props["tracking"] : 0;
-    // textDocument.leading = 500;
-    textDocument.text = props["text"];
-    textProp.setValue(textDocument);
-    var left = textLayer.sourceRectAtTime(0, true).left
-    var width = textLayer.sourceRectAtTime(0, true).width
-    var anchorPointProp = textLayer("Transform")("Anchor Point")
-    var value = anchorPointProp.value
-    value[0] = left + width/2
-    anchorPointProp.setValue(value)
-    textLayer("Transform")("Position").setValue(props["pos"])
-    // textLayer.threeDLayer = true
-    return textLayer
 }
 
 
@@ -191,7 +80,7 @@ function main() {
     // // createJSONFile(data);
 
 
-    conf = jsonUtil.read("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json");
+    var conf = jsonUtil.read("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json");
     var queuesObj = {};
     var queueLayers = {};
     // $.writeln(JSON.stringify(data));
@@ -227,31 +116,20 @@ function main() {
     }
     var files = conf['files']
     for (var i = 0; i < files.length; i++) {
-        var path = files[i]['path']
-        var import_as_type = files[i]['import_as_type']
-        var pos = files[i]['pos']
-        var span = files[i]["span"]
-        var importOptions = new ImportOptions();
-        importOptions.file = new File(path);
-        importOptions.importAs = shareUtil.importAsType(import_as_type)
-        var fileItem = project.importFile(importOptions);
-        fileLayer = mainComp.layers.add(fileItem)
-        fileLayer.inPoint = span['inPoint']
-        fileLayer.outPoint = span['outPoint']
-        fileLayer.moveBefore(bgLayer)
-        fileLayer("Transform")("Position").setValue(pos)
-        fileLayer.threeDLayer = true
+        var item = shareUtil.importFile(project, files[i]);
+        var conf_layers = files[i]["layers"]
+        if (conf_layers) {
+            for (var j = 0; j < conf_layers.length; j++) {
+                shareUtil.addLayer(project.items, mainComp.layers, conf_layers[j])
+            }
+        } else {
+            shareUtil.addLayer(project.items, mainComp.layers, files[i], item)
+        }
     }
     var audios = conf['audios']
     for (var i = 0; i < audios.length; i++) {
-        var path = audios[i]['path']
-        var import_as_type = audios[i]['import_as_type']
-        var importOptions = new ImportOptions();
-        importOptions.file = new File(path);
-        importOptions.importAs = shareUtil.importAsType(import_as_type)
-        var audioItem = project.importFile(importOptions);
-        audioLayer = mainComp.layers.add(audioItem)
-        audioLayer.startTime = audios[i]['startTime']
+        var item = shareUtil.importFile(project, audios[i]);
+        shareUtil.addLayer(project.items, mainComp.layers, audios[i], item)
         // audioLayer.inPoint = span['inPoint']
         // audioLayer.outPoint = span['outPoint']
         // codePhotoLayer.moveBefore(bgLayer)
@@ -277,7 +155,7 @@ function main() {
     // }
     var transcript = conf["transcript"]
     // var lines = transcript.concat(annotations)
-    var textLayer = createTextLayer(mainComp, "视频字幕", {"text": transcript[i]["text"], "pos": [960, 1050, 0], "font": "KaiTi", "fontSize": 50});
+    var textLayer = textUtil.add(mainComp, "视频字幕", {"text": transcript[0]["text"], "pos": [960, 1050, 0], "font": "KaiTi", "fontSize": 50});
     // textLayer.threeDLayer = true
     effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});
     // dropShadowEffect("Distance").setValue(10);
@@ -308,7 +186,7 @@ function main() {
         var keyframes = props["keyframes"]
         var presets = props["presets"]
         // var textLayer = createTextLayer(mainComp, name, {"text": text, "pos": pos, "fontSize": 50, "fillColor": "#FFA119"});
-        var textLayer = createTextLayer(mainComp, name, props);
+        var textLayer = textUtil.add(mainComp, name, props);
         textLayer.inPoint = span['inPoint']
         textLayer.outPoint = span['outPoint']
         if (keyframes) {
@@ -320,8 +198,8 @@ function main() {
             }
         }
         if (presets) {
-            for (var i = 0; i < presets.length; i++) {
-                presetsUtil.add(textLayer, presets[i])
+            for (var m = 0; m < presets.length; m++) {
+                presetsUtil.add(textLayer, presets[m])
             }
         }
         // textLayer.threeDLayer = true

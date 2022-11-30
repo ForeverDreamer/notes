@@ -1,6 +1,11 @@
+#include "color.jsx";
+
 function TextUtil() {}
 
-TextUtil.prototype.configTextDocument = function(textDocument, props) {
+TextUtil.prototype.configTextDocument = function(textProp, props) {
+    textProp.setValue(new TextDocument(props["text"]));
+    var textDocument = textProp.value;
+
     textDocument.resetCharStyle();
     textDocument.resetParagraphStyle();
     textDocument.font = props["font"] ? props["font"] : "Arial-BoldMT";
@@ -13,22 +18,22 @@ TextUtil.prototype.configTextDocument = function(textDocument, props) {
     textDocument.applyFill = props["applyFill"] ? props["applyFill"] : true;
     textDocument.justification = props["justification"] ? props["justification"] : ParagraphJustification.CENTER_JUSTIFY;
     textDocument.tracking = props["tracking"] ? props["tracking"] : 0;
-    // textDocument.leading = 500;
-    textDocument.text = props["text"];
+    // textDocument.text = props["text"];
+
+    textProp.setValue(textDocument);
 }
 
 TextUtil.prototype.add = function(comp, name, props) {
+    var textLayer;
     if (props["box"]) {
-        var textLayer = comp.layers.addBoxText(props["rect"]);
+        textLayer = comp.layers.addBoxText(props["rect"]);
         props["justification"] = ParagraphJustification.LEFT_JUSTIFY
     } else {
-        var textLayer = comp.layers.addText(props["text"]);
+        textLayer = comp.layers.addText(props["text"]);
     }
     textLayer.name = name;
     var textProp = textLayer("Source Text");
-    textDocument = textProp.value;
-    this.configTextDocument(textDocument, props)
-    textProp.setValue(textDocument);
+    this.configTextDocument(textProp, props)
     var left = textLayer.sourceRectAtTime(0, true).left
     var width = textLayer.sourceRectAtTime(0, true).width
     var anchorPointProp = textLayer("Transform")("Anchor Point")
@@ -46,9 +51,7 @@ TextUtil.prototype.overlay = function(comp, parent, name, props) {
     textLayer.setParentWithJump(parent)
     textLayer.name = name;
     var textProp = textLayer("Source Text");
-    textDocument = textProp.value;
-    this.configTextDocument(textDocument, props)
-    textProp.setValue(textDocument);
+    this.configTextDocument(textProp, props)
     var value = textLayer("Transform")("Position").value
     value[1] = 15
     textLayer("Transform")("Position").setValue(value)
