@@ -22,22 +22,31 @@ ShareUtil.prototype.importFile = function (project, conf) {
 ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
 	var layer;
 	if (item) {
-		layer = layers.add(item)
+		layer = layers.add(item);
 	} else {
-		layer = layers.add(this.findItemByName(items, conf["name"]))
+		layer = layers.add(this.findItemByName(items, conf["name"]));
 	}
-	if (conf['startTime']) {
-		layer.startTime = conf['startTime']
-	}
-	if (conf["span"]) {
-		layer.inPoint = conf["span"]['inPoint']
-		layer.outPoint = conf["span"]['outPoint']
+	if (conf['anchor']) {
+		this.setAnchorPoint(layer, conf["anchor"]);
 	}
 	if (conf['pos']) {
-		layer("Transform")("Position").setValue(conf["pos"])
+		layer("Transform")("Position").setValue(conf["pos"]);
+	}
+	if (conf['scale']) {
+		layer("Transform")("Scale").setValue(conf["scale"]);
+	}
+	if (conf['rotation']) {
+		layer("Transform")("Rotation").setValue(conf["rotation"]);
+	}
+	if (conf['startTime']) {
+		layer.startTime = conf['startTime'];
+	}
+	if (conf["span"]) {
+		layer.inPoint = conf["span"]['inPoint'];
+		layer.outPoint = conf["span"]['outPoint'];
 	}
 	if (conf['3D']) {
-		layer.threeDLayer = true
+		layer.threeDLayer = true;
 	}
 	return layer;
 }
@@ -95,6 +104,40 @@ ShareUtil.prototype.configKeyframes = function (keyframes) {
 		}
 		prop.setValuesAtTimes(keyframes[k]["times"], keyframes[k]["values"]);
 	}
+}
+
+ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
+	var top = layer.sourceRectAtTime(0, true).top
+    var left = layer.sourceRectAtTime(0, true).left
+    var width = layer.sourceRectAtTime(0, true).width
+	var height = layer.sourceRectAtTime(0, true).height
+    var prop = layer("Transform")("Anchor Point")
+    var value = prop.value
+
+	switch (direction) {
+		case 'LEFT':
+			value[0] = left;
+			value[1] = top + height/2;
+			break;
+		case 'RIGHT':
+			value[0] = left + width;
+			value[1] = top + height/2;
+			break;
+		case 'TOP':
+			value[0] = left + width/2;
+			value[1] = top;
+			break;
+		case 'DOWN':
+			value[0] = left + width/2;
+			value[1] = top + height;
+			break;
+		default:
+			// MIDDLE
+			value[0] = left + width/2;
+			value[1] = top + height/2;
+	}
+
+	prop.setValue(value);
 }
 
 var shareUtil = new ShareUtil();

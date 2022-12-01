@@ -5,6 +5,8 @@
 
 var project = app.project;
 var comp = project.activeItem;
+var aiLayer = comp.layer(7)
+$.writeln(aiLayer("Transform")("Anchor Point").value)
 // var preorderLayer = comp.layer(5)
 // $.writeln(preorderLayer("Masks").numProperties)
 // newMask = preorderLayer.Masks.addProperty("Mask");
@@ -44,11 +46,11 @@ var comp = project.activeItem;
 // $.writeln(myShape.vertices)
 // [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)]
 // $.writeln(colorUtil.hexToRgb("#005FB8", true))
-var effects = app.effects
-// $.writeln(effects.length)
-for (var i = 0; i < effects.length; i++) {
-    $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
-}
+// var effects = app.effects
+// // $.writeln(effects.length)
+// for (var i = 0; i < effects.length; i++) {
+//     $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
+// }
 
 // var taskId = app.scheduleTask('$.writeln(app.findMenuCommandId("AtomX"))', 1000, true)
 // $.writeln(taskId)

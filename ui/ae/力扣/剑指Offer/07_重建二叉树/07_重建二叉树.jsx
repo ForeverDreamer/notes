@@ -6,6 +6,7 @@
 #include "presets.jsx"
 #include "text.jsx"
 #include "shape.jsx"
+#include "precomp.jsx"
 
 app.purge(PurgeTarget.ALL_CACHES)
 var project = app.project;
@@ -114,6 +115,7 @@ function main() {
     for (var i = 1; i <= colorProp.numKeys; i++) {
         colorProp.setInterpolationTypeAtKey(i, KeyframeInterpolationType.HOLD)
     }
+
     var files = conf['files']
     for (var i = 0; i < files.length; i++) {
         var item = shareUtil.importFile(project, files[i]);
@@ -126,6 +128,28 @@ function main() {
             shareUtil.addLayer(project.items, mainComp.layers, files[i], item)
         }
     }
+
+    var precomps = conf['precomps'];
+    for (var i = 0; i < precomps.length; i++) {
+        var comp;
+        switch (precomps[i]["type"]) {
+            case 'BINARY_TREE':
+                comp = precompUtil.binaryTree(project.items, precomps[i]);
+                break;
+            // case 'PROJECT':
+            //     importOptions.importAs = ImportAsType.PROJECT;
+            //     break;
+            // case 'COMP':
+            //     importOptions.importAs = ImportAsType.COMP;
+            //     break;
+            // default:
+            //     importOptions.importAs = ImportAsType.FOOTAGE;
+        }
+        var compLayer = mainComp.layers.add(comp);
+        compLayer("Transform")("Position").setValue(precomps[i]["pos"])
+    }
+
+
     var audios = conf['audios']
     for (var i = 0; i < audios.length; i++) {
         var item = shareUtil.importFile(project, audios[i]);
