@@ -1,3 +1,11 @@
+# import hashlib
+#
+# SYNONYM_PATH = r'D:\bjceis\Ruiso\deploy\elasticsearch\config\analysis\synonyms.txt'
+# TERMINOLOGY_PATH = r'D:\bjceis\Ruiso\deploy\elasticsearch\plugins\ik\config\ruiso.dic'
+#
+# print(hashlib.md5(open(SYNONYM_PATH, 'rb').read()).hexdigest())
+# print(hashlib.md5(open(TERMINOLOGY_PATH, 'rb').read()).hexdigest())
+
 import json
 from pprint import pprint as pp
 import re
@@ -39,14 +47,14 @@ lines = codes.strip().split('\n')
 pairs = []
 i = 0
 while i < len(lines):
-# for i in range(0, len(lines)):
+    # for i in range(0, len(lines)):
     line = lines[i]
     indent = 4
     if '#' in line:
         # idx = line.find('#')
         offset0 = (len(line) - len(line.lstrip())) // indent
-        offset1 = (len(lines[i+1]) - len(lines[i+1].lstrip())) // indent
-        pair = [[line.strip(), offset0], [lines[i+1].strip(), offset1]]
+        offset1 = (len(lines[i + 1]) - len(lines[i + 1].lstrip())) // indent
+        pair = [[line.strip(), offset0], [lines[i + 1].strip(), offset1]]
         i += 2
     else:
         offset = (len(line) - len(line.lstrip())) // indent
@@ -62,7 +70,6 @@ while i < len(lines):
 #         annotations = re.findall(r'[\S]', line)
 
 
-
 data = {
     'queues': [
         {
@@ -73,12 +80,37 @@ data = {
             'name': 'inorder', 'pos': [100, 200, 0], 'elems': [9, 3, 15, 20, 7],
             'effects': [],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]
-         },
+        },
+    ],
+    'precomps': [
+        {
+            'name': '前序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
+            'pos': [500, 500, 0], 'elems': [3, 9, 20, None, None, 15, 7], 'startTime': 30,
+            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
+            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'effects': [{'name': 'ADBE Drop Shadow'}],
+            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]},
+        {
+            'name': '中序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
+            'pos': [1420, 500, 0], 'elems': [3, 9, 20, None, None, 15, 7], 'startTime': 35,
+            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
+            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'effects': [],
+            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]
+        },
     ],
     'codes': pairs,
     'files': [
         # {'path': f'{BASE_DIR}题目描述.jpg', 'import_as_type': IMPORT_AS_TYPE[1], 'pos': [960, 540, 0], 'span': {'inPoint': 0, 'outPoint': 9}},
-        {'path': f'{BASE_DIR}Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0], 'layers': [{'name': 'Node Green/Elements.ai', 'pos': [960, 540, 0], 'span': {'inPoint': 0, 'outPoint': 9}}]}
+        {
+            'path': f'{BASE_DIR}Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0], 'addToLayers': False,
+            # 'layers': [
+            #     {'name': 'Node Green/Elements.ai', 'pos': [960, 540, 0], 'scale': [50, 50, 50],
+            #      'span': {'inPoint': 0, 'outPoint': 9}},
+            #     {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'pos': [860, 640, 0], 'scale': [50, 50, 50],
+            #      'rotation': 30, 'span': {'inPoint': 0, 'outPoint': 9}},
+            # ]
+        },
     ],
     'audios': [
         # {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'span': {'inPoint': 1.2, 'outPoint': 7.5}},
@@ -108,15 +140,37 @@ data = {
                     'keyframes': {'Type_on.Slider': {'times': [10, 20], 'values': [0, 90]}}
                 }
             ]
-         },
+        },
         {
-            'name': '示例1', 'box': True, 'rect': [1500, 300],
-            'text': 'Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7] Output: [3,9,20,null,null,15,7]。',
-            'pos': [960, 200, 0], 'span': {'inPoint': 20, 'outPoint': 30}, 'font': 'KaiTi',
+            'name': '示例1-1', 'box': True, 'rect': [1000, 150],
+            'text': 'Input: preorder = [3,9,20,15,7]',
+            'pos': [500, 200, 0], 'span': {'inPoint': 20, 'outPoint': 60}, 'font': 'KaiTi',
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
-                    'keyframes': {'Type_on.Slider': {'times': [20, 30], 'values': [0, 90]}}
+                    'keyframes': {'Type_on.Slider': {'times': [20, 25], 'values': [0, 90]}}
+                }
+            ]
+        },
+        {
+            'name': '示例1-2', 'box': True, 'rect': [1000, 150],
+            'text': 'Input: inorder = [9,3,15,20,7]',
+            'pos': [1420, 200, 0], 'span': {'inPoint': 25, 'outPoint': 60}, 'font': 'KaiTi',
+            'presets': [
+                {
+                    'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
+                    'keyframes': {'Type_on.Slider': {'times': [25, 30], 'values': [0, 90]}}
+                }
+            ]
+        },
+        {
+            'name': '示例1-3', 'box': True, 'rect': [1000, 150],
+            'text': 'Output: [3,9,20,null,null,15,7]。',
+            'pos': [960, 880, 0], 'span': {'inPoint': 30, 'outPoint': 60}, 'font': 'KaiTi',
+            'presets': [
+                {
+                    'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
+                    'keyframes': {'Type_on.Slider': {'times': [30, 35], 'values': [0, 90]}}
                 }
             ]
         },

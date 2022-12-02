@@ -5,8 +5,18 @@
 
 var project = app.project;
 var comp = project.activeItem;
-var aiLayer = comp.layer(7)
-$.writeln(aiLayer("Transform")("Anchor Point").value)
+var shapeLayer = comp.layer(1)
+$.writeln(shapeLayer.name)
+var left = shapeLayer.sourceRectAtTime(0, true).left
+var top = shapeLayer.sourceRectAtTime(0, true).top
+var width = shapeLayer.sourceRectAtTime(0, true).width
+var height = shapeLayer.sourceRectAtTime(0, true).height
+$.writeln(left)
+$.writeln(top)
+$.writeln(width)
+$.writeln(height)
+// var aiLayer = comp.layer(7)
+// $.writeln(aiLayer("Transform")("Anchor Point").value)
 // var preorderLayer = comp.layer(5)
 // $.writeln(preorderLayer("Masks").numProperties)
 // newMask = preorderLayer.Masks.addProperty("Mask");
@@ -58,15 +68,20 @@ $.writeln(aiLayer("Transform")("Anchor Point").value)
 // $.writeln(app.findMenuCommandId("Animation Composer 3"))
 // app.executeCommand(5020);
 
-// var shapeLayer = comp.layers.addShape();
-// var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-// pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
-// var myShape = new Shape();
+var shapeLayer = comp.layers.addShape();
+var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
+pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
+var myShape = new Shape();
 // myShape.vertices = path.vertices;
 // myShape.inTangents = path.inTangents;
 // myShape.outTangents = path.outTangents;
 // myShape.featherRelSegLoc = path.featherRelSegLoc;
-// myShape.closed = true;
-// pathGroup("Path").setValue(myShape);
-// strokeProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
-// strokeProp("Color").setValue([0, 0, 0])
+myShape.vertices = [[180,52], [52,244]];
+// myShape.inTangents = path.inTangents;
+// myShape.outTangents = path.outTangents;
+// myShape.featherRelSegLoc = path.featherRelSegLoc;
+myShape.closed = true;
+pathGroup("Path").setValue(myShape);
+strokeProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
+strokeProp("Color").setValue([0, 0, 0])
+shareUtil.setAnchorPoint(shapeLayer, "Top")
