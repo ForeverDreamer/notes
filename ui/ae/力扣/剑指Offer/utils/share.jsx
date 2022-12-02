@@ -26,6 +26,9 @@ ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
 	} else {
 		layer = layers.add(this.findItemByName(items, conf["name"]));
 	}
+	if (conf['layerName']) {
+		layer.name = conf['layerName'];
+	}
 	if (conf['anchor']) {
 		this.setAnchorPoint(layer, conf["anchor"]);
 	}

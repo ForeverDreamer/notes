@@ -47,14 +47,14 @@ TextUtil.prototype.add = function(comp, name, props) {
 
 TextUtil.prototype.overlay = function(comp, parent, name, props) {
     var textLayer = comp.layers.addText(props["text"]);
-    textLayer("Transform")("Position").setValue([0, 0, 0])
     textLayer.setParentWithJump(parent)
     textLayer.name = name;
+    textLayer("Transform")("Position").setValue(props["pos"] ? props["pos"] : [0, 15, 0])
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
-    var value = textLayer("Transform")("Position").value
-    value[1] = 15
-    textLayer("Transform")("Position").setValue(value)
+    // var value = textLayer("Transform")("Position").value
+    // value[1] = 15
+    // textLayer("Transform")("Position").setValue(value)
     return textLayer
 }
 

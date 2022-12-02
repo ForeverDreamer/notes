@@ -12,63 +12,67 @@ PrecompUtil.prototype.queue = function (nodeLayer, edgeLayer, elems) {
 
 }
 
-PrecompUtil.prototype.binaryTree = function (items, conf) {
+PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var comp = items.addComp("二叉树" + conf['name'], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);
     var layers = comp.layers;
     var node = conf["node"];
     var edge = conf["edge"];
     var elems = conf["elems"];
-    var root_node_pos = [conf["width"]/2, 50, 0];
-    var horizontalDist = 50;
-    var verticalDist = 80;
 
+    var scale = node["scale"][0]/100
+    var edgeOffset = 40*scale;
+    var horizontalDist = 160*scale;
+    var verticalDist = 240*scale;
+    var textPos = [65, 75, 0];
 
-    node["pos"] = root_node_pos;
+    var NODE_PREFIX = "Node";
+    var EDGE_PREFIX = "Edge";
+
+    node["pos"] = [225*scale, 65*scale, 0]
+    node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[0]
     var nodeLayer = shareUtil.addLayer(items, layers, node);
-    textUtil.overlay(comp, nodeLayer, "Shape" + elems[0], {"text": elems[0]});
-    var node_top = nodeLayer.sourceRectAtTime(0, true).top;
-    var node_left = nodeLayer.sourceRectAtTime(0, true).left;
-    var node_width = nodeLayer.sourceRectAtTime(0, true).width;
-	var node_height = nodeLayer.sourceRectAtTime(0, true).height;
-    var rootLeftEdgePos = [node_left + node_width/4, node_top + node_height, 0];
-    var rootRightEdgePos =  [node_left + node_width/4*3, node_top + node_height, 0];
-    // var edgeLayer = shareUtil.addLayer(items, layers, edge);
-    // edgeLayer("Transform")("Rotation").setValue(edge["rotation"]);
-    // var edge_top = edgeLayer.sourceRectAtTime(0, true).top;
-    // var edge_left = edgeLayer.sourceRectAtTime(0, true).left;
-    // var edge_width = edgeLayer.sourceRectAtTime(0, true).width;
-	// var edge_height = edgeLayer.sourceRectAtTime(0, true).height;
+    textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[0], {"text": elems[0], "pos": textPos});
 
-    var level = 0;
     var i = 1;
-    var count = 1;
-    while (count > 0) {
-        count -= 1;
-        edge["pos"] = [rootLeftEdgePos[0]-horizontalDist*level, rootLeftEdgePos[1]+verticalDist*level, rootLeftEdgePos[2]];
-        node["pos"] = [root_node_pos[0]-horizontalDist*(level+1), root_node_pos[1]+verticalDist*(level+1), root_node_pos[2]];
+    var rotation = edge["rotation"]
+    var queue = [nodeLayer];
+    // $.writeln(elems)
+    while (queue.length > 0) {
+        var parentNodeLayer = queue.shift();
+        var parentPos = parentNodeLayer("Transform")("Position").value;
+        var layer;
         if (elems[i]) {
-            // edge["pos"] = [rootLeftEdgePos[0]-horizontalDist*level, rootLeftEdgePos[1]+verticalDist*level, rootLeftEdgePos[2]];
+            edge["pos"] = [parentPos[0]-edgeOffset, parentPos[1]+edgeOffset, parentPos[2]];
+            edge["rotation"] = rotation
+            edge["layerName"] = EDGE_PREFIX + "." + "Left" + "." + elems[i]
             shareUtil.addLayer(items, layers, edge);
-            // node["pos"] = [root_node_pos[0]-horizontalDist*(level+1), root_node_pos[1]+verticalDist*(level+1), root_node_pos[2]];
-            textUtil.overlay(comp, shareUtil.addLayer(items, layers, node), "Node" + elems[i], {"text": elems[i]});
-            count += 1;
+            node["pos"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist, parentPos[2]];
+            node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
+            layer = shareUtil.addLayer(items, layers, node);
+            textUtil.overlay(comp, layer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
+            queue.push(layer)
         }
         i += 1;
-        edge["pos"] = [rootRightEdgePos[0]+horizontalDist*level, rootRightEdgePos[1]+verticalDist*level, rootRightEdgePos[2]];
-        node["pos"] = [root_node_pos[0]+horizontalDist*(level+1), root_node_pos[1]+verticalDist*(level+1), root_node_pos[2]];
         if (elems[i]) {
-            // edge["pos"] = [rootRightEdgePos[0]+horizontalDist*level, rootRightEdgePos[1]+verticalDist*level, rootRightEdgePos[2]];
-            edge["rotation"] = -edge["rotation"]
+            edge["pos"] = [parentPos[0]+edgeOffset, parentPos[1]+edgeOffset, parentPos[2]]
+            edge["rotation"] = -rotation
+            edge["layerName"] = EDGE_PREFIX + "." + "Right" + "." + elems[i]
             shareUtil.addLayer(items, layers, edge);
-            // node["pos"] = [root_node_pos[0]+horizontalDist*(level+1), root_node_pos[1]+verticalDist*(level+1), root_node_pos[2]];
-            textUtil.overlay(comp, shareUtil.addLayer(items, layers, node), "Node" + elems[i], {"text": elems[i]});
-            count += 1;
+            node["pos"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist, parentPos[2]]
+            node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
+            layer = shareUtil.addLayer(items, layers, node);
+            textUtil.overlay(comp, layer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
+            // count += 1;
+            queue.push(layer)
         }
         i += 1;
-        level += 1;
+        // $.writeln("==================================")
     }
 
-    return comp;
+    var compLayer = parentComp.layers.add(comp);
+    compLayer("Transform")("Position").setValue(conf["pos"])
+    compLayer.startTime = conf["startTime"]
+    return {'comp': comp, 'compLayer': compLayer};
 }
 
 PrecompUtil.prototype.graph = function (nodeLayer, edgeLayer, elems) {

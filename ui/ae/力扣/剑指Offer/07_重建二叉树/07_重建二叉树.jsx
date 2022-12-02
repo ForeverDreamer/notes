@@ -7,6 +7,7 @@
 #include "text.jsx"
 #include "shape.jsx"
 #include "precomp.jsx"
+#include "animation.jsx"
 
 app.purge(PurgeTarget.ALL_CACHES)
 var project = app.project;
@@ -119,22 +120,27 @@ function main() {
     var files = conf['files']
     for (var i = 0; i < files.length; i++) {
         var item = shareUtil.importFile(project, files[i]);
-        var conf_layers = files[i]["layers"]
-        if (conf_layers) {
-            for (var j = 0; j < conf_layers.length; j++) {
-                shareUtil.addLayer(project.items, mainComp.layers, conf_layers[j])
+        var confLayers = files[i]["layers"]
+        var addToLayers = files[i]["addToLayers"]
+        if (confLayers) {
+            for (var j = 0; j < confLayers.length; j++) {
+                shareUtil.addLayer(project.items, mainComp.layers, confLayers[j])
             }
         } else {
-            shareUtil.addLayer(project.items, mainComp.layers, files[i], item)
+            if (addToLayers) {
+                shareUtil.addLayer(project.items, mainComp.layers, files[i], item)
+            }
         }
     }
 
     var precomps = conf['precomps'];
     for (var i = 0; i < precomps.length; i++) {
-        var comp;
+        var compLayer;
         switch (precomps[i]["type"]) {
             case 'BINARY_TREE':
-                comp = precompUtil.binaryTree(project.items, precomps[i]);
+                // compLayer = precompUtil.binaryTree(project.items, mainComp, precomps[i]);
+                animationUtil.buildBinaryTree(project.items, mainComp, precomps[i]);
+                $.writeln('====================================')
                 break;
             // case 'PROJECT':
             //     importOptions.importAs = ImportAsType.PROJECT;
@@ -145,8 +151,6 @@ function main() {
             // default:
             //     importOptions.importAs = ImportAsType.FOOTAGE;
         }
-        var compLayer = mainComp.layers.add(comp);
-        compLayer("Transform")("Position").setValue(precomps[i]["pos"])
     }
 
 
