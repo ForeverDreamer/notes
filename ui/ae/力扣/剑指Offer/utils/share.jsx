@@ -110,10 +110,10 @@ ShareUtil.prototype.configKeyframes = function (keyframes) {
 }
 
 ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
-	var top = layer.sourceRectAtTime(0, true).top
-    var left = layer.sourceRectAtTime(0, true).left
-    var width = layer.sourceRectAtTime(0, true).width
-	var height = layer.sourceRectAtTime(0, true).height
+	var top = layer.sourceRectAtTime(0, false).top
+    var left = layer.sourceRectAtTime(0, false).left
+    var width = layer.sourceRectAtTime(0, false).width
+	var height = layer.sourceRectAtTime(0, false).height
     var prop = layer("Transform")("Anchor Point")
     var value = prop.value
 
@@ -122,16 +122,48 @@ ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
 			value[0] = left;
 			value[1] = top + height/2;
 			break;
+		case 'LEFT_TOP':
+			value[0] = left;
+			value[1] = top;
+			break;
+		case 'LEFT_DOWN':
+			value[0] = left;
+			value[1] = top + height;
+			break;
 		case 'RIGHT':
 			value[0] = left + width;
 			value[1] = top + height/2;
+			break;
+		case 'RIGHT_TOP':
+			value[0] = left + width;
+			value[1] = top;
+			break;
+		case 'RIGHT_DOWN':
+			value[0] = left + width;
+			value[1] = top + height;
 			break;
 		case 'TOP':
 			value[0] = left + width/2;
 			value[1] = top;
 			break;
+		case 'TOP_LEFT':
+			value[0] = left;
+			value[1] = top;
+			break;
+		case 'TOP_RIGHT':
+			value[0] = left + width;
+			value[1] = top;
+			break;
 		case 'DOWN':
 			value[0] = left + width/2;
+			value[1] = top + height;
+			break;
+		case 'DOWN_LEFT':
+			value[0] = left;
+			value[1] = top + height;
+			break;
+		case 'DOWN_RIGHT':
+			value[0] = left + width;
 			value[1] = top + height;
 			break;
 		default:
@@ -141,6 +173,7 @@ ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
 	}
 
 	prop.setValue(value);
+	return value
 }
 
 var shareUtil = new ShareUtil();
