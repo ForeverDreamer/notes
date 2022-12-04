@@ -1,16 +1,58 @@
-import json
+import time
+import ctypes
 
-from engine import AE_JSInterface
+from ae.constants.share import AE_WINDOW_NAME
 
 
 # def ensure_ok(error_code):
 #     assert error_code == 0, '脚本执行错误'
 
+class AppNotStartedError(Exception):
+    pass
 
-class Share:
 
-    def __init__(self, api):
-        self._api = api
+# Tool to get existing windows, useful here to check if AE is loaded
+class CurrentWindows:
+
+    def __init__(self):
+        self.EnumWindows = ctypes.windll.user32.EnumWindows
+        self.EnumWindowsProc = ctypes.WINFUNCTYPE(ctypes.c_bool, ctypes.POINTER(ctypes.c_int),
+                                                  ctypes.POINTER(ctypes.c_int))
+        self.GetWindowText = ctypes.windll.user32.GetWindowTextW
+        self.GetWindowTextLength = ctypes.windll.user32.GetWindowTextLengthW
+        self.IsWindowVisible = ctypes.windll.user32.IsWindowVisible
+
+        self.titles = []
+        self.EnumWindows(self.EnumWindowsProc(self.foreach_window), 0)
+
+    def foreach_window(self, hwnd, lParam):
+        if self.IsWindowVisible(hwnd):
+            length = self.GetWindowTextLength(hwnd)
+            buff = ctypes.create_unicode_buffer(length + 1)
+            self.GetWindowText(hwnd, buff, length + 1)
+            self.titles.append(buff.value)
+        return True
+
+
+def ensure_app_started():
+    started = False
+    for t in CurrentWindows().titles:
+        if AE_WINDOW_NAME.lower() in t.lower():
+            started = True
+            break
+    if not started:
+        raise AppNotStartedError('请先手动启动Ae程序')
+
+
+class ShareUtil:
+
+    def __init__(self, engine):
+        self._engine = engine
+
+    def open_project(self, path):
+        script = f'var aepFile = new File("{path}");'
+        script += "app.open(aepFile);"
+        self._engine.execute(script)
 
     def set_anchor_point(self, layer_index, props_chain, direction, extents):
         n = 4
@@ -29,15 +71,13 @@ class Share:
         head = '#includepath "../utils";\n#include "json.jsx";\nvar project = app.project;\nvar comp = project.activeItem;\nvar data = {};\n'
         head += f'var layer = comp.layer({layer_index});\n'
         # tail = f'alert({",".join(var_names)})'
-        returnFileClean = self._api.aeCom.returnFile.replace("\\", "/")
-        tail = f'jsonUtil.write("{returnFileClean}", data);'
+        res_file = self._engine.res_file.replace("\\", "/")
+        tail = f'jsonUtil.write("{res_file}", data);'
         script = head + script + tail
         print(script)
-        self._api.aeCom.jsNewCommandGroup()
-        self._api.aeCom.addCommand(script)
-        self._api.aeCom.jsExecuteCommand()
+        self._engine.execute(script)
         # # 返回之封装成json，json.loads()
-        data = self._api.aeCom.readReturn()
+        data = self._engine.get_res()
         print(data)
         top = data['top']
         width = data['width']
@@ -92,10 +132,4 @@ class Share:
         head += f'var layer = comp.layer({layer_index});\n'
         script = head + script
         print(script)
-        self._api.aeCom.jsNewCommandGroup()
-        self._api.aeCom.addCommand(script)
-        self._api.aeCom.jsExecuteCommand()
-
-
-api = AE_JSInterface(ae_version="18.0", base_dir='D:\\data_files\\notes\\ui\\ae\\力扣\\剑指Offer\\07_重建二叉树\\')
-Share(api).set_anchor_point(2, ['Transform', 'Anchor Point'], 'TOP_RIGHT', 'false')
+        self._engine.execute(script)
