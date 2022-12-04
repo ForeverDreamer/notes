@@ -11,7 +11,7 @@ class Share:
     def __init__(self, api):
         self._api = api
 
-    def set_anchor_point(self, layer_index, direction, extents):
+    def set_anchor_point(self, layer_index, props_chain, direction, extents):
         n = 4
         data = ['data.'] * n
         var_names = ['top', 'left', 'width', 'height']
@@ -28,7 +28,8 @@ class Share:
         head = '#includepath "../utils";\n#include "json.jsx";\nvar project = app.project;\nvar comp = project.activeItem;\nvar data = {};\n'
         head += f'var layer = comp.layer({layer_index});\n'
         # tail = f'alert({",".join(var_names)})'
-        tail = f'jsonUtil.write("D:/data_files/notes/ui/ae/力扣/剑指Offer/07_重建二叉树/ae_temp_ret.json", data)'
+        returnFileClean = self._api.aeCom.returnFile.replace("\\", "/")
+        tail = f'jsonUtil.write("{returnFileClean}", data);'
         script = head + script + tail
         print(script)
         self._api.aeCom.jsNewCommandGroup()
@@ -48,7 +49,10 @@ class Share:
         elif direction == 'LEFT_TOP':
             value[0] = left
             value[1] = top
-        script = f'layer("Transform")("Anchor Point").setValue({value});'
+        prop = 'layer'
+        for attr in props_chain:
+            prop += f'("{attr}")'
+        script = f'{prop}.setValue({value});'
         head = 'var project = app.project;\nvar comp = project.activeItem;\n'
         head += f'var layer = comp.layer({layer_index});\n'
         script = head + script
@@ -60,4 +64,4 @@ class Share:
 
 
 api = AE_JSInterface(ae_version="18.0", base_dir='D:\\data_files\\notes\\ui\\ae\\力扣\\剑指Offer\\07_重建二叉树\\')
-Share(api).set_anchor_point(3, 'LEFT', 'false')
+Share(api).set_anchor_point(3, ['Transform', 'Anchor Point'], 'LEFT', 'false')

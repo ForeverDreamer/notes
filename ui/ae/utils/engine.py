@@ -66,7 +66,7 @@ class AE_JSWrapper(object):
         #     # returnFolder = os.path.join(os.path.expanduser('~'), "Documents", "temp", "AePyJsx")
         #     # returnFolder = os.path.join('D:', 'data_files', 'notes', 'ui', 'ae', '力扣', '剑指Offer')
         #     returnFolder = "D:/data_files/notes/ui/ae/力扣/剑指Offer/07_重建二叉树"
-        self.returnFile = os.path.join(base_dir, "ae_temp_ret.json")
+        self.returnFile = os.path.join(base_dir, "res.json")
         # if not os.path.exists(returnFolder):
         #     os.mkdir(returnFolder)
 
@@ -78,7 +78,7 @@ class AE_JSWrapper(object):
         self.lastModTime = os.path.getmtime(self.returnFile)
 
         # Temp file to store the .jsx commands.
-        self.tempJsxFile = os.path.join(base_dir, "main.jsx")
+        self.tempJsxFile = os.path.join(base_dir, "tmp.jsx")
 
         # This list is used to hold all the strings which eventually become our .jsx file.
         self.commands = []
@@ -122,7 +122,7 @@ class AE_JSWrapper(object):
                 """ % (returnRequest)
         )
 
-        returnFileClean = "/" + self.returnFile.replace("\\", "/").replace(":", "").lower()
+        returnFileClean = self.returnFile.replace("\\", "/")
         com = com.replace("[DATAFILEPATH]", returnFileClean)
 
         self.commands.append(com)
@@ -238,6 +238,6 @@ if __name__ == '__main__':
     # aeApp.openAE()
     if aeApp.waitingAELoading():
         # Launch function if AE is ready
-        # aeApp.jsOpenProject("D:/Untitled Project.aep")
+        aeApp.jsOpenProject("D:/Untitled Project.aep")
         # aeApp.jsGetActiveDocument()
-        print(aeApp.jsAlert(''))
+        # print(aeApp.jsAlert(''))
