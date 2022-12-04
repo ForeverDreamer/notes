@@ -1,5 +1,9 @@
-def ensure_ok(error_code):
-    assert error_code == 0, '脚本执行错误'
+import json
+
+from engine import AE_JSInterface
+
+# def ensure_ok(error_code):
+#     assert error_code == 0, '脚本执行错误'
 
 
 class Share:
@@ -7,28 +11,53 @@ class Share:
     def __init__(self, api):
         self._api = api
 
-    def set_anchor_point(self, layer_name, direction, extents):
+    def set_anchor_point(self, layer_index, direction, extents):
         n = 4
-        var_keywords = ['var']*n
+        data = ['data.'] * n
         var_names = ['top', 'left', 'width', 'height']
-        equal_signs = ['=']*n
+        equal_signs = ['='] * n
         expressions = []
         for var_name in var_names:
             expressions.append(f'layer.sourceRectAtTime(0, {extents}).{var_name}')
-        semicolons = [';']*n
+        semicolons = [';'] * n
         snippets = []
-        for va_keyword, var_name, equal_sign, expression, semicolon in zip(var_keywords, var_names, equal_signs, expressions, semicolons):
-            snippets.append(' '.join([va_keyword, var_name, equal_sign, expression, semicolon]))
-        script = '\n'.join(snippets)+'\n'
-        head = 'var project = app.project;\nvar comp = project.activeItem;\nvar layer = comp.layer(1);\n'
-        tail = f'alert({",".join(var_names)})'
+        for field, var_name, equal_sign, expression, semicolon in zip(data, var_names, equal_signs, expressions,
+                                                                      semicolons):
+            snippets.append(' '.join([field + var_name, equal_sign, expression, semicolon]))
+        script = '\n'.join(snippets) + '\n'
+        head = '#includepath "../utils";\n#include "json.jsx";\nvar project = app.project;\nvar comp = project.activeItem;\nvar data = {};\n'
+        head += f'var layer = comp.layer({layer_index});\n'
+        # tail = f'alert({",".join(var_names)})'
+        tail = f'jsonUtil.write("D:/data_files/notes/ui/ae/力扣/剑指Offer/07_重建二叉树/ae_temp_ret.json", data)'
         script = head + script + tail
         print(script)
-        # self._api.aeCom.addCommand(script)
-        # ensure_ok(self._api.aeCom.jsExecuteCommand())
+        self._api.aeCom.jsNewCommandGroup()
+        self._api.aeCom.addCommand(script)
+        self._api.aeCom.jsExecuteCommand()
         # # 返回之封装成json，json.loads()
-        # rect = self.aeCom.readReturn()[0]
-        # # 再执行后边代码，这种方式好像把过程复杂化了，而且影响执行速度，测试一下再说！
+        data = self._api.aeCom.readReturn()
+        print(data)
+        top = data['top']
+        width = data['width']
+        left = data['left']
+        height = data['height']
+        value = [0, 0, 0]
+        if direction == 'LEFT':
+            value[0] = left
+            value[1] = top + height / 2
+        elif direction == 'LEFT_TOP':
+            value[0] = left
+            value[1] = top
+        script = f'layer("Transform")("Anchor Point").setValue({value});'
+        head = 'var project = app.project;\nvar comp = project.activeItem;\n'
+        head += f'var layer = comp.layer({layer_index});\n'
+        script = head + script
+        print(script)
+        self._api.aeCom.jsNewCommandGroup()
+        self._api.aeCom.addCommand(script)
+        self._api.aeCom.jsExecuteCommand()
 
 
-Share(None).set_anchor_point('Node1', 'TOP', 'false')
+
+api = AE_JSInterface(ae_version="18.0", base_dir='D:\\data_files\\notes\\ui\\ae\\力扣\\剑指Offer\\07_重建二叉树\\')
+Share(api).set_anchor_point(3, 'LEFT', 'false')

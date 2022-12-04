@@ -1,6 +1,6 @@
 function JsonUtil() {}
 
-JsonUtil.prototype.write = function(path) {
+JsonUtil.prototype.write = function(path, data) {
     var file = File(path);
     file.open("w");
     file.write(JSON.stringify(data));

@@ -50,4 +50,6 @@ if (comp === null) {
 // var easeIn4 = new KeyframeEase(0, 0.1);
 // var easeOut4 = new KeyframeEase(2000, 85);
 // positionProp.setTemporalEaseAtKey(4, [easeIn4], [easeOut4]);
-app.cancelTask(4)
+// app.cancelTask(4)
+
+$.writeln(app.project.file.fsName)

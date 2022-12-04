@@ -1,7 +1,13 @@
 """
 Script which builds a .jsx file, sends it to After Effects and then waits for data to be returned.
 """
-import os, sys, subprocess, time, winreg, ctypes
+import os
+import sys
+import subprocess
+import time
+import winreg
+import ctypes
+import json
 
 
 # Tool to get existing windows, usefull here to check if AE is loaded
@@ -60,7 +66,7 @@ class AE_JSWrapper(object):
         #     # returnFolder = os.path.join(os.path.expanduser('~'), "Documents", "temp", "AePyJsx")
         #     # returnFolder = os.path.join('D:', 'data_files', 'notes', 'ui', 'ae', '力扣', '剑指Offer')
         #     returnFolder = "D:/data_files/notes/ui/ae/力扣/剑指Offer/07_重建二叉树"
-        self.returnFile = os.path.join(base_dir, "ae_temp_ret.txt")
+        self.returnFile = os.path.join(base_dir, "ae_temp_ret.json")
         # if not os.path.exists(returnFolder):
         #     os.mkdir(returnFolder)
 
@@ -72,7 +78,7 @@ class AE_JSWrapper(object):
         self.lastModTime = os.path.getmtime(self.returnFile)
 
         # Temp file to store the .jsx commands.
-        self.tempJsxFile = os.path.join(base_dir, "ae_temp_com.jsx")
+        self.tempJsxFile = os.path.join(base_dir, "main.jsx")
 
         # This list is used to hold all the strings which eventually become our .jsx file.
         self.commands = []
@@ -90,8 +96,8 @@ class AE_JSWrapper(object):
     def jsExecuteCommand(self):
         """Pass the commands to the subprocess module."""
         self.compileCommands()
-        target = [self.aeApp, "-ro", self.tempJsxFile]
-        ret = subprocess.Popen(target)
+        target = [self.aeApp, "-r", self.tempJsxFile]
+        return subprocess.Popen(target)
 
     def addCommand(self, command):
         """add a command to the commands list"""
@@ -123,24 +129,18 @@ class AE_JSWrapper(object):
 
     def readReturn(self):
         """Helper function to wait for AE to write some output for us."""
-        # Give time for AE to close the file...
-        time.sleep(0.1)
-
         self._updated = False
         while not self._updated:
             self.thisModTime = os.path.getmtime(self.returnFile)
             if str(self.thisModTime) != str(self.lastModTime):
                 self.lastModTime = self.thisModTime
                 self._updated = True
+            # Give time for AE to close the file...
+            time.sleep(0.1)
 
-        f = open(self.returnFile, "r+")
-        content = f.readlines()
-        f.close()
-
-        res = []
-        for item in content:
-            res.append(str(item.rstrip()))
-        return res
+        with open(self.returnFile, "r") as f:
+            data = json.loads(f.read())
+        return data
 
 
 # An interface to actually call those commands.
@@ -203,10 +203,11 @@ class AE_JSInterface(object):
     def jsAlert(self, msg):
         self.aeCom.jsNewCommandGroup()  # Clean JSX command list
         extents = 'false'
+        layer_index = 1
         # Write new JSX commands
         # jsxTodo = "alert(\"" + msg + "\");"
         n = 4
-        var_keywords = ['var'] * n
+        data = ['data.'] * n
         var_names = ['top', 'left', 'width', 'height']
         equal_signs = ['='] * n
         expressions = []
@@ -214,20 +215,20 @@ class AE_JSInterface(object):
             expressions.append(f'layer.sourceRectAtTime(0, {extents}).{var_name}')
         semicolons = [';'] * n
         snippets = []
-        for va_keyword, var_name, equal_sign, expression, semicolon in zip(var_keywords, var_names, equal_signs,
-                                                                           expressions, semicolons):
-            snippets.append(' '.join([va_keyword, var_name, equal_sign, expression, semicolon]))
+        for field, var_name, equal_sign, expression, semicolon in zip(data, var_names, equal_signs, expressions,
+                                                                      semicolons):
+            snippets.append(' '.join([field + var_name, equal_sign, expression, semicolon]))
         script = '\n'.join(snippets) + '\n'
-        head = 'var project = app.project;\nvar comp = project.activeItem;\nvar layer = comp.layer(1);\n'
-        tail = []
-        for var_name in var_names:
-            tail.append(f'alert({var_name})')
-        tail = '\n'.join(tail)
+        head = '#includepath "../utils";\n#include "json.jsx";\nvar project = app.project;\nvar comp = project.activeItem;\nvar data = {};\n'
+        head += f'var layer = comp.layer({layer_index});\n'
+        # tail = f'alert({",".join(var_names)})'
+        tail = f'jsonUtil.write("D:/data_files/notes/ui/ae/力扣/剑指Offer/07_重建二叉树/ae_temp_ret.json", data)'
         script = head + script + tail
         print(script)
         self.aeCom.addCommand(script)
 
         self.aeCom.jsExecuteCommand()
+        return self.aeCom.readReturn()
 
 if __name__ == '__main__':
     # Create the wrapper
@@ -239,4 +240,4 @@ if __name__ == '__main__':
         # Launch function if AE is ready
         # aeApp.jsOpenProject("D:/Untitled Project.aep")
         # aeApp.jsGetActiveDocument()
-        aeApp.jsAlert('')
+        print(aeApp.jsAlert(''))
