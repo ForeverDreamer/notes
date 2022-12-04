@@ -31,7 +31,7 @@ class CurrentWindows():
 
 # A Mini Python wrapper for the JS commands...
 class AE_JSWrapper(object):
-    def __init__(self, aeVersion="", returnFolder=""):
+    def __init__(self, aeVersion="", base_dir=""):
         self.aeVersion = aeVersion
 
         # Try to find last AE version if value is not specified
@@ -54,12 +54,15 @@ class AE_JSWrapper(object):
 
         self.aeApp = winreg.QueryValueEx(self.aeKey, 'InstallPath')[0] + 'AfterFX.exe'
 
+        # base_dir = os.path.join('D:', *base_dir.split('/'))
         # Get the path to the return file. Create it if it doesn't exist.
-        if not len(returnFolder):
-            returnFolder = os.path.join(os.path.expanduser('~'), "Documents", "temp", "AePyJsx")
-        self.returnFile = os.path.join(returnFolder, "ae_temp_ret.txt")
-        if not os.path.exists(returnFolder):
-            os.mkdir(returnFolder)
+        # if not len(returnFolder):
+        #     # returnFolder = os.path.join(os.path.expanduser('~'), "Documents", "temp", "AePyJsx")
+        #     # returnFolder = os.path.join('D:', 'data_files', 'notes', 'ui', 'ae', '力扣', '剑指Offer')
+        #     returnFolder = "D:/data_files/notes/ui/ae/力扣/剑指Offer/07_重建二叉树"
+        self.returnFile = os.path.join(base_dir, "ae_temp_ret.txt")
+        # if not os.path.exists(returnFolder):
+        #     os.mkdir(returnFolder)
 
         # Ensure the return file exists...
         with open(self.returnFile, 'w') as f:
@@ -69,7 +72,7 @@ class AE_JSWrapper(object):
         self.lastModTime = os.path.getmtime(self.returnFile)
 
         # Temp file to store the .jsx commands.
-        self.tempJsxFile = os.path.join(returnFolder, "ae_temp_com.jsx")
+        self.tempJsxFile = os.path.join(base_dir, "ae_temp_com.jsx")
 
         # This list is used to hold all the strings which eventually become our .jsx file.
         self.commands = []
@@ -143,9 +146,9 @@ class AE_JSWrapper(object):
 # An interface to actually call those commands.
 class AE_JSInterface(object):
 
-    def __init__(self, aeVersion="", returnFolder=""):
+    def __init__(self, ae_version, base_dir):
         self.aeWindowName = "Adobe After Effects"
-        self.aeCom = AE_JSWrapper(aeVersion, returnFolder)  # Create wrapper to handle JSX
+        self.aeCom = AE_JSWrapper(ae_version, base_dir)  # Create wrapper to handle JSX
 
     def openAE(self):
         self.aeCom.openAE()
@@ -196,12 +199,44 @@ class AE_JSInterface(object):
 
         return self.aeCom.readReturn()[0]  # Read the temp file to get the JSX returned value
 
+    
+    def jsAlert(self, msg):
+        self.aeCom.jsNewCommandGroup()  # Clean JSX command list
+        extents = 'false'
+        # Write new JSX commands
+        # jsxTodo = "alert(\"" + msg + "\");"
+        n = 4
+        var_keywords = ['var'] * n
+        var_names = ['top', 'left', 'width', 'height']
+        equal_signs = ['='] * n
+        expressions = []
+        for var_name in var_names:
+            expressions.append(f'layer.sourceRectAtTime(0, {extents}).{var_name}')
+        semicolons = [';'] * n
+        snippets = []
+        for va_keyword, var_name, equal_sign, expression, semicolon in zip(var_keywords, var_names, equal_signs,
+                                                                           expressions, semicolons):
+            snippets.append(' '.join([va_keyword, var_name, equal_sign, expression, semicolon]))
+        script = '\n'.join(snippets) + '\n'
+        head = 'var project = app.project;\nvar comp = project.activeItem;\nvar layer = comp.layer(1);\n'
+        tail = []
+        for var_name in var_names:
+            tail.append(f'alert({var_name})')
+        tail = '\n'.join(tail)
+        script = head + script + tail
+        print(script)
+        self.aeCom.addCommand(script)
+
+        self.aeCom.jsExecuteCommand()
+
 if __name__ == '__main__':
     # Create the wrapper
-    aeApp = AE_JSInterface(aeVersion="18.0", returnFolder=os.path.join(os.path.expanduser('~'), "Documents", "temp"))
+    aeApp = AE_JSInterface(ae_version="18.0", base_dir='D:\\data_files\\notes\\ui\\ae\\力扣\\剑指Offer\\07_重建二叉树\\')
 
     # Open AE if needed
     # aeApp.openAE()
     if aeApp.waitingAELoading():
         # Launch function if AE is ready
-        aeApp.jsOpenProject("D:/Untitled Project.aep")
+        # aeApp.jsOpenProject("D:/Untitled Project.aep")
+        # aeApp.jsGetActiveDocument()
+        aeApp.jsAlert('')
