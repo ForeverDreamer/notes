@@ -1,7 +1,3 @@
-#include "constants.jsx"
-#include "share.jsx"
-#include "text.jsx"
-
 function PrecompUtil() { }
 
 PrecompUtil.prototype.stack = function (nodeLayer, edgeLayer, elems) {
@@ -41,7 +37,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
         var parentNodeLayer = queue.shift();
         var parentPos = parentNodeLayer("Transform")("Position").value;
         var layer;
-        if (elems[i]) {
+        if (js_null(elems[i])) {
             edge["pos"] = [parentPos[0]-edgeOffset, parentPos[1]+edgeOffset, parentPos[2]];
             edge["rotation"] = rotation
             edge["layerName"] = EDGE_PREFIX + "." + "Left" + "." + elems[i]
@@ -53,7 +49,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             queue.push(layer)
         }
         i += 1;
-        if (elems[i]) {
+        if (js_null(elems[i])) {
             edge["pos"] = [parentPos[0]+edgeOffset, parentPos[1]+edgeOffset, parentPos[2]]
             edge["rotation"] = -rotation
             edge["layerName"] = EDGE_PREFIX + "." + "Right" + "." + elems[i]

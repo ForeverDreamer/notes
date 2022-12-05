@@ -1,5 +1,3 @@
-#include "precomp.jsx"
-
 function AnimationUtil() {}
 
 AnimationUtil.prototype.traverseBinaryTree = function(nodeLayer, edgeLayer, elems, order) {
@@ -28,7 +26,7 @@ AnimationUtil.prototype.buildBinaryTree = function(items, parentComp, conf) {
     var edge = conf["edge"];
 	
 	function removeNull(elem) {
-		return elem !== null;
+		return elem !== 'null';
 	}
 	var elems = conf["elems"].filter(removeNull)
 	var numLayers = comp.numLayers

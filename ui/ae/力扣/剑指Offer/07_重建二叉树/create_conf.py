@@ -85,14 +85,14 @@ data = {
     'precomps': [
         {
             'name': '前序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
-            'pos': [500, 500, 0], 'elems': [3, 9, 20, None, None, 15, 7], 'startTime': 30,
+            'pos': [500, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 30,
             'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
             'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]},
         {
             'name': '中序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
-            'pos': [1420, 500, 0], 'elems': [3, 9, 20, None, None, 15, 7], 'startTime': 35,
+            'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 35,
             'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
             'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [],
@@ -103,7 +103,7 @@ data = {
     'files': [
         # {'path': f'{BASE_DIR}题目描述.jpg', 'import_as_type': IMPORT_AS_TYPE[1], 'pos': [960, 540, 0], 'span': {'inPoint': 0, 'outPoint': 9}},
         {
-            'path': f'{BASE_DIR}Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0], 'addToLayers': False,
+            'path': f'{BASE_DIR}Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0], 'addToLayers': 'false',
             # 'layers': [
             #     {'name': 'Node Green/Elements.ai', 'pos': [960, 540, 0], 'scale': [50, 50, 50],
             #      'span': {'inPoint': 0, 'outPoint': 9}},
@@ -131,7 +131,7 @@ data = {
             'span': {'inPoint': 0, 'outPoint': 9}, 'keyframes': [{'Opacity': [[0, 0.5, 5, 9], [0, 100, 100, 0]]}]
         },
         {
-            'name': '题目描述', 'box': True, 'rect': [1500, 300],
+            'name': '题目描述', 'box': 'true', 'rect': [1500, 300],
             'text': '输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。',
             'pos': [960, 200, 0], 'span': {'inPoint': 10, 'outPoint': 20}, 'font': 'KaiTi',
             'presets': [
@@ -142,7 +142,7 @@ data = {
             ]
         },
         {
-            'name': '示例1-1', 'box': True, 'rect': [1000, 150],
+            'name': '示例1-1', 'box': 'true', 'rect': [1000, 150],
             'text': 'Input: preorder = [3,9,20,15,7]',
             'pos': [500, 200, 0], 'span': {'inPoint': 20, 'outPoint': 60}, 'font': 'KaiTi',
             'presets': [
@@ -153,7 +153,7 @@ data = {
             ]
         },
         {
-            'name': '示例1-2', 'box': True, 'rect': [1000, 150],
+            'name': '示例1-2', 'box': 'true', 'rect': [1000, 150],
             'text': 'Input: inorder = [9,3,15,20,7]',
             'pos': [1420, 200, 0], 'span': {'inPoint': 25, 'outPoint': 60}, 'font': 'KaiTi',
             'presets': [
@@ -164,7 +164,7 @@ data = {
             ]
         },
         {
-            'name': '示例1-3', 'box': True, 'rect': [1000, 150],
+            'name': '示例1-3', 'box': 'true', 'rect': [1000, 150],
             'text': 'Output: [3,9,20,null,null,15,7]。',
             'pos': [960, 880, 0], 'span': {'inPoint': 30, 'outPoint': 60}, 'font': 'KaiTi',
             'presets': [
@@ -180,5 +180,5 @@ data = {
 # Serializing json
 obj = json.dumps(data, indent=4)
 # print(obj)
-with open("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/conf.json", 'w', encoding='utf-8') as f:
+with open("D:/data_files/notes/ui/ae/力扣/剑指Offer/07_重建二叉树/conf.json", 'w', encoding='utf-8') as f:
     f.write(obj)

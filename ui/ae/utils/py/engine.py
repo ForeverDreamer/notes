@@ -28,16 +28,16 @@ class Engine:
                 file=sys.stderr)
             sys.exit(1)
         self._app = winreg.QueryValueEx(self._regkey, 'InstallPath')[0] + 'AfterFX.exe'
-        self.res_file = os.path.join(base_dir, "res.json")
+        self.res_file = os.path.join(base_dir, "tmp/res.json")
         # Ensure the return file exists...
         with open(self.res_file, 'w') as f:
             f.close()
         # Establish the last time the temp file was modified. We use this to listen for changes.
         self._last_mod_time = os.path.getmtime(self.res_file)
         # Temp file to store the .jsx commands.
-        self._tmp_file = os.path.join(base_dir, "tmp.jsx")
+        self._tmp_file = os.path.join(base_dir, "tmp/script.jsx")
 
-    def open_app(self):
+    def start_app(self):
         cmd = [self._app]
         subprocess.Popen(cmd)
 

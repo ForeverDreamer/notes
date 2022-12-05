@@ -1,5 +1,3 @@
-#include "share.jsx";
-
 function CameraUtil() {}
 
 CameraUtil.prototype.add = function(comp, name, centerPoint, props, keyframes) {

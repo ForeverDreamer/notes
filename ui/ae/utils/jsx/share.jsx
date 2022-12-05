@@ -1,5 +1,21 @@
 function ShareUtil() { }
 
+function js_bool(v) {
+	if (v === 'true') {
+		return true
+	} else {
+		return false
+	}
+}
+
+function js_null(v) {
+	if (v === 'null') {
+		return null
+	} else {
+		return v
+	}
+}
+
 ShareUtil.prototype.importFile = function (project, conf) {
 	var importOptions = new ImportOptions();
 	importOptions.file = new File(conf["path"]);
@@ -16,7 +32,18 @@ ShareUtil.prototype.importFile = function (project, conf) {
 		default:
 			importOptions.importAs = ImportAsType.FOOTAGE;
 	}
-	return project.importFile(importOptions);
+	var item = project.importFile(importOptions);
+	var confLayers = conf["layers"]
+	if (js_bool(conf["addToLayers"])) {
+		for (var i = 0; i < confLayers.length; i++) {
+			shareUtil.addLayer(project.items, mainComp.layers, confLayers[i])
+		}
+	} else {
+		if (js_bool(conf["addToLayers"])) {
+			shareUtil.addLayer(project.items, mainComp.layers, conf, item)
+		}
+	}
+
 }
 
 ShareUtil.prototype.addLayer = function (items, layers, conf, item) {

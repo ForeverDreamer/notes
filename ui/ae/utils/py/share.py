@@ -1,11 +1,22 @@
 import time
 import ctypes
 
-from ae.constants.share import AE_WINDOW_NAME
+from ae.constants.share import AE_WINDOW_NAME, INIT_ENV
 
 
 # def ensure_ok(error_code):
 #     assert error_code == 0, '脚本执行错误'
+
+def js_bool(v):
+    return 'true' if v else 'false'
+
+
+def js_null(v):
+    if v is None:
+        return 'null'
+    else:
+        return v
+
 
 class AppNotStartedError(Exception):
     pass
@@ -49,9 +60,48 @@ class ShareUtil:
     def __init__(self, engine):
         self._engine = engine
 
+    def eval(self, path):
+        statements = [
+            f'var file = new File("{path}");',
+            'file.open("r");',
+            'eval(file.read());',
+            'file.close();',
+        ]
+        script = '\n'.join(statements)
+        self._engine.execute(script)
+
     def open_project(self, path):
         script = f'var aepFile = new File("{path}");'
         script += "app.open(aepFile);"
+        self._engine.execute(script)
+
+    def import_files(self, files):
+        statements = []
+        for conf in files:
+            conf['addToLayers'] = js_bool(conf['addToLayers'])
+            statements.append(f'shareUtil.importFile(project, {conf});')
+        script = '\n'.join(statements)
+        print(script)
+        print('=====================================')
+        self._engine.execute(script)
+
+    def create_precomps(self, precomps):
+        statements = []
+        for conf in precomps:
+            # conf['elems'] = list(map(js_null, conf['elems']))
+            if conf['type'] == 'STACK':
+                pass
+            elif conf['type'] == 'QUEUE':
+                pass
+            elif conf['type'] == 'LINKED_LIST':
+                pass
+            elif conf['type'] == 'BINARY_TREE':
+                statements.append(f'animationUtil.buildBinaryTree(project.items, mainComp, {conf});')
+            elif conf['type'] == 'GRAPH':
+                pass
+        script = '\n'.join(statements)
+        print(script)
+        print('=====================================')
         self._engine.execute(script)
 
     def set_anchor_point(self, layer_index, props_chain, direction, extents):

@@ -1,5 +1,3 @@
-#include "color.jsx";
-
 function TextUtil() {}
 
 TextUtil.prototype.configTextDocument = function(textProp, props) {
