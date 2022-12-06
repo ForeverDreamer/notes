@@ -55,7 +55,7 @@ def ensure_app_started():
         raise AppNotStartedError('请先手动启动Ae程序')
 
 
-class ShareUtil:
+class Share:
 
     def __init__(self, engine):
         self._engine = engine
@@ -78,7 +78,6 @@ class ShareUtil:
     def import_files(self, files):
         statements = []
         for conf in files:
-            conf['addToLayers'] = js_bool(conf['addToLayers'])
             statements.append(f'shareUtil.importFile(project, {conf});')
         script = '\n'.join(statements)
         print(script)

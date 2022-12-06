@@ -68,6 +68,9 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var compLayer = parentComp.layers.add(comp);
     compLayer("Transform")("Position").setValue(conf["pos"])
     compLayer.startTime = conf["startTime"]
+    if (conf['3D']) {
+		compLayer.threeDLayer = true;
+	}
     return {'comp': comp, 'compLayer': compLayer};
 }
 

@@ -34,7 +34,7 @@ ShareUtil.prototype.importFile = function (project, conf) {
 	}
 	var item = project.importFile(importOptions);
 	var confLayers = conf["layers"]
-	if (js_bool(conf["addToLayers"])) {
+	if (confLayers) {
 		for (var i = 0; i < confLayers.length; i++) {
 			shareUtil.addLayer(project.items, mainComp.layers, confLayers[i])
 		}

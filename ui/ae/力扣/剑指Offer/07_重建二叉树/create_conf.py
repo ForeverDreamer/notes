@@ -82,24 +82,6 @@ data = {
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]
         },
     ],
-    'precomps': [
-        {
-            'name': '前序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
-            'pos': [500, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 30,
-            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
-            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
-            'effects': [{'name': 'ADBE Drop Shadow'}],
-            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]},
-        {
-            'name': '中序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
-            'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 35,
-            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
-            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
-            'effects': [],
-            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]
-        },
-    ],
-    'codes': pairs,
     'files': [
         # {'path': f'{BASE_DIR}题目描述.jpg', 'import_as_type': IMPORT_AS_TYPE[1], 'pos': [960, 540, 0], 'span': {'inPoint': 0, 'outPoint': 9}},
         {
@@ -110,12 +92,43 @@ data = {
             #     {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'pos': [860, 640, 0], 'scale': [50, 50, 50],
             #      'rotation': 30, 'span': {'inPoint': 0, 'outPoint': 9}},
             # ]
+
+        },
+        # {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'span': {'inPoint': 1.2, 'outPoint': 7.5}},
+        {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'addToLayers': 'true'},
+    ],
+    'precomps': [
+        {
+            'name': '前序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
+            'pos': [500, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 30,
+            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
+            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'effects': [{'name': 'ADBE Drop Shadow'}],
+            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
+            '3D': 'true'
+        },
+        {
+            'name': '中序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
+            'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 35,
+            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
+            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'effects': [],
+            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
+            '3D': 'true'
         },
     ],
-    'audios': [
-        # {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'span': {'inPoint': 1.2, 'outPoint': 7.5}},
-        {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2}
+    'cameras': [
+        {
+            'name': 'Camera1', 'centerPoint': [960, 540], 'Position': [960, 540, -800], 'Zoom': 800, 'Focus Distance': 800,
+            'Aperture': 7.6,
+            'keyframes': {
+                'Point of Interest': ([1, 2, 3, 7], [[960, 540, 0], [960, 300, 0], [960, 300, 0], [960, 700, 0]]),
+                'Position': ([1, 2, 3, 7], [[960, 540, -800], [960, 300, -800], [960, 300, -800], [960, 700, -800]]),
+                'Zoom': ([1, 2, 7], [800, 1500, 1500]),
+            }
+        }
     ],
+    'codes': pairs,
     'transcript': [
         # Opacity属性可通过Python音频库分析配音后自动生成
         # {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'keyframes': [{'Opacity': [[0, 0.5, 3, 3.5], [0, 100, 100, 0]]}]},

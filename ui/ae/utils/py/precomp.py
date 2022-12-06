@@ -1,7 +1,7 @@
 from ae.constants.share import PIXEL_ASPECT, FRAME_RATE
 
 
-class PrecompUtil:
+class Precomp:
 
     def __init__(self, engine):
         self._engine = engine
