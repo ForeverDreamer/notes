@@ -46,9 +46,6 @@ TextUtil.prototype.overlay = function(comp, parent, name, props) {
     shareUtil.setAnchorPoint(textLayer)
     textLayer("Transform")("Position").setValue(props["pos"] ? props["pos"] : [0, 0, 0])
     textLayer.setParentWithJump(parent)
-    // var value = textLayer("Transform")("Position").value
-    // value[1] = 15
-    // textLayer("Transform")("Position").setValue(value)
     return textLayer
 }
 

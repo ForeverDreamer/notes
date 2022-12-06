@@ -8,16 +8,6 @@ from ae.utils.py.date import now
 # def ensure_ok(error_code):
 #     assert error_code == 0, '脚本执行错误'
 
-def js_bool(v):
-    return 'true' if v else 'false'
-
-
-def js_null(v):
-    if v is None:
-        return 'null'
-    else:
-        return v
-
 
 class AppNotStartedError(Exception):
     pass
