@@ -71,17 +71,6 @@ while i < len(lines):
 
 
 data = {
-    'queues': [
-        {
-            'name': 'preorder', 'pos': [100, 100, 0], 'elems': [3, 9, 20, 15, 7],
-            'effects': [{'name': 'ADBE Drop Shadow'}],
-            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]},
-        {
-            'name': 'inorder', 'pos': [100, 200, 0], 'elems': [9, 3, 15, 20, 7],
-            'effects': [],
-            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}]
-        },
-    ],
     'files': [
         # {'path': f'{BASE_DIR}题目描述.jpg', 'import_as_type': IMPORT_AS_TYPE[1], 'pos': [960, 540, 0], 'span': {'inPoint': 0, 'outPoint': 9}},
         {
@@ -128,11 +117,11 @@ data = {
     ],
     'cameras': [
         {
-            'name': 'Camera1', 'centerPoint': [960, 540], 'Position': [960, 540, -800], 'Zoom': 800, 'Focus Distance': 800,
+            'name': 'Camera1', 'centerPoint': [960, 540], 'pos': [960, 540, -800], 'Zoom': 800, 'Focus Distance': 800,
             'Aperture': 7.6,
             'keyframes': {
                 'Point of Interest': ([40, 41, 42, 46], [[960, 540, 0], [960, 300, 0], [960, 300, 0], [960, 700, 0]]),
-                'Position': ([40, 41, 42, 46], [[960, 540, -800], [960, 300, -800], [960, 300, -800], [960, 700, -800]]),
+                'pos': ([40, 41, 42, 46], [[960, 540, -800], [960, 300, -800], [960, 300, -800], [960, 700, -800]]),
                 'Zoom': ([40, 41, 46], [800, 1500, 1500]),
             }
         }

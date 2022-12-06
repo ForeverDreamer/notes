@@ -15,11 +15,11 @@ class CameraUtil:
         for conf in cameras:
             keyframes = conf['keyframes']
             kf_pot = keyframes['Point of Interest']
-            kf_pos = keyframes['Position']
+            kf_pos = keyframes['pos']
             kf_zoom = keyframes['Zoom']
             statements += [
                 f'var cameraLayer = mainComp.layers.addCamera("{conf["name"]}", {conf["centerPoint"]});',
-                f'cameraLayer("Transform")("Position").setValue({conf["Position"]});',
+                f'cameraLayer("Transform")("Position").setValue({conf["pos"]});',
                 f'cameraLayer("Camera Options")("Zoom").setValue({conf["Zoom"]});',
                 f'cameraLayer("Camera Options")("Focus Distance").setValue({conf["Focus Distance"]});',
                 f'cameraLayer("Camera Options")("Aperture").setValue({conf["Aperture"]});',

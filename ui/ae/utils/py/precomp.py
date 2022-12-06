@@ -17,7 +17,7 @@ class PrecompUtil:
             statements.append(f'props["pos"] = [25 + 50 * {i}, 25, 0]')
             statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+{num}, props)')
             statements.append(f'props["text"] = {num}; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
-            statements.append(f'var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+{num}, props)')
+            statements.append(f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+{num}, props)')
         statements.append('var queueLayer = mainComp.layers.add(queueComp);')
         statements.append('var left = queueLayer.sourceRectAtTime(0, false).left;')
         statements.append('var anchorPointProp = queueLayer("Transform")("Anchor Point");')

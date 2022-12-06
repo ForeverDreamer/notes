@@ -32,12 +32,7 @@ TextUtil.prototype.add = function(comp, name, props) {
     textLayer.name = name;
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
-    var left = textLayer.sourceRectAtTime(0, true).left
-    var width = textLayer.sourceRectAtTime(0, true).width
-    var anchorPointProp = textLayer("Transform")("Anchor Point")
-    var value = anchorPointProp.value
-    value[0] = left + width/2
-    anchorPointProp.setValue(value)
+    shareUtil.setAnchorPoint(textLayer)
     textLayer("Transform")("Position").setValue(props["pos"])
     // textLayer.threeDLayer = true
     return textLayer
@@ -45,11 +40,12 @@ TextUtil.prototype.add = function(comp, name, props) {
 
 TextUtil.prototype.overlay = function(comp, parent, name, props) {
     var textLayer = comp.layers.addText(props["text"]);
-    textLayer.setParentWithJump(parent)
     textLayer.name = name;
-    textLayer("Transform")("Position").setValue(props["pos"] ? props["pos"] : [0, 15, 0])
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
+    shareUtil.setAnchorPoint(textLayer)
+    textLayer("Transform")("Position").setValue(props["pos"] ? props["pos"] : [0, 0, 0])
+    textLayer.setParentWithJump(parent)
     // var value = textLayer("Transform")("Position").value
     // value[1] = 15
     // textLayer("Transform")("Position").setValue(value)
