@@ -103,3 +103,5 @@ target/
 data
 *.pdf
 intellij_idea_demo
+
+ui/ae/tmp

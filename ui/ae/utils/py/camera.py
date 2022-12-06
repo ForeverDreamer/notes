@@ -1,7 +1,8 @@
 from ae.constants.share import PIXEL_ASPECT, FRAME_RATE
+from ae.utils.py.date import now
 
 
-class Camera:
+class CameraUtil:
 
     def __init__(self, engine):
         self._engine = engine
@@ -27,5 +28,4 @@ class Camera:
                 f'cameraLayer("Camera Options")("Zoom").setValuesAtTimes({kf_zoom[0]}, {kf_zoom[1]});',
                 f'cameraLayer.moveBefore(bgLayer);',
             ]
-        script = '\n'.join(statements)
-        self._engine.execute(script)
+        return self._engine.execute('CameraUtil.add_many', statements)

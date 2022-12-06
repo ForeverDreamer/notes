@@ -2,6 +2,7 @@ import time
 import ctypes
 
 from ae.constants.share import AE_WINDOW_NAME, INIT_ENV
+from ae.utils.py.date import now
 
 
 # def ensure_ok(error_code):
@@ -55,10 +56,13 @@ def ensure_app_started():
         raise AppNotStartedError('请先手动启动Ae程序')
 
 
-class Share:
+class ShareUtil:
 
     def __init__(self, engine):
         self._engine = engine
+
+    def log_execute(self, statements):
+        pass
 
     def eval(self, path):
         statements = [
@@ -67,42 +71,55 @@ class Share:
             'eval(file.read());',
             'file.close();',
         ]
-        script = '\n'.join(statements)
-        self._engine.execute(script)
+        return self._engine.execute('ShareUtil.eval', statements)
 
     def open_project(self, path):
-        script = f'var aepFile = new File("{path}");'
-        script += "app.open(aepFile);"
-        self._engine.execute(script)
+        statements = [
+            f'var aepFile = new File("{path}");',
+            "app.open(aepFile);"
+        ]
+        return self._engine.execute('ShareUtil.open_project', statements)
 
     def import_files(self, files):
         statements = []
         for conf in files:
             statements.append(f'shareUtil.importFile(project, {conf});')
-        script = '\n'.join(statements)
-        print(script)
-        print('=====================================')
-        self._engine.execute(script)
+        return self._engine.execute('ShareUtil.import_files', statements)
 
-    def create_precomps(self, precomps):
-        statements = []
-        for conf in precomps:
-            # conf['elems'] = list(map(js_null, conf['elems']))
-            if conf['type'] == 'STACK':
-                pass
-            elif conf['type'] == 'QUEUE':
-                pass
-            elif conf['type'] == 'LINKED_LIST':
-                pass
-            elif conf['type'] == 'BINARY_TREE':
-                statements.append(f'animationUtil.buildBinaryTree(project.items, mainComp, {conf});')
-            elif conf['type'] == 'GRAPH':
-                pass
-        script = '\n'.join(statements)
-        print(script)
-        print('=====================================')
-        self._engine.execute(script)
+    def create_subtitles(self, subtitles):
+        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1050, 0], "font": "KaiTi", "fontSize": 50}
+        statements = [
+            # f'var subtitles = {subtitles};',
+            f'var textLayer = textUtil.add(mainComp, "视频字幕", {placeholder});',
+            'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});'
+        ]
+        for conf in subtitles:
+            text = conf["text"]
+            start = conf["start"]
+            statements.append(f'textLayer("Source Text").setValuesAtTimes({[start]}, {[text]})')
+        return self._engine.execute('ShareUtil.create_subtitles', statements)
 
+    def create_annotations(self, annotations):
+        statements = ['var textLayer;',]
+        for annotation in annotations:
+            span = annotation['span']
+            keyframes = annotation.get('keyframes')
+            presets = annotation.get('presets')
+            statements += [
+                f'textLayer = textUtil.add(mainComp, "{annotation["name"]}", {annotation});',
+                f'textLayer.inPoint = {span["inPoint"]}',
+                f'textLayer.outPoint = {span["outPoint"]}'
+            ]
+            if keyframes:
+                for keyframe in keyframes:
+                    for key, value in keyframe.items():
+                        statements.append(f'textLayer("Transform")("{key}").setValuesAtTimes({value[0]}, {value[1]})')
+            if presets:
+                for preset in presets:
+                    statements.append(f'presetsUtil.add(textLayer, {preset})')
+        return self._engine.execute('ShareUtil.create_annotations', statements)
+
+    # 此接口没必要搞这么复杂，直接调用jsx代码更科学，不要过度滥用Python，但代码可以留着供有需要时参考
     def set_anchor_point(self, layer_index, props_chain, direction, extents):
         n = 4
         data = ['data.'] * n
@@ -117,8 +134,9 @@ class Share:
                                                                       semicolons):
             snippets.append(' '.join([field + var_name, equal_sign, expression, semicolon]))
         script = '\n'.join(snippets) + '\n'
-        head = '#includepath "../utils";\n#include "json.jsx";\nvar project = app.project;\nvar comp = project.activeItem;\nvar data = {};\n'
-        head += f'var layer = comp.layer({layer_index});\n'
+        # head = '#includepath "../utils";\n#include "json.jsx";\nvar project = app.project;\nvar comp = project.activeItem;\nvar data = {};\n'
+        head = 'var data = {};\n'
+        head += f'var layer = mainComp.layer({layer_index});\n'
         # tail = f'alert({",".join(var_names)})'
         res_file = self._engine.res_file.replace("\\", "/")
         tail = f'jsonUtil.write("{res_file}", data);'
@@ -181,4 +199,4 @@ class Share:
         head += f'var layer = comp.layer({layer_index});\n'
         script = head + script
         print(script)
-        self._engine.execute(script)
+        return self._engine.execute(script)

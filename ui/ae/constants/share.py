@@ -7,19 +7,6 @@ CALL_INTERVAL = 0.5
 PIXEL_ASPECT = 1
 FRAME_RATE = 30
 
-INCLUDES = '''
-#includepath "../utils/jsx";\n
-#include "json.jsx";\n
-#include "share.jsx";\n
-#include "color.jsx";\n
-#include "effects.jsx";\n
-#include "presets.jsx";\n
-#include "text.jsx";\n
-#include "shape.jsx";\n
-#include "precomp.jsx";\n
-#include "animation.jsx"\n;
-'''
-
 INIT_ENV = [
     f'var file = new File("{BASE_DIR}utils/jsx/init.jsx");',
     'file.open("r");',

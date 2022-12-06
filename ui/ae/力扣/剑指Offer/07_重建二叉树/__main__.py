@@ -2,28 +2,36 @@ import json
 import time
 
 from ae.constants.share import BASE_DIR, CALL_INTERVAL
-from ae.utils.py.camera import Camera
+from ae.utils.py.camera import CameraUtil
 from ae.utils.py.engine import Engine
-from ae.utils.py.precomp import Precomp
-from ae.utils.py.share import ensure_app_started, Share
+from ae.utils.py.precomp import PrecompUtil
+from ae.utils.py.share import ensure_app_started, ShareUtil
 
-ensure_app_started()
+# Ae窗口最小化时找不到标题，导致程序阻塞，坑！
+# ensure_app_started()
 
 engine = Engine(version="18.0", base_dir=BASE_DIR)
 # engine.start_app()
-share = Share(engine)
-share.eval(BASE_DIR + 'utils/jsx/init.jsx')
+share_util = ShareUtil(engine)
+share_util.eval(BASE_DIR + 'utils/jsx/init.jsx')
 
-time.sleep(CALL_INTERVAL)
+# time.sleep(CALL_INTERVAL)
 # share_util.open_project('D:/Untitled Project.aep')
 # share_util.set_anchor_point(3, ['Transform', 'Anchor Point'], 'TOP_LEFT', 'false')
 with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf.json', "r") as f:
     conf = json.loads(f.read())
-share.import_files(conf['files'])
+share_util.import_files(conf['files'])
 
 time.sleep(CALL_INTERVAL)
-share.create_precomps(conf['precomps'])
+precomp_util = PrecompUtil(engine)
+precomp_util.create_many(conf['precomps'])
 
 time.sleep(CALL_INTERVAL)
-camera = Camera(engine)
-camera.add_many(conf['cameras'])
+share_util.create_subtitles(conf['subtitles'])
+
+time.sleep(CALL_INTERVAL)
+share_util.create_annotations(conf['annotations'])
+
+time.sleep(CALL_INTERVAL)
+camera_util = CameraUtil(engine)
+camera_util.add_many(conf['cameras'])

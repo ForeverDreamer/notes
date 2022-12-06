@@ -97,7 +97,7 @@ function main() {
         var queueLayer = mainComp.layers.add(queueComp);
         // var dropShadowEffect = queueLayer.Effects.addProperty("ADBE Drop Shadow");
         // dropShadowEffect("Softness").setValue(4);
-        var left = queueLayer.sourceRectAtTime(0, true).left
+        var left = queueLayer.sourceRectAtTime(0, false).left
         var anchorPointProp = queueLayer("Transform")("Anchor Point")
         var value = anchorPointProp.value
         value[0] = left

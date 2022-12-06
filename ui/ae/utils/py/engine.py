@@ -8,6 +8,9 @@ import time
 import winreg
 import json
 
+from ae.constants.share import BASE_DIR
+from ae.utils.py.date import now
+
 
 # A Mini Python wrapper for the JS commands...
 class Engine:
@@ -41,14 +44,35 @@ class Engine:
         cmd = [self._app]
         subprocess.Popen(cmd)
 
-    def _compile(self, script):
-        with open(self._tmp_file, "wb") as f:
+    def _compile(self, func_name, script):
+        tmp_file = os.path.join(BASE_DIR, f"tmp/{func_name}.jsx")
+        with open(tmp_file, "wb") as f:
             f.write(script.encode('utf-8'))
+        return tmp_file
 
-    def execute(self, script):
-        self._compile(script)
-        cmd = [self._app, "-r", self._tmp_file]
-        return subprocess.Popen(cmd)
+    def execute(self, func_name, statements):
+        script = '\n'.join(statements)
+        print(f'{now()}, {func_name}=====================================', file=sys.stderr, flush=True)
+        print(script + '\n', flush=True)
+        tmp_file = self._compile(func_name, script)
+        cmd = [self._app, "-r", tmp_file]
+        result = subprocess.run(cmd)
+        # with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
+        #     with open("run.log", "a", encoding='utf-8') as f:
+        #         # f.write(f'returncode: {result.returncode}\n')
+        #         f.write(f'stdout: {proc.stdout.read()}\n')
+        # result = subprocess.run(
+        #     cmd,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.STDOUT,
+        #     # check=True,
+        #     text=True
+        # )
+        # with open("run.log", "a", encoding='utf-8') as f:
+        #     f.write(f'returncode: {result.returncode}\n')
+        #     f.write(f'stdout: {result.stdout}\n')
+        # if result.returncode != 1:
+        #     sys.exit(1)
 
     def get_res(self):
         """Helper function to wait for AE to write some output for us."""
