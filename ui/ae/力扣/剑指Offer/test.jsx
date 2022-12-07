@@ -1,4 +1,4 @@
-#includepath "./utils;";
+#includepath "../../utils/jsx;";
 #include "json.jsx";
 #include "share.jsx";
 #include "color.jsx";

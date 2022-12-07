@@ -193,6 +193,11 @@ docker-compose down
 # 停止并删除所有容器，同时删除所有镜像和volumes
 docker-compose down --rmi all --volumes
 
+# 先停止需要删除的容器，再rm删除停止的容器, 然后up停止的容器
+docker compose stop web
+docker compose rm
+docker compose up -d
+
 docker-compose logs [-f] [webapp]
 
 List images used by the created containers.

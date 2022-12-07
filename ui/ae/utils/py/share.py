@@ -1,7 +1,7 @@
 import time
 import ctypes
 
-from ae.constants.share import AE_WINDOW_NAME, INIT_ENV
+from ae.constants.share import AE_WINDOW_NAME
 from ae.utils.py.date import now
 
 

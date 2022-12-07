@@ -4,7 +4,8 @@ var comp = project.activeItem;
 if (comp === null) {
     comp = project.items.addComp("Main", 1920, 1080, 1, 10, 30);
 }
-
+var shapeLayer = comp.layer(2)
+$.writeln()
 // var textLayer = comp.layer(26)
 // var shapeLayer = comp.layer(2)
 // $.writeln(textLayer.anchorPoint.value)
@@ -52,4 +53,4 @@ if (comp === null) {
 // positionProp.setTemporalEaseAtKey(4, [easeIn4], [easeOut4]);
 // app.cancelTask(4)
 
-$.writeln(app.project.file.fsName)
+// $.writeln(app.project.file.fsName)

@@ -10,7 +10,7 @@ from ae.utils.py.share import ensure_app_started, ShareUtil
 # Ae窗口最小化时找不到标题，导致程序阻塞，坑！
 # ensure_app_started()
 
-engine = Engine(version="18.0", base_dir=BASE_DIR)
+engine = Engine(version="18.0")
 # engine.start_app()
 share_util = ShareUtil(engine)
 share_util.eval(BASE_DIR + 'utils/jsx/init.jsx')

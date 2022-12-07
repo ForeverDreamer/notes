@@ -15,7 +15,7 @@ from ae.utils.py.date import now
 # A Mini Python wrapper for the JS commands...
 class Engine:
 
-    def __init__(self, version, base_dir):
+    def __init__(self, version):
         self._version = version
         # Get the AE_ exe path from the registry.
         try:
@@ -31,7 +31,7 @@ class Engine:
                 file=sys.stderr)
             sys.exit(1)
         self._app = winreg.QueryValueEx(self._regkey, 'InstallPath')[0] + 'AfterFX.exe'
-        self.res_file = os.path.join(base_dir, "tmp/res.json")
+        self.res_file = os.path.join(BASE_DIR, "tmp/res.json")
         # Ensure the return file exists...
         with open(self.res_file, 'w') as f:
             f.close()

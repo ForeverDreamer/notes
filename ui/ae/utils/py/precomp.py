@@ -1,10 +1,14 @@
 from ae.constants.share import PIXEL_ASPECT, FRAME_RATE
+from ae.utils.py.color import hex_to_rgb1
 
 
 class PrecompUtil:
 
     def __init__(self, engine):
         self._engine = engine
+
+    def _stack(self, conf):
+        pass
 
     def _queue(self, conf):
         name = '队列' + conf["name"]
@@ -18,6 +22,15 @@ class PrecompUtil:
             statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+{num}, props)')
             statements.append(f'props["text"] = {num}; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
             statements.append(f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+{num}, props)')
+            if keyframes:
+                for key_chain, values in keyframes.items():
+                    key = ''.join([f'("{k}")' for k in key_chain.split('.')])
+                    if 'Color' in key_chain:
+                        for idx, value in enumerate(values[i][1]):
+                            values[i][1][idx] = hex_to_rgb1(value)
+                    statements.append(f'shapeLayer{key}.setValuesAtTimes({values[i][0]}, {values[i][1]});')
+                    if 'Opacity' in key_chain:
+                        statements.append(f'textLayer{key}.setValuesAtTimes({values[i][0]}, {values[i][1]});')
         statements.append('var queueLayer = mainComp.layers.add(queueComp);')
         statements.append('var left = queueLayer.sourceRectAtTime(0, false).left;')
         statements.append('var anchorPointProp = queueLayer("Transform")("Anchor Point");')
@@ -41,6 +54,8 @@ class PrecompUtil:
             elif conf['type'] == 'BINARY_TREE':
                 statements.append(f'animationUtil.buildBinaryTree(project.items, mainComp, {conf});')
             elif conf['type'] == 'GRAPH':
+                pass
+            elif conf['type'] == 'CODE':
                 pass
         return self._engine.execute('ShareUtil.create_precomps', statements)
 
@@ -73,3 +88,6 @@ class PrecompUtil:
 
         script = '\n'.join(statements)
         self._engine.execute(script)
+
+    def _code(self, conf):
+        pass
