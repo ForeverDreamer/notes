@@ -160,4 +160,7 @@ class PrecompUtil:
                     statements.append(f'var textLayer = textUtil.add(codeComp, "code" + {i} + "." + {j}, props);')
                     pos_y += 43
         statements.append('var codeLayer = mainComp.layers.add(codeComp);')
+        statements.append('var conf =  {};')
+        statements.append('conf["name"] = "Arrow Red/Elements.ai"; shareUtil.addLayer(project. items, mainComp.layers, conf);')
+
         return statements
