@@ -18,12 +18,13 @@ class PrecompUtil:
         statements = [
             f'var queueComp = project.items.addComp("{name}", {width}, {height}, {PIXEL_ASPECT}, {duration}, {FRAME_RATE});']
         statements.append('var props = {};')
-        for i, num in enumerate(elems):
-            statements.append(f'props["pos"] = [25, 225 - 50 * {i}, 0]; props["Size"] = [200, 50]')
-            statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+{num}, props)')
-            statements.append(f'props["text"] = {num}; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
+        elem_height = 50
+        for i, elem in enumerate(elems):
+            statements.append(f'props["pos"] = [{width/2}, {height-elem_height/2} - {elem_height} * {i}, 0]; props["Size"] = [{width}, {elem_height}]')
+            statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+"{elem}", props)')
+            statements.append(f'props["text"] = "{elem}"; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
             statements.append(
-                f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+{num}, props)')
+                f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+"{elem}", props)')
             if keyframes:
                 for key_chain, values in keyframes.items():
                     key = ''.join([f'("{k}")' for k in key_chain.split('.')])
@@ -60,11 +61,12 @@ class PrecompUtil:
         keyframes = conf.get('keyframes')
         statements = [f'var queueComp = project.items.addComp("{name}", {width}, {height}, {PIXEL_ASPECT}, {duration}, {FRAME_RATE});']
         statements.append('var props = {};')
-        for i, num in enumerate(elems):
-            statements.append(f'props["pos"] = [25 + 50 * {i}, 25, 0]; props["Size"] = [50, 50]')
-            statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+{num}, props)')
-            statements.append(f'props["text"] = {num}; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
-            statements.append(f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+{num}, props)')
+        elem_width = 50
+        for i, elem in enumerate(elems):
+            statements.append(f'props["pos"] = [{elem_width/2} + {elem_width} * {i}, {height/2}, 0]; props["Size"] = [{elem_width}, {height}]')
+            statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+"{elem}", props)')
+            statements.append(f'props["text"] = "{elem}"; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
+            statements.append(f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+"{elem}", props)')
             if keyframes:
                 for key_chain, values in keyframes.items():
                     key = ''.join([f'("{k}")' for k in key_chain.split('.')])
@@ -104,7 +106,7 @@ class PrecompUtil:
             elif conf['type'] == 'GRAPH':
                 pass
             elif conf['type'] == 'CODE':
-                pass
+                statements += self._code(conf)
         return self._engine.execute('ShareUtil.create_precomps', statements)
 
     def binary_tree(self, conf):
@@ -138,4 +140,24 @@ class PrecompUtil:
         self._engine.execute(script)
 
     def _code(self, conf):
-        pass
+        name = '代码.' + conf['name']
+        width = conf['width']
+        height = conf['height']
+        duration = conf['duration']
+        pairs = conf["pairs"]
+
+        statements = [f'var codeComp = project.items.addComp("{name}", {width}, {height}, {PIXEL_ASPECT}, {duration}, {FRAME_RATE});']
+        start_x = 0
+        start_y = 30
+        pos_y = start_y
+        for i, pair in enumerate(pairs):
+            for j, line in enumerate(pair):
+                if line != ['', 0]:
+                    pos_x = start_x + line[1] * 80
+                    pos = [pos_x, pos_y, 0]
+                    statements.append('var props = {};')
+                    statements.append(f'props["text"] = "{line[0]}", props["Anchor Point"] = "{conf["Anchor Point"]}", props["pos"] = {pos}, props["fontSize"] = 30;')
+                    statements.append(f'var textLayer = textUtil.add(codeComp, "code" + {i} + "." + {j}, props);')
+                    pos_y += 43
+        statements.append('var codeLayer = mainComp.layers.add(codeComp);')
+        return statements

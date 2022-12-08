@@ -163,24 +163,24 @@ function main() {
         // codePhotoLayer.moveBefore(bgLayer)
         // codePhotoLayer("Transform")("Position").setValue(pos)
     }
-    // var codes = conf["codes"]
-    // var codesArr = []
-    // var start_x = 400
-    // var start_y = 50
-    // var pos_x = start_x;
-    // var pos_y = start_y;
-    // for (var i = 0; i < codes.length; i++) {
-    //     var pair = codes[i]
-    //     for (var j = 0; j < pair.length; j++) {
-    //         if (pair[j][0]==="") {
-    //             continue
-    //         }
-    //         var pos_x = start_x + pair[j][1]*80
-    //         var textLayer = createTextLayer("Code"+"."+i+"."+j, {"text": pair[j][0], "pos": [pos_x, pos_y, 0], "fontSize": 30});
-    //         pos_y += 43
-    //         codesArr.push(textLayer)
-    //     }
-    // }
+    var codes = conf["codes"]
+    var codesArr = []
+    var start_x = 400
+    var start_y = 50
+    var pos_x = start_x;
+    var pos_y = start_y;
+    for (var i = 0; i < codes.length; i++) {
+        var pair = codes[i]
+        for (var j = 0; j < pair.length; j++) {
+            if (pair[j][0]==="") {
+                continue
+            }
+            var pos_x = start_x + pair[j][1]*80
+            var textLayer = createTextLayer("Code"+"."+i+"."+j, {"text": pair[j][0], "pos": [pos_x, pos_y, 0], "fontSize": 30});
+            pos_y += 43
+            codesArr.push(textLayer)
+        }
+    }
     var transcript = conf["transcript"]
     // var lines = transcript.concat(annotations)
     var textLayer = textUtil.add(mainComp, "视频字幕", {"text": transcript[0]["text"], "pos": [960, 1050, 0], "font": "KaiTi", "fontSize": 50});
