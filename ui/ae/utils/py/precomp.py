@@ -8,17 +8,60 @@ class PrecompUtil:
         self._engine = engine
 
     def _stack(self, conf):
-        pass
-
-    def _queue(self, conf):
-        name = '队列' + conf["name"]
+        name = '栈.' + conf["name"]
+        width = conf['width']
+        height = conf['height']
+        duration = conf['duration']
         elems = conf['elems']
-        effects = conf['effects']
-        keyframes = conf['keyframes']
-        statements = [f'var queueComp = project.items.addComp("{name}", 250, 50, 1, 10, 30);']
+        effects = conf.get('effects')
+        keyframes = conf.get('keyframes')
+        statements = [
+            f'var queueComp = project.items.addComp("{name}", {width}, {height}, {PIXEL_ASPECT}, {duration}, {FRAME_RATE});']
         statements.append('var props = {};')
         for i, num in enumerate(elems):
-            statements.append(f'props["pos"] = [25 + 50 * {i}, 25, 0]')
+            statements.append(f'props["pos"] = [25, 225 - 50 * {i}, 0]; props["Size"] = [200, 50]')
+            statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+{num}, props)')
+            statements.append(f'props["text"] = {num}; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
+            statements.append(
+                f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+{num}, props)')
+            if keyframes:
+                for key_chain, values in keyframes.items():
+                    key = ''.join([f'("{k}")' for k in key_chain.split('.')])
+                    if 'Color' in key_chain:
+                        for idx, value in enumerate(values[i][1]):
+                            values[i][1][idx] = hex_to_rgb1(value)
+                    statements.append(f'shapeLayer{key}.setValuesAtTimes({values[i][0]}, {values[i][1]});')
+                    for keyIndex in range(1, len(values[i][0]) + 1):
+                        statements.append(
+                            f'shapeLayer{key}.setInterpolationTypeAtKey({keyIndex}, KeyframeInterpolationType.HOLD, KeyframeInterpolationType.HOLD);')
+                    if 'Opacity' in key_chain:
+                        statements.append(f'textLayer{key}.setValuesAtTimes({values[i][0]}, {values[i][1]});')
+                        for keyIndex in range(1, len(values[i][0]) + 1):
+                            statements.append(
+                                f'textLayer{key}.setInterpolationTypeAtKey({keyIndex}, KeyframeInterpolationType.HOLD, KeyframeInterpolationType.HOLD);')
+        statements.append('var queueLayer = mainComp.layers.add(queueComp);')
+        statements.append('var left = queueLayer.sourceRectAtTime(0, false).left;')
+        statements.append('var anchorPointProp = queueLayer("Transform")("Anchor Point");')
+        statements.append('var value = anchorPointProp.value;')
+        statements.append('anchorPointProp.setValue([left, value[1], value[2]]);')
+        statements.append(
+            'effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});')
+        statements.append(f'queueLayer("Transform")("Position").setValue({conf["pos"]});')
+
+        return statements
+
+    def _queue(self, conf):
+        name = '队列.' + conf["name"]
+        width = conf['width']
+        height = conf['height']
+        duration = conf['duration']
+        elems = conf['elems']
+        effects = conf.get('effects')
+        keyframes = conf.get('keyframes')
+        statements = [f'var queueComp = project.items.addComp("{name}", {width}, {height}, {PIXEL_ASPECT}, {duration}, {FRAME_RATE});']
+        statements.append('var props = {};')
+        for i, num in enumerate(elems):
+            statements.append(f'props["pos"] = [25 + 50 * {i}, 25, 0]; props["Size"] = [50, 50]')
             statements.append(f'var shapeLayer = shapeUtil.add(queueComp, "Shape"+{num}, props)')
             statements.append(f'props["text"] = {num}; props["font"] = "Arial-BoldItalicMT"; props["fontSize"] = 40;')
             statements.append(f'props["pos"] = null; var textLayer = textUtil.overlay(queueComp, shapeLayer, "Text"+{num}, props)')
@@ -29,8 +72,13 @@ class PrecompUtil:
                         for idx, value in enumerate(values[i][1]):
                             values[i][1][idx] = hex_to_rgb1(value)
                     statements.append(f'shapeLayer{key}.setValuesAtTimes({values[i][0]}, {values[i][1]});')
+                    for keyIndex in range(1, len(values[i][0]) + 1):
+                        statements.append(f'shapeLayer{key}.setInterpolationTypeAtKey({keyIndex}, KeyframeInterpolationType.HOLD, KeyframeInterpolationType.HOLD);')
                     if 'Opacity' in key_chain:
                         statements.append(f'textLayer{key}.setValuesAtTimes({values[i][0]}, {values[i][1]});')
+                        for keyIndex in range(1, len(values[i][0]) + 1):
+                            statements.append(
+                                f'textLayer{key}.setInterpolationTypeAtKey({keyIndex}, KeyframeInterpolationType.HOLD, KeyframeInterpolationType.HOLD);')
         statements.append('var queueLayer = mainComp.layers.add(queueComp);')
         statements.append('var left = queueLayer.sourceRectAtTime(0, false).left;')
         statements.append('var anchorPointProp = queueLayer("Transform")("Anchor Point");')
@@ -46,7 +94,7 @@ class PrecompUtil:
         for conf in precomps:
             # conf['elems'] = list(map(js_null, conf['elems']))
             if conf['type'] == 'STACK':
-                pass
+                statements += self._stack(conf)
             elif conf['type'] == 'QUEUE':
                 statements += self._queue(conf)
             elif conf['type'] == 'LINKED_LIST':

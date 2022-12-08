@@ -9,7 +9,7 @@ PrecompUtil.prototype.queue = function (nodeLayer, edgeLayer, elems) {
 }
 
 PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
-    var comp = items.addComp("二叉树" + conf['name'], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);
+    var comp = items.addComp("二叉树." + conf['name'], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);
     var layers = comp.layers;
     var node = conf["node"];
     var edge = conf["edge"];

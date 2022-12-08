@@ -17,20 +17,22 @@ class Engine:
 
     def __init__(self, version):
         self._version = version
+        # 上次编辑界面反复抖动有可能是注册表Key打开太频繁导致损坏引起的，重置Ae程序才解决
         # Get the AE_ exe path from the registry.
-        try:
-            self._regkey = winreg.OpenKey(
-                winreg.HKEY_LOCAL_MACHINE,
-                "SOFTWARE\\Adobe\\After Effects\\" + self._version
-            )
-        except FileNotFoundError:
-            print(
-                f'ERROR: Unable to find After Effects version {self._version} on this computer\n'
-                f'To get correct version number please check https://en.wikipedia.org/wiki/Adobe_After_Effects\n'
-                f'For example, After Effect CC 2021 is version 18.0',
-                file=sys.stderr)
-            sys.exit(1)
-        self._app = winreg.QueryValueEx(self._regkey, 'InstallPath')[0] + 'AfterFX.exe'
+        # try:
+        #     self._regkey = winreg.OpenKey(
+        #         winreg.HKEY_LOCAL_MACHINE,
+        #         "SOFTWARE\\Adobe\\After Effects\\" + self._version
+        #     )
+        # except FileNotFoundError:
+        #     print(
+        #         f'ERROR: Unable to find After Effects version {self._version} on this computer\n'
+        #         f'To get correct version number please check https://en.wikipedia.org/wiki/Adobe_After_Effects\n'
+        #         f'For example, After Effect CC 2021 is version 18.0',
+        #         file=sys.stderr)
+        #     sys.exit(1)
+        # self._app = winreg.QueryValueEx(self._regkey, 'InstallPath')[0] + 'AfterFX.exe'
+        self._app = 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/AfterFX.exe'
         self.res_file = os.path.join(BASE_DIR, "tmp/res.json")
         # Ensure the return file exists...
         with open(self.res_file, 'w') as f:

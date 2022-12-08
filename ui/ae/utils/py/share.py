@@ -77,7 +77,7 @@ class ShareUtil:
         return self._engine.execute('ShareUtil.import_files', statements)
 
     def create_subtitles(self, subtitles):
-        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1050, 0], "font": "KaiTi", "fontSize": 50}
+        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 50}
         statements = [
             # f'var subtitles = {subtitles};',
             f'var textLayer = textUtil.add(mainComp, "视频字幕", {placeholder});',

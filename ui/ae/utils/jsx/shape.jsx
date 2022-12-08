@@ -7,7 +7,7 @@ ShapeUtil.prototype.add = function(comp, name, props) {
     var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
     // shapeGroup.name = elem;
     pathProp = shapeGroup("Contents").addProperty("ADBE Vector Shape - Rect")
-    pathProp("Size").setValue([50, 50])
+    pathProp("Size").setValue(props["Size"])
     strokeProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
     strokeProp("Color").setValue([0, 0, 0])
     fillProp = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Fill")
