@@ -92,7 +92,7 @@ class PrecompUtil:
         return statements
 
     def create_many(self, precomps):
-        statements = []
+        statements = ['//precompUtil.create_many']
         for conf in precomps:
             # conf['elems'] = list(map(js_null, conf['elems']))
             if conf['type'] == 'STACK':
@@ -107,7 +107,9 @@ class PrecompUtil:
                 pass
             elif conf['type'] == 'CODE':
                 statements += self._code(conf)
-        return self._engine.execute('ShareUtil.create_precomps', statements)
+        # return self._engine.execute('ShareUtil.create_precomps', statements)
+        statements.append('\n')
+        return statements
 
     def binary_tree(self, conf):
         name = conf['name']

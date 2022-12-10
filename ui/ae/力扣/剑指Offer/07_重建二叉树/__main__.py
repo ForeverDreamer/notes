@@ -12,26 +12,30 @@ from ae.utils.py.share import ensure_app_started, ShareUtil
 
 engine = Engine(version="18.0")
 # engine.start_app()
+statements = []
 share_util = ShareUtil(engine)
-share_util.eval(BASE_DIR + 'utils/jsx/init.jsx')
+# statements += share_util.eval(BASE_DIR + 'utils/jsx/init.jsx')
+statements += share_util.init()
 
 # time.sleep(CALL_INTERVAL)
 # share_util.open_project('D:/Untitled Project.aep')
 # share_util.set_anchor_point(3, ['Transform', 'Anchor Point'], 'TOP_LEFT', 'false')
 with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf.json', "r") as f:
     conf = json.loads(f.read())
-share_util.import_files(conf['files'])
+statements += share_util.import_files(conf['files'])
 
 time.sleep(CALL_INTERVAL)
 precomp_util = PrecompUtil(engine)
-precomp_util.create_many(conf['precomps'])
+statements += precomp_util.create_many(conf['precomps'])
 
 time.sleep(CALL_INTERVAL)
-share_util.create_subtitles(conf['subtitles'])
+statements += share_util.create_subtitles(conf['subtitles'])
 
 time.sleep(CALL_INTERVAL)
-share_util.create_annotations(conf['annotations'])
+statements += share_util.create_annotations(conf['annotations'])
 
 time.sleep(CALL_INTERVAL)
 camera_util = CameraUtil(engine)
-camera_util.add_many(conf['cameras'])
+statements += camera_util.add_many(conf['cameras'])
+
+engine.execute('__main__', statements)

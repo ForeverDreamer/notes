@@ -11,7 +11,7 @@ class CameraUtil:
         pass
 
     def add_many(self, cameras):
-        statements = []
+        statements = ['//cameraUtil.add_many']
         for conf in cameras:
             keyframes = conf['keyframes']
             kf_pot = keyframes['Point of Interest']
@@ -28,4 +28,6 @@ class CameraUtil:
                 f'cameraLayer("Camera Options")("Zoom").setValuesAtTimes({kf_zoom[0]}, {kf_zoom[1]});',
                 f'cameraLayer.moveBefore(bgLayer);',
             ]
-        return self._engine.execute('CameraUtil.add_many', statements)
+        # return self._engine.execute('CameraUtil.add_many', statements)
+        statements.append('\n')
+        return statements

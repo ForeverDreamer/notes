@@ -113,7 +113,7 @@ data = {
             'name': '前序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
             'pos': [500, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 30,
             'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
-            'edge': {'name': 'Edge/Elements.ai', 'Anchor Point': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
             '3D': 'true'
@@ -122,7 +122,7 @@ data = {
             'name': '中序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
             'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 35,
             'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
-            'edge': {'name': 'Edge/Elements.ai', 'Anchor Point': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
             '3D': 'true'

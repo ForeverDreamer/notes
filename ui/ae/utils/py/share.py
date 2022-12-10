@@ -54,14 +54,43 @@ class ShareUtil:
     def log_execute(self, statements):
         pass
 
+    def init(self):
+        statements = ['//shareUtil.init']
+        statements += [
+            '#includepath "../utils/jsx";',
+            '#include "constants.jsx";',
+            '#include "json.jsx";',
+            '#include "animation.jsx";',
+            '#include "share.jsx";',
+            '#include "color.jsx";',
+            '#include "effects.jsx";',
+            '#include "presets.jsx";',
+            '#include "text.jsx";',
+            '#include "shape.jsx";',
+            '#include "precomp.jsx";',
+            'app.purge(PurgeTarget.ALL_CACHES);',
+            'var project = app.project;',
+            'shareUtil.delItems(project.items);',
+            'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 300, 30);',
+            'mainComp.openInViewer();',
+            'var bgLayer = mainComp.layers.addSolid([1, 1, 1], "BG", 1920, 1080, 1);',
+            'bgLayer.moveToEnd();',
+        ]
+        statements.append('\n')
+        # return self._engine.execute('ShareUtil.eval', statements)
+        return statements
+
     def eval(self, path):
-        statements = [
+        statements = ['//shareUtil.eval']
+        statements += [
             f'var file = new File("{path}");',
             'file.open("r");',
             'eval(file.read());',
             'file.close();',
         ]
-        return self._engine.execute('ShareUtil.eval', statements)
+        statements.append('\n')
+        # return self._engine.execute('ShareUtil.eval', statements)
+        return statements
 
     def open_project(self, path):
         statements = [
@@ -71,14 +100,18 @@ class ShareUtil:
         return self._engine.execute('ShareUtil.open_project', statements)
 
     def import_files(self, files):
-        statements = []
+        statements = ['//shareUtil.import_files']
         for conf in files:
             statements.append(f'shareUtil.importFile(project, {conf});')
-        return self._engine.execute('ShareUtil.import_files', statements)
+        statements.append(f'shareUtil.importFile(project, {conf});')
+        statements.append('\n')
+        # return self._engine.execute('ShareUtil.import_files', statements)
+        return statements
 
     def create_subtitles(self, subtitles):
         placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 50}
-        statements = [
+        statements = ['//shareUtil.create_many']
+        statements += [
             # f'var subtitles = {subtitles};',
             f'var textLayer = textUtil.add(mainComp, "视频字幕", {placeholder});',
             'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});'
@@ -87,10 +120,13 @@ class ShareUtil:
             text = conf["text"]
             start = conf["start"]
             statements.append(f'textLayer("Source Text").setValuesAtTimes({[start]}, {[text]})')
-        return self._engine.execute('ShareUtil.create_subtitles', statements)
+        # return self._engine.execute('ShareUtil.create_subtitles', statements)
+        statements.append('\n')
+        return statements
 
     def create_annotations(self, annotations):
-        statements = ['var textLayer;',]
+        statements = ['//shareUtil.create_annotations']
+        statements.append('var textLayer;')
         for annotation in annotations:
             span = annotation['span']
             keyframes = annotation.get('keyframes')
@@ -107,7 +143,9 @@ class ShareUtil:
             if presets:
                 for preset in presets:
                     statements.append(f'presetsUtil.add(textLayer, {preset})')
-        return self._engine.execute('ShareUtil.create_annotations', statements)
+        # return self._engine.execute('ShareUtil.create_annotations', statements)
+        statements.append('\n')
+        return statements
 
     # 此接口没必要搞这么复杂，直接调用jsx代码更科学，不要过度滥用Python，但代码可以留着供有需要时参考
     def set_anchor_point(self, layer_index, props_chain, direction, extents):
