@@ -22,6 +22,7 @@ statements += share_util.init()
 # share_util.set_anchor_point(3, ['Transform', 'Anchor Point'], 'TOP_LEFT', 'false')
 with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf.json', "r") as f:
     conf = json.loads(f.read())
+# 代码执行的顺序决定了Layers的顺序，合理安排代码执行顺序，避免创建好之后需要再调整Layer顺序
 statements += share_util.import_files(conf['files'])
 
 time.sleep(CALL_INTERVAL)

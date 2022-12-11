@@ -103,7 +103,6 @@ class ShareUtil:
         statements = ['//shareUtil.import_files']
         for conf in files:
             statements.append(f'shareUtil.importFile(project, {conf});')
-        statements.append(f'shareUtil.importFile(project, {conf});')
         statements.append('\n')
         # return self._engine.execute('ShareUtil.import_files', statements)
         return statements

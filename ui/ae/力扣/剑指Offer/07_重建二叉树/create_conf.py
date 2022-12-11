@@ -106,7 +106,52 @@ data = {
 
         },
         # {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'span': {'inPoint': 1.2, 'outPoint': 7.5}},
-        {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'addToLayers': 'true'},
+        {
+            'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1],
+            'layers': [
+                {
+                    'name': 'test.mp3',
+                    'startTime': 1.2,
+                }
+            ],
+        },
+        # 录制的视频用迅雷播放器打开画面会差一些，用系统自带的播放器或导入Ae查看才是真实效果
+        {
+            'path': f'{BASE_DIR}代码调试.mp4', 'import_as_type': IMPORT_AS_TYPE[1],
+            'layers': [
+                {
+                    'name': '代码调试.mp4',
+                    'layerName': '代码',
+                    'pos': [1028, 658],
+                    'startTime': 0,
+                    'Masks': [
+                        {
+                            'vertices': [[372, 84], [372, 760], [1412, 760], [1412, 84]],
+                            'Mask Feather': [5, 5]
+                        },
+                    ]
+                },
+                {
+                    'name': '代码调试.mp4',
+                    'layerName': '调用堆栈',
+                    'pos': [1988, 80],
+                    'startTime': 0,
+                    'Masks': [
+                        {'vertices': [[51, 872], [51, 1021], [371, 1021], [371, 872]]},
+                    ]
+                },
+                {
+                    'name': '代码调试.mp4',
+                    'layerName': '变量',
+                    'pos': [1668, -103],
+                    'startTime': 0,
+                    'Masks': [
+                        {'vertices': [[372, 872], [372, 1036], [746, 1036], [746, 872]]},
+                    ]
+                },
+            ],
+
+        },
     ],
     'precomps': [
         {
@@ -183,19 +228,9 @@ data = {
                 ]
             }
         },
-        {
-            'name': 'all', 'type': 'CODE', 'pos': [50, 100, 0], 'pairs': pairs, 'width': 1920, 'height': 1080, 'duration': 30, 'Anchor Point': 'LEFT',
-            # 'effects': [],
-            # 'keyframes': {
-            #     'Transform.Opacity': [
-            #         ([0, 1, 2, 7], [0, 0, 100, 0]),
-            #         ([1, 2, 3, 8], [0, 0, 100, 0]),
-            #         ([2, 3, 4, 9], [0, 0, 100, 0]),
-            #         ([3, 4, 5, 10], [0, 0, 100, 0]),
-            #         ([4, 5, 6, 11], [0, 0, 100, 0]),
-            #     ]
-            # }
-        },
+        # {
+        #     'name': 'all', 'type': 'CODE', 'pos': [50, 100, 0], 'pairs': pairs, 'width': 1920, 'height': 1080, 'duration': 30, 'Anchor Point': 'LEFT',
+        # },
     ],
     'cameras': [
         # {

@@ -38,12 +38,7 @@ ShareUtil.prototype.importFile = function (project, conf) {
 		for (var i = 0; i < confLayers.length; i++) {
 			shareUtil.addLayer(project.items, mainComp.layers, confLayers[i])
 		}
-	} else {
-		if (js_bool(conf["addToLayers"])) {
-			shareUtil.addLayer(project.items, mainComp.layers, conf, item)
-		}
 	}
-
 }
 
 ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
@@ -67,6 +62,36 @@ ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
 	}
 	if (conf['rotation']) {
 		layer("Transform")("Rotation").setValue(conf["rotation"]);
+	}
+	var masks = conf['Masks']
+	if (masks) {
+		for (var i = 0; i < masks.length; i++) {
+			var conf_mask = masks[i]
+			var mask = layer.Masks.addProperty("Mask");
+			maskShape = mask("maskShape");
+			var shape = maskShape.value;
+			if (conf_mask["vertices"]) {
+				shape.vertices = conf_mask["vertices"];
+			}
+			if (conf_mask["inTangents"]) {
+				shape.vertices = conf_mask["inTangents"];
+			}
+			if (conf_mask["outTangents"]) {
+				shape.vertices = conf_mask["outTangents"];
+			}
+			// if (conf_mask["outTangents"]) {
+			// 	shape.vertices = conf_mask["outTangents"];
+			// }
+			// if (conf_mask["outTangents"]) {
+			// 	shape.vertices = conf_mask["outTangents"];
+			// }
+			var closed = js_bool(conf_mask["closed"])
+			shape.closed =  closed ? closed : true;
+			maskShape.setValue(shape);
+			if (conf_mask["Mask Feather"]) {
+				layer.Masks("Mask 1")("Mask Feather").setValue(conf_mask["Mask Feather"])
+			}
+		}
 	}
 	if (conf['startTime']) {
 		layer.startTime = conf['startTime'];
