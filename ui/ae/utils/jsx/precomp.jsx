@@ -24,9 +24,11 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var NODE_PREFIX = "Node";
     var EDGE_PREFIX = "Edge";
 
+    var rootNodePos = [235*scale, 75*scale, 0]
+
     var selected = conf["selected"];
     if (selected) {
-        selected["pos"] = [225*scale, 65*scale, 0]
+        selected["pos"] = rootNodePos
         selected["layerName"] = "Selected"
         var selectedLayer = shareUtil.addLayer(items, layers, selected);
         shareUtil.configKeyframes(selectedLayer, selected["keyframes"])
@@ -34,14 +36,14 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     }
     var tracker = conf["tracker"];
     if (tracker) {
-        tracker["pos"] = [225*scale, 65*scale, 0]
+        tracker["pos"] = rootNodePos
         tracker["layerName"] = "Tracker"
         var trackerLayer = shareUtil.addLayer(items, layers, tracker);
         shareUtil.configKeyframes(trackerLayer, tracker["keyframes"])
         // trackerLayer.moveToEnd()
     }
 
-    node["pos"] = [225*scale, 65*scale, 0]
+    node["pos"] = rootNodePos
     node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[0]
     var nodeLayer = shareUtil.addLayer(items, layers, node);
     textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[0], {"text": elems[0], "pos": textPos});
