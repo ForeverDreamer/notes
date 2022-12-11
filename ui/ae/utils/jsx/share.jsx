@@ -36,12 +36,18 @@ ShareUtil.prototype.importFile = function (project, conf) {
 	var confLayers = conf["layers"]
 	if (confLayers) {
 		for (var i = 0; i < confLayers.length; i++) {
-			shareUtil.addLayer(project.items, mainComp.layers, confLayers[i])
+			var parent = shareUtil.addLayer(project.items, mainComp.layers, confLayers[i])
+			children = confLayers[i]["children"]
+			if (children) {
+				for (var j = 0; j < children.length; j++) {
+					shareUtil.addLayer(project.items, mainComp.layers, children[j], null, parent)
+				}
+			}
 		}
 	}
 }
 
-ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
+ShareUtil.prototype.addLayer = function (items, layers, conf, item, parent) {
 	var layer;
 	if (item) {
 		layer = layers.add(item);
@@ -79,13 +85,7 @@ ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
 			if (conf_mask["outTangents"]) {
 				shape.vertices = conf_mask["outTangents"];
 			}
-			// if (conf_mask["outTangents"]) {
-			// 	shape.vertices = conf_mask["outTangents"];
-			// }
-			// if (conf_mask["outTangents"]) {
-			// 	shape.vertices = conf_mask["outTangents"];
-			// }
-			var closed = js_bool(conf_mask["closed"])
+			var closed = js_bool(conf_mask["closed"]);
 			shape.closed =  closed ? closed : true;
 			maskShape.setValue(shape);
 			if (conf_mask["Mask Feather"]) {
@@ -102,6 +102,9 @@ ShareUtil.prototype.addLayer = function (items, layers, conf, item) {
 	}
 	if (conf['3D']) {
 		layer.threeDLayer = true;
+	}
+	if (parent) {
+		layer.setParentWithJump(parent)
 	}
 	return layer;
 }

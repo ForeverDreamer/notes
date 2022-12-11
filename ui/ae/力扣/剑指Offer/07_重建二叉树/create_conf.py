@@ -122,31 +122,42 @@ data = {
                 {
                     'name': '代码调试.mp4',
                     'layerName': '代码',
-                    'pos': [1028, 658],
+                    'anchor': 'TOP_LEFT',
+                    'pos': [348, 118],
                     'startTime': 0,
                     'Masks': [
                         {
                             'vertices': [[372, 84], [372, 760], [1412, 760], [1412, 84]],
-                            'Mask Feather': [5, 5]
+                            'Mask Feather': [5, 5],
                         },
-                    ]
-                },
-                {
-                    'name': '代码调试.mp4',
-                    'layerName': '调用堆栈',
-                    'pos': [1988, 80],
-                    'startTime': 0,
-                    'Masks': [
-                        {'vertices': [[51, 872], [51, 1021], [371, 1021], [371, 872]]},
-                    ]
-                },
-                {
-                    'name': '代码调试.mp4',
-                    'layerName': '变量',
-                    'pos': [1668, -103],
-                    'startTime': 0,
-                    'Masks': [
-                        {'vertices': [[372, 872], [372, 1036], [746, 1036], [746, 872]]},
+                    ],
+                    'children': [
+                        {
+                            'name': '代码调试.mp4',
+                            'layerName': '调用堆栈',
+                            'anchor': 'TOP_LEFT',
+                            'pos': [958, -587],
+                            'startTime': 0,
+                            'Masks': [
+                                {
+                                    'vertices': [[51, 872], [51, 1021], [371, 1021], [371, 872]],
+                                    'Mask Feather': [5, 5],
+                                },
+                            ]
+                        },
+                        {
+                            'name': '代码调试.mp4',
+                            'layerName': '变量',
+                            'anchor': 'TOP_LEFT',
+                            'pos': [638, -770],
+                            'startTime': 0,
+                            'Masks': [
+                                {
+                                    'vertices': [[372, 872], [372, 1036], [746, 1036], [746, 872]],
+                                    'Mask Feather': [5, 5],
+                                },
+                            ]
+                        },
                     ]
                 },
             ],
@@ -156,12 +167,12 @@ data = {
     'precomps': [
         {
             'name': '前序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
-            'pos': [500, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 30,
-            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
+            'pos': [390, 540, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 0,
+            'node': {'name': 'Node Red/Elements.ai', 'scale': [80, 80, 80]},
             'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
-            '3D': 'true'
+            # '3D': 'true'
         },
         {
             'name': '中序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
@@ -170,7 +181,7 @@ data = {
             'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
-            '3D': 'true'
+            # '3D': 'true'
         },
         {
             'name': '调用堆栈', 'type': 'STACK', 'pos': [1000, 800, 0],

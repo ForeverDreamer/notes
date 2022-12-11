@@ -68,7 +68,7 @@ class ShareUtil:
             '#include "text.jsx";',
             '#include "shape.jsx";',
             '#include "precomp.jsx";',
-            'app.purge(PurgeTarget.ALL_CACHES);',
+            # 'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 300, 30);',

@@ -29,6 +29,7 @@ var layer = comp.layer(14)
 // var shapeLayer = comp.layer(1)
 // shapeLayer.selected = true;
 
+// var path = layer("Contents")("Polystar 1")("Contents")("Path 1")("Path").value
 var path = layer("Masks")("Mask 1")("Mask Path").value
 $.writeln(path)
 $.writeln(path.vertices)
