@@ -161,7 +161,10 @@ class ShareUtil:
             for key_chain, value in keyframes.items():
                 key = ''.join([f'("{k}")' for k in key_chain.split('.')])
                 statements.append(f'{layer}{key}.setValuesAtTimes({value[0]}, {value[1]})')
-
+                for i in range(1, len(value[0])+1):
+                    statements.append(f'var easeIn = new KeyframeEase({value[2][i-1][0][0]}, {value[2][i-1][0][1]});')
+                    statements.append(f'var easeOut = new KeyframeEase({value[2][i-1][1][0]}, {value[2][i-1][1][1]});')
+                    statements.append(f'{layer}{key}.setTemporalEaseAtKey({i}, [easeIn], [easeOut])')
         return statements
 
 
