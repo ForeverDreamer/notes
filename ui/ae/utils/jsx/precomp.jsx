@@ -40,6 +40,8 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
         tracker["layerName"] = "Tracker"
         var trackerLayer = shareUtil.addLayer(items, layers, tracker);
         shareUtil.configKeyframes(trackerLayer, tracker["keyframes"])
+        var effectsProp = trackerLayer.Effects.addProperty("PEDG");
+        effectsProp("Radius").expression = "random() * 50 + 10"
         // trackerLayer.moveToEnd()
     }
 
