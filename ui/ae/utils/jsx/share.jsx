@@ -132,7 +132,7 @@ ShareUtil.prototype.findItemByName = function (items, name) {
 	return null;
 }
 
-ShareUtil.prototype.configProps = function (props) {
+ShareUtil.prototype.configProps = function (layer, props) {
 	if (!props) {
 		return
 	}
@@ -146,7 +146,7 @@ ShareUtil.prototype.configProps = function (props) {
 	}
 }
 
-ShareUtil.prototype.configKeyframes = function (keyframes) {
+ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 	if (!keyframes) {
 		return
 	}
@@ -160,7 +160,7 @@ ShareUtil.prototype.configKeyframes = function (keyframes) {
 		for (var i = numKeys; i >= 1; i--) {
 			prop.removeKey(i)
 		}
-		prop.setValuesAtTimes(keyframes[k]["times"], keyframes[k]["values"]);
+		prop.setValuesAtTimes(keyframes[k][0], keyframes[k][1]);
 	}
 }
 

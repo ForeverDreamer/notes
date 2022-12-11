@@ -29,7 +29,7 @@ AnimationUtil.prototype.buildBinaryTree = function(items, parentComp, conf) {
 		return elem !== 'null';
 	}
 	var elems = conf["elems"].filter(removeNull)
-	var numLayers = comp.numLayers
+	var numLayers = comp.numLayers-2
 	// var startTime = conf["startTime"];
 	var interval = 3/(elems.length*2-1);
 	var layers = []

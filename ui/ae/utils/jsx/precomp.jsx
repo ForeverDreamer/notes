@@ -24,6 +24,23 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var NODE_PREFIX = "Node";
     var EDGE_PREFIX = "Edge";
 
+    var selected = conf["selected"];
+    if (selected) {
+        selected["pos"] = [225*scale, 65*scale, 0]
+        selected["layerName"] = "Selected"
+        var selectedLayer = shareUtil.addLayer(items, layers, selected);
+        shareUtil.configKeyframes(selectedLayer, selected["keyframes"])
+        // selectedLayer.moveToEnd()
+    }
+    var tracker = conf["tracker"];
+    if (tracker) {
+        tracker["pos"] = [225*scale, 65*scale, 0]
+        tracker["layerName"] = "Tracker"
+        var trackerLayer = shareUtil.addLayer(items, layers, tracker);
+        shareUtil.configKeyframes(trackerLayer, tracker["keyframes"])
+        // trackerLayer.moveToEnd()
+    }
+
     node["pos"] = [225*scale, 65*scale, 0]
     node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[0]
     var nodeLayer = shareUtil.addLayer(items, layers, node);

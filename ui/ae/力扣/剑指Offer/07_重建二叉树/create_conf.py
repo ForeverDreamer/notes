@@ -169,17 +169,81 @@ data = {
     ],
     'precomps': [
         {
-            'name': '前序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
+            'name': '前序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
             'pos': [390, 540, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 0,
-            'node': {'name': 'Node Red/Elements.ai', 'scale': [80, 80, 80]},
+            'selected': {
+                'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
+                'keyframes': {
+                    'Transform.Position': [
+                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                        [
+                            [180, 52], [180, 52], [52, 244], [52, 244], [308, 244],
+                            [308, 244], [180, 436], [180, 436], [436, 436], [436, 436]
+                        ]
+                    ],
+                    'Transform.Opacity': [
+                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
+                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
+                    ]
+                },
+            },
+            'tracker': {
+                'name': 'Node Tracker/Elements.ai', 'scale': [80, 80, 80],
+                'keyframes': {
+                    'Transform.Position': [
+                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                        [
+                            [180, 52], [180, 52], [52, 244], [52, 244], [308, 244],
+                            [308, 244], [180, 436], [180, 436], [436, 436], [436, 436]
+                        ]
+                    ],
+                    'Transform.Opacity': [
+                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
+                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
+                    ]
+                },
+            },
+            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
             'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
             # '3D': 'true'
         },
         {
-            'name': '中序', 'type': 'BINARY_TREE', 'width': 490, 'height': 490, 'duration': 30,
+            'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
             'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 35,
+            'selected': {
+                'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
+                'keyframes': {
+                    'Transform.Position': [
+                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                        [
+                            [180, 52], [180, 52], [52, 244], [52, 244], [308, 244],
+                            [308, 244], [180, 436], [180, 436], [436, 436], [436, 436]
+                        ]
+                    ],
+                    'Transform.Opacity': [
+                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
+                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
+                    ]
+                },
+            },
+            'tracker': {
+                'name': 'Node Tracker/Elements.ai', 'scale': [80, 80, 80],
+                'keyframes': {
+                    'Transform.Position': [
+                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                        [
+                            [180, 52], [180, 52], [52, 244], [52, 244], [308, 244],
+                            [308, 244], [180, 436], [180, 436], [436, 436], [436, 436]
+                        ]
+                    ],
+                    'Transform.Opacity': [
+                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
+                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
+                    ]
+                },
+            },
             'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
             'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
             'effects': [],

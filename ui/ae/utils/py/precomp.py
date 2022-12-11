@@ -1,5 +1,6 @@
 from ae.constants.share import PIXEL_ASPECT, FRAME_RATE
 from ae.utils.py.color import hex_to_rgb1
+from ae.utils.py.share import ShareUtil
 
 
 class PrecompUtil:
@@ -127,28 +128,28 @@ class PrecompUtil:
         duration = conf['duration']
 
         statements = [
-            'var items = project.items;',
-            f'var comp = items.addComp("二叉树" + {name}, {width}, {height}, {PIXEL_ASPECT}, {duration}, {FRAME_RATE});',
-            'var layers = comp.layers;',
+            f'var comp = project.items.addComp("二叉树" + {name}, {width}, {height}, {PIXEL_ASPECT}, {duration}, {FRAME_RATE});',
         ]
 
+        tracker = conf['tracker']
         node = conf['node']
         edge = conf['edge']
         elems = conf['elems']
-        scale = node["scale"][0] / 100
-        edgeOffset = 40 * scale
-        horizontalDist = 160 * scale
-        verticalDist = 240 * scale
-        textPos = [65, 75, 0]
-        NODE_PREFIX = 'Node'
-        EDGE_PREFIX = 'Edge'
+        scale = node['scale'][0]/100
+        edge_offset = 40*scale
+        horizontal_dist = 160*scale
+        vertical_dist = 240*scale
+        text_pos = [65, 75, 0]
+        node_prefix = 'Node'
+        edge_prefix = 'Edge'
 
-        node["pos"] = [225 * scale, 65 * scale, 0]
-        node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[0]
-        statements.append(f'var nodeLayer = shareUtil.addLayer(items, layers, {node});')
+        node['pos'] = [225 * scale, 65 * scale, 0]
+        node['layerName'] = f'{node_prefix}.Shape.{elems[0]}'
+        layer = 'nodeLayer'
+        statements.append(f'var {layer} = comp.layers.add(shareUtil.findItemByName(project.items, "{node["name"]}"));')
+        statements += ShareUtil(None).configLayer(layer, node)
 
-        script = '\n'.join(statements)
-        self._engine.execute(script)
+        return statements
 
     def _code(self, conf):
         name = '代码.' + conf['name']

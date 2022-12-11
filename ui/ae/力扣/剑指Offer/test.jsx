@@ -69,30 +69,26 @@ $.writeln(path.featherRadii)
 // $.writeln(app.findMenuCommandId("Animation Composer 3"))
 // app.executeCommand(5020);
 
-// var shapeLayer = comp.layers.addShape();
-// var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-// var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
-// var myShape = new Shape();
-// // myShape.vertices = path.vertices;
-// // myShape.inTangents = path.inTangents;
-// // myShape.outTangents = path.outTangents;
-// // myShape.featherRelSegLoc = path.featherRelSegLoc;
-// // edge的顶点坐标
-// myShape.vertices = [[146,82], [78,203]];
-// // myShape.inTangents = path.inTangents;
-// // myShape.outTangents = path.outTangents;
-// // myShape.featherRelSegLoc = path.featherRelSegLoc;
-// myShape.closed = false;
-// pathGroup("Path").setValue(myShape);
-// trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
-// // trimGroup("start").setValue(5)
-// // trimGroup("end").setValue(5)
+var shapeLayer = comp.layers.addShape();
+var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
+var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
+var myShape = new Shape();
+// myShape.vertices = path.vertices;
+// myShape.inTangents = path.inTangents;
+// myShape.outTangents = path.outTangents;
+// edge的顶点坐标
+myShape.vertices = [[146,82], [78,203]];
+myShape.closed = false;
+pathGroup("Path").setValue(myShape);
+trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
+// trimGroup("start").setValue(5)
+// trimGroup("end").setValue(5)
 
-// strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
-// strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
-// strokeGroup("Stroke Width").setValue(5)
-// var anchorPoint = shareUtil.setAnchorPoint(shapeLayer, "RIGHT_TOP")
-// shapeGroup("Transform")("Anchor Point").setValue([anchorPoint[0], anchorPoint[1]])
-// shapeGroup("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
-// shapeLayer("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
-// // nodeLayer("Transform")("Position").setValue(myShape.vertices)
+strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
+strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
+strokeGroup("Stroke Width").setValue(5)
+var anchorPoint = shareUtil.setAnchorPoint(shapeLayer, "RIGHT_TOP")
+shapeGroup("Transform")("Anchor Point").setValue([anchorPoint[0], anchorPoint[1]])
+shapeGroup("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
+shapeLayer("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
+// nodeLayer("Transform")("Position").setValue(myShape.vertices)
