@@ -80,10 +80,10 @@ ShareUtil.prototype.addLayer = function (items, layers, conf, item, parent) {
 				shape.vertices = conf_mask["vertices"];
 			}
 			if (conf_mask["inTangents"]) {
-				shape.vertices = conf_mask["inTangents"];
+				shape.inTangents = conf_mask["inTangents"];
 			}
 			if (conf_mask["outTangents"]) {
-				shape.vertices = conf_mask["outTangents"];
+				shape.outTangents = conf_mask["outTangents"];
 			}
 			var closed = js_bool(conf_mask["closed"]);
 			shape.closed =  closed ? closed : true;

@@ -40,14 +40,18 @@ class PrecompUtil:
                         for keyIndex in range(1, len(values[i][0]) + 1):
                             statements.append(
                                 f'textLayer{key}.setInterpolationTypeAtKey({keyIndex}, KeyframeInterpolationType.HOLD, KeyframeInterpolationType.HOLD);')
-        statements.append('var queueLayer = mainComp.layers.add(queueComp);')
-        statements.append('var left = queueLayer.sourceRectAtTime(0, false).left;')
-        statements.append('var anchorPointProp = queueLayer("Transform")("Anchor Point");')
+        layer = 'stackLayer'
+        statements.append(f'var {layer} = mainComp.layers.add(queueComp);')
+        start_time = conf.get('startTime')
+        if start_time:
+            statements.append(f'{layer}.startTime = {start_time};')
+        statements.append(f'var left = {layer}.sourceRectAtTime(0, false).left;')
+        statements.append(f'var anchorPointProp = {layer}("Transform")("Anchor Point");')
         statements.append('var value = anchorPointProp.value;')
         statements.append('anchorPointProp.setValue([left, value[1], value[2]]);')
-        statements.append(
-            'effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});')
-        statements.append(f'queueLayer("Transform")("Position").setValue({conf["pos"]});')
+        statements.append('var props = {"Distance": 10, "Softness": 30, "Opacity": 255}')
+        statements.append(f'effectsUtil.add({layer}, "ADBE Drop Shadow", props);')
+        statements.append(f'{layer}("Transform")("Position").setValue({conf["pos"]});')
 
         return statements
 
@@ -81,13 +85,18 @@ class PrecompUtil:
                         for keyIndex in range(1, len(values[i][0]) + 1):
                             statements.append(
                                 f'textLayer{key}.setInterpolationTypeAtKey({keyIndex}, KeyframeInterpolationType.HOLD, KeyframeInterpolationType.HOLD);')
-        statements.append('var queueLayer = mainComp.layers.add(queueComp);')
-        statements.append('var left = queueLayer.sourceRectAtTime(0, false).left;')
-        statements.append('var anchorPointProp = queueLayer("Transform")("Anchor Point");')
+        layer = 'queueLayer'
+        statements.append(f'var {layer} = mainComp.layers.add(queueComp);')
+        start_time = conf.get('startTime')
+        if start_time:
+            statements.append(f'{layer}.startTime = {start_time};')
+        statements.append(f'var left = {layer}.sourceRectAtTime(0, false).left;')
+        statements.append(f'var anchorPointProp = {layer}("Transform")("Anchor Point");')
         statements.append('var value = anchorPointProp.value;')
         statements.append('anchorPointProp.setValue([left, value[1], value[2]]);')
-        statements.append('effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});')
-        statements.append(f'queueLayer("Transform")("Position").setValue({conf["pos"]});')
+        statements.append('var props = {"Distance": 10, "Softness": 30, "Opacity": 255}')
+        statements.append(f'effectsUtil.add({layer}, "ADBE Drop Shadow", props);')
+        statements.append(f'{layer}("Transform")("Position").setValue({conf["pos"]});')
 
         return statements
 

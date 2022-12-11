@@ -131,6 +131,9 @@ data = {
                             'Mask Feather': [5, 5],
                         },
                     ],
+                    'keyframes': {
+                        'Transform.Position': [[0, 1, 2], [[68, 118], [348, 118], [348, 118]]]
+                    },
                     'children': [
                         {
                             'name': '代码调试.mp4',
@@ -153,7 +156,7 @@ data = {
                             'startTime': 0,
                             'Masks': [
                                 {
-                                    'vertices': [[372, 872], [372, 1036], [746, 1036], [746, 872]],
+                                    'vertices': [[372, 872], [372, 1036], [690, 1036], [690, 872]],
                                     'Mask Feather': [5, 5],
                                 },
                             ]
@@ -187,7 +190,7 @@ data = {
             'name': '调用堆栈', 'type': 'STACK', 'pos': [1000, 800, 0],
             'elems': [
                 {'text': 'hello_world1()', 'keyframes': {}}, 'hello_world2()', 'hello_world3()', 'hello_world4()', 'hello_world5()'],
-            'width': 350, 'height': 250, 'duration': 30,
+            'width': 350, 'height': 250, 'duration': 30, 'startTime': 35,
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': {
                 'Contents.Group 1.Contents.Fill 1.Color': [
@@ -207,7 +210,8 @@ data = {
             }
         },
         {
-            'name': '前序', 'type': 'QUEUE', 'pos': [700, 850, 0], 'elems': [3, 9, 20, 15, 7], 'width': 250, 'height': 50, 'duration': 30,
+            'name': '前序', 'type': 'QUEUE', 'pos': [700, 850, 0], 'elems': [3, 9, 20, 15, 7], 'width': 250, 'height': 50,
+            'duration': 30, 'startTime': 35,
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': {
                 'Contents.Group 1.Contents.Fill 1.Color': [

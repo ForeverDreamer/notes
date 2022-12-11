@@ -1,7 +1,7 @@
 import time
 import ctypes
 
-from ae.constants.share import AE_WINDOW_NAME
+from ae.constants.share import AE_WINDOW_NAME, IMPORT_AS_TYPE
 from ae.utils.py.date import now
 
 
@@ -68,7 +68,7 @@ class ShareUtil:
             '#include "text.jsx";',
             '#include "shape.jsx";',
             '#include "precomp.jsx";',
-            # 'app.purge(PurgeTarget.ALL_CACHES);',
+            'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 300, 30);',
@@ -99,10 +99,93 @@ class ShareUtil:
         ]
         return self._engine.execute('ShareUtil.open_project', statements)
 
+    def configLayer(self, layer, conf, parent=None):
+        statements = []
+        layer_name = conf.get('layerName')
+        if layer_name:
+            statements.append(f'{layer}.name = "{layer_name}";')
+        anchor = conf.get('anchor')
+        if anchor:
+            statements.append(f'shareUtil.setAnchorPoint({layer}, "{anchor}");')
+        pos = conf.get('pos')
+        if pos:
+            statements.append(f'{layer}("Transform")("Position").setValue({pos});')
+        scale = conf.get('scale')
+        if scale:
+            statements.append(f'{layer}("Transform")("Scale").setValue({scale});')
+        rotation = conf.get('rotation')
+        if rotation:
+            statements.append(f'{layer}("Transform")("Rotation").setValue({rotation});')
+        start_time = conf.get('startTime')
+        if start_time:
+            statements.append(f'{layer}.startTime = {start_time};')
+        span = conf.get('span')
+        if span:
+            statements += [
+                f'{layer}.inPoint = {span["inPoint"]};',
+                f'{layer}.outPoint = {span["outPoint"]};'
+            ]
+        if conf.get('3D'):
+            statements.append(f'{layer}.threeDLayer = true;')
+        if parent:
+            statements.append(f'{layer}.setParentWithJump({parent})')
+
+        masks = conf.get('Masks')
+        if masks:
+            for mask in masks:
+                statements += [
+                    f'var mask = {layer}.Masks.addProperty("Mask");',
+                    f'maskShape = mask("maskShape");',
+                    'var shape = maskShape.value;',
+                ]
+                vertices = mask.get('vertices')
+                if vertices:
+                    statements.append(f'shape.vertices = {vertices};')
+                in_tangents = mask.get('inTangents')
+                if in_tangents:
+                    statements.append(f'shape.inTangents = {in_tangents};')
+                out_tangents = mask.get('outTangents')
+                if out_tangents:
+                    statements.append(f'shape.vertices = {out_tangents};')
+                closed = mask.get("closed", 'true')
+                statements += [
+                    f'shape.closed =  {closed};',
+                    'maskShape.setValue(shape);'
+                ]
+                mask_feather = mask.get('Mask Feather')
+                if mask_feather:
+                    statements.append(f'{layer}.Masks("Mask 1")("Mask Feather").setValue({mask_feather});')
+
+        keyframes = conf.get('keyframes')
+        if keyframes:
+            for key_chain, value in keyframes.items():
+                key = ''.join([f'("{k}")' for k in key_chain.split('.')])
+                statements.append(f'{layer}{key}.setValuesAtTimes({value[0]}, {value[1]})')
+
+        return statements
+
+
     def import_files(self, files):
-        statements = ['//shareUtil.import_files']
+        statements = [
+            '//shareUtil.import_files',
+            'var importOptions = new ImportOptions();',
+        ]
         for conf in files:
-            statements.append(f'shareUtil.importFile(project, {conf});')
+            statements.append(f'importOptions.file = new File("{conf["path"]}");')
+            statements.append(f'importOptions.importAs = ImportAsType.{conf["import_as_type"]};')
+            statements.append('project.importFile(importOptions);')
+            conf_layers = conf.get('layers')
+            if conf_layers:
+                for conf in conf_layers:
+                    parent_layer = 'parentLayer'
+                    statements.append(f'var {parent_layer} = mainComp.layers.add(shareUtil.findItemByName(project.items, "{conf["name"]}"));',)
+                    statements += self.configLayer(parent_layer, conf)
+                    children = conf.get('children')
+                    if children:
+                        for child in children:
+                            child_layer = 'childLayer'
+                            statements.append(f'var {child_layer} = mainComp.layers.add(shareUtil.findItemByName(project.items, "{child["name"]}"));')
+                            statements += self.configLayer(child_layer, child, parent_layer)
         statements.append('\n')
         # return self._engine.execute('ShareUtil.import_files', statements)
         return statements
