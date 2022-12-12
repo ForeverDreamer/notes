@@ -132,7 +132,8 @@ data = {
                         },
                     ],
                     'keyframes': {
-                        'Transform.Position': [[1, 2], [[68, 118], [348, 118]], [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]]
+                        'Transform.Position': [[1, 2], [[68, 118], [348, 118]],
+                                               [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]]
                     },
                     'children': [
                         {
@@ -181,10 +182,10 @@ data = {
                             [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
                         ]
                     ],
-                    'Transform.Opacity': [
-                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                    ]
+                    # 'Transform.Opacity': [
+                    #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
+                    #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
+                    # ]
                 },
             },
             'tracker': {
@@ -197,35 +198,61 @@ data = {
                             [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
                         ]
                     ],
-                    'Transform.Opacity': [
-                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                    ]
+                    # 'Transform.Opacity': [
+                    #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
+                    #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
+                    # ]
                 },
             },
-            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
-            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'node': {
+                'name': 'Node White/Elements.ai', 'scale': [80, 80, 80],
+                'Path': {
+                    'vertices': [[0, -50], [50, 0], [0, 50], [-50, 0]],
+                    'inTangents': [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
+                    'outTangents': [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
+                    'closed': 'true',
+                    'Color': '#FF0000',
+                    'Stroke Width': 5,
+                    'Offset': -135,
+                    'keyframes': {
+                        'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, 0.5], [50, 0]],
+                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0, 0.5], [50, 100]],
+                    },
+                },
+            },
+            'edge': {
+                'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30,
+                'Path': {
+                    'vertices': [[153, 95], [88, 211]],
+                    'closed': 'false',
+                    'Color': '#FF0000',
+                    'Stroke Width': 5,
+                    'keyframes': {
+                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0.5, 1], [0, 100]],
+                    },
+                },
+            },
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
             # '3D': 'true'
         },
         {
             'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
-            'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 35,
+            'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 0,
             'selected': {
                 'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
                 'keyframes': {
                     'Transform.Position': [
                         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                         [
-                            [188, 60], [188, 60], [60, 252], [60, 252], [316, 252],
-                            [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
+                            [60, 252], [60, 252], [188, 60], [188, 60], [188, 444], [188, 444],
+                            [316, 252], [316, 252], [444, 444], [444, 444]
                         ]
                     ],
-                    'Transform.Opacity': [
-                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                    ]
+                    # 'Transform.Opacity': [
+                    #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
+                    #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
+                    # ]
                 },
             },
             'tracker': {
@@ -244,8 +271,34 @@ data = {
                     ]
                 },
             },
-            'node': {'name': 'Node White/Elements.ai', 'scale': [80, 80, 80]},
-            'edge': {'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30},
+            'node': {
+                'name': 'Node White/Elements.ai', 'scale': [80, 80, 80],
+                'Path': {
+                    'vertices': [[0, -50], [50, 0], [0, 50], [-50, 0]],
+                    'inTangents': [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
+                    'outTangents': [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
+                    'closed': 'true',
+                    'Color': '#FF0000',
+                    'Stroke Width': 5,
+                    'Offset': -135,
+                    'keyframes': {
+                        'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, 0.5], [50, 0]],
+                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0, 0.5], [50, 100]],
+                    },
+                },
+            },
+            'edge': {
+                'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30,
+                'Path': {
+                    'vertices': [[153, 95], [88, 211]],
+                    'closed': 'false',
+                    'Color': '#FF0000',
+                    'Stroke Width': 5,
+                    'keyframes': {
+                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0.5, 1], [0, 100]],
+                    },
+                },
+            },
             'effects': [],
             'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
             # '3D': 'true'
@@ -253,7 +306,8 @@ data = {
         {
             'name': '调用堆栈', 'type': 'STACK', 'pos': [1000, 800, 0],
             'elems': [
-                {'text': 'hello_world1()', 'keyframes': {}}, 'hello_world2()', 'hello_world3()', 'hello_world4()', 'hello_world5()'],
+                {'text': 'hello_world1()', 'keyframes': {}}, 'hello_world2()', 'hello_world3()', 'hello_world4()',
+                'hello_world5()'],
             'width': 350, 'height': 250, 'duration': 30, 'startTime': 35,
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': {
@@ -295,7 +349,8 @@ data = {
             }
         },
         {
-            'name': '中序', 'type': 'QUEUE', 'pos': [700, 950, 0], 'elems': [9, 3, 15, 20, 7], 'width': 250, 'height': 50, 'duration': 30,
+            'name': '中序', 'type': 'QUEUE', 'pos': [700, 950, 0], 'elems': [9, 3, 15, 20, 7], 'width': 250, 'height': 50,
+            'duration': 30,
             'effects': [],
             'keyframes': {
                 'Transform.Opacity': [
@@ -322,9 +377,9 @@ data = {
         #     }
         # }
     ],
-           # Opacity属性可通过Python音频库分析配音后自动生成
-           # {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'keyframes': [{'Opacity': [[0, 0.5, 3, 3.5], [0, 100, 100, 0]]}]},
-           # {'text': '题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果', 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
+    # Opacity属性可通过Python音频库分析配音后自动生成
+    # {'text': '大家好，我是IT学长，今天跟大家分享的是力扣 "剑指 Offer 07. 重建二叉树"', 'keyframes': [{'Opacity': [[0, 0.5, 3, 3.5], [0, 100, 100, 0]]}]},
+    # {'text': '题目链接已打在屏幕下方，有兴趣的同学可以去力扣官网提交代码测试运行结果', 'keyframes': [{'Opacity': [[4, 4.5, 7, 7.5], [0, 100, 100, 0]]}]},
     'subtitles': subtitles,
     'annotations': [
         {

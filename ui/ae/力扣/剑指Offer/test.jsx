@@ -1,11 +1,18 @@
 #includepath "../../utils/jsx;";
+#include "constants.jsx";
 #include "json.jsx";
+#include "animation.jsx";
 #include "share.jsx";
 #include "color.jsx";
+#include "effects.jsx";
+#include "presets.jsx";
+#include "text.jsx";
+#include "shape.jsx";
+#include "precomp.jsx"
 
 var project = app.project;
 var comp = project.activeItem;
-// var layer = comp.layer(14)
+var layer = comp.layer(1)
 // $.writeln(shapeLayer.name)
 // var left = shapeLayer.sourceRectAtTime(0, true).left
 // var top = shapeLayer.sourceRectAtTime(0, true).top
@@ -29,19 +36,20 @@ var comp = project.activeItem;
 // var shapeLayer = comp.layer(1)
 // shapeLayer.selected = true;
 
-// var path = layer("Contents")("Polystar 1")("Contents")("Path 1")("Path").value
+// var path = layer("Contents")("Ellipse 1")("Contents")("Path 1")("Path").value
+// var path = layer("Contents")("Group 1")("Contents")("Path 1")("Path").value
 // var path = layer("Masks")("Mask 1")("Mask Path").value
-// $.writeln(path)
 // $.writeln(path.vertices)
 // $.writeln(path.inTangents)
 // $.writeln(path.outTangents)
+// $.writeln("============================================")
 // $.writeln(path.featherSegLoc)
 // $.writeln(path.featherRelSegLoc)
 // $.writeln(path.featherRadii)
+
 // path.selected = true;
 // app.executeCommand(19); //Copy
 // shapeLayer.selected = false;
-
 // var inorderLayer = comp.layer(5)
 // inorderLayer.selected = true;
 // var posPorp = inorderLayer("Transform")("Position")
@@ -57,11 +65,12 @@ var comp = project.activeItem;
 // $.writeln(myShape.vertices)
 // [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)]
 // $.writeln(colorUtil.hexToRgb("#005FB8", true))
-var effects = app.effects
+
+// var effects = app.effects
 // $.writeln(effects.length)
-for (var i = 0; i < effects.length; i++) {
-    $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
-}
+// for (var i = 0; i < effects.length; i++) {
+//     $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
+// }
 
 // var taskId = app.scheduleTask('$.writeln(app.findMenuCommandId("AtomX"))', 1000, true)
 // $.writeln(taskId)
@@ -69,26 +78,59 @@ for (var i = 0; i < effects.length; i++) {
 // $.writeln(app.findMenuCommandId("Animation Composer 3"))
 // app.executeCommand(5020);
 
-// var shapeLayer = comp.layers.addShape();
-// var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-// var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
-// var myShape = new Shape();
-// // myShape.vertices = path.vertices;
-// // myShape.inTangents = path.inTangents;
-// // myShape.outTangents = path.outTangents;
-// // edge的顶点坐标
-// myShape.vertices = [[146,82], [78,203]];
-// myShape.closed = false;
-// pathGroup("Path").setValue(myShape);
-// trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
-// // trimGroup("start").setValue(5)
-// // trimGroup("end").setValue(5)
+var shapeLayer = comp.layers.addShape();
+shapeLayer.name = 'Node.Path.3'
+var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
+var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
+var myShape = new Shape();
+// myShape.vertices = path.vertices;
+// myShape.inTangents = path.inTangents;
+// myShape.outTangents = path.outTangents;
+// edge的顶点坐标
+myShape.vertices = path.vertices;
+myShape.vertices = [[0,-50],[50,0],[0,50],[-50,0]];
+myShape.inTangents = [[-27.6142425537109,0], [0,-27.6142425537109], [27.6142425537109,0], [0,27.6142425537109]];
+myShape.outTangents = [[27.6142425537109,0], [0,27.6142425537109], [-27.6142425537109,0], [0,-27.6142425537109]];
+myShape.closed = true;
+pathGroup("Path").setValue(myShape);
+trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
+// trimGroup("start").setValue(5)
+// trimGroup("end").setValue(5)
+strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
+strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
+strokeGroup("Stroke Width").setValue(5)
+var anchorPoint = shareUtil.setAnchorPoint(shapeLayer)
+shapeGroup("Transform")("Anchor Point").setValue([187, 60])
+shapeGroup("Transform")("Position").setValue([187, 60])
+shapeLayer("Transform")("Position").setValue([187, 60])
+// nodeLayer("Transform")("Position").setValue(myShape.vertices)
+shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.Start": [[0, 0.5], [50, 0]]})
+shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0, 0.5], [50, 100]]})
+shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Offset").setValue(-135)
 
-// strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
-// strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
-// strokeGroup("Stroke Width").setValue(5)
-// var anchorPoint = shareUtil.setAnchorPoint(shapeLayer, "RIGHT_TOP")
-// shapeGroup("Transform")("Anchor Point").setValue([anchorPoint[0], anchorPoint[1]])
-// shapeGroup("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
-// shapeLayer("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
-// // nodeLayer("Transform")("Position").setValue(myShape.vertices)
+
+var shapeLayer = comp.layers.addShape();
+shapeLayer.name = 'Edge.Path.3'
+var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
+var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
+var myShape = new Shape();
+// myShape.vertices = path.vertices;
+// myShape.inTangents = path.inTangents;
+// myShape.outTangents = path.outTangents;
+// edge的顶点坐标
+// myShape.vertices = path.vertices;
+myShape.vertices = [[153, 95], [88, 211]];
+myShape.closed = false;
+pathGroup("Path").setValue(myShape);
+trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
+// trimGroup("start").setValue(5)
+// trimGroup("end").setValue(5)
+strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
+strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
+strokeGroup("Stroke Width").setValue(5)
+var anchorPoint = shareUtil.setAnchorPoint(shapeLayer, "RIGHT_TOP")
+shapeGroup("Transform")("Anchor Point").setValue([anchorPoint[0], anchorPoint[1]])
+shapeGroup("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
+shapeLayer("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
+// nodeLayer("Transform")("Position").setValue(myShape.vertices)
+shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0.5, 1], [0, 100]]})

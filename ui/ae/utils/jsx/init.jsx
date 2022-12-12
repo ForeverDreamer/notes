@@ -2,14 +2,15 @@
 #includepath "../utils/jsx";
 #include "constants.jsx";
 #include "json.jsx";
-#include "animation.jsx";
-#include "share.jsx";
 #include "color.jsx";
+#include "shape.jsx";
+#include "text.jsx";
+#include "share.jsx";
+#include "precomp.jsx";
+#include "animation.jsx";
 #include "effects.jsx";
 #include "presets.jsx";
-#include "text.jsx";
-#include "shape.jsx";
-#include "precomp.jsx";
+
 
 app.purge(PurgeTarget.ALL_CACHES);
 var project = app.project;

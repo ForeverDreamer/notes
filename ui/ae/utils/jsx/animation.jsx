@@ -43,20 +43,20 @@ AnimationUtil.prototype.buildBinaryTree = function(items, parentComp, conf) {
 	var rootShapeLayer = layers[0];
 	var start = 0;
 	var end = interval;
-	rootShapeLayer("Transform")("Scale").setValuesAtTimes([start, end], [[0, 0, 0], node["scale"]])
-	var i = 2;
-	var shapeLayer;
-	while (i < numLayers) {
-		edgeLayer = layers[i];
-		shapeLayer = layers[i+1];
-		start += interval;
-		end += interval;
-		edgeLayer("Transform")("Scale").setValuesAtTimes([start, end], [[0, 0, 0], edge["scale"]])
-		start += interval;
-		end += interval;
-		shapeLayer("Transform")("Scale").setValuesAtTimes([start, end], [[0, 0, 0], node["scale"]])
-		i += 3;
-	}
+	// rootShapeLayer("Transform")("Scale").setValuesAtTimes([start, end], [[0, 0, 0], node["scale"]])
+	// var i = 2;
+	// var shapeLayer;
+	// while (i < numLayers) {
+	// 	edgeLayer = layers[i];
+	// 	shapeLayer = layers[i+1];
+	// 	start += interval;
+	// 	end += interval;
+	// 	edgeLayer("Transform")("Scale").setValuesAtTimes([start, end], [[0, 0, 0], edge["scale"]])
+	// 	start += interval;
+	// 	end += interval;
+	// 	shapeLayer("Transform")("Scale").setValuesAtTimes([start, end], [[0, 0, 0], node["scale"]])
+	// 	i += 3;
+	// }
 	return compLayer;
 }
 
