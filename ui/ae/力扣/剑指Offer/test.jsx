@@ -66,11 +66,11 @@ var layer = comp.layer(1)
 // [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)]
 // $.writeln(colorUtil.hexToRgb("#005FB8", true))
 
-// var effects = app.effects
-// $.writeln(effects.length)
-// for (var i = 0; i < effects.length; i++) {
-//     $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
-// }
+var effects = app.effects
+$.writeln(effects.length)
+for (var i = 0; i < effects.length; i++) {
+    $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
+}
 
 // var taskId = app.scheduleTask('$.writeln(app.findMenuCommandId("AtomX"))', 1000, true)
 // $.writeln(taskId)
@@ -78,59 +78,59 @@ var layer = comp.layer(1)
 // $.writeln(app.findMenuCommandId("Animation Composer 3"))
 // app.executeCommand(5020);
 
-var shapeLayer = comp.layers.addShape();
-shapeLayer.name = 'Node.Path.3'
-var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
-var myShape = new Shape();
+// var shapeLayer = comp.layers.addShape();
+// shapeLayer.name = 'Node.Path.3'
+// var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
+// var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
+// var myShape = new Shape();
+// // myShape.vertices = path.vertices;
+// // myShape.inTangents = path.inTangents;
+// // myShape.outTangents = path.outTangents;
+// // edge的顶点坐标
 // myShape.vertices = path.vertices;
-// myShape.inTangents = path.inTangents;
-// myShape.outTangents = path.outTangents;
-// edge的顶点坐标
-myShape.vertices = path.vertices;
-myShape.vertices = [[0,-50],[50,0],[0,50],[-50,0]];
-myShape.inTangents = [[-27.6142425537109,0], [0,-27.6142425537109], [27.6142425537109,0], [0,27.6142425537109]];
-myShape.outTangents = [[27.6142425537109,0], [0,27.6142425537109], [-27.6142425537109,0], [0,-27.6142425537109]];
-myShape.closed = true;
-pathGroup("Path").setValue(myShape);
-trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
-// trimGroup("start").setValue(5)
-// trimGroup("end").setValue(5)
-strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
-strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
-strokeGroup("Stroke Width").setValue(5)
-var anchorPoint = shareUtil.setAnchorPoint(shapeLayer)
-shapeGroup("Transform")("Anchor Point").setValue([187, 60])
-shapeGroup("Transform")("Position").setValue([187, 60])
-shapeLayer("Transform")("Position").setValue([187, 60])
-// nodeLayer("Transform")("Position").setValue(myShape.vertices)
-shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.Start": [[0, 0.5], [50, 0]]})
-shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0, 0.5], [50, 100]]})
-shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Offset").setValue(-135)
+// myShape.vertices = [[0,-50],[50,0],[0,50],[-50,0]];
+// myShape.inTangents = [[-27.6142425537109,0], [0,-27.6142425537109], [27.6142425537109,0], [0,27.6142425537109]];
+// myShape.outTangents = [[27.6142425537109,0], [0,27.6142425537109], [-27.6142425537109,0], [0,-27.6142425537109]];
+// myShape.closed = true;
+// pathGroup("Path").setValue(myShape);
+// trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
+// // trimGroup("start").setValue(5)
+// // trimGroup("end").setValue(5)
+// strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
+// strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
+// strokeGroup("Stroke Width").setValue(5)
+// var anchorPoint = shareUtil.setAnchorPoint(shapeLayer)
+// shapeGroup("Transform")("Anchor Point").setValue([187, 60])
+// shapeGroup("Transform")("Position").setValue([187, 60])
+// shapeLayer("Transform")("Position").setValue([187, 60])
+// // nodeLayer("Transform")("Position").setValue(myShape.vertices)
+// shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.Start": [[0, 0.5], [50, 0]]})
+// shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0, 0.5], [50, 100]]})
+// shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Offset").setValue(-135)
 
 
-var shapeLayer = comp.layers.addShape();
-shapeLayer.name = 'Edge.Path.3'
-var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
-var myShape = new Shape();
-// myShape.vertices = path.vertices;
-// myShape.inTangents = path.inTangents;
-// myShape.outTangents = path.outTangents;
-// edge的顶点坐标
-// myShape.vertices = path.vertices;
-myShape.vertices = [[153, 95], [88, 211]];
-myShape.closed = false;
-pathGroup("Path").setValue(myShape);
-trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
-// trimGroup("start").setValue(5)
-// trimGroup("end").setValue(5)
-strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
-strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
-strokeGroup("Stroke Width").setValue(5)
-var anchorPoint = shareUtil.setAnchorPoint(shapeLayer, "RIGHT_TOP")
-shapeGroup("Transform")("Anchor Point").setValue([anchorPoint[0], anchorPoint[1]])
-shapeGroup("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
-shapeLayer("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
-// nodeLayer("Transform")("Position").setValue(myShape.vertices)
-shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0.5, 1], [0, 100]]})
+// var shapeLayer = comp.layers.addShape();
+// shapeLayer.name = 'Edge.Path.3'
+// var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
+// var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
+// var myShape = new Shape();
+// // myShape.vertices = path.vertices;
+// // myShape.inTangents = path.inTangents;
+// // myShape.outTangents = path.outTangents;
+// // edge的顶点坐标
+// // myShape.vertices = path.vertices;
+// myShape.vertices = [[153, 95], [88, 211]];
+// myShape.closed = false;
+// pathGroup("Path").setValue(myShape);
+// trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
+// // trimGroup("start").setValue(5)
+// // trimGroup("end").setValue(5)
+// strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke")
+// strokeGroup("Color").setValue(colorUtil.hexToRgb1("#FF0000"))
+// strokeGroup("Stroke Width").setValue(5)
+// var anchorPoint = shareUtil.setAnchorPoint(shapeLayer, "RIGHT_TOP")
+// shapeGroup("Transform")("Anchor Point").setValue([anchorPoint[0], anchorPoint[1]])
+// shapeGroup("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
+// shapeLayer("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
+// // nodeLayer("Transform")("Position").setValue(myShape.vertices)
+// shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0.5, 1], [0, 100]]})

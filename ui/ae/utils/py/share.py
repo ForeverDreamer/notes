@@ -73,7 +73,7 @@ class ShareUtil:
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 300, 30);',
             'mainComp.openInViewer();',
-            'var bgLayer = mainComp.layers.addSolid([1, 1, 1], "BG", 1920, 1080, 1);',
+            'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#232323"), "BG", 1920, 1080, 1);',
             'bgLayer.moveToEnd();',
         ]
         statements.append('\n')
@@ -194,12 +194,13 @@ class ShareUtil:
         return statements
 
     def create_subtitles(self, subtitles):
-        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 50}
+        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
         statements = ['//shareUtil.create_many']
         statements += [
             # f'var subtitles = {subtitles};',
             f'var textLayer = textUtil.add(mainComp, "视频字幕", {placeholder});',
-            'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});'
+            'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});',
+            # 'effectsUtil.add(textLayer, "ADBE Glo2");'
         ]
         for conf in subtitles:
             text = conf["text"]

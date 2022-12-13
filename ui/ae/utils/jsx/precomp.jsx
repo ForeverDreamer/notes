@@ -23,12 +23,18 @@ PrecompUtil.prototype.addNodePath = function (comp, conf) {
     strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke");
     strokeGroup("Color").setValue(colorUtil.hexToRgb1(conf["Color"]));
     strokeGroup("Stroke Width").setValue(conf["Stroke Width"]);
+    shapeGroup("Transform")("Anchor Point").setValue([0, 0]);
+    shapeGroup("Transform")("Position").setValue([0, 0]);
     var anchorPoint = shareUtil.setAnchorPoint(shapeLayer);
-    shapeGroup("Transform")("Anchor Point").setValue(conf["Position"]);
-    shapeGroup("Transform")("Position").setValue(conf["Position"]);
     shapeLayer("Transform")("Position").setValue(conf["Position"]);
-    shareUtil.configKeyframes(shapeLayer, conf["keyframes"]);
+    // shareUtil.configKeyframes(shapeLayer, conf["keyframes"]);
     shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Offset").setValue(conf["Offset"]);
+    if (conf["effects"]) {
+        for (var i = 0; i < conf["effects"].length; i++) {
+            effectsUtil.add(shapeLayer, conf["effects"][i]);
+        }
+    }
+    return shapeLayer
 }
 
 PrecompUtil.prototype.addEdgePath = function (comp, conf) {
@@ -51,7 +57,13 @@ PrecompUtil.prototype.addEdgePath = function (comp, conf) {
     if (conf["Rotation"]) {
         shapeLayer("Transform")("Rotation").setValue(conf["Rotation"]);
     }
-    shareUtil.configKeyframes(shapeLayer, conf["keyframes"]);
+    if (conf["effects"]) {
+        for (var i = 0; i < conf["effects"].length; i++) {
+            effectsUtil.add(shapeLayer, conf["effects"][i]);
+        }
+    }
+    // shareUtil.configKeyframes(shapeLayer, conf["keyframes"]);
+    return shapeLayer
 }
 
 PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
@@ -62,10 +74,10 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var elems = conf["elems"];
 
     var scale = node["scale"][0]/100
-    var edgeOffset = 40*scale;
+    var edgeOffset = 45*scale;
     var horizontalDist = 160*scale;
     var verticalDist = 240*scale;
-    var textPos = [65, 75, 0];
+    var textPos = [64, 66, 0];
 
     var NODE_PATH_PREFIX = "Node.Path";
     var EDGE_PATH_PREFIX = "Edge.Path";
@@ -73,15 +85,17 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var EDGE_PREFIX = "Edge";
 
     var rootNodePos = [235*scale, 75*scale, 0]
+    var nodePathLayers = []
+    var edgePathLayers = []
 
-    // var selected = conf["selected"];
-    // if (selected) {
-    //     selected["pos"] = rootNodePos
-    //     selected["layerName"] = "Selected"
-    //     var selectedLayer = shareUtil.addLayer(items, layers, selected);
-    //     shareUtil.configKeyframes(selectedLayer, selected["keyframes"])
-    //     // selectedLayer.moveToEnd()
-    // }
+    var selected = conf["selected"];
+    if (selected) {
+        selected["pos"] = rootNodePos
+        selected["layerName"] = "Selected"
+        var selectedLayer = shareUtil.addLayer(items, layers, selected);
+        shareUtil.configKeyframes(selectedLayer, selected["keyframes"])
+        // selectedLayer.moveToEnd()
+    }
     // var tracker = conf["tracker"];
     // if (tracker) {
     //     tracker["pos"] = rootNodePos
@@ -100,7 +114,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var path = node["Path"]
     path["layerName"] = NODE_PATH_PREFIX + "." + elems[0];
     path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2)
-    this.addNodePath(comp, path)
+    nodePathLayers.push(this.addNodePath(comp, path))
 
     var i = 1;
     var offset = node["Path"]["Offset"]
@@ -122,7 +136,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             path["Position"] = edge["pos"].slice(0, 2);
             path["Rotation"] = 0;
             // $.writeln(path["Position"]);
-            this.addEdgePath(comp, path);
+            edgePathLayers.push(this.addEdgePath(comp, path));
 
             node["pos"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist, parentPos[2]];
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
@@ -132,7 +146,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             var path = node["Path"];
             path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
             path["Position"] = layer("Transform")("Position").value.slice(0, 2)
-            this.addNodePath(comp, path);
+            nodePathLayers.push(this.addNodePath(comp, path));
             queue.push(layer)
         }
         i += 1;
@@ -146,7 +160,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
             path["Position"] = edge["pos"].slice(0, 2);
             path["Rotation"] = -rotation*2
-            this.addEdgePath(comp, path);
+            edgePathLayers.push(this.addEdgePath(comp, path));
 
             node["pos"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist, parentPos[2]]
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
@@ -157,11 +171,20 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
             path["Position"] = layer("Transform")("Position").value.slice(0, 2);
             path["Offset"] = -offset;
-            this.addNodePath(comp, path);
+            nodePathLayers.push(this.addNodePath(comp, path));
             queue.push(layer);
         }
         i += 1;
         // $.writeln("==================================")
+    }
+
+    // 动画
+    for (var i = 0; i < nodePathLayers.length; i++) {
+        shareUtil.configKeyframes(nodePathLayers[i], node["Path"]["keyframes"][i]);
+    }
+
+    for (var i = 0; i < edgePathLayers.length; i++) {
+        shareUtil.configKeyframes(edgePathLayers[i], edge["Path"]["keyframes"][i]);
     }
 
     var compLayer = parentComp.layers.add(comp);

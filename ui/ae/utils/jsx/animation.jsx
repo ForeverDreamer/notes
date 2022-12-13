@@ -37,9 +37,9 @@ AnimationUtil.prototype.buildBinaryTree = function(items, parentComp, conf) {
 		// $.writeln(comp.layers[i].name)
 		layers.push(comp.layers[i])
 	}
-	for (var i = 0; i < numLayers; i++) {
-		$.writeln(layers[i].name)
-	}
+	// for (var i = 0; i < numLayers; i++) {
+	// 	$.writeln(layers[i].name)
+	// }
 	var rootShapeLayer = layers[0];
 	var start = 0;
 	var end = interval;

@@ -1,14 +1,8 @@
-# import hashlib
-#
-# SYNONYM_PATH = r'D:\bjceis\Ruiso\deploy\elasticsearch\config\analysis\synonyms.txt'
-# TERMINOLOGY_PATH = r'D:\bjceis\Ruiso\deploy\elasticsearch\plugins\ik\config\ruiso.dic'
-#
-# print(hashlib.md5(open(SYNONYM_PATH, 'rb').read()).hexdigest())
-# print(hashlib.md5(open(TERMINOLOGY_PATH, 'rb').read()).hexdigest())
-
 import json
 from pprint import pprint as pp
 import re
+
+from conf_utils import *
 
 BASE_DIR = 'D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/'
 IMPORT_AS_TYPE = ('COMP_CROPPED_LAYERS', 'FOOTAGE', 'COMP', 'PROJECT')
@@ -170,140 +164,6 @@ data = {
     ],
     'precomps': [
         {
-            'name': '前序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
-            'pos': [390, 540, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 0,
-            'selected': {
-                'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
-                'keyframes': {
-                    'Transform.Position': [
-                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        [
-                            [188, 60], [188, 60], [60, 252], [60, 252], [316, 252],
-                            [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
-                        ]
-                    ],
-                    # 'Transform.Opacity': [
-                    #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                    #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                    # ]
-                },
-            },
-            'tracker': {
-                'name': 'Node Tracker/Elements.ai', 'scale': [80, 80, 80],
-                'keyframes': {
-                    'Transform.Position': [
-                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        [
-                            [188, 60], [188, 60], [60, 252], [60, 252], [316, 252],
-                            [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
-                        ]
-                    ],
-                    # 'Transform.Opacity': [
-                    #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                    #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                    # ]
-                },
-            },
-            'node': {
-                'name': 'Node White/Elements.ai', 'scale': [80, 80, 80],
-                'Path': {
-                    'vertices': [[0, -50], [50, 0], [0, 50], [-50, 0]],
-                    'inTangents': [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
-                    'outTangents': [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
-                    'closed': 'true',
-                    'Color': '#FF0000',
-                    'Stroke Width': 5,
-                    'Offset': -135,
-                    'keyframes': {
-                        'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, 0.5], [50, 0]],
-                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0, 0.5], [50, 100]],
-                    },
-                },
-            },
-            'edge': {
-                'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30,
-                'Path': {
-                    'vertices': [[153, 95], [88, 211]],
-                    'closed': 'false',
-                    'Color': '#FF0000',
-                    'Stroke Width': 5,
-                    'keyframes': {
-                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0.5, 1], [0, 100]],
-                    },
-                },
-            },
-            'effects': [{'name': 'ADBE Drop Shadow'}],
-            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
-            # '3D': 'true'
-        },
-        {
-            'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
-            'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 0,
-            'selected': {
-                'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
-                'keyframes': {
-                    'Transform.Position': [
-                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        [
-                            [60, 252], [60, 252], [188, 60], [188, 60], [188, 444], [188, 444],
-                            [316, 252], [316, 252], [444, 444], [444, 444]
-                        ]
-                    ],
-                    # 'Transform.Opacity': [
-                    #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                    #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                    # ]
-                },
-            },
-            'tracker': {
-                'name': 'Node Tracker/Elements.ai', 'scale': [80, 80, 80],
-                'keyframes': {
-                    'Transform.Position': [
-                        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        [
-                            [188, 60], [188, 60], [60, 252], [60, 252], [316, 252],
-                            [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
-                        ]
-                    ],
-                    'Transform.Opacity': [
-                        [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                        [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                    ]
-                },
-            },
-            'node': {
-                'name': 'Node White/Elements.ai', 'scale': [80, 80, 80],
-                'Path': {
-                    'vertices': [[0, -50], [50, 0], [0, 50], [-50, 0]],
-                    'inTangents': [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
-                    'outTangents': [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
-                    'closed': 'true',
-                    'Color': '#FF0000',
-                    'Stroke Width': 5,
-                    'Offset': -135,
-                    'keyframes': {
-                        'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, 0.5], [50, 0]],
-                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0, 0.5], [50, 100]],
-                    },
-                },
-            },
-            'edge': {
-                'name': 'Edge/Elements.ai', 'anchor': 'TOP', 'scale': [80, 80, 80], 'rotation': 30,
-                'Path': {
-                    'vertices': [[153, 95], [88, 211]],
-                    'closed': 'false',
-                    'Color': '#FF0000',
-                    'Stroke Width': 5,
-                    'keyframes': {
-                        'Contents.Group 1.Contents.Trim Paths 1.End': [[0.5, 1], [0, 100]],
-                    },
-                },
-            },
-            'effects': [],
-            'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
-            # '3D': 'true'
-        },
-        {
             'name': '调用堆栈', 'type': 'STACK', 'pos': [1000, 800, 0],
             'elems': [
                 {'text': 'hello_world1()', 'keyframes': {}}, 'hello_world2()', 'hello_world3()', 'hello_world4()',
@@ -432,7 +292,7 @@ data = {
         },
     ],
 }
-
+data['precomps'] += create_all_binary_tree()
 # Serializing json
 obj = json.dumps(data, indent=4)
 # print(obj)
