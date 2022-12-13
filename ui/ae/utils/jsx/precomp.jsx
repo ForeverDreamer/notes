@@ -187,6 +187,25 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
         shareUtil.configKeyframes(edgePathLayers[i], edge["Path"]["keyframes"][i]);
     }
 
+    // 音效
+    if (node["Path"]["sound"]) {
+        var soundItem = shareUtil.findItemByName(project.items, node["Path"]["sound"]["name"])
+        var startTimes = node["Path"]["sound"]["startTimes"]
+        for (var i = 0; i < startTimes.length; i++) {
+            var soundLayer = comp.layers.add(soundItem);
+            soundLayer.startTime = startTimes[i];
+        }
+    }
+
+    if (edge["Path"]["sound"]) {
+        var soundItem = shareUtil.findItemByName(project.items, edge["Path"]["sound"]["name"])
+        var startTimes = edge["Path"]["sound"]["startTimes"]
+        for (var i = 0; i < startTimes.length; i++) {
+            var soundLayer = comp.layers.add(soundItem);
+            soundLayer.startTime = startTimes[i];
+        }
+    }
+
     var compLayer = parentComp.layers.add(comp);
     compLayer("Transform")("Position").setValue(conf["pos"])
     compLayer.startTime = conf["startTime"]

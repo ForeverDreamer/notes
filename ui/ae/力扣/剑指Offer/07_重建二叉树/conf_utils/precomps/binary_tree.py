@@ -2,7 +2,7 @@
 def preorder():
     basic = {
         'name': '前序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
-        'pos': [390, 540, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 0,
+        'pos': [390, 540, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
     }
     len_elems = len(basic['elems']) - basic['elems'].count('null')
 
@@ -26,9 +26,14 @@ def preorder():
                            }
                            for i in range(len_elems)
                        ],
+                       'sound': {
+                           'name': 'SFX - Magic 25.wav',
+                           'startTimes': [i*1 for i in range(len_elems)]
+                       }
                    },
                }
     conf = {
+                # 可以用AtomX或其它插件的precomp,preset,effets替换
                'selected': {
                    'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
                    'keyframes': {
@@ -76,6 +81,10 @@ def preorder():
                            }
                            for i in range(len_elems-1)
                        ],
+                       'sound': {
+                           'name': 'SFX - Fast Swoosh 15.wav',
+                           'startTimes': [i*1+0.5 for i in range(len_elems-1)]
+                       }
                    },
                },
                'effects': [{'name': 'ADBE Drop Shadow'}],
@@ -88,11 +97,12 @@ def preorder():
 def inorder():
     basic = {
         'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
-        'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 0,
+        'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
     }
     len_elems = len(basic['elems']) - basic['elems'].count('null')
 
     conf = {
+            # 可以用AtomX或其它插件的precomp,preset,effets替换
             'selected': {
                 'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
                 'keyframes': {

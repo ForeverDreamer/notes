@@ -109,6 +109,15 @@ data = {
                 }
             ],
         },
+        {
+            'path': 'D:/BaiduNetdiskDownload/AtomX 2021-08 整理/AtomX Packages/AtomX All-In-One_Trendy Graphics v5.4/Atom Preview Assets/Sound Effects/Magic/SFX - Magic 25.wav',
+            'import_as_type': IMPORT_AS_TYPE[1],
+        },
+        {
+            'path': 'D:/BaiduNetdiskDownload/AtomX 2021-08 整理/AtomX Packages/AtomX All-In-One_Trendy Graphics v5.4/Atom Preview Assets/Sound Effects/Fast Swooshes/SFX - Fast Swoosh 15.wav',
+            'import_as_type': IMPORT_AS_TYPE[1],
+        },
+
         # 录制的视频用迅雷播放器打开画面会差一些，用系统自带的播放器或导入Ae查看才是真实效果
         {
             'path': f'{BASE_DIR}代码调试.mp4', 'import_as_type': IMPORT_AS_TYPE[1],

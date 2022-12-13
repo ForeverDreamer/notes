@@ -11,8 +11,8 @@
 #include "precomp.jsx"
 
 var project = app.project;
-var comp = project.activeItem;
-var layer = comp.layer(1)
+var mainComp = project.activeItem;
+var layer = mainComp.layer(1)
 // $.writeln(shapeLayer.name)
 // var left = shapeLayer.sourceRectAtTime(0, true).left
 // var top = shapeLayer.sourceRectAtTime(0, true).top
@@ -66,11 +66,11 @@ var layer = comp.layer(1)
 // [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)]
 // $.writeln(colorUtil.hexToRgb("#005FB8", true))
 
-var effects = app.effects
-$.writeln(effects.length)
-for (var i = 0; i < effects.length; i++) {
-    $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
-}
+// var effects = app.effects
+// $.writeln(effects.length)
+// for (var i = 0; i < effects.length; i++) {
+//     $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
+// }
 
 // var taskId = app.scheduleTask('$.writeln(app.findMenuCommandId("AtomX"))', 1000, true)
 // $.writeln(taskId)
@@ -134,3 +134,9 @@ for (var i = 0; i < effects.length; i++) {
 // shapeLayer("Transform")("Position").setValue([anchorPoint[0], anchorPoint[1]])
 // // nodeLayer("Transform")("Position").setValue(myShape.vertices)
 // shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0.5, 1], [0, 100]]})
+
+// 需要手动导入之后，找到precomp名字(可以重命名)再用代码操作
+var atomxCompItem = shareUtil.findItemByName(project.items, "Shape - Basic 75-1")
+var compLayer = mainComp.layers.add(atomxCompItem);
+compLayer("Transform")("Scale").setValue([50, 50])
+compLayer("Transform")("Position").setValue([328, 350])
