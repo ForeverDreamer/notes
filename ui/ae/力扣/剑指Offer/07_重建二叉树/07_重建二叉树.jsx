@@ -124,11 +124,11 @@ function main() {
         var addToLayers = files[i]["addToLayers"]
         if (confLayers) {
             for (var j = 0; j < confLayers.length; j++) {
-                shareUtil.addLayer(project.items, mainComp.layers, confLayers[j])
+                shareUtil.addLayer(mainComp, confLayers[j])
             }
         } else {
             if (addToLayers) {
-                shareUtil.addLayer(project.items, mainComp.layers, files[i], item)
+                shareUtil.addLayer(mainComp, files[i], item)
             }
         }
     }
@@ -157,7 +157,7 @@ function main() {
     var audios = conf['audios']
     for (var i = 0; i < audios.length; i++) {
         var item = shareUtil.importFile(project, audios[i]);
-        shareUtil.addLayer(project.items, mainComp.layers, audios[i], item)
+        shareUtil.addLayer(mainComp, audios[i], item)
         // audioLayer.inPoint = span['inPoint']
         // audioLayer.outPoint = span['outPoint']
         // codePhotoLayer.moveBefore(bgLayer)

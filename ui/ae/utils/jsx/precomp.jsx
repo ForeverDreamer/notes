@@ -4,8 +4,33 @@ PrecompUtil.prototype.stack = function (nodeLayer, edgeLayer, elems) {
 
 }
 
-PrecompUtil.prototype.queue = function (nodeLayer, edgeLayer, elems) {
+PrecompUtil.prototype.queue = function (comp, conf) {
+    var height = conf['height']
+    var elems = conf['elems']
+    var startTime = conf["startTime"]
+    var unit = conf["unit"];
+    var effects = conf['effects']
+    var keyframes = conf['keyframes']
 
+    var queueComp = project.items.addComp('队列.' + conf["name"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+
+    var originalWidth = 108
+    var elemWidth = originalWidth * unit["scale"][0]/100
+	// var height = layer.sourceRectAtTime(startTime, false).height
+    for (var i = 0; i < elems.length; i++) {
+        unit["pos"] = [elemWidth / 2 + elemWidth * i, height / 2, 0]
+        unit["Size"] =  [elemWidth, height]
+        var shapeLayer = shareUtil.addLayer(queueComp, unit);
+        var textLayer = textUtil.overlay(
+            queueComp, shapeLayer, "Text" + "." + elems[i],
+            {"text": elems[i], "font": "Arial-BoldItalicMT", "fontSize": 40, "pos": [elemWidth/2, height/2]}
+        );
+    }
+    var queueLayer = mainComp.layers.add(queueComp);
+    queueLayer.startTime = startTime;
+    shareUtil.setAnchorPoint(queueLayer, 'LEFT')
+    queueLayer("Transform")("Position").setValue(conf["pos"]);
+    effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
 
 PrecompUtil.prototype.addNodePath = function (comp, conf) {
@@ -67,7 +92,7 @@ PrecompUtil.prototype.addEdgePath = function (comp, conf) {
 }
 
 PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
-    var comp = items.addComp(conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE); 
+    var comp = items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE); 
     var layers = comp.layers;
     var node = conf["node"];
     var edge = conf["edge"];
@@ -92,7 +117,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     if (selected) {
         selected["pos"] = rootNodePos
         selected["layerName"] = "Selected"
-        var selectedLayer = shareUtil.addLayer(items, layers, selected);
+        var selectedLayer = shareUtil.addLayer(comp, selected);
         shareUtil.configKeyframes(selectedLayer, selected["keyframes"])
         // selectedLayer.moveToEnd()
     }
@@ -100,7 +125,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     // if (tracker) {
     //     tracker["pos"] = rootNodePos
     //     tracker["layerName"] = "Tracker"
-    //     var trackerLayer = shareUtil.addLayer(items, layers, tracker);
+    //     var trackerLayer = shareUtil.comp(layers, tracker);
     //     shareUtil.configKeyframes(trackerLayer, tracker["keyframes"])
     //     // var effectsProp = trackerLayer.Effects.addProperty("PEDG");
     //     // effectsProp("Radius").expression = "random() * 50 + 10"
@@ -109,7 +134,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
 
     node["pos"] = rootNodePos
     node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[0]
-    var nodeLayer = shareUtil.addLayer(items, layers, node);
+    var nodeLayer = shareUtil.addLayer(comp, node);
     textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[0], {"text": elems[0], "pos": textPos});
     var path = node["Path"]
     path["layerName"] = NODE_PATH_PREFIX + "." + elems[0];
@@ -129,9 +154,9 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             edge["pos"] = [parentPos[0]-edgeOffset, parentPos[1]+edgeOffset, parentPos[2]];
             edge["rotation"] = rotation
             edge["layerName"] = EDGE_PREFIX + "." + "Left" + "." + elems[i]
-            layer = shareUtil.addLayer(items, layers, edge);
+            layer = shareUtil.addLayer(comp, edge);
 
-            var path = edge["Path"];
+            path = edge["Path"];
             path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
             path["Position"] = edge["pos"].slice(0, 2);
             path["Rotation"] = 0;
@@ -140,12 +165,13 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
 
             node["pos"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist, parentPos[2]];
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
-            layer = shareUtil.addLayer(items, layers, node);
+            layer = shareUtil.addLayer(comp, node);
             textUtil.overlay(comp, layer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
 
-            var path = node["Path"];
+            path = node["Path"];
             path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
             path["Position"] = layer("Transform")("Position").value.slice(0, 2)
+            path["Offset"] = offset;
             nodePathLayers.push(this.addNodePath(comp, path));
             queue.push(layer)
         }
@@ -154,9 +180,9 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             edge["pos"] = [parentPos[0]+edgeOffset, parentPos[1]+edgeOffset, parentPos[2]]
             edge["rotation"] = -rotation
             edge["layerName"] = EDGE_PREFIX + "." + "Right" + "." + elems[i]
-            layer = shareUtil.addLayer(items, layers, edge);
+            layer = shareUtil.addLayer(comp, edge);
 
-            var path = edge["Path"]
+            path = edge["Path"]
             path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
             path["Position"] = edge["pos"].slice(0, 2);
             path["Rotation"] = -rotation*2
@@ -164,10 +190,10 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
 
             node["pos"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist, parentPos[2]]
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
-            layer = shareUtil.addLayer(items, layers, node);
+            layer = shareUtil.addLayer(comp, node);
             textUtil.overlay(comp, layer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
 
-            var path = node["Path"];
+            path = node["Path"];
             path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
             path["Position"] = layer("Transform")("Position").value.slice(0, 2);
             path["Offset"] = -offset;
@@ -189,7 +215,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
 
     // 音效
     if (node["Path"]["sound"]) {
-        var soundItem = shareUtil.findItemByName(project.items, node["Path"]["sound"]["name"])
+        var soundItem = shareUtil.findItemByName(node["Path"]["sound"]["name"])
         var startTimes = node["Path"]["sound"]["startTimes"]
         for (var i = 0; i < startTimes.length; i++) {
             var soundLayer = comp.layers.add(soundItem);
@@ -198,7 +224,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     }
 
     if (edge["Path"]["sound"]) {
-        var soundItem = shareUtil.findItemByName(project.items, edge["Path"]["sound"]["name"])
+        var soundItem = shareUtil.findItemByName(edge["Path"]["sound"]["name"])
         var startTimes = edge["Path"]["sound"]["startTimes"]
         for (var i = 0; i < startTimes.length; i++) {
             var soundLayer = comp.layers.add(soundItem);

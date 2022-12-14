@@ -43,9 +43,12 @@ TextUtil.prototype.overlay = function(comp, parent, name, props) {
     textLayer.name = name;
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
-    shareUtil.setAnchorPoint(textLayer)
-    textLayer("Transform")("Position").setValue(props["pos"] ? props["pos"] : [0, 0, 0])
+    // textLayer("Transform")("Anchor Point").setValue(parent("Transform")("Anchor Point").value)
     textLayer.setParentWithJump(parent)
+    shareUtil.setAnchorPoint(textLayer)
+    textLayer("Transform")("Position").setValue(parent("Transform")("Anchor Point").value)
+
+
     return textLayer
 }
 

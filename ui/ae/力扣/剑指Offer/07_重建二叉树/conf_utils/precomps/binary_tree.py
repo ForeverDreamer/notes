@@ -17,7 +17,7 @@ def preorder():
                        'closed': 'true',
                        'Color': '#B5FF6A',
                        'Stroke Width': 5,
-                       'Offset': -135,
+                       'Offset': -180,
                        'effects': ['ADBE Glo2'],
                        'keyframes': [
                            {

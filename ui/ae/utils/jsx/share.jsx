@@ -36,23 +36,23 @@ ShareUtil.prototype.importFile = function (project, conf) {
 	var confLayers = conf["layers"]
 	if (confLayers) {
 		for (var i = 0; i < confLayers.length; i++) {
-			var parent = shareUtil.addLayer(project.items, mainComp.layers, confLayers[i])
+			var parent = shareUtil.addLayer(mainComp, confLayers[i])
 			children = confLayers[i]["children"]
 			if (children) {
 				for (var j = 0; j < children.length; j++) {
-					shareUtil.addLayer(project.items, mainComp.layers, children[j], null, parent)
+					shareUtil.addLayer(mainComp, children[j], null, parent)
 				}
 			}
 		}
 	}
 }
 
-ShareUtil.prototype.addLayer = function (items, layers, conf, item, parent) {
+ShareUtil.prototype.addLayer = function (comp, conf, item, parent) {
 	var layer;
 	if (item) {
-		layer = layers.add(item);
+		layer = comp.layers.add(item);
 	} else {
-		layer = layers.add(this.findItemByName(items, conf["name"]));
+		layer = comp.layers.add(this.findItemByName(conf["name"]));
 	}
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];
@@ -122,9 +122,9 @@ ShareUtil.prototype.delItems = function (items) {
 	}
 }
 
-ShareUtil.prototype.findItemByName = function (items, name) {
-	for (var i = 1; i <= items.length; i++) {
-		var item = items[i];
+ShareUtil.prototype.findItemByName = function (name) {
+	for (var i = 1; i <= project.items.length; i++) {
+		var item = project.items[i];
 		if (item.name == name) {
 			return item;
 		}

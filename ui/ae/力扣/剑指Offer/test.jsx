@@ -136,7 +136,16 @@ var layer = mainComp.layer(1)
 // shareUtil.configKeyframes(shapeLayer, {"Contents.Group 1.Contents.Trim Paths 1.End": [[0.5, 1], [0, 100]]})
 
 // 需要手动导入之后，找到precomp名字(可以重命名)再用代码操作
-var atomxCompItem = shareUtil.findItemByName(project.items, "Shape - Basic 75-1")
-var compLayer = mainComp.layers.add(atomxCompItem);
-compLayer("Transform")("Scale").setValue([50, 50])
-compLayer("Transform")("Position").setValue([328, 350])
+// var atomxCompItem = shareUtil.findItemByName("Shape - Basic 75-1")
+// var compLayer = mainComp.layers.add(atomxCompItem);
+// compLayer("Transform")("Scale").setValue([50, 50])
+// compLayer("Transform")("Position").setValue([328, 350])
+
+var dic = {"a": 1, "nested": {"b": 1, "c": 2}}
+$.writeln(dic["a"])
+// 注意：此处并没有清空原变量的数据，"a"和"nested"仍然可以正常访问，坑！！！
+var dic;
+$.writeln(dic["a"])
+dic["a"] = 2
+$.writeln(dic["a"])
+$.writeln(dic["nested"])

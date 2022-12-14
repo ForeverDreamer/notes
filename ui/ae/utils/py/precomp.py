@@ -108,7 +108,8 @@ class PrecompUtil:
             if conf['type'] == 'STACK':
                 statements += self._stack(conf)
             elif conf['type'] == 'QUEUE':
-                statements += self._queue(conf)
+                # statements += self._queue(conf)
+                statements.append(f'precompUtil.queue(mainComp, {conf});')
             elif conf['type'] == 'LINKED_LIST':
                 pass
             elif conf['type'] == 'BINARY_TREE':
@@ -146,7 +147,7 @@ class PrecompUtil:
         node['pos'] = [225 * scale, 65 * scale, 0]
         node['layerName'] = f'{node_prefix}.Shape.{elems[0]}'
         layer = 'nodeLayer'
-        statements.append(f'var {layer} = comp.layers.add(shareUtil.findItemByName(project.items, "{node["name"]}"));')
+        statements.append(f'var {layer} = comp.layers.add(shareUtil.findItemByName("{node["name"]}"));')
         statements += ShareUtil(None).configLayer(layer, node)
 
         return statements
@@ -173,6 +174,6 @@ class PrecompUtil:
                     pos_y += 43
         statements.append('var codeLayer = mainComp.layers.add(codeComp);')
         statements.append('var conf =  {};')
-        statements.append('conf["name"] = "Arrow Shape/Elements.ai"; shareUtil.addLayer(project. items, mainComp.layers, conf);')
+        statements.append('conf["name"] = "Arrow Shape/Elements.ai"; shareUtil.addLayer(mainComp, conf);')
 
         return statements

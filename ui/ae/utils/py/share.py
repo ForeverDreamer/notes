@@ -71,7 +71,7 @@ class ShareUtil:
             'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
-            'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 300, 30);',
+            'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 90, 30);',
             'mainComp.openInViewer();',
             'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#232323"), "BG", 1920, 1080, 1);',
             'bgLayer.moveToEnd();',
@@ -181,13 +181,13 @@ class ShareUtil:
             if conf_layers:
                 for conf in conf_layers:
                     parent_layer = 'parentLayer'
-                    statements.append(f'var {parent_layer} = mainComp.layers.add(shareUtil.findItemByName(project.items, "{conf["name"]}"));',)
+                    statements.append(f'var {parent_layer} = mainComp.layers.add(shareUtil.findItemByName("{conf["name"]}"));',)
                     statements += self.configLayer(parent_layer, conf)
                     children = conf.get('children')
                     if children:
                         for child in children:
                             child_layer = 'childLayer'
-                            statements.append(f'var {child_layer} = mainComp.layers.add(shareUtil.findItemByName(project.items, "{child["name"]}"));')
+                            statements.append(f'var {child_layer} = mainComp.layers.add(shareUtil.findItemByName("{child["name"]}"));')
                             statements += self.configLayer(child_layer, child, parent_layer)
         statements.append('\n')
         # return self._engine.execute('ShareUtil.import_files', statements)
