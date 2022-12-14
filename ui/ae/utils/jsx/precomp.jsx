@@ -53,6 +53,8 @@ PrecompUtil.prototype.addNodePath = function (comp, conf) {
     var anchorPoint = shareUtil.setAnchorPoint(shapeLayer);
     shapeLayer("Transform")("Position").setValue(conf["Position"]);
     // shareUtil.configKeyframes(shapeLayer, conf["keyframes"]);
+    shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Start").setValue(conf["Start"]);
+    shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("End").setValue(conf["End"]);
     shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Offset").setValue(conf["Offset"]);
     if (conf["effects"]) {
         for (var i = 0; i < conf["effects"].length; i++) {
@@ -82,6 +84,7 @@ PrecompUtil.prototype.addEdgePath = function (comp, conf) {
     if (conf["Rotation"]) {
         shapeLayer("Transform")("Rotation").setValue(conf["Rotation"]);
     }
+    shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("End").setValue(conf["End"]);
     if (conf["effects"]) {
         for (var i = 0; i < conf["effects"].length; i++) {
             effectsUtil.add(shapeLayer, conf["effects"][i]);
@@ -93,7 +96,6 @@ PrecompUtil.prototype.addEdgePath = function (comp, conf) {
 
 PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var comp = items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE); 
-    var layers = comp.layers;
     var selected = conf["selected"];
     var node = conf["node"];
     var edge = conf["edge"];
@@ -142,7 +144,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2)
     var nodePathLayer = this.addNodePath(comp, path)
     nodePathLayers.push(nodePathLayer)
-    var rootNode = {"key": elems[0], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer}, "left": null, "right": null}
+    var rootNode = {"key": elems[0], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {}}, "left": null, "right": null}
 
     var i = 1;
     var offset = node["Path"]["Offset"]
@@ -155,6 +157,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
         var treeNode = treeNodeQueue.shift();
         var parentPos = parentNodeLayer("Transform")("Position").value;
         var nodeLayer;
+        var edgePathLayer;
         if (js_null(elems[i])) {
             edge["pos"] = [parentPos[0]-edgeOffset, parentPos[1]+edgeOffset, parentPos[2]];
             edge["rotation"] = rotation
@@ -166,7 +169,8 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             path["Position"] = edge["pos"].slice(0, 2);
             path["Rotation"] = 0;
             // $.writeln(path["Position"]);
-            edgePathLayers.push(this.addEdgePath(comp, path));
+            edgePathLayer = this.addEdgePath(comp, path)
+            edgePathLayers.push(edgePathLayer);
 
             node["pos"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist, parentPos[2]];
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
@@ -181,7 +185,8 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             nodePathLayers.push(nodePathLayer);
             queue.push(nodeLayer)
 
-            treeNode["left"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer}, "left": null, "right": null}
+            treeNode["data"]["edgePathLayer"]["forward_left"] = nodePathLayer
+            treeNode["left"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
             treeNodeQueue.push(treeNode["left"])
         }
         i += 1;
@@ -195,7 +200,8 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
             path["Position"] = edge["pos"].slice(0, 2);
             path["Rotation"] = -rotation*2
-            edgePathLayers.push(this.addEdgePath(comp, path));
+            edgePathLayer = this.addEdgePath(comp, path);
+            edgePathLayers.push(edgePathLayer);
 
             node["pos"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist, parentPos[2]]
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
@@ -209,59 +215,138 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             nodePathLayer = this.addNodePath(comp, path)
             nodePathLayers.push(nodePathLayer);
             queue.push(nodeLayer);
-
-            treeNode["right"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer}, "left": null, "right": null}
+            
+            treeNode["data"]["edgePathLayer"]["forward_right"] = nodePathLayer
+            treeNode["right"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
             treeNodeQueue.push(treeNode["right"])
         }
         i += 1;
         // $.writeln("==================================")
     }
 
-    var inorderKeyframe = {
-        'Transform.Opacity': [[1, 1.5], [0, 100]]
-    }
+    var forwardPath = []
+    var backwardPath = []
 
     function inorderProcess(data) {
-        $.writeln("==================================")
-        var nodeLayer = data["nodeLayer"]
-        $.writeln(nodeLayer.name)
-        var nodePathLayer = data["nodePathLayer"]
-        $.writeln(nodePathLayer.name)
-        shareUtil.configKeyframes(nodePathLayer, inorderKeyframe);
-        for (var k in inorderKeyframe) {
-            inorderKeyframe[k][0][0] += 1
-            inorderKeyframe[k][0][1] = inorderKeyframe[k][0][0] + 0.5
-        }
+        // $.writeln("==================================")
+        // var nodeLayer = data["nodeLayer"]
+        // $.writeln(nodeLayer.name)
+        // var nodePathLayer = data["nodePathLayer"]
+        // $.writeln(nodePathLayer.name)
+        // shareUtil.configKeyframes(nodePathLayer, inorderKeyframe);
+        // for (var k in inorderKeyframe) {
+        //     inorderKeyframe[k][0][0] += 1
+        //     inorderKeyframe[k][0][1] = inorderKeyframe[k][0][0] + 0.5
+        // }
     }
 
 
     function preorder(root, func) {
         // $.writeln(root["key"])
-        func(root["data"])
+        func(root["data"]);
         if (root["left"]) {
-            preorder(root["left"], func)
+            preorder(root["left"], func);
         }
         if (root["right"]) {
-            preorder(root["right"], func)
+            preorder(root["right"], func);
         }
     }
 
     // $.writeln("二叉树前序==================================")
     // preorder(rootNode, processNode)
-
+    var times = [1, 1.5]
+    var nodeKeyframes;
+    var edgeKeyframes;
     function inorder(root, func) {
+        forwardPath.push(root["data"]["nodePathLayer"])
         if (root["left"]) {
+            forwardPath.push(root["left"]["data"]["edgePathLayer"]["backward"])
+            backwardPath.unshift(root["left"]["data"]["edgePathLayer"]["backward"])
+            backwardPath.unshift(root["left"]["data"]["nodePathLayer"])
             inorder(root["left"], func)
         }
         // $.writeln(root["key"])
         func(root["data"])
         if (root["right"]) {
+            forwardPath.push(root["right"]["data"]["edgePathLayer"]["backward"])
+            backwardPath.unshift(root["right"]["data"]["edgePathLayer"]["backward"])
+            backwardPath.unshift(root["right"]["data"]["nodePathLayer"])
             inorder(root["right"], func)
+        }
+        if (!root["left"] && !root["right"]) {
+            $.writeln("配置路径动画==================================")
+            keys = {}
+            // 配置路径动画
+            nodeKeyframes = {
+                'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [50, 0]],
+                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [50, 100]],
+            }
+            edgeKeyframes = {
+                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [0, 100]],
+            }
+            for (var i = 0; i < forwardPath.length; i++) {
+                $.writeln(forwardPath[i].name)
+                if (forwardPath[i].name.indexOf("Node") == 0) {
+                    if (!keys[forwardPath[i].name]) {
+                        shareUtil.configKeyframes(forwardPath[i],  {
+                            'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+                            'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+                        });
+                    }
+                    shareUtil.configKeyframes(forwardPath[i], nodeKeyframes);
+                } else {
+                    if (!keys[forwardPath[i].name]) {
+                        shareUtil.configKeyframes(forwardPath[i],  {
+                            'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
+                        });
+                    }
+                    shareUtil.configKeyframes(forwardPath[i], edgeKeyframes);
+                }
+                keys[forwardPath[i].name] = true
+                times[0] += 1
+                times[1] = times[0] + 0.5
+            }
+            forwardPath = [];
+
+            $.writeln("==================================")
+            nodeKeyframes = {
+                'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
+                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 50]],
+            }
+            edgeKeyframes = {
+                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 0]],
+            }
+
+            if (backwardPath.length > 0) {
+                for (var i = 0; i < 2; i++) {
+                    $.writeln(backwardPath[0].name)
+                    if (backwardPath[0].name.indexOf("Node") == 0) {
+                        shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
+                    } else {
+                        shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
+                    }
+                    times[0] += 1
+                    times[1] = times[0] + 0.5
+                    backwardPath.shift()
+                }
+            }
+            // backwardPath = [];
         }
     }
 
     $.writeln("二叉树中序==================================")
     inorder(rootNode, inorderProcess)
+    for (var i = 0; i < 2; i++) {
+        $.writeln(backwardPath[0].name)
+        if (backwardPath[0].name.indexOf("Node") == 0) {
+            shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
+        } else {
+            shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
+        }
+        times[0] += 1
+        times[1] = times[0] + 0.5
+        backwardPath.shift()
+    }
 
     // 动画
     // for (var i = 0; i < nodePathLayers.length; i++) {

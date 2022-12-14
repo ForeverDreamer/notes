@@ -142,15 +142,17 @@ def inorder():
                     'closed': 'true',
                     'Color': '#B5FF6A',
                     'Stroke Width': 5,
+                    'Start': 50,
+                    'End': 50,
                     'Offset': -135,
                     'effects': ['ADBE Glo2'],
-                    'keyframes': [
-                        {
-                            'Contents.Group 1.Contents.Trim Paths 1.Start': [[i * 1, i * 1 + 0.5], [50, 0]],
-                            'Contents.Group 1.Contents.Trim Paths 1.End': [[i * 1, i * 1 + 0.5], [50, 100]],
-                        }
-                        for i in range(len_elems)
-                    ],
+                    # 'keyframes': [
+                    #     {
+                    #         'Contents.Group 1.Contents.Trim Paths 1.Start': [[i * 1, i * 1 + 0.5], [50, 0]],
+                    #         'Contents.Group 1.Contents.Trim Paths 1.End': [[i * 1, i * 1 + 0.5], [50, 100]],
+                    #     }
+                    #     for i in range(len_elems)
+                    # ],
                 },
             },
             'edge': {
@@ -160,13 +162,14 @@ def inorder():
                     'closed': 'false',
                     'Color': '#B5FF6A',
                     'Stroke Width': 5,
+                    'End': 0,
                     'effects': ['ADBE Glo2'],
-                    'keyframes': [
-                        {
-                            'Contents.Group 1.Contents.Trim Paths 1.End': [[i * 1 + 0.5, i * 1 + 1], [0, 100]],
-                        }
-                        for i in range(len_elems - 1)
-                    ],
+                    # 'keyframes': [
+                    #     {
+                    #         'Contents.Group 1.Contents.Trim Paths 1.End': [[i * 1 + 0.5, i * 1 + 1], [0, 100]],
+                    #     }
+                    #     for i in range(len_elems - 1)
+                    # ],
                 },
             },
             'effects': [],
@@ -177,5 +180,6 @@ def inorder():
 
 
 def create_all():
-    confs = [preorder(), inorder()]
+    # confs = [preorder(), inorder()]
+    confs = [inorder()]
     return confs

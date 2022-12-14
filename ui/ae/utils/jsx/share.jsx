@@ -156,10 +156,10 @@ ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 		for (var i = 1; i < propChain.length; i++) {
 			prop = prop(propChain[i])
 		}
-		var numKeys = prop.numKeys
-		for (var i = numKeys; i >= 1; i--) {
-			prop.removeKey(i)
-		}
+		// var numKeys = prop.numKeys
+		// for (var i = numKeys; i >= 1; i--) {
+		// 	prop.removeKey(i)
+		// }
 		prop.setValuesAtTimes(keyframes[k][0], keyframes[k][1]);
 	}
 }

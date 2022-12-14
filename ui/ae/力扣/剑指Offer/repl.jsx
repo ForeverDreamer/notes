@@ -1,8 +1,18 @@
+#includepath "../../utils/jsx;";
+#include "constants.jsx";
+#include "json.jsx";
+#include "animation.jsx";
+#include "share.jsx";
+#include "color.jsx";
+#include "effects.jsx";
+#include "presets.jsx";
+#include "text.jsx";
+#include "shape.jsx";
+#include "precomp.jsx"
+
 var project = app.project;
 var comp = project.activeItem;
-var shapeLayer = comp.layer(2)
-$.writeln()
-// colorProp = shapeLayer("Contents")("Group 1")("Contents")("Fill 1")("Color")
+var shapeLayer = comp.layer(1)
 // $.writeln(colorProp.name);
 // $.writeln(shapeLayer("Effects")("Drop Shadow")("Softness").value)
 // colorProp.setValue([0.01, 0.37254901960784, 0.72156862745098])
