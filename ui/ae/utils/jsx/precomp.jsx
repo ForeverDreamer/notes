@@ -94,6 +94,7 @@ PrecompUtil.prototype.addEdgePath = function (comp, conf) {
 PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var comp = items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE); 
     var layers = comp.layers;
+    var selected = conf["selected"];
     var node = conf["node"];
     var edge = conf["edge"];
     var elems = conf["elems"];
@@ -139,22 +140,26 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var path = node["Path"]
     path["layerName"] = NODE_PATH_PREFIX + "." + elems[0];
     path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2)
-    nodePathLayers.push(this.addNodePath(comp, path))
+    var nodePathLayer = this.addNodePath(comp, path)
+    nodePathLayers.push(nodePathLayer)
+    var rootNode = {"key": elems[0], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer}, "left": null, "right": null}
 
     var i = 1;
     var offset = node["Path"]["Offset"]
     var rotation = edge["rotation"]
     var queue = [nodeLayer];
+    var treeNodeQueue = [rootNode]
     // $.writeln(elems)
     while (queue.length > 0) {
         var parentNodeLayer = queue.shift();
+        var treeNode = treeNodeQueue.shift();
         var parentPos = parentNodeLayer("Transform")("Position").value;
-        var layer;
+        var nodeLayer;
         if (js_null(elems[i])) {
             edge["pos"] = [parentPos[0]-edgeOffset, parentPos[1]+edgeOffset, parentPos[2]];
             edge["rotation"] = rotation
             edge["layerName"] = EDGE_PREFIX + "." + "Left" + "." + elems[i]
-            layer = shareUtil.addLayer(comp, edge);
+            shareUtil.addLayer(comp, edge);
 
             path = edge["Path"];
             path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
@@ -165,22 +170,26 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
 
             node["pos"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist, parentPos[2]];
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
-            layer = shareUtil.addLayer(comp, node);
-            textUtil.overlay(comp, layer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
+            nodeLayer = shareUtil.addLayer(comp, node);
+            textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
 
             path = node["Path"];
             path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
-            path["Position"] = layer("Transform")("Position").value.slice(0, 2)
+            path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2)
             path["Offset"] = offset;
-            nodePathLayers.push(this.addNodePath(comp, path));
-            queue.push(layer)
+            nodePathLayer = this.addNodePath(comp, path)
+            nodePathLayers.push(nodePathLayer);
+            queue.push(nodeLayer)
+
+            treeNode["left"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer}, "left": null, "right": null}
+            treeNodeQueue.push(treeNode["left"])
         }
         i += 1;
         if (js_null(elems[i])) {
             edge["pos"] = [parentPos[0]+edgeOffset, parentPos[1]+edgeOffset, parentPos[2]]
             edge["rotation"] = -rotation
             edge["layerName"] = EDGE_PREFIX + "." + "Right" + "." + elems[i]
-            layer = shareUtil.addLayer(comp, edge);
+            shareUtil.addLayer(comp, edge);
 
             path = edge["Path"]
             path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
@@ -190,28 +199,78 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
 
             node["pos"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist, parentPos[2]]
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
-            layer = shareUtil.addLayer(comp, node);
-            textUtil.overlay(comp, layer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
+            nodeLayer = shareUtil.addLayer(comp, node);
+            textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
 
             path = node["Path"];
             path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
-            path["Position"] = layer("Transform")("Position").value.slice(0, 2);
+            path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2);
             path["Offset"] = -offset;
-            nodePathLayers.push(this.addNodePath(comp, path));
-            queue.push(layer);
+            nodePathLayer = this.addNodePath(comp, path)
+            nodePathLayers.push(nodePathLayer);
+            queue.push(nodeLayer);
+
+            treeNode["right"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer}, "left": null, "right": null}
+            treeNodeQueue.push(treeNode["right"])
         }
         i += 1;
         // $.writeln("==================================")
     }
 
-    // 动画
-    for (var i = 0; i < nodePathLayers.length; i++) {
-        shareUtil.configKeyframes(nodePathLayers[i], node["Path"]["keyframes"][i]);
+    var inorderKeyframe = {
+        'Transform.Opacity': [[1, 1.5], [0, 100]]
     }
 
-    for (var i = 0; i < edgePathLayers.length; i++) {
-        shareUtil.configKeyframes(edgePathLayers[i], edge["Path"]["keyframes"][i]);
+    function inorderProcess(data) {
+        $.writeln("==================================")
+        var nodeLayer = data["nodeLayer"]
+        $.writeln(nodeLayer.name)
+        var nodePathLayer = data["nodePathLayer"]
+        $.writeln(nodePathLayer.name)
+        shareUtil.configKeyframes(nodePathLayer, inorderKeyframe);
+        for (var k in inorderKeyframe) {
+            inorderKeyframe[k][0][0] += 1
+            inorderKeyframe[k][0][1] = inorderKeyframe[k][0][0] + 0.5
+        }
     }
+
+
+    function preorder(root, func) {
+        // $.writeln(root["key"])
+        func(root["data"])
+        if (root["left"]) {
+            preorder(root["left"], func)
+        }
+        if (root["right"]) {
+            preorder(root["right"], func)
+        }
+    }
+
+    // $.writeln("二叉树前序==================================")
+    // preorder(rootNode, processNode)
+
+    function inorder(root, func) {
+        if (root["left"]) {
+            inorder(root["left"], func)
+        }
+        // $.writeln(root["key"])
+        func(root["data"])
+        if (root["right"]) {
+            inorder(root["right"], func)
+        }
+    }
+
+    $.writeln("二叉树中序==================================")
+    inorder(rootNode, inorderProcess)
+
+    // 动画
+    // for (var i = 0; i < nodePathLayers.length; i++) {
+    //     shareUtil.configKeyframes(nodePathLayers[i], node["Path"]["keyframes"][i]);
+    // }
+
+    // for (var i = 0; i < edgePathLayers.length; i++) {
+    //     shareUtil.configKeyframes(edgePathLayers[i], edge["Path"]["keyframes"][i]);
+    // }
 
     // 音效
     if (node["Path"]["sound"]) {
