@@ -102,6 +102,7 @@ target/
 *.xlsx
 data
 *.pdf
+!e262-3.pdf
 intellij_idea_demo
 
 ui/ae/tmp
