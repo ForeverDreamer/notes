@@ -69,6 +69,9 @@ ShareUtil.prototype.addLayer = function (comp, conf, item, parent) {
 	if (conf['rotation']) {
 		layer("Transform")("Rotation").setValue(conf["rotation"]);
 	}
+	if (typeof conf["Opacity"] !== "undefined") {
+		layer("Transform")("Opacity").setValue(conf["Opacity"]);
+	}
 	var masks = conf['Masks']
 	if (masks) {
 		for (var i = 0; i < masks.length; i++) {

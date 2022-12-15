@@ -94,8 +94,8 @@ PrecompUtil.prototype.addEdgePath = function (comp, conf) {
     return shapeLayer
 }
 
-PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
-    var comp = items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE); 
+PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
+    var comp = project.items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE); 
     var selected = conf["selected"];
     var node = conf["node"];
     var edge = conf["edge"];
@@ -115,15 +115,8 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     var rootNodePos = [235*scale, 75*scale, 0]
     var nodePathLayers = []
     var edgePathLayers = []
+    var selectedLayers = {}
 
-    var selected = conf["selected"];
-    if (selected) {
-        selected["pos"] = rootNodePos
-        selected["layerName"] = "Selected"
-        var selectedLayer = shareUtil.addLayer(comp, selected);
-        shareUtil.configKeyframes(selectedLayer, selected["keyframes"])
-        // selectedLayer.moveToEnd()
-    }
     // var tracker = conf["tracker"];
     // if (tracker) {
     //     tracker["pos"] = rootNodePos
@@ -138,13 +131,22 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
     node["pos"] = rootNodePos
     node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[0]
     var nodeLayer = shareUtil.addLayer(comp, node);
+
+    selected["pos"] = node["pos"]
+    selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + elems[0]
+    var selectedLayer = shareUtil.addLayer(comp, selected);
+    selectedLayers[selected["layerName"]] = selectedLayer
+
     textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[0], {"text": elems[0], "pos": textPos});
+
+
     var path = node["Path"]
     path["layerName"] = NODE_PATH_PREFIX + "." + elems[0];
     path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2)
     var nodePathLayer = this.addNodePath(comp, path)
     nodePathLayers.push(nodePathLayer)
-    var rootNode = {"key": elems[0], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {}}, "left": null, "right": null}
+
+    var rootNode = {"key": elems[0], "data": {"nodeLayer": nodeLayer, "selectedLayer": selectedLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {}}, "left": null, "right": null}
 
     var i = 1;
     var offset = node["Path"]["Offset"]
@@ -175,6 +177,12 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             node["pos"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist, parentPos[2]];
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
             nodeLayer = shareUtil.addLayer(comp, node);
+
+            selected["pos"] = node["pos"]
+            selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + elems[i]
+            var selectedLayer = shareUtil.addLayer(comp, selected);
+            selectedLayers[selected["layerName"]] = selectedLayer
+
             textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
 
             path = node["Path"];
@@ -185,8 +193,8 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             nodePathLayers.push(nodePathLayer);
             queue.push(nodeLayer)
 
-            treeNode["data"]["edgePathLayer"]["forward_left"] = nodePathLayer
-            treeNode["left"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
+            // treeNode["data"]["edgePathLayer"]["forward_left"] = nodePathLayer
+            treeNode["left"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "selectedLayer": selectedLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
             treeNodeQueue.push(treeNode["left"])
         }
         i += 1;
@@ -206,6 +214,12 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             node["pos"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist, parentPos[2]]
             node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
             nodeLayer = shareUtil.addLayer(comp, node);
+
+            selected["pos"] = node["pos"]
+            selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + elems[i]
+            var selectedLayer = shareUtil.addLayer(comp, selected);
+            selectedLayers[selected["layerName"]] = selectedLayer
+
             textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
 
             path = node["Path"];
@@ -216,8 +230,8 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             nodePathLayers.push(nodePathLayer);
             queue.push(nodeLayer);
             
-            treeNode["data"]["edgePathLayer"]["forward_right"] = nodePathLayer
-            treeNode["right"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
+            // treeNode["data"]["edgePathLayer"]["forward_right"] = nodePathLayer
+            treeNode["right"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "selectedLayer": selectedLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
             treeNodeQueue.push(treeNode["right"])
         }
         i += 1;
@@ -261,6 +275,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
         forwardPath.push(root["data"]["nodePathLayer"])
         if (root["left"]) {
             forwardPath.push(root["left"]["data"]["edgePathLayer"]["backward"])
+            backwardPath.unshift(root["data"]["nodePathLayer"])
             backwardPath.unshift(root["left"]["data"]["edgePathLayer"]["backward"])
             backwardPath.unshift(root["left"]["data"]["nodePathLayer"])
             inorder(root["left"], func)
@@ -269,6 +284,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
         func(root["data"])
         if (root["right"]) {
             forwardPath.push(root["right"]["data"]["edgePathLayer"]["backward"])
+            backwardPath.unshift(root["data"]["nodePathLayer"])
             backwardPath.unshift(root["right"]["data"]["edgePathLayer"]["backward"])
             backwardPath.unshift(root["right"]["data"]["nodePathLayer"])
             inorder(root["right"], func)
@@ -287,25 +303,27 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
             for (var i = 0; i < forwardPath.length; i++) {
                 $.writeln(forwardPath[i].name)
                 if (forwardPath[i].name.indexOf("Node") == 0) {
-                    if (!keys[forwardPath[i].name]) {
-                        shareUtil.configKeyframes(forwardPath[i],  {
-                            'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, times[0]-1/FRAME_RATE], [50, 50]],
-                            'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
-                        });
-                    }
+                    // if (!keys[forwardPath[i].name]) {
+                    //     shareUtil.configKeyframes(forwardPath[i],  {
+                    //         'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+                    //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+                    //     });
+                    // }
                     shareUtil.configKeyframes(forwardPath[i], nodeKeyframes);
                 } else {
-                    if (!keys[forwardPath[i].name]) {
-                        shareUtil.configKeyframes(forwardPath[i],  {
-                            'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
-                        });
-                    }
+                    // if (!keys[forwardPath[i].name]) {
+                    //     shareUtil.configKeyframes(forwardPath[i],  {
+                    //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
+                    //     });
+                    // }
                     shareUtil.configKeyframes(forwardPath[i], edgeKeyframes);
                 }
                 keys[forwardPath[i].name] = true
                 times[0] += 1
                 times[1] = times[0] + 0.5
             }
+            var selectedLayerName = forwardPath[i-1].name.replace("Path", "Selected")
+            shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
             forwardPath = [];
 
             $.writeln("==================================")
@@ -329,6 +347,10 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
                     times[1] = times[0] + 0.5
                     backwardPath.shift()
                 }
+            }
+            selectedLayerName = backwardPath.shift().name.replace("Path", "Selected")
+            if (selectedLayers[selectedLayerName]("Transform")("Opacity").numKeys === 0) {
+                shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
             }
             // backwardPath = [];
         }

@@ -113,7 +113,7 @@ class PrecompUtil:
             elif conf['type'] == 'LINKED_LIST':
                 pass
             elif conf['type'] == 'BINARY_TREE':
-                statements.append(f'animationUtil.buildBinaryTree(project.items, mainComp, {conf});')
+                statements.append(f'precompUtil.binaryTree(mainComp, {conf});')
             elif conf['type'] == 'GRAPH':
                 pass
             elif conf['type'] == 'CODE':
