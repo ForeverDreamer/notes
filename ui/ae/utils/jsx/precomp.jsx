@@ -369,6 +369,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         times[1] = times[0] + 0.5
         backwardPath.shift()
     }
+    shareUtil.configKeyframes(rootNode["data"]["nodePathLayer"], nodeKeyframes);
 
     // 动画
     // for (var i = 0; i < nodePathLayers.length; i++) {
