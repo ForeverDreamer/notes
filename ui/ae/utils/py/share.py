@@ -68,12 +68,12 @@ class ShareUtil:
             '#include "precomp.jsx";',
             '#include "animation.jsx";',
             '#include "presets.jsx";',
-            'app.purge(PurgeTarget.ALL_CACHES);',
+            # 'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 90, 30);',
             'mainComp.openInViewer();',
-            'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#232323"), "BG", 1920, 1080, 1);',
+            'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", 1920, 1080, 1);',
             'bgLayer.moveToEnd();',
         ]
         statements.append('\n')

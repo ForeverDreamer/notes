@@ -97,7 +97,8 @@ def preorder():
 def inorder():
     basic = {
         'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
-        'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
+        'pos': [390, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
+        # 'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
     }
     len_elems = len(basic['elems']) - basic['elems'].count('null')
     # selected_keyframes = [
@@ -135,7 +136,7 @@ def inorder():
                     'inTangents': [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
                     'outTangents': [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
                     'closed': 'true',
-                    'Color': '#B5FF6A',
+                    'Color': '#F8F9FB',
                     'Stroke Width': 5,
                     'Start': 50,
                     'End': 50,
@@ -155,7 +156,7 @@ def inorder():
                 'Path': {
                     'vertices': [[153, 95], [88, 211]],
                     'closed': 'false',
-                    'Color': '#B5FF6A',
+                    'Color': '#F8F9FB',
                     'Stroke Width': 5,
                     'End': 0,
                     'effects': ['ADBE Glo2'],

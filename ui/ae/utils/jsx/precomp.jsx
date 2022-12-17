@@ -4,7 +4,12 @@ PrecompUtil.prototype.stack = function (nodeLayer, edgeLayer, elems) {
 
 }
 
+PrecompUtil.prototype.stack = function (comp, conf) {
+
+}
+
 PrecompUtil.prototype.queue = function (comp, conf) {
+    this.queueInorderLayers = {}
     var height = conf['height']
     var elems = conf['elems']
     var startTime = conf["startTime"]
@@ -21,16 +26,18 @@ PrecompUtil.prototype.queue = function (comp, conf) {
         unit["pos"] = [elemWidth / 2 + elemWidth * i, height / 2, 0]
         unit["Size"] =  [elemWidth, height]
         var shapeLayer = shareUtil.addLayer(queueComp, unit);
+        shapeLayer.name = "Shape" + "." + elems[i]
         var textLayer = textUtil.overlay(
             queueComp, shapeLayer, "Text" + "." + elems[i],
             {"text": elems[i], "font": "Arial-BoldItalicMT", "fontSize": 40, "pos": [elemWidth/2, height/2]}
         );
+        this.queueInorderLayers[elems[i].toString()] = {'shape': shapeLayer, "text": textLayer}
     }
     var queueLayer = mainComp.layers.add(queueComp);
     queueLayer.startTime = startTime;
     shareUtil.setAnchorPoint(queueLayer, 'LEFT')
     queueLayer("Transform")("Position").setValue(conf["pos"]);
-    effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
+    // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
 
 PrecompUtil.prototype.addNodePath = function (comp, conf) {
@@ -323,7 +330,8 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
                 times[1] = times[0] + 0.5
             }
             var selectedLayerName = forwardPath[i-1].name.replace("Path", "Selected")
-            shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
+            var props = shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
+            shareUtil.setKeyframeInterpolationType(props, KeyframeInterpolationType.HOLD)
             forwardPath = [];
 
             $.writeln("==================================")
@@ -350,7 +358,8 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             }
             selectedLayerName = backwardPath.shift().name.replace("Path", "Selected")
             if (selectedLayers[selectedLayerName]("Transform")("Opacity").numKeys === 0) {
-                shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
+                var props = shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
+                shareUtil.setKeyframeInterpolationType(props, KeyframeInterpolationType.HOLD)
             }
             // backwardPath = [];
         }

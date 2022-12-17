@@ -13,15 +13,6 @@
 var project = app.project;
 var mainComp = project.activeItem;
 var layer = mainComp.layer(1)
-// $.writeln(shapeLayer.name)
-// var left = shapeLayer.sourceRectAtTime(0, true).left
-// var top = shapeLayer.sourceRectAtTime(0, true).top
-// var width = shapeLayer.sourceRectAtTime(0, true).width
-// var height = shapeLayer.sourceRectAtTime(0, true).height
-// $.writeln(left)
-// $.writeln(top)
-// $.writeln(width)
-// $.writeln(height)
 // var aiLayer = comp.layer(7)
 // $.writeln(aiLayer("Transform")("Anchor Point").value)
 // var preorderLayer = comp.layer(5)

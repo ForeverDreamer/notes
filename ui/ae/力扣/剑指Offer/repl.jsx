@@ -10,22 +10,37 @@
 #include "shape.jsx";
 #include "precomp.jsx"
 
-var project = app.project;
-var comp = project.activeItem;
-var shapeLayer = comp.layer(1)
-// $.writeln(colorProp.name);
-// $.writeln(shapeLayer("Effects")("Drop Shadow")("Softness").value)
-// colorProp.setValue([0.01, 0.37254901960784, 0.72156862745098])
-
-// for (var i = 1; i <= positionProp.numKeys; i++) {
-//     positionProp.removeKey(i)
-// }
-
-// app.cancelTask(4)
-
-// $.writeln(app.project.file.fsName)
-
-
 // Eval Error (#4): "Unterminated string constant" in 'D:\data_files\notes\ui\ae\utils\jsx\precomp.jsx' [58:30] in host 'aftereffects-18.0 (main)'.
 // 注意字符串拼接时的引号问题，否则会导致莫名其妙的错误
 // "var comp = items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);" 
+
+// app.cancelTask(4)
+
+var project = app.project;
+var comp = project.activeItem;
+var layer1 = comp.layer(1)
+
+
+var path = layer1("Contents")("Shape 1")("Contents")("Path 1")("Path").value
+var vertices = path.vertices
+var inTangents = path.inTangents
+var outTangents = path.outTangents
+
+var layer2 = comp.layer(2)
+var prop = layer2("Transform")("Position")
+var value = prop.value
+for (var i = 0; i < vertices.length; i++) {
+    vertices[i] += value
+}
+
+app.beginUndoGroup("设置路径");
+
+shareUtil.configKeyframes(layer2, {"Transform.Position": [[0, 1, 2, 3, 4, 5, 6, 7], vertices]})
+
+for (var i = 1; i <= prop.numKeys; i++) {
+	prop.setInterpolationTypeAtKey(i, KeyframeInterpolationType.BEZIER)
+    // 手动创建的Shape, prop.propertyValueType === PropertyValueType.ThreeD_SPATIAL，所以array需要传三个值
+    prop.setSpatialTangentsAtKey(i, inTangents[i-1].concat([0]), outTangents[i-1].concat([0]))
+}
+
+app.endUndoGroup();

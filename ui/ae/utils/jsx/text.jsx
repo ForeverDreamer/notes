@@ -8,7 +8,7 @@ TextUtil.prototype.configTextDocument = function(textProp, props) {
     textDocument.resetParagraphStyle();
     textDocument.font = props["font"] ? props["font"] : "Arial-BoldMT";
     textDocument.fontSize = props["fontSize"] ? props["fontSize"] : 50;
-    textDocument.fillColor = props["fillColor"] ? colorUtil.hexToRgb1(props["fillColor"]) : [0, 0, 0];
+    textDocument.fillColor = props["fillColor"] ? colorUtil.hexToRgb1(props["fillColor"]) : colorUtil.hexToRgb1("#F8F9FB");
     textDocument.strokeColor = props["strokeColor"] ? props["strokeColor"] : [1, 1, 1];
     textDocument.strokeWidth = props["strokeWidth"] ? props["strokeWidth"] : 0;
     textDocument.strokeOverFill = props["strokeOverFill"] ? props["strokeOverFill"] : true;

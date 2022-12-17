@@ -149,10 +149,20 @@ ShareUtil.prototype.configProps = function (layer, props) {
 	}
 }
 
+ShareUtil.prototype.setKeyframeInterpolationType = function (props, inType, outType) {
+	for (var i = 0; i < props.length; i++) {
+		var prop = props[i]
+		for (var j = 1; j <= prop.numKeys; j++) {
+			prop.setInterpolationTypeAtKey(j, inType, outType ? outType : inType)
+		}
+	}
+}
+
 ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 	if (!keyframes) {
 		return
 	}
+	var props = []
 	for (var k in keyframes) {
 		var propChain = k.split(".")
 		var prop = layer(propChain[0]);
@@ -164,7 +174,9 @@ ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 		// 	prop.removeKey(i)
 		// }
 		prop.setValuesAtTimes(keyframes[k][0], keyframes[k][1]);
+		props.push(prop)
 	}
+	return props
 }
 
 ShareUtil.prototype.setAnchorPoint = function (layer, direction) {

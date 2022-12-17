@@ -23,6 +23,6 @@ if (mainComp == null || !(mainComp instanceof CompItem)) {
 mainComp.openInViewer();
 
 // var conf = jsonUtil.read(CONF_FILE);
-var bgLayer = mainComp.layers.addSolid([1, 1, 1], "BG", 1920, 1080, 1);
+var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", 1920, 1080, 1);
 // bgLayer.threeDLayer = true
 bgLayer.moveToEnd()

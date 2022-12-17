@@ -178,7 +178,7 @@ data = {
             'elems': [
                 {'text': 'hello_world1()', 'keyframes': {}}, 'hello_world2()', 'hello_world3()', 'hello_world4()',
                 'hello_world5()'],
-            'width': 350, 'height': 250, 'duration': 30, 'startTime': 35,
+            'width': 350, 'height': 250, 'duration': 30, 'startTime': 1,
             'effects': [{'name': 'ADBE Drop Shadow'}],
             'keyframes': {
                 'Contents.Group 1.Contents.Fill 1.Color': [
