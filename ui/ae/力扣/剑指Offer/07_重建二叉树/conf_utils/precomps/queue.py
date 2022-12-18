@@ -63,4 +63,5 @@ def inorder():
 
 def create_all():
     # return [preorder(), inorder()]
-    return [inorder()]
+    # return [inorder()]
+    return []

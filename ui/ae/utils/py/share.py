@@ -194,12 +194,14 @@ class ShareUtil:
         return statements
 
     def create_subtitles(self, subtitles):
-        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
+        # placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
+        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 40,
+                       "fillColor": '#F8F9FB'}
         statements = ['//shareUtil.create_many']
         statements += [
             # f'var subtitles = {subtitles};',
             f'var textLayer = textUtil.add(mainComp, "视频字幕", {placeholder});',
-            'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});',
+            # 'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});',
             # 'effectsUtil.add(textLayer, "ADBE Glo2");'
         ]
         for conf in subtitles:

@@ -15,11 +15,11 @@
 // "var comp = items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);" 
 
 // app.cancelTask(4)
+app.beginUndoGroup("设置路径");
 
 var project = app.project;
 var comp = project.activeItem;
 var layer1 = comp.layer(1)
-
 
 var path = layer1("Contents")("Shape 1")("Contents")("Path 1")("Path").value
 var vertices = path.vertices
@@ -32,8 +32,6 @@ var value = prop.value
 for (var i = 0; i < vertices.length; i++) {
     vertices[i] += value
 }
-
-app.beginUndoGroup("设置路径");
 
 shareUtil.configKeyframes(layer2, {"Transform.Position": [[0, 1, 2, 3, 4, 5, 6, 7], vertices]})
 

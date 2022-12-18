@@ -96,7 +96,7 @@ def preorder():
 
 def inorder():
     basic = {
-        'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
+        'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 800, 'duration': 30,
         'pos': [390, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
         # 'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
     }
