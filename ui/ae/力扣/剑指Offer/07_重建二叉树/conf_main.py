@@ -173,30 +173,30 @@ data = {
         },
     ],
     'precomps': [
-        {
-            'name': '调用堆栈', 'type': 'STACK', 'pos': [1000, 800, 0],
-            'elems': [
-                {'text': 'hello_world1()', 'keyframes': {}}, 'hello_world2()', 'hello_world3()', 'hello_world4()',
-                'hello_world5()'],
-            'width': 350, 'height': 250, 'duration': 30, 'startTime': 1,
-            'effects': [{'name': 'ADBE Drop Shadow'}],
-            'keyframes': {
-                'Contents.Group 1.Contents.Fill 1.Color': [
-                    ([1, 2, 3], ['#0573E1', '#0573E1', '#FFFFFF']),
-                    ([2, 3, 4], ['#0573E1', '#0573E1', '#FFFFFF']),
-                    ([3, 4, 5], ['#0573E1', '#0573E1', '#FFFFFF']),
-                    ([4, 5, 6], ['#0573E1', '#0573E1', '#FFFFFF']),
-                    ([5, 6, 7], ['#0573E1', '#0573E1', '#FFFFFF'])
-                ],
-                'Transform.Opacity': [
-                    ([0, 1, 2, 7], [0, 0, 100, 0]),
-                    ([1, 2, 3, 8], [0, 0, 100, 0]),
-                    ([2, 3, 4, 9], [0, 0, 100, 0]),
-                    ([3, 4, 5, 10], [0, 0, 100, 0]),
-                    ([4, 5, 6, 11], [0, 0, 100, 0]),
-                ]
-            }
-        },
+        # {
+        #     'name': '调用堆栈', 'type': 'STACK', 'pos': [1000, 800, 0],
+        #     'elems': [
+        #         {'text': 'hello_world1()', 'keyframes': {}}, 'hello_world2()', 'hello_world3()', 'hello_world4()',
+        #         'hello_world5()'],
+        #     'width': 350, 'height': 250, 'duration': 30, 'startTime': 1,
+        #     'effects': [{'name': 'ADBE Drop Shadow'}],
+        #     'keyframes': {
+        #         'Contents.Group 1.Contents.Fill 1.Color': [
+        #             ([1, 2, 3], ['#0573E1', '#0573E1', '#FFFFFF']),
+        #             ([2, 3, 4], ['#0573E1', '#0573E1', '#FFFFFF']),
+        #             ([3, 4, 5], ['#0573E1', '#0573E1', '#FFFFFF']),
+        #             ([4, 5, 6], ['#0573E1', '#0573E1', '#FFFFFF']),
+        #             ([5, 6, 7], ['#0573E1', '#0573E1', '#FFFFFF'])
+        #         ],
+        #         'Transform.Opacity': [
+        #             ([0, 1, 2, 7], [0, 0, 100, 0]),
+        #             ([1, 2, 3, 8], [0, 0, 100, 0]),
+        #             ([2, 3, 4, 9], [0, 0, 100, 0]),
+        #             ([3, 4, 5, 10], [0, 0, 100, 0]),
+        #             ([4, 5, 6, 11], [0, 0, 100, 0]),
+        #         ]
+        #     }
+        # },
         # {
         #     'name': 'all', 'type': 'CODE', 'pos': [50, 100, 0], 'pairs': pairs, 'width': 1920, 'height': 1080, 'duration': 30, 'Anchor Point': 'LEFT',
         # },

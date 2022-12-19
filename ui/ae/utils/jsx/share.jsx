@@ -173,7 +173,27 @@ ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 		// for (var i = numKeys; i >= 1; i--) {
 		// 	prop.removeKey(i)
 		// }
-		prop.setValuesAtTimes(keyframes[k][0], keyframes[k][1]);
+		var values
+		if (propChain[propChain.length-1]=== "Path") {
+			values = []
+			for (var i = 0; i < keyframes[k][1].length; i++) {
+				var confPath = keyframes[k][1][i]
+				var shape = new Shape();
+				shape.vertices = confPath["vertices"];
+				if (confPath["inTangents"]) {
+					shape.inTangents = confPath["inTangents"]
+				}
+				if (confPath["outTangents"]) {
+					shape.outTangents = confPath["outTangents"]
+				}
+				shape.closed = confPath["closed"];
+				values.push(shape)
+			}
+		} else {
+			values = keyframes[k][1]
+		}
+		prop.setValuesAtTimes(keyframes[k][0], values)
+		
 		props.push(prop)
 	}
 	return props
