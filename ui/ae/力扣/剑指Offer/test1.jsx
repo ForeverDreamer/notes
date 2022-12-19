@@ -32,7 +32,7 @@ var shapeLayer = shapeUtil.add(
         "Fill": {"Color": colorUtil.hexToRgb1("#FF0000")},
         "Position": [188, 444],
         "keyframes": {
-            "Transform.Position": [[0, 1], [[188, 444], [188, 750]]],
+            "Transform.Position": [[0, 1], [[188, 444], [188, 750]], {"temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]}],
             "Transform.Rotation": [[0, 1], [0, 45]],
             "Contents.Group 1.Contents.Path 1.Path": [
                 [0, 1], 

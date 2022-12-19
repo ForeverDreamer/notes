@@ -10,9 +10,13 @@
 #include "shape.jsx";
 #include "precomp.jsx"
 
+// 注意字符串拼接时的引号问题，还有注释文字里边的符号问题，否则会导致莫名其妙的错误
+
 // Eval Error (#4): "Unterminated string constant" in 'D:\data_files\notes\ui\ae\utils\jsx\precomp.jsx' [58:30] in host 'aftereffects-18.0 (main)'.
-// 注意字符串拼接时的引号问题，否则会导致莫名其妙的错误
 // "var comp = items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);" 
+
+// Eval Error (#14): "No matching closing brace found"
+// 手动创建的Shape, prop.propertyValueType === PropertyValueType.ThreeD_SPATIAL，所以array需要传三个值
 
 // app.cancelTask(4)
 app.beginUndoGroup("设置路径");

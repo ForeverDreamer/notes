@@ -140,3 +140,4 @@ $.writeln(dic["a"])
 dic["a"] = 2
 $.writeln(dic["a"])
 $.writeln(dic["nested"])
+

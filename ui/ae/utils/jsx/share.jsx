@@ -174,7 +174,7 @@ ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 		// 	prop.removeKey(i)
 		// }
 		var values
-		if (propChain[propChain.length-1]=== "Path") {
+		if (propChain[propChain.length-1] === "Path") {
 			values = []
 			for (var i = 0; i < keyframes[k][1].length; i++) {
 				var confPath = keyframes[k][1][i]
@@ -193,6 +193,24 @@ ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 			values = keyframes[k][1]
 		}
 		prop.setValuesAtTimes(keyframes[k][0], values)
+		var confExtra = keyframes[k][2]
+		if (confExtra) {
+			if (confExtra["temporal"]) {
+				var confTemporal = confExtra["temporal"]
+				for (var i = 0; i < confTemporal.length; i++) {
+					var easeIn = new KeyframeEase(confTemporal[i][0][0], confTemporal[i][0][1]);
+					var easeOut = new KeyframeEase(confTemporal[i][1][0], confTemporal[i][1][1]);
+					prop.setTemporalEaseAtKey(i+1, [easeIn], [easeOut])
+				}
+			}
+			if (confExtra["spatial"]) {
+				var confSpatial = confExtra["spatial"]
+				for (var i = 0; i < confSpatial.length; i++) {
+					prop.setInterpolationTypeAtKey(i+1, TYPE_DIC[confSpatial[i]["type"]])
+					prop.setSpatialTangentsAtKey(i+1, confSpatial[i]["inTangents"].concat([0]), confSpatial[i]["outTangents"].concat([0]))
+				}
+			}
+		}
 		
 		props.push(prop)
 	}
