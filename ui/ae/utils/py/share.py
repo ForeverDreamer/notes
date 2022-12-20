@@ -194,8 +194,8 @@ class ShareUtil:
         return statements
 
     def create_subtitles(self, subtitles):
-        # placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
-        placeholder = {"text": subtitles[0]["text"], "pos": [960, 1025, 0], "font": "KaiTi", "fontSize": 40,
+        # placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
+        placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40,
                        "fillColor": '#F8F9FB'}
         statements = ['//shareUtil.create_many']
         statements += [

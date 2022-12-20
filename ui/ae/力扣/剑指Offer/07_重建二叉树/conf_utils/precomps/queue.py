@@ -6,10 +6,10 @@ def preorder():
     scale = [80, 80]
     elem_width = original_width * scale[0] / 100
     conf = {
-        'name': '前序', 'type': 'QUEUE', 'pos': [100, 850, 0], 'elems': [3, 9, 20, 15, 7], 'width': math.ceil(elem_width * 5),
+        'name': '前序', 'type': 'QUEUE', 'Position': [100, 850, 0], 'elems': [3, 9, 20, 15, 7], 'width': math.ceil(elem_width * 5),
         'height': math.ceil(elem_width),
         'duration': 30, 'startTime': 1,
-        'unit': {'name': 'Queue Unit/Elements.ai', 'scale': scale},
+        'unit': {'name': 'Queue Unit/Elements.ai', 'Scale': scale},
         'effects': [{'name': 'ADBE Drop Shadow'}],
         'keyframes': {
             'Contents.Group 1.Contents.Fill 1.Color': [
@@ -36,10 +36,10 @@ def inorder():
     scale = [80, 80]
     elem_width = original_width * scale[0] / 100
     conf = {
-        'name': '中序', 'type': 'QUEUE', 'pos': [100, 950, 0], 'elems': [9, 3, 15, 20, 7], 'width': math.ceil(elem_width * 5),
+        'name': '中序', 'type': 'QUEUE', 'Position': [100, 950, 0], 'elems': [9, 3, 15, 20, 7], 'width': math.ceil(elem_width * 5),
         'height': math.ceil(elem_width),
         'duration': 30, 'startTime': 1,
-        'unit': {'name': 'Queue Unit Purple/Elements.ai', 'scale': scale},
+        'unit': {'name': 'Queue Unit Purple/Elements.ai', 'Scale': scale},
         'effects': [{'name': 'ADBE Drop Shadow'}],
         'keyframes': {
             'Contents.Group 1.Contents.Fill 1.Color': [

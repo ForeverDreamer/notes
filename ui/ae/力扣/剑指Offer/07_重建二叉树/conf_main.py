@@ -126,8 +126,8 @@ data = {
                 {
                     'name': '代码调试.mp4',
                     'layerName': '代码',
-                    'anchor': 'TOP_LEFT',
-                    'pos': [348, 118],
+                    'Anchor Point': 'TOP_LEFT',
+                    'Position': [348, 118],
                     'startTime': 0,
                     'Masks': [
                         {
@@ -143,8 +143,8 @@ data = {
                         {
                             'name': '代码调试.mp4',
                             'layerName': '调用堆栈',
-                            'anchor': 'TOP_LEFT',
-                            'pos': [958, -587],
+                            'Anchor Point': 'TOP_LEFT',
+                            'Position': [958, -587],
                             'startTime': 0,
                             'Masks': [
                                 {
@@ -156,8 +156,8 @@ data = {
                         {
                             'name': '代码调试.mp4',
                             'layerName': '变量',
-                            'anchor': 'TOP_LEFT',
-                            'pos': [638, -770],
+                            'Anchor Point': 'TOP_LEFT',
+                            'Position': [638, -770],
                             'startTime': 0,
                             'Masks': [
                                 {
@@ -218,13 +218,13 @@ data = {
     'subtitles': subtitles,
     'annotations': [
         {
-            'name': '题目官网链接', 'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/', 'pos': [960, 80, 0],
+            'name': '题目官网链接', 'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/', 'Position': [960, 80, 0],
             'span': {'inPoint': 0, 'outPoint': 9}, 'keyframes': [{'Opacity': [[0, 0.5, 5, 9], [0, 100, 100, 0]]}]
         },
         {
             'name': '题目描述', 'box': 'true', 'rect': [1500, 300],
             'text': '输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。',
-            'pos': [960, 200, 0], 'span': {'inPoint': 10, 'outPoint': 20}, 'font': 'KaiTi',
+            'Position': [960, 200, 0], 'span': {'inPoint': 10, 'outPoint': 20}, 'font': 'KaiTi',
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
@@ -235,7 +235,7 @@ data = {
         {
             'name': '示例1-1', 'box': 'true', 'rect': [1000, 150],
             'text': 'Input: preorder = [3,9,20,15,7]',
-            'pos': [500, 200, 0], 'span': {'inPoint': 20, 'outPoint': 60}, 'font': 'KaiTi',
+            'Position': [500, 200, 0], 'span': {'inPoint': 20, 'outPoint': 60}, 'font': 'KaiTi',
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
@@ -246,7 +246,7 @@ data = {
         {
             'name': '示例1-2', 'box': 'true', 'rect': [1000, 150],
             'text': 'Input: inorder = [9,3,15,20,7]',
-            'pos': [1420, 200, 0], 'span': {'inPoint': 25, 'outPoint': 60}, 'font': 'KaiTi',
+            'Position': [1420, 200, 0], 'span': {'inPoint': 25, 'outPoint': 60}, 'font': 'KaiTi',
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
@@ -257,7 +257,7 @@ data = {
         {
             'name': '示例1-3', 'box': 'true', 'rect': [1000, 150],
             'text': 'Output: [3,9,20,null,null,15,7]。',
-            'pos': [960, 880, 0], 'span': {'inPoint': 30, 'outPoint': 60}, 'font': 'KaiTi',
+            'Position': [960, 880, 0], 'span': {'inPoint': 30, 'outPoint': 60}, 'font': 'KaiTi',
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',

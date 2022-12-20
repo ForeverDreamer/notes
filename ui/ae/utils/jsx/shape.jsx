@@ -1,8 +1,8 @@
 function ShapeUtil() {}
 
-ShapeUtil.prototype.add = function(comp, name, conf) {
+ShapeUtil.prototype.add = function(comp, conf) {
     var shapeLayer = comp.layers.addShape();
-    shapeLayer.name = name;
+    shapeLayer.name = conf["layerName"];
     conf_pg = conf["pathGroup"]
     var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
     var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - " + conf_pg["type"]);
@@ -16,7 +16,7 @@ ShapeUtil.prototype.add = function(comp, name, conf) {
         if (conf_pg["outTangents"]) {
             shape.outTangents = conf_pg["outTangents"]
         }
-        shape.closed = conf_pg["closed"];
+        shape.closed = js_bool(conf_pg["closed"]);
         pathGroup("Path").setValue(shape);
     } else {
         if (conf_pg["Size"]) {
@@ -35,6 +35,12 @@ ShapeUtil.prototype.add = function(comp, name, conf) {
         var fillGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Fill")
         for (var k in conf["Fill"]) {
             fillGroup(k).setValue(conf["Fill"][k])
+        }
+    }
+    if (conf["Trim Paths"]) {
+        var trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
+        for (var k in conf["Trim Paths"]) {
+            trimGroup(k).setValue(conf["Trim Paths"][k])
         }
     }
 

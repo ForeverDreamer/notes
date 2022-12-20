@@ -33,7 +33,7 @@ TextUtil.prototype.add = function(comp, name, props) {
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
     shareUtil.setAnchorPoint(textLayer, props["Anchor Point"] ? props["Anchor Point"] : null)
-    textLayer("Transform")("Position").setValue(props["pos"])
+    textLayer("Transform")("Position").setValue(props["Position"])
     // textLayer.threeDLayer = true
     return textLayer
 }

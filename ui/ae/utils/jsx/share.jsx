@@ -57,17 +57,15 @@ ShareUtil.prototype.addLayer = function (comp, conf, item, parent) {
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];
 	}
-	if (conf['anchor']) {
-		this.setAnchorPoint(layer, conf["anchor"]);
+	this.setAnchorPoint(layer, conf["Anchor Point"]);
+	if (conf['Position']) {
+		layer("Transform")("Position").setValue(conf["Position"]);
 	}
-	if (conf['pos']) {
-		layer("Transform")("Position").setValue(conf["pos"]);
+	if (conf['Scale']) {
+		layer("Transform")("Scale").setValue(conf["Scale"]);
 	}
-	if (conf['scale']) {
-		layer("Transform")("Scale").setValue(conf["scale"]);
-	}
-	if (conf['rotation']) {
-		layer("Transform")("Rotation").setValue(conf["rotation"]);
+	if (conf['Rotation']) {
+		layer("Transform")("Rotation").setValue(conf["Rotation"]);
 	}
 	if (typeof conf["Opacity"] !== "undefined") {
 		layer("Transform")("Opacity").setValue(conf["Opacity"]);

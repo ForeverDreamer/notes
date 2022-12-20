@@ -40,209 +40,140 @@ PrecompUtil.prototype.queue = function (comp, conf) {
     // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
 
-PrecompUtil.prototype.addNodePath = function (comp, conf) {
-    var shapeLayer = comp.layers.addShape();
-    shapeLayer.name = conf['layerName'];
-    var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-    var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group")
-    var shape = new Shape();
-    shape.vertices = conf["vertices"];
-    shape.inTangents = conf["inTangents"];
-    shape.outTangents = conf["outTangents"];
-    shape.closed = conf["closed"];
-    pathGroup("Path").setValue(shape);
-    trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim");
-    strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke");
-    strokeGroup("Color").setValue(colorUtil.hexToRgb1(conf["Color"]));
-    strokeGroup("Stroke Width").setValue(conf["Stroke Width"]);
-    shapeGroup("Transform")("Anchor Point").setValue([0, 0]);
-    shapeGroup("Transform")("Position").setValue([0, 0]);
-    var anchorPoint = shareUtil.setAnchorPoint(shapeLayer);
-    shapeLayer("Transform")("Position").setValue(conf["Position"]);
-    // shareUtil.configKeyframes(shapeLayer, conf["keyframes"]);
-    shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Start").setValue(conf["Start"]);
-    shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("End").setValue(conf["End"]);
-    shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("Offset").setValue(conf["Offset"]);
-    if (conf["effects"]) {
-        for (var i = 0; i < conf["effects"].length; i++) {
-            effectsUtil.add(shapeLayer, conf["effects"][i]);
-        }
-    }
-    return shapeLayer
-}
-
-PrecompUtil.prototype.addEdgePath = function (comp, conf) {
-    var shapeLayer = comp.layers.addShape();
-    shapeLayer.name = conf['layerName'];
-    var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
-    var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - Group");
-    var shape = new Shape();
-    shape.vertices = conf["vertices"];
-    shape.closed = conf["closed"];
-    pathGroup("Path").setValue(shape);
-    trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim");
-    strokeGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - Stroke");
-    strokeGroup("Color").setValue(colorUtil.hexToRgb1(conf["Color"]));
-    strokeGroup("Stroke Width").setValue(conf["Stroke Width"]);
-    var anchorPoint = shareUtil.setAnchorPoint(shapeLayer, "RIGHT_TOP");
-    shapeGroup("Transform")("Anchor Point").setValue(conf["Position"]);
-    shapeGroup("Transform")("Position").setValue(conf["Position"]);
-    shapeLayer("Transform")("Position").setValue(conf["Position"]);
-    if (conf["Rotation"]) {
-        shapeLayer("Transform")("Rotation").setValue(conf["Rotation"]);
-    }
-    shapeLayer("Contents")("Group 1")("Contents")("Trim Paths 1")("End").setValue(conf["End"]);
-    if (conf["effects"]) {
-        for (var i = 0; i < conf["effects"].length; i++) {
-            effectsUtil.add(shapeLayer, conf["effects"][i]);
-        }
-    }
-    // shareUtil.configKeyframes(shapeLayer, conf["keyframes"]);
-    return shapeLayer
-}
-
 PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     var comp = project.items.addComp("二叉树." + conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE); 
-    var selected = conf["selected"];
-    var node = conf["node"];
-    var edge = conf["edge"];
-    var elems = conf["elems"];
 
-    var scale = node["scale"][0]/100
-    var edgeOffset = 45*scale;
-    var horizontalDist = 160*scale;
-    var verticalDist = 240*scale;
+    var elems = conf["elems"];
+    
+    var nodeShape = conf["node"]["shape"];
+    var selected = conf["node"]["selected"];
+    var drop = conf["node"]["drop"];
+    var nodePath = conf["node"]["path"];
+
+    var edgeShape = conf["edge"]["shape"];
+    var edgePath = conf["edge"]["path"];
+
+    var nodeScale = nodeShape["Scale"][0]/100
+    var edgeOffset = 45*nodeScale;
+    var horizontalDist = 160*nodeScale;
+    var verticalDist = 240*nodeScale;
     var textPos = [64, 66, 0];
 
-    var NODE_PATH_PREFIX = "Node.Path";
-    var EDGE_PATH_PREFIX = "Edge.Path";
     var NODE_PREFIX = "Node";
     var EDGE_PREFIX = "Edge";
 
-    var rootNodePos = [235*scale, 75*scale, 0]
-    var nodePathLayers = []
-    var edgePathLayers = []
-    var selectedLayers = {}
+    var rootNodePos = [235*nodeScale, 75*nodeScale]
+    var nodeLayers = {}
+    var edgeLayers = {}
 
-    // var tracker = conf["tracker"];
-    // if (tracker) {
-    //     tracker["pos"] = rootNodePos
-    //     tracker["layerName"] = "Tracker"
-    //     var trackerLayer = shareUtil.comp(layers, tracker);
-    //     shareUtil.configKeyframes(trackerLayer, tracker["keyframes"])
-    //     // var effectsProp = trackerLayer.Effects.addProperty("PEDG");
-    //     // effectsProp("Radius").expression = "random() * 50 + 10"
-    //     // trackerLayer.moveToEnd()
-    // }
+    var offset = nodePath["Trim Paths"]["Offset"]
+    var rotation = edgeShape["Rotation"]
 
-    node["pos"] = rootNodePos
-    node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[0]
-    var nodeLayer = shareUtil.addLayer(comp, node);
+    function addNode(key, parentPos, direction, selected, drop, upEdge) {
+        switch (direction) {
+            case 'left':
+                nodeShape["Position"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist]
+                nodePath["Trim Paths"]["Offset"] = offset
+                break;
+            case 'right':
+                nodeShape["Position"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist]
+                nodePath["Trim Paths"]["Offset"] = -offset
+                break;
+            default:
+                nodeShape["Position"] = rootNodePos
+        }
+        nodeShape["layerName"] = NODE_PREFIX + "." + "Shape" + "." + key
+        var shapeLayer = shareUtil.addLayer(comp, nodeShape);
+    
+        selected["Position"] = nodeShape["Position"]
+        selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
+        var selectedLayer = shareUtil.addLayer(comp, selected);
+        // selectedLayers[selected["layerName"]] = selectedLayer
+    
+        drop["Fill"]["Color"] = drop["Fill"]["Color"]
+        drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + key
+        drop["Position"] = nodeShape["Position"]
+        var dropLayer = shapeUtil.add(comp, drop)
+        // dropLayers[drop["layerName"]] = dropLayer
+    
+        var textLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, {"text": key, "pos": textPos});
 
-    selected["pos"] = node["pos"]
-    selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + elems[0]
-    var selectedLayer = shareUtil.addLayer(comp, selected);
-    selectedLayers[selected["layerName"]] = selectedLayer
+        nodePath["pathGroup"]["type"] = "Group"
+        nodePath["layerName"] = NODE_PREFIX + "."  + "Path" + "." + key;
+        // path["Position"] = shapeLayer("Transform")("Position").value.slice(0, 2)
+        nodePath["Position"] = nodeShape["Position"]
+        
+        var pathLayer = shapeUtil.add(comp, nodePath)
+        // nodePathLayers.push(pathLayer)
 
-    textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[0], {"text": elems[0], "pos": textPos});
+        nodeLayers[key] = {
+            "key": key,
+            "Position": shapeLayer("Transform")("Position").value,
+            "shapeLayer": shapeLayer, "textLayer": textLayer, "selectedLayer": selectedLayer, "dropLayers": dropLayer, "pathLayer": pathLayer,
+            "edgeLayers": {
+                "down": {"left": null, "right": null},
+                "up": upEdge ? upEdge : null,
+            },
+            "left": null, "right": null
+        }
+        return nodeLayers[key]
+    }
 
+    function addEdge(key, upNode, direction) {
+        var upKey = upNode["key"];
+        var upPos = upNode["Position"];
 
-    var path = node["Path"]
-    path["layerName"] = NODE_PATH_PREFIX + "." + elems[0];
-    path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2)
-    var nodePathLayer = this.addNodePath(comp, path)
-    nodePathLayers.push(nodePathLayer)
+        if (direction === "left") {
+            edgeShape["Position"] = [upPos[0]-edgeOffset,upPos[1]+edgeOffset]
+            edgeShape["Rotation"] = rotation
+            edgePath["Rotation"] = 0
+        } else {
+            edgeShape["Position"] = [upPos[0]+edgeOffset, upPos[1]+edgeOffset]
+            edgeShape["Rotation"] = -rotation
+            edgePath["Rotation"] = -rotation*2
+        }
 
-    var rootNode = {"key": elems[0], "data": {"nodeLayer": nodeLayer, "selectedLayer": selectedLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {}}, "left": null, "right": null}
+        edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '->' + key
+        var shapeLayer = shareUtil.addLayer(comp, edgeShape)
+
+        edgePath["pathGroup"]["type"] = "Group"
+        edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '->' + key
+        edgePath["Position"] = edgeShape["Position"]
+        var pathLayer = shapeUtil.add(comp, edgePath)
+
+        edgeLayers[key] = {
+            "key": key,
+            "shapeLayer": shapeLayer, "pathLayer": pathLayer,
+            "nodeLayers": {
+                "up": upNode ? upNode : null,
+                "down": null,
+            }
+        }
+        upNode["edgeLayers"]["down"][direction] = edgeLayers[key]
+
+        return edgeLayers[key]
+    }
+
+    var rootNodeLayer = addNode(elems[0], null, null, selected, drop)
 
     var i = 1;
-    var offset = node["Path"]["Offset"]
-    var rotation = edge["rotation"]
-    var queue = [nodeLayer];
-    var treeNodeQueue = [rootNode]
-    // $.writeln(elems)
-    while (queue.length > 0) {
-        var parentNodeLayer = queue.shift();
-        var treeNode = treeNodeQueue.shift();
-        var parentPos = parentNodeLayer("Transform")("Position").value;
-        var nodeLayer;
-        var edgePathLayer;
+    var nodeQueue = [rootNodeLayer]
+
+    while (nodeQueue.length > 0) {
+        var treeNode = nodeQueue.shift();
+        var parentPos = treeNode["Position"];
         if (js_null(elems[i])) {
-            edge["pos"] = [parentPos[0]-edgeOffset, parentPos[1]+edgeOffset, parentPos[2]];
-            edge["rotation"] = rotation
-            edge["layerName"] = EDGE_PREFIX + "." + "Left" + "." + elems[i]
-            shareUtil.addLayer(comp, edge);
-
-            path = edge["Path"];
-            path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
-            path["Position"] = edge["pos"].slice(0, 2);
-            path["Rotation"] = 0;
-            // $.writeln(path["Position"]);
-            edgePathLayer = this.addEdgePath(comp, path)
-            edgePathLayers.push(edgePathLayer);
-
-            node["pos"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist, parentPos[2]];
-            node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
-            nodeLayer = shareUtil.addLayer(comp, node);
-
-            selected["pos"] = node["pos"]
-            selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + elems[i]
-            var selectedLayer = shareUtil.addLayer(comp, selected);
-            selectedLayers[selected["layerName"]] = selectedLayer
-
-            textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
-
-            path = node["Path"];
-            path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
-            path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2)
-            path["Offset"] = offset;
-            nodePathLayer = this.addNodePath(comp, path)
-            nodePathLayers.push(nodePathLayer);
-            queue.push(nodeLayer)
-
-            // treeNode["data"]["edgePathLayer"]["forward_left"] = nodePathLayer
-            treeNode["left"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "selectedLayer": selectedLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
-            treeNodeQueue.push(treeNode["left"])
+            var edgeLayer = addEdge(elems[i], treeNode, "left")
+            var nodeLayer = addNode(elems[i], parentPos, "left", selected, drop, edgeLayer)
+            nodeQueue.push(nodeLayer)
         }
         i += 1;
         if (js_null(elems[i])) {
-            edge["pos"] = [parentPos[0]+edgeOffset, parentPos[1]+edgeOffset, parentPos[2]]
-            edge["rotation"] = -rotation
-            edge["layerName"] = EDGE_PREFIX + "." + "Right" + "." + elems[i]
-            shareUtil.addLayer(comp, edge);
-
-            path = edge["Path"]
-            path["layerName"] = EDGE_PATH_PREFIX + "." + elems[i];
-            path["Position"] = edge["pos"].slice(0, 2);
-            path["Rotation"] = -rotation*2
-            edgePathLayer = this.addEdgePath(comp, path);
-            edgePathLayers.push(edgePathLayer);
-
-            node["pos"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist, parentPos[2]]
-            node["layerName"] = NODE_PREFIX + "." + "Shape" + "." + elems[i]
-            nodeLayer = shareUtil.addLayer(comp, node);
-
-            selected["pos"] = node["pos"]
-            selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + elems[i]
-            var selectedLayer = shareUtil.addLayer(comp, selected);
-            selectedLayers[selected["layerName"]] = selectedLayer
-
-            textUtil.overlay(comp, nodeLayer, NODE_PREFIX + "." + "Text" + "." + elems[i], {"text": elems[i], "pos": textPos});
-
-            path = node["Path"];
-            path["layerName"] = NODE_PATH_PREFIX + "." + elems[i];
-            path["Position"] = nodeLayer("Transform")("Position").value.slice(0, 2);
-            path["Offset"] = -offset;
-            nodePathLayer = this.addNodePath(comp, path)
-            nodePathLayers.push(nodePathLayer);
-            queue.push(nodeLayer);
-            
-            // treeNode["data"]["edgePathLayer"]["forward_right"] = nodePathLayer
-            treeNode["right"] = {"key": elems[i], "data": {"nodeLayer": nodeLayer, "selectedLayer": selectedLayer, "nodePathLayer": nodePathLayer, "edgePathLayer": {"backward": edgePathLayer}}, "left": null, "right": null}
-            treeNodeQueue.push(treeNode["right"])
+            var edgeLayer = addEdge(elems[i], treeNode, "right", treeNode)
+            var nodeLayer = addNode(elems[i], parentPos, "right", selected, drop, edgeLayer)
+            nodeQueue.push(nodeLayer)
         }
         i += 1;
-        // $.writeln("==================================")
     }
 
     var forwardPath = []
@@ -366,19 +297,19 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     }
 
     $.writeln("二叉树中序==================================")
-    inorder(rootNode, inorderProcess)
-    for (var i = 0; i < 2; i++) {
-        $.writeln(backwardPath[0].name)
-        if (backwardPath[0].name.indexOf("Node") == 0) {
-            shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
-        } else {
-            shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
-        }
-        times[0] += 1
-        times[1] = times[0] + 0.5
-        backwardPath.shift()
-    }
-    shareUtil.configKeyframes(rootNode["data"]["nodePathLayer"], nodeKeyframes);
+    // inorder(rootNode, inorderProcess)
+    // for (var i = 0; i < 2; i++) {
+    //     $.writeln(backwardPath[0].name)
+    //     if (backwardPath[0].name.indexOf("Node") == 0) {
+    //         shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
+    //     } else {
+    //         shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
+    //     }
+    //     times[0] += 1
+    //     times[1] = times[0] + 0.5
+    //     backwardPath.shift()
+    // }
+    // shareUtil.configKeyframes(rootNode["data"]["nodePathLayer"], nodeKeyframes);
 
     // 动画
     // for (var i = 0; i < nodePathLayers.length; i++) {
@@ -390,7 +321,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     // }
 
     // 音效
-    if (node["Path"]["sound"]) {
+    if (nodePath["sound"]) {
         var soundItem = shareUtil.findItemByName(node["Path"]["sound"]["name"])
         var startTimes = node["Path"]["sound"]["startTimes"]
         for (var i = 0; i < startTimes.length; i++) {
@@ -399,7 +330,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         }
     }
 
-    if (edge["Path"]["sound"]) {
+    if (edgePath["sound"]) {
         var soundItem = shareUtil.findItemByName(edge["Path"]["sound"]["name"])
         var startTimes = edge["Path"]["sound"]["startTimes"]
         for (var i = 0; i < startTimes.length; i++) {
@@ -409,7 +340,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     }
 
     var compLayer = parentComp.layers.add(comp);
-    compLayer("Transform")("Position").setValue(conf["pos"])
+    compLayer("Transform")("Position").setValue(conf["Position"])
     compLayer.startTime = conf["startTime"]
     if (conf['3D']) {
 		compLayer.threeDLayer = true;
