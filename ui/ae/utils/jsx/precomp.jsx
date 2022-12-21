@@ -115,7 +115,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         nodeLayers[key] = {
             "key": key,
             "Position": shapeLayer("Transform")("Position").value,
-            "shapeLayer": shapeLayer, "textLayer": textLayer, "selectedLayer": selectedLayer, "dropLayers": dropLayer, "pathLayer": pathLayer,
+            "shapeLayer": shapeLayer, "textLayer": textLayer, "selectedLayer": selectedLayer, "dropLayer": dropLayer, "pathLayer": pathLayer,
             "edgeLayers": {
                 "down": {"left": null, "right": null},
                 "up": upEdge ? upEdge : null,
@@ -188,17 +188,61 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     }
 
     var times = [1, 1.5]
-    var nodeKeyframes;
-    var edgeKeyframes;
+
+    var selectedKeyframes;
+    var dropKeyframes;
+    var dropTmp = {"Position": null, "sn": 0};
+    var nodePathKeyframes;
+    var edgePathKeyframes;
     var forwardPath = []
     var backwardPath = []
 
+    dropKeyframes = {
+        "Transform.Opacity": [null, [0, 100], {"temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]}],
+        "Transform.Position": [null, null, {"temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]}],
+        "Transform.Rotation": [null, [0, 45]],
+        "Contents.Group 1.Contents.Path 1.Path": [
+            null,
+            [
+                {
+                    "vertices": [[0, -50], [50, 0], [0, 50], [-50, 0]],
+                    "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0],
+                    [0, 27.6142425537109]],
+                    "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0],
+                    [0, -27.6142425537109]],
+                    "closed": 'true'
+                },
+                {
+                    "vertices": [[0, -50], [50, 0], [0, 50], [-50, 0]],
+                    // "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
+                    // "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
+                    "closed": true
+                }
+            ]
+        ]
+    }
+
+    function configSelectedDrop(key) {
+        var dropLayer = nodeLayers[key]["dropLayer"]
+        dropKeyframes["Transform.Opacity"][0] = times
+        dropTmp["Position"] = dropLayer("Transform")("Position").value
+        dropKeyframes["Transform.Position"][0] = times
+        dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
+        dropKeyframes["Transform.Rotation"][0] = times
+        dropKeyframes["Contents.Group 1.Contents.Path 1.Path"][0] = times
+        shareUtil.configKeyframes(dropLayer, dropKeyframes);
+        dropTmp["sn"] += 1
+    }
+
     function configforwardPath() {
-        nodeKeyframes = {
+        selectedKeyframes = {
+            "Transform.Opacity": [times, [0, 100], {"spatial": [{"type": 'HOLD'}]}]
+        }
+        nodePathKeyframes = {
             'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [50, 0]],
             'Contents.Group 1.Contents.Trim Paths 1.End': [times, [50, 100]],
         }
-        edgeKeyframes = {
+        edgePathKeyframes = {
             'Contents.Group 1.Contents.Trim Paths 1.End': [times, [0, 100]],
         }
 
@@ -210,39 +254,45 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
                 //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
                 //     });
                 // }
-                shareUtil.configKeyframes(forwardPath[i], nodeKeyframes);
+                shareUtil.configKeyframes(forwardPath[i], nodePathKeyframes);
             } else {
                 // if (!keys[forwardPath[i].name]) {
                 //     shareUtil.configKeyframes(forwardPath[i],  {
                 //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
                 //     });
                 // }
-                shareUtil.configKeyframes(forwardPath[i], edgeKeyframes);
+                shareUtil.configKeyframes(forwardPath[i], edgePathKeyframes);
             }
             // keys[forwardPath[i].name] = true
             times[0] += 1
             times[1] = times[0] + 0.5
         }
         var key = forwardPath[i-1].name.split('.').slice(-1)
-        shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], {"Transform.Opacity": [times, [0, 100], {"spatial": [{"type": 'HOLD'}]}]});
+        shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], selectedKeyframes);
+        configSelectedDrop(key)
+        // var dropLayer = nodeLayers[key]["dropLayer"]
+        // dropTmp["Position"] = dropLayer("Transform")("Position").value
+        // dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
+        // shareUtil.configKeyframes(dropLayer, dropKeyframes);
+        // dropTmp["sn"] += 1
         forwardPath = [];
     }
 
     function configBackwardPath() {
-        nodeKeyframes = {
+        nodePathKeyframes = {
             'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
             'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 50]],
         }
-        edgeKeyframes = {
+        edgePathKeyframes = {
             'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 0]],
         }
 
         for (var i = 0; i < 2; i++) {
             if (backwardPath[0].name.indexOf("Edge") !== -1) {
-                shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
+                shareUtil.configKeyframes(backwardPath[0], edgePathKeyframes);
             }
             else {
-                shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
+                shareUtil.configKeyframes(backwardPath[0], nodePathKeyframes);
             }
             times[0] += 1
             times[1] = times[0] + 0.5
@@ -250,7 +300,13 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         }
         var key = backwardPath.shift().name.split('.').slice(-1)
         if (nodeLayers[key]["selectedLayer"]("Transform")("Opacity").numKeys === 0) {
-            shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], {"Transform.Opacity": [times, [0, 100], {"spatial": [{"type": 'HOLD'}]}]});
+            shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], selectedKeyframes);
+            configSelectedDrop(key)
+            // var dropLayer = nodeLayers[key]["dropLayer"]
+            // dropTmp["Position"] = dropLayer("Transform")("Position").value
+            // dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
+            // shareUtil.configKeyframes(dropLayer, dropKeyframes);
+            // dropTmp["sn"] += 1
         }
     }
 
@@ -312,7 +368,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
 
     inorder(rootNode, inorderProcess)
     configBackwardPath()
-    shareUtil.configKeyframes(rootNode["pathLayer"], nodeKeyframes);
+    shareUtil.configKeyframes(rootNode["pathLayer"], nodePathKeyframes);
 
     // 音效
     if (nodePath["sound"]) {

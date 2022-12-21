@@ -22,7 +22,7 @@ ShapeUtil.prototype.add = function(comp, conf) {
         if (conf_pg["Size"]) {
             pathGroup("Size").setValue(conf_pg["Size"])
         }
-        pathGroup("Position").setValue(conf_pg["Position"] ? conf_pg["Position"] : [0, 0])
+        pathGroup("Position").setValue(conf["Position"])
     }
 
     if (conf["Stroke"]) {

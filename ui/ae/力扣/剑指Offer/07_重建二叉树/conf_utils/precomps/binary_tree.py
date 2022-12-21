@@ -108,8 +108,7 @@ def inorder():
             'shape': {'name': 'Node White/Elements.ai', 'Scale': [80, 80, 80]},
             # 可以用AtomX或其它插件的precomp,preset,effets替换
             'selected': {
-                'name': 'Node Green/Elements.ai', 'Scale': [80, 80, 80],
-                'Opacity': 0,
+                'name': 'Node Green/Elements.ai', 'Scale': [80, 80, 80], 'Opacity': 0,
             },
             'drop': {
                 "pathGroup": {
@@ -122,30 +121,7 @@ def inorder():
                     "closed": 'true'
                 },
                 "Fill": {"Color": hex_to_rgb1("#7EE787")},
-                "Position": [188, 444],
-                "keyframes": {
-                    "Transform.Position": [[0, 1], [[188, 444], [188, 750]],
-                                           {"temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]}],
-                    "Transform.Rotation": [[0, 1], [0, 45]],
-                    "Contents.Group 1.Contents.Path 1.Path": [
-                        [0, 1],
-                        [
-                            {
-                                "vertices": [[0, -50], [50, 0], [0, 50], [-50, 0]],
-                                "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0],
-                                               [0, 27.6142425537109]],
-                                "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0],
-                                                [0, -27.6142425537109]],
-                                "closed": 'true'
-                            },
-                            {
-                                "vertices": [[0, -50], [50, 0], [0, 50], [-50, 0]],
-                                # "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
-                                # "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
-                                "closed": 'true'
-                            }
-                        ]]
-                }
+                'Opacity': 0,
             },
             'path': {
                 "pathGroup": {
