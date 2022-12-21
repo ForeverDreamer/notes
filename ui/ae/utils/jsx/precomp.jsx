@@ -95,14 +95,15 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
         var selectedLayer = shareUtil.addLayer(comp, selected);
         // selectedLayers[selected["layerName"]] = selectedLayer
-    
+        var shapeTextLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, {"text": key});
+
         drop["Fill"]["Color"] = drop["Fill"]["Color"]
         drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + key
         drop["Position"] = nodeShape["Position"]
         var dropLayer = shapeUtil.add(comp, drop)
         // dropLayers[drop["layerName"]] = dropLayer
-    
-        var textLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, {"text": key, "pos": textPos});
+        var dropTextLayer = textUtil.overlay(comp, dropLayer, NODE_PREFIX + "." + "Drop" + '.' + "Text" + "." + key, {"text": key, "Opacity": 0});
+
 
         nodePath["pathGroup"]["type"] = "Group"
         nodePath["layerName"] = NODE_PREFIX + "."  + "Path" + "." + key;
@@ -115,7 +116,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         nodeLayers[key] = {
             "key": key,
             "Position": shapeLayer("Transform")("Position").value,
-            "shapeLayer": shapeLayer, "textLayer": textLayer, "selectedLayer": selectedLayer, "dropLayer": dropLayer, "pathLayer": pathLayer,
+            "shapeLayer": shapeLayer, "shapeTextLayer": shapeTextLayer, "selectedLayer": selectedLayer, "dropLayer": dropLayer, "dropTextLayer": dropTextLayer, "pathLayer": pathLayer,
             "edgeLayers": {
                 "down": {"left": null, "right": null},
                 "up": upEdge ? upEdge : null,
@@ -196,10 +197,15 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     var edgePathKeyframes;
     var forwardPath = []
     var backwardPath = []
+    var temporal = [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]
+
+    selectedKeyframes = {
+        "Transform.Opacity": [null, [0, 100], {"spatial": [{"type": 'HOLD'}]}]
+    }
 
     dropKeyframes = {
-        "Transform.Opacity": [null, [0, 100], {"temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]}],
-        "Transform.Position": [null, null, {"temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]}],
+        "Transform.Opacity": [null, [0, 100], {"temporal": temporal}],
+        "Transform.Position": [null, null, {"temporal": temporal}],
         "Transform.Rotation": [null, [0, 45]],
         "Contents.Group 1.Contents.Path 1.Path": [
             null,
@@ -223,21 +229,28 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     }
 
     function configSelectedDrop(key) {
-        var dropLayer = nodeLayers[key]["dropLayer"]
-        dropKeyframes["Transform.Opacity"][0] = times
-        dropTmp["Position"] = dropLayer("Transform")("Position").value
-        dropKeyframes["Transform.Position"][0] = times
-        dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
-        dropKeyframes["Transform.Rotation"][0] = times
-        dropKeyframes["Contents.Group 1.Contents.Path 1.Path"][0] = times
-        shareUtil.configKeyframes(dropLayer, dropKeyframes);
-        dropTmp["sn"] += 1
+        var selectedLayer = nodeLayers[key]["selectedLayer"]
+        if (selectedLayer("Transform")("Opacity").numKeys === 0) {
+            selectedKeyframes["Transform.Opacity"][0] = times-[0.5, 0.5]; 
+            shareUtil.configKeyframes(selectedLayer, selectedKeyframes);
+
+            var dropLayer = nodeLayers[key]["dropLayer"]
+            dropKeyframes["Transform.Opacity"][0] = times
+            dropTmp["Position"] = dropLayer("Transform")("Position").value
+            dropKeyframes["Transform.Position"][0] = times
+            dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
+            dropKeyframes["Transform.Rotation"][0] = times
+            dropKeyframes["Contents.Group 1.Contents.Path 1.Path"][0] = times
+            shareUtil.configKeyframes(dropLayer, dropKeyframes);
+            shareUtil.configKeyframes(
+                nodeLayers[key]["dropTextLayer"], 
+                {"Transform.Rotation": [times, [0, -45]], "Transform.Opacity": [times, [0, 100], {"temporal": temporal}]}
+            )
+            dropTmp["sn"] += 1
+        }
     }
 
     function configforwardPath() {
-        selectedKeyframes = {
-            "Transform.Opacity": [times, [0, 100], {"spatial": [{"type": 'HOLD'}]}]
-        }
         nodePathKeyframes = {
             'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [50, 0]],
             'Contents.Group 1.Contents.Trim Paths 1.End': [times, [50, 100]],
@@ -268,13 +281,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             times[1] = times[0] + 0.5
         }
         var key = forwardPath[i-1].name.split('.').slice(-1)
-        shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], selectedKeyframes);
         configSelectedDrop(key)
-        // var dropLayer = nodeLayers[key]["dropLayer"]
-        // dropTmp["Position"] = dropLayer("Transform")("Position").value
-        // dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
-        // shareUtil.configKeyframes(dropLayer, dropKeyframes);
-        // dropTmp["sn"] += 1
         forwardPath = [];
     }
 
@@ -299,15 +306,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             backwardPath.shift()
         }
         var key = backwardPath.shift().name.split('.').slice(-1)
-        if (nodeLayers[key]["selectedLayer"]("Transform")("Opacity").numKeys === 0) {
-            shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], selectedKeyframes);
-            configSelectedDrop(key)
-            // var dropLayer = nodeLayers[key]["dropLayer"]
-            // dropTmp["Position"] = dropLayer("Transform")("Position").value
-            // dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
-            // shareUtil.configKeyframes(dropLayer, dropKeyframes);
-            // dropTmp["sn"] += 1
-        }
+        configSelectedDrop(key)
     }
 
     function inorderProcess(node) {
