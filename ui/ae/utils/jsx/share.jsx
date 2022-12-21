@@ -205,7 +205,16 @@ ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 				var confSpatial = confExtra["spatial"]
 				for (var i = 0; i < confSpatial.length; i++) {
 					prop.setInterpolationTypeAtKey(i+1, TYPE_DIC[confSpatial[i]["type"]])
-					prop.setSpatialTangentsAtKey(i+1, confSpatial[i]["inTangents"].concat([0]), confSpatial[i]["outTangents"].concat([0]))
+					var inTangents = confSpatial[i]["inTangents"]
+					if (!inTangents) {
+						continue
+					}
+					var outTangents = confSpatial[i]["outTangents"]
+					if (outTangents) {
+						prop.setSpatialTangentsAtKey(i+1, inTangents.concat([0]), outTangents.concat([0]))
+					} else {
+						prop.setSpatialTangentsAtKey(i+1, inTangents.concat([0]))
+					}
 				}
 			}
 		}

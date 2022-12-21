@@ -44,6 +44,9 @@ ShapeUtil.prototype.add = function(comp, conf) {
         }
     }
 
+    if (conf["Rotation"]) {
+        shapeLayer("Transform")("Rotation").setValue(conf["Rotation"])
+    }
     shareUtil.setAnchorPoint(shapeLayer, conf["Anchor Point"])
     shapeLayer("Transform")("Position").setValue(conf["Position"])
     shapeGroup("Transform")("Anchor Point").setValue(conf["Position"]);

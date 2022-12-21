@@ -69,7 +69,10 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     var offset = nodePath["Trim Paths"]["Offset"]
     var rotation = edgeShape["Rotation"]
 
-    function addNode(key, parentPos, direction, selected, drop, upEdge) {
+    function addNode(key, parentNode, direction, selected, drop, upEdge) {
+        if (parentNode) {
+            var parentPos = parentNode["Position"]
+        }
         switch (direction) {
             case 'left':
                 nodeShape["Position"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist]
@@ -79,8 +82,11 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
                 nodeShape["Position"] = [parentPos[0]+horizontalDist, parentPos[1]+verticalDist]
                 nodePath["Trim Paths"]["Offset"] = -offset
                 break;
-            default:
+            case null:
                 nodeShape["Position"] = rootNodePos
+                break;
+            default:
+                throw new TypeError("参数[direction]类型错误")
         }
         nodeShape["layerName"] = NODE_PREFIX + "." + "Shape" + "." + key
         var shapeLayer = shareUtil.addLayer(comp, nodeShape);
@@ -116,6 +122,10 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             },
             "left": null, "right": null
         }
+        if (parentNode) {
+            parentNode[direction] = nodeLayers[key]
+        }
+
         return nodeLayers[key]
     }
 
@@ -127,10 +137,12 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             edgeShape["Position"] = [upPos[0]-edgeOffset,upPos[1]+edgeOffset]
             edgeShape["Rotation"] = rotation
             edgePath["Rotation"] = 0
-        } else {
+        } else if (direction === "right") {
             edgeShape["Position"] = [upPos[0]+edgeOffset, upPos[1]+edgeOffset]
             edgeShape["Rotation"] = -rotation
             edgePath["Rotation"] = -rotation*2
+        } else {
+            throw new TypeError("参数[direction]类型错误")
         }
 
         edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '->' + key
@@ -154,36 +166,99 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         return edgeLayers[key]
     }
 
-    var rootNodeLayer = addNode(elems[0], null, null, selected, drop)
+    var rootNode = addNode(elems[0], null, null, selected, drop)
 
     var i = 1;
-    var nodeQueue = [rootNodeLayer]
+    var nodeQueue = [rootNode]
 
     while (nodeQueue.length > 0) {
         var treeNode = nodeQueue.shift();
-        var parentPos = treeNode["Position"];
         if (js_null(elems[i])) {
             var edgeLayer = addEdge(elems[i], treeNode, "left")
-            var nodeLayer = addNode(elems[i], parentPos, "left", selected, drop, edgeLayer)
+            var nodeLayer = addNode(elems[i], treeNode, "left", selected, drop, edgeLayer)
             nodeQueue.push(nodeLayer)
         }
         i += 1;
         if (js_null(elems[i])) {
-            var edgeLayer = addEdge(elems[i], treeNode, "right", treeNode)
-            var nodeLayer = addNode(elems[i], parentPos, "right", selected, drop, edgeLayer)
+            var edgeLayer = addEdge(elems[i], treeNode, "right")
+            var nodeLayer = addNode(elems[i], treeNode, "right", selected, drop, edgeLayer)
             nodeQueue.push(nodeLayer)
         }
         i += 1;
     }
 
+    var times = [1, 1.5]
+    var nodeKeyframes;
+    var edgeKeyframes;
     var forwardPath = []
     var backwardPath = []
 
-    function inorderProcess(data) {
+    function configforwardPath() {
+        nodeKeyframes = {
+            'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [50, 0]],
+            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [50, 100]],
+        }
+        edgeKeyframes = {
+            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [0, 100]],
+        }
+
+        for (var i = 0; i < forwardPath.length; i++) {
+            if (forwardPath[i].name.indexOf("Node") !== -1) {
+                // if (!keys[forwardPath[i].name]) {
+                //     shareUtil.configKeyframes(forwardPath[i],  {
+                //         'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+                //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+                //     });
+                // }
+                shareUtil.configKeyframes(forwardPath[i], nodeKeyframes);
+            } else {
+                // if (!keys[forwardPath[i].name]) {
+                //     shareUtil.configKeyframes(forwardPath[i],  {
+                //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
+                //     });
+                // }
+                shareUtil.configKeyframes(forwardPath[i], edgeKeyframes);
+            }
+            // keys[forwardPath[i].name] = true
+            times[0] += 1
+            times[1] = times[0] + 0.5
+        }
+        var key = forwardPath[i-1].name.split('.').slice(-1)
+        shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], {"Transform.Opacity": [times, [0, 100], {"spatial": [{"type": 'HOLD'}]}]});
+        forwardPath = [];
+    }
+
+    function configBackwardPath() {
+        nodeKeyframes = {
+            'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
+            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 50]],
+        }
+        edgeKeyframes = {
+            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 0]],
+        }
+
+        for (var i = 0; i < 2; i++) {
+            if (backwardPath[0].name.indexOf("Edge") !== -1) {
+                shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
+            }
+            else {
+                shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
+            }
+            times[0] += 1
+            times[1] = times[0] + 0.5
+            backwardPath.shift()
+        }
+        var key = backwardPath.shift().name.split('.').slice(-1)
+        if (nodeLayers[key]["selectedLayer"]("Transform")("Opacity").numKeys === 0) {
+            shareUtil.configKeyframes(nodeLayers[key]["selectedLayer"], {"Transform.Opacity": [times, [0, 100], {"spatial": [{"type": 'HOLD'}]}]});
+        }
+    }
+
+    function inorderProcess(node) {
         // $.writeln("==================================")
-        // var nodeLayer = data["nodeLayer"]
+        // var nodeLayer = node["nodeLayer"]
         // $.writeln(nodeLayer.name)
-        // var nodePathLayer = data["nodePathLayer"]
+        // var nodePathLayer = node["nodePathLayer"]
         // $.writeln(nodePathLayer.name)
         // shareUtil.configKeyframes(nodePathLayer, inorderKeyframe);
         // for (var k in inorderKeyframe) {
@@ -206,119 +281,45 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
 
     // $.writeln("二叉树前序==================================")
     // preorder(rootNode, processNode)
-    var times = [1, 1.5]
-    var nodeKeyframes;
-    var edgeKeyframes;
+
+
+    // 对动画路径来说其实是前序遍历
     function inorder(root, func) {
-        forwardPath.push(root["data"]["nodePathLayer"])
-        if (root["left"]) {
-            forwardPath.push(root["left"]["data"]["edgePathLayer"]["backward"])
-            backwardPath.unshift(root["data"]["nodePathLayer"])
-            backwardPath.unshift(root["left"]["data"]["edgePathLayer"]["backward"])
-            backwardPath.unshift(root["left"]["data"]["nodePathLayer"])
-            inorder(root["left"], func)
+        forwardPath.push(root["pathLayer"])
+        var direction = "left"
+        if (root[direction]) {
+            forwardPath.push(root["edgeLayers"]["down"][direction]["pathLayer"])
+            backwardPath.unshift(root["pathLayer"])
+            backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
+            backwardPath.unshift(root[direction]["pathLayer"])
+            inorder(root[direction], func)
         }
-        // $.writeln(root["key"])
-        func(root["data"])
-        if (root["right"]) {
-            forwardPath.push(root["right"]["data"]["edgePathLayer"]["backward"])
-            backwardPath.unshift(root["data"]["nodePathLayer"])
-            backwardPath.unshift(root["right"]["data"]["edgePathLayer"]["backward"])
-            backwardPath.unshift(root["right"]["data"]["nodePathLayer"])
-            inorder(root["right"], func)
+        func(root)
+        var direction = "right"
+        if (root[direction]) {
+            forwardPath.push(root["edgeLayers"]["down"][direction]["pathLayer"])
+            backwardPath.unshift(root["pathLayer"])
+            backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
+            backwardPath.unshift(root[direction]["pathLayer"])
+            inorder(root[direction], func)
         }
         if (!root["left"] && !root["right"]) {
             $.writeln("配置路径动画==================================")
-            keys = {}
+            // keys = {}
             // 配置路径动画
-            nodeKeyframes = {
-                'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [50, 0]],
-                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [50, 100]],
-            }
-            edgeKeyframes = {
-                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [0, 100]],
-            }
-            for (var i = 0; i < forwardPath.length; i++) {
-                $.writeln(forwardPath[i].name)
-                if (forwardPath[i].name.indexOf("Node") == 0) {
-                    // if (!keys[forwardPath[i].name]) {
-                    //     shareUtil.configKeyframes(forwardPath[i],  {
-                    //         'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, times[0]-1/FRAME_RATE], [50, 50]],
-                    //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
-                    //     });
-                    // }
-                    shareUtil.configKeyframes(forwardPath[i], nodeKeyframes);
-                } else {
-                    // if (!keys[forwardPath[i].name]) {
-                    //     shareUtil.configKeyframes(forwardPath[i],  {
-                    //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
-                    //     });
-                    // }
-                    shareUtil.configKeyframes(forwardPath[i], edgeKeyframes);
-                }
-                keys[forwardPath[i].name] = true
-                times[0] += 1
-                times[1] = times[0] + 0.5
-            }
-            var selectedLayerName = forwardPath[i-1].name.replace("Path", "Selected")
-            var props = shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
-            shareUtil.setKeyframeInterpolationType(props, KeyframeInterpolationType.HOLD)
-            forwardPath = [];
+            configforwardPath()
 
             $.writeln("==================================")
-            nodeKeyframes = {
-                'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
-                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 50]],
-            }
-            edgeKeyframes = {
-                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 0]],
-            }
-
             if (backwardPath.length > 0) {
-                for (var i = 0; i < 2; i++) {
-                    $.writeln(backwardPath[0].name)
-                    if (backwardPath[0].name.indexOf("Node") == 0) {
-                        shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
-                    } else {
-                        shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
-                    }
-                    times[0] += 1
-                    times[1] = times[0] + 0.5
-                    backwardPath.shift()
-                }
+                configBackwardPath()
             }
-            selectedLayerName = backwardPath.shift().name.replace("Path", "Selected")
-            if (selectedLayers[selectedLayerName]("Transform")("Opacity").numKeys === 0) {
-                var props = shareUtil.configKeyframes(selectedLayers[selectedLayerName], {"Transform.Opacity": [times, [0, 100]]});
-                shareUtil.setKeyframeInterpolationType(props, KeyframeInterpolationType.HOLD)
-            }
-            // backwardPath = [];
         }
     }
 
     $.writeln("二叉树中序==================================")
-    // inorder(rootNode, inorderProcess)
-    // for (var i = 0; i < 2; i++) {
-    //     $.writeln(backwardPath[0].name)
-    //     if (backwardPath[0].name.indexOf("Node") == 0) {
-    //         shareUtil.configKeyframes(backwardPath[0], nodeKeyframes);
-    //     } else {
-    //         shareUtil.configKeyframes(backwardPath[0], edgeKeyframes);
-    //     }
-    //     times[0] += 1
-    //     times[1] = times[0] + 0.5
-    //     backwardPath.shift()
-    // }
-    // shareUtil.configKeyframes(rootNode["data"]["nodePathLayer"], nodeKeyframes);
-
-    // 动画
-    // for (var i = 0; i < nodePathLayers.length; i++) {
-    //     shareUtil.configKeyframes(nodePathLayers[i], node["Path"]["keyframes"][i]);
-    // }
-
-    // for (var i = 0; i < edgePathLayers.length; i++) {
-    //     shareUtil.configKeyframes(edgePathLayers[i], edge["Path"]["keyframes"][i]);
-    // }
+    inorder(rootNode, inorderProcess)
+    configBackwardPath()
+    shareUtil.configKeyframes(rootNode["pathLayer"], nodeKeyframes);
 
     // 音效
     if (nodePath["sound"]) {
