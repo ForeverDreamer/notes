@@ -279,9 +279,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         }
     }
 
-    // $.writeln("二叉树前序==================================")
     // preorder(rootNode, processNode)
-
 
     // 对动画路径来说其实是前序遍历
     function inorder(root, func) {
@@ -304,19 +302,14 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             inorder(root[direction], func)
         }
         if (!root["left"] && !root["right"]) {
-            $.writeln("配置路径动画==================================")
-            // keys = {}
             // 配置路径动画
             configforwardPath()
-
-            $.writeln("==================================")
             if (backwardPath.length > 0) {
                 configBackwardPath()
             }
         }
     }
 
-    $.writeln("二叉树中序==================================")
     inorder(rootNode, inorderProcess)
     configBackwardPath()
     shareUtil.configKeyframes(rootNode["pathLayer"], nodeKeyframes);

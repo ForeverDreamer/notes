@@ -84,8 +84,10 @@ with open("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 
     i = 0
     for line in f.readlines():
         # subtitles.append({'text': line.strip(), 'start': i, 'end': i + 3})
-        subtitles.append({'text': line.strip(), 'start': i})
+        subtitles.append([i, line.strip()])
         i += 1
+# subtitles = list(zip(*subtitles))
+subtitles = list(map(list, zip(*subtitles)))
 
 data = {
     'files': [
@@ -107,6 +109,7 @@ data = {
                 {
                     'name': 'test.mp3',
                     'startTime': 1.2,
+                    'Anchor Point': 'null',
                 }
             ],
         },
@@ -219,7 +222,7 @@ data = {
     'annotations': [
         {
             'name': '题目官网链接', 'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/', 'Position': [960, 80, 0],
-            'span': {'inPoint': 0, 'outPoint': 9}, 'keyframes': [{'Opacity': [[0, 0.5, 5, 9], [0, 100, 100, 0]]}]
+            'span': {'inPoint': 0, 'outPoint': 9}, 'keyframes': {'Opacity': [[0, 0.5, 5, 9], [0, 100, 100, 0]]}
         },
         {
             'name': '题目描述', 'box': 'true', 'rect': [1500, 300],

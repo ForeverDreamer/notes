@@ -169,68 +169,68 @@ class ShareUtil:
 
 
     def import_files(self, files):
-        statements = [
-            '//shareUtil.import_files',
-            'var importOptions = new ImportOptions();',
-        ]
-        for conf in files:
-            statements.append(f'importOptions.file = new File("{conf["path"]}");')
-            statements.append(f'importOptions.importAs = ImportAsType.{conf["import_as_type"]};')
-            statements.append('project.importFile(importOptions);')
-            conf_layers = conf.get('layers')
-            if conf_layers:
-                for conf in conf_layers:
-                    parent_layer = 'parentLayer'
-                    statements.append(f'var {parent_layer} = mainComp.layers.add(shareUtil.findItemByName("{conf["name"]}"));',)
-                    statements += self.configLayer(parent_layer, conf)
-                    children = conf.get('children')
-                    if children:
-                        for child in children:
-                            child_layer = 'childLayer'
-                            statements.append(f'var {child_layer} = mainComp.layers.add(shareUtil.findItemByName("{child["name"]}"));')
-                            statements += self.configLayer(child_layer, child, parent_layer)
-        statements.append('\n')
+        statements = ['//shareUtil.import_files', f'shareUtil.importFiles({files});', '\n']
+        # statements = [
+        #     '//shareUtil.import_files',
+        #     'var importOptions = new ImportOptions();',
+        # ]
+        # for conf in files:
+        #     statements.append(f'importOptions.file = new File("{conf["path"]}");')
+        #     statements.append(f'importOptions.importAs = ImportAsType.{conf["import_as_type"]};')
+        #     statements.append('project.importFile(importOptions);')
+        #     conf_layers = conf.get('layers')
+        #     if conf_layers:
+        #         for conf in conf_layers:
+        #             parent_layer = 'parentLayer'
+        #             statements.append(f'var {parent_layer} = mainComp.layers.add(shareUtil.findItemByName("{conf["name"]}"));',)
+        #             statements += self.configLayer(parent_layer, conf)
+        #             children = conf.get('children')
+        #             if children:
+        #                 for child in children:
+        #                     child_layer = 'childLayer'
+        #                     statements.append(f'var {child_layer} = mainComp.layers.add(shareUtil.findItemByName("{child["name"]}"));')
+        #                     statements += self.configLayer(child_layer, child, parent_layer)
         # return self._engine.execute('ShareUtil.import_files', statements)
         return statements
 
     def create_subtitles(self, subtitles):
-        # placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
-        placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40,
-                       "fillColor": '#F8F9FB'}
-        statements = ['//shareUtil.create_many']
-        statements += [
-            # f'var subtitles = {subtitles};',
-            f'var textLayer = textUtil.add(mainComp, "视频字幕", {placeholder});',
-            # 'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});',
-            # 'effectsUtil.add(textLayer, "ADBE Glo2");'
-        ]
-        for conf in subtitles:
-            text = conf["text"]
-            start = conf["start"]
-            statements.append(f'textLayer("Source Text").setValuesAtTimes({[start]}, {[text]})')
+        statements = ['//shareUtil.create_subtitles', f'shareUtil.createSubtitles({subtitles})']
+        # # placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
+        # placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40,
+        #                "fillColor": '#F8F9FB'}
+        # statements += [
+        #     # f'var subtitles = {subtitles};',
+        #     f'var textLayer = textUtil.add(mainComp, "视频字幕", {placeholder});',
+        #     # 'effectsUtil.add(textLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 20, "Opacity": 180});',
+        #     # 'effectsUtil.add(textLayer, "ADBE Glo2");'
+        # ]
+        # for conf in subtitles:
+        #     text = conf["text"]
+        #     start = conf["start"]
+        #     statements.append(f'textLayer("Source Text").setValuesAtTimes({[start]}, {[text]})')
         # return self._engine.execute('ShareUtil.create_subtitles', statements)
         statements.append('\n')
         return statements
 
     def create_annotations(self, annotations):
-        statements = ['//shareUtil.create_annotations']
-        statements.append('var textLayer;')
-        for annotation in annotations:
-            span = annotation['span']
-            keyframes = annotation.get('keyframes')
-            presets = annotation.get('presets')
-            statements += [
-                f'textLayer = textUtil.add(mainComp, "{annotation["name"]}", {annotation});',
-                f'textLayer.inPoint = {span["inPoint"]}',
-                f'textLayer.outPoint = {span["outPoint"]}'
-            ]
-            if keyframes:
-                for keyframe in keyframes:
-                    for key, value in keyframe.items():
-                        statements.append(f'textLayer("Transform")("{key}").setValuesAtTimes({value[0]}, {value[1]})')
-            if presets:
-                for preset in presets:
-                    statements.append(f'presetsUtil.add(textLayer, {preset})')
+        statements = ['//shareUtil.create_annotations', f'shareUtil.createAnnotations({annotations})']
+        # statements.append('var textLayer;')
+        # for annotation in annotations:
+        #     span = annotation['span']
+        #     keyframes = annotation.get('keyframes')
+        #     presets = annotation.get('presets')
+        #     statements += [
+        #         f'textLayer = textUtil.add(mainComp, "{annotation["name"]}", {annotation});',
+        #         f'textLayer.inPoint = {span["inPoint"]}',
+        #         f'textLayer.outPoint = {span["outPoint"]}'
+        #     ]
+        #     if keyframes:
+        #         for keyframe in keyframes:
+        #             for key, value in keyframe.items():
+        #                 statements.append(f'textLayer("Transform")("{key}").setValuesAtTimes({value[0]}, {value[1]})')
+        #     if presets:
+        #         for preset in presets:
+        #             statements.append(f'presetsUtil.add(textLayer, {preset})')
         # return self._engine.execute('ShareUtil.create_annotations', statements)
         statements.append('\n')
         return statements

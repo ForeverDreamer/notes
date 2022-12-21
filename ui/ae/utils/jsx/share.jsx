@@ -16,31 +16,59 @@ function js_null(v) {
 	}
 }
 
-ShareUtil.prototype.importFile = function (project, conf) {
-	var importOptions = new ImportOptions();
-	importOptions.file = new File(conf["path"]);
-	switch (conf["import_as_type"]) {
-		case 'COMP_CROPPED_LAYERS':
-			importOptions.importAs = ImportAsType.COMP_CROPPED_LAYERS;
-			break;
-		case 'PROJECT':
-			importOptions.importAs = ImportAsType.PROJECT;
-			break;
-		case 'COMP':
-			importOptions.importAs = ImportAsType.COMP;
-			break;
-		default:
-			importOptions.importAs = ImportAsType.FOOTAGE;
+ShareUtil.prototype.createSubtitles = function (subtitles) {
+	var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": "#F8F9FB"});
+	textLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
+}
+
+ShareUtil.prototype.createAnnotations = function (annotations) {
+	for (var i = 0; i < annotations.length; i++) {
+		var conf = annotations[i]
+		var keyframes = conf["keyframes"]
+		var presets = conf["presets"]
+
+		var textLayer = textUtil.add(mainComp, conf["name"], conf)
+
+		if (keyframes) {
+			this.configKeyframes(textLayer, keyframes)
+		}
+
+		if (presets) {
+			for (var j = 0; j < presets.length; j++) {
+				presetsUtil.add(textLayer, presets[j])
+			}
+		}
 	}
-	var item = project.importFile(importOptions);
-	var confLayers = conf["layers"]
-	if (confLayers) {
-		for (var i = 0; i < confLayers.length; i++) {
-			var parent = shareUtil.addLayer(mainComp, confLayers[i])
-			children = confLayers[i]["children"]
-			if (children) {
-				for (var j = 0; j < children.length; j++) {
-					shareUtil.addLayer(mainComp, children[j], null, parent)
+}
+
+ShareUtil.prototype.importFiles = function (files) {
+	for (var i = 0; i < files.length; i++) {
+		var conf = files[i]
+		var importOptions = new ImportOptions();
+		importOptions.file = new File(conf["path"]);
+		switch (conf["import_as_type"]) {
+			case 'COMP_CROPPED_LAYERS':
+				importOptions.importAs = ImportAsType.COMP_CROPPED_LAYERS;
+				break;
+			case 'PROJECT':
+				importOptions.importAs = ImportAsType.PROJECT;
+				break;
+			case 'COMP':
+				importOptions.importAs = ImportAsType.COMP;
+				break;
+			default:
+				importOptions.importAs = ImportAsType.FOOTAGE;
+		}
+		project.importFile(importOptions);
+		var layers = conf["layers"]
+		if (layers) {
+			for (var j = 0; j < layers.length; j++) {
+				var parent = shareUtil.addLayer(mainComp, layers[j])
+				children = layers[j]["children"]
+				if (children) {
+					for (var k = 0; k < children.length; k++) {
+						shareUtil.addLayer(mainComp, children[k], null, parent)
+					}
 				}
 			}
 		}
@@ -225,6 +253,9 @@ ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
 }
 
 ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
+	if (js_null(direction) === null) {
+		return
+	}
 	var top = layer.sourceRectAtTime(0, false).top
     var left = layer.sourceRectAtTime(0, false).left
     var width = layer.sourceRectAtTime(0, false).width
