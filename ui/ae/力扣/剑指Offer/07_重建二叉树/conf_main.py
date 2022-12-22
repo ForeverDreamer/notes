@@ -84,6 +84,8 @@ with open("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 
     i = 0
     for line in f.readlines():
         # subtitles.append({'text': line.strip(), 'start': i, 'end': i + 3})
+        if not line.strip():
+            continue
         subtitles.append([i, line.strip()])
         i += 1
 # subtitles = list(zip(*subtitles))
@@ -91,16 +93,8 @@ subtitles = list(map(list, zip(*subtitles)))
 
 data = {
     'files': [
-        # {'path': f'{BASE_DIR}题目描述.jpg', 'import_as_type': IMPORT_AS_TYPE[1], 'pos': [960, 540, 0], 'span': {'inPoint': 0, 'outPoint': 9}},
         {
             'path': f'{BASE_DIR}Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0], 'addToLayers': 'false',
-            # 'layers': [
-            #     {'name': 'Node Green/Elements.ai', 'pos': [960, 540, 0], 'scale': [50, 50, 50],
-            #      'span': {'inPoint': 0, 'outPoint': 9}},
-            #     {'name': 'Edge/Elements.ai', 'Anchor Point': 'TOP', 'pos': [860, 640, 0], 'scale': [50, 50, 50],
-            #      'rotation': 30, 'span': {'inPoint': 0, 'outPoint': 9}},
-            # ]
-
         },
         # {'path': f'{BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1], 'startTime': 1.2, 'span': {'inPoint': 1.2, 'outPoint': 7.5}},
         {
@@ -121,59 +115,58 @@ data = {
             'path': 'G:/BaiduNetdiskDownload/AtomX 2021-08 整理/AtomX Packages/AtomX All-In-One_Trendy Graphics v5.4/Atom Preview Assets/Sound Effects/Fast Swooshes/SFX - Fast Swoosh 15.wav',
             'import_as_type': IMPORT_AS_TYPE[1],
         },
-
         # 录制的视频用迅雷播放器打开画面会差一些，用系统自带的播放器或导入Ae查看才是真实效果
-        {
-            'path': f'{BASE_DIR}代码调试.mp4', 'import_as_type': IMPORT_AS_TYPE[1],
-            'layers': [
-                {
-                    'name': '代码调试.mp4',
-                    'layerName': '代码',
-                    'Anchor Point': 'TOP_LEFT',
-                    'Position': [348, 118],
-                    'startTime': 0,
-                    'Masks': [
-                        {
-                            'vertices': [[372, 84], [372, 760], [1412, 760], [1412, 84]],
-                            'Mask Feather': [5, 5],
-                        },
-                    ],
-                    'keyframes': {
-                        'Transform.Position': [[1, 2], [[68, 118], [348, 118]],
-                                               [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]]
-                    },
-                    'children': [
-                        {
-                            'name': '代码调试.mp4',
-                            'layerName': '调用堆栈',
-                            'Anchor Point': 'TOP_LEFT',
-                            'Position': [958, -587],
-                            'startTime': 0,
-                            'Masks': [
-                                {
-                                    'vertices': [[51, 872], [51, 1021], [371, 1021], [371, 872]],
-                                    'Mask Feather': [5, 5],
-                                },
-                            ]
-                        },
-                        {
-                            'name': '代码调试.mp4',
-                            'layerName': '变量',
-                            'Anchor Point': 'TOP_LEFT',
-                            'Position': [638, -770],
-                            'startTime': 0,
-                            'Masks': [
-                                {
-                                    'vertices': [[372, 872], [372, 1036], [690, 1036], [690, 872]],
-                                    'Mask Feather': [5, 5],
-                                },
-                            ]
-                        },
-                    ]
-                },
-            ],
-
-        },
+        # {
+        #     'path': f'{BASE_DIR}代码调试.mp4', 'import_as_type': IMPORT_AS_TYPE[1],
+        #     'layers': [
+        #         {
+        #             'name': '代码调试.mp4',
+        #             'layerName': '代码',
+        #             'Anchor Point': 'TOP_LEFT',
+        #             'Position': [348, 118],
+        #             'startTime': 0,
+        #             'Masks': [
+        #                 {
+        #                     'vertices': [[372, 84], [372, 760], [1412, 760], [1412, 84]],
+        #                     'Mask Feather': [5, 5],
+        #                 },
+        #             ],
+        #             'keyframes': {
+        #                 'Transform.Position': [[1, 2], [[68, 118], [348, 118]],
+        #                                        [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]]
+        #             },
+        #             'children': [
+        #                 {
+        #                     'name': '代码调试.mp4',
+        #                     'layerName': '调用堆栈',
+        #                     'Anchor Point': 'TOP_LEFT',
+        #                     'Position': [958, -587],
+        #                     'startTime': 0,
+        #                     'Masks': [
+        #                         {
+        #                             'vertices': [[51, 872], [51, 1021], [371, 1021], [371, 872]],
+        #                             'Mask Feather': [5, 5],
+        #                         },
+        #                     ]
+        #                 },
+        #                 {
+        #                     'name': '代码调试.mp4',
+        #                     'layerName': '变量',
+        #                     'Anchor Point': 'TOP_LEFT',
+        #                     'Position': [638, -770],
+        #                     'startTime': 0,
+        #                     'Masks': [
+        #                         {
+        #                             'vertices': [[372, 872], [372, 1036], [690, 1036], [690, 872]],
+        #                             'Mask Feather': [5, 5],
+        #                         },
+        #                     ]
+        #                 },
+        #             ]
+        #         },
+        #     ],
+        #
+        # },
     ],
     'precomps': [
         # {
@@ -270,8 +263,8 @@ data = {
         },
     ],
 }
-data['precomps'] += create_all_binary_tree()
 data['precomps'] += create_all_queue()
+data['precomps'] += create_all_binary_tree()
 # Serializing json
 obj = json.dumps(data, indent=4)
 # print(obj)

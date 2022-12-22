@@ -1,4 +1,6 @@
-function PrecompUtil() { }
+function PrecompUtil() { 
+    this.queueLayers = {}
+}
 
 PrecompUtil.prototype.stack = function (nodeLayer, edgeLayer, elems) {
 
@@ -9,34 +11,28 @@ PrecompUtil.prototype.stack = function (comp, conf) {
 }
 
 PrecompUtil.prototype.queue = function (comp, conf) {
-    this.queueInorderLayers = {}
+    var name = conf["name"]
+    this.queueLayers[name] = {}
     var height = conf['height']
     var elems = conf['elems']
-    var startTime = conf["startTime"]
     var unit = conf["unit"];
-    var effects = conf['effects']
-    var keyframes = conf['keyframes']
 
-    var queueComp = project.items.addComp('队列.' + conf["name"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    var queueComp = project.items.addComp('队列.' + name, conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
 
-    var originalWidth = 108
-    var elemWidth = originalWidth * unit["scale"][0]/100
+    var elemWidth = unit["elemWidth"]
 	// var height = layer.sourceRectAtTime(startTime, false).height
     for (var i = 0; i < elems.length; i++) {
-        unit["pos"] = [elemWidth / 2 + elemWidth * i, height / 2, 0]
+        unit["layerName"] = "Shape" + "." + elems[i]
+        unit["Position"] = [elemWidth / 2 + elemWidth * i, height / 2, 0]
         unit["Size"] =  [elemWidth, height]
         var shapeLayer = shareUtil.addLayer(queueComp, unit);
-        shapeLayer.name = "Shape" + "." + elems[i]
         var textLayer = textUtil.overlay(
             queueComp, shapeLayer, "Text" + "." + elems[i],
-            {"text": elems[i], "font": "Arial-BoldItalicMT", "fontSize": 40, "pos": [elemWidth/2, height/2]}
+            {"text": elems[i], "font": "Arial-BoldItalicMT", "fontSize": 40, "Position": [elemWidth/2, height/2]}
         );
-        this.queueInorderLayers[elems[i].toString()] = {'shape': shapeLayer, "text": textLayer}
+        this.queueLayers[name][elems[i]] = {'shape': shapeLayer, "text": textLayer}
     }
-    var queueLayer = mainComp.layers.add(queueComp);
-    queueLayer.startTime = startTime;
-    shareUtil.setAnchorPoint(queueLayer, 'LEFT')
-    queueLayer("Transform")("Position").setValue(conf["pos"]);
+    shareUtil.addLayer(comp, conf, queueComp);
     // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
 
@@ -247,6 +243,14 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
                 {"Transform.Rotation": [times, [0, -45]], "Transform.Opacity": [times, [0, 100], {"temporal": temporal}]}
             )
             dropTmp["sn"] += 1
+            for (var kQueue in precompUtil.queueLayers) {
+                $.writeln(kQueue)
+                var queue = precompUtil.queueLayers[kQueue]
+                for (var kElem in queue) {
+                    $.writeln(kElem)
+                }
+                $.writeln('===============================')
+            }
         }
     }
 

@@ -142,7 +142,7 @@ def inorder():
                     'End': 50,
                     'Offset': -135,
                 },
-                'effects': ['ADBE Glo2'],
+                'effects': {'ADBE Glo2': {}},
             },
         },
         'edge': {
@@ -159,11 +159,11 @@ def inorder():
                 "Trim Paths": {
                     'End': 0,
                 },
-                'effects': ['ADBE Glo2'],
+                'effects': {'ADBE Glo2': {}},
             },
         },
-        'effects': [],
-        'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
+        'effects': {},
+        # 'keyframes': [{'Opacity': [[0, 1, 2], [0, 0, 100]]}],
         # '3D': 'true'
     }
     return {**basic, **conf}

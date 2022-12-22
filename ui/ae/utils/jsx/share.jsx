@@ -135,6 +135,12 @@ ShareUtil.prototype.addLayer = function (comp, conf, item, parent) {
 	if (parent) {
 		layer.setParentWithJump(parent)
 	}
+	if (conf["keyframes"]) {
+		this.configKeyframes(layer, conf["keyframes"])
+	}
+	if (conf["effects"]) {
+		effectsUtil.add(layer, (conf["effects"]))
+	}
 	return layer;
 }
 
@@ -175,23 +181,23 @@ ShareUtil.prototype.configProps = function (layer, props) {
 	}
 }
 
-ShareUtil.prototype.setKeyframeInterpolationType = function (props, inType, outType) {
-	for (var i = 0; i < props.length; i++) {
-		var prop = props[i]
-		for (var j = 1; j <= prop.numKeys; j++) {
-			prop.setInterpolationTypeAtKey(j, inType, outType ? outType : inType)
-		}
-	}
-}
+// ShareUtil.prototype.setKeyframeInterpolationType = function (props, inType, outType) {
+// 	for (var i = 0; i < props.length; i++) {
+// 		var prop = props[i]
+// 		for (var j = 1; j <= prop.numKeys; j++) {
+// 			prop.setInterpolationTypeAtKey(j, inType, outType ? outType : inType)
+// 		}
+// 	}
+// }
 
-ShareUtil.prototype.configKeyframes = function (layer, keyframes) {
+ShareUtil.prototype.configKeyframes = function (propGroup, keyframes) {
 	if (!keyframes) {
 		return
 	}
 	var props = []
 	for (var k in keyframes) {
 		var propChain = k.split(".")
-		var prop = layer(propChain[0]);
+		var prop = propGroup(propChain[0]);
 		for (var i = 1; i < propChain.length; i++) {
 			prop = prop(propChain[i])
 		}

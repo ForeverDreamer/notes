@@ -53,9 +53,7 @@ ShapeUtil.prototype.add = function(comp, conf) {
     shapeGroup("Transform")("Position").setValue(conf["Position"]);
 
     if (conf["effects"]) {
-        for (var i = 0; i < conf["effects"].length; i++) {
-            effectsUtil.add(shapeLayer, conf["effects"][i])
-        }
+        effectsUtil.add(shapeLayer, conf["effects"])
     }
 
     if (conf["keyframes"]) {
