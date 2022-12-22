@@ -13,24 +13,24 @@ PrecompUtil.prototype.stack = function (comp, conf) {
 PrecompUtil.prototype.queue = function (comp, conf) {
     var name = conf["name"]
     this.queueLayers[name] = {}
-    var height = conf['height']
     var elems = conf['elems']
     var unit = conf["unit"];
 
     var queueComp = project.items.addComp('队列.' + name, conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
 
-    var elemWidth = unit["elemWidth"]
+    var elemHeight = unit["pathGroup"]["Size"][0]
+    var elemWidth = unit["pathGroup"]["Size"][1]
 	// var height = layer.sourceRectAtTime(startTime, false).height
     for (var i = 0; i < elems.length; i++) {
         unit["layerName"] = "Shape" + "." + elems[i]
-        unit["Position"] = [elemWidth / 2 + elemWidth * i, height / 2, 0]
-        unit["Size"] =  [elemWidth, height]
-        var shapeLayer = shareUtil.addLayer(queueComp, unit);
+        unit["Position"] = [elemWidth / 2 + elemWidth * i, elemHeight / 2]
+        // var shapeLayer = shareUtil.addLayer(queueComp, unit);
+        var shapeLayer = shapeUtil.add(queueComp, unit)
         var textLayer = textUtil.overlay(
             queueComp, shapeLayer, "Text" + "." + elems[i],
-            {"text": elems[i], "font": "Arial-BoldItalicMT", "fontSize": 40, "Position": [elemWidth/2, height/2]}
+            {"text": elems[i], "font": "Arial-BoldItalicMT", "fontSize": 40, "Position": [elemWidth/2, elemHeight/2]}
         );
-        this.queueLayers[name][elems[i]] = {'shape': shapeLayer, "text": textLayer}
+        this.queueLayers[name][elems[i]] = {'shapeLayer': shapeLayer, "textLayer": textLayer}
     }
     shareUtil.addLayer(comp, conf, queueComp);
     // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
@@ -93,7 +93,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         // selectedLayers[selected["layerName"]] = selectedLayer
         var shapeTextLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, {"text": key});
 
-        drop["Fill"]["Color"] = drop["Fill"]["Color"]
+        // drop["Fill"]["Color"] = drop["Fill"]["Color"]
         drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + key
         drop["Position"] = nodeShape["Position"]
         var dropLayer = shapeUtil.add(comp, drop)
@@ -200,7 +200,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     }
 
     dropKeyframes = {
-        "Transform.Opacity": [null, [0, 100], {"temporal": temporal}],
+        "Transform.Opacity": [null, [0, 100, 0]],
         "Transform.Position": [null, null, {"temporal": temporal}],
         "Transform.Rotation": [null, [0, 45]],
         "Contents.Group 1.Contents.Path 1.Path": [
@@ -215,7 +215,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
                     "closed": 'true'
                 },
                 {
-                    "vertices": [[0, -50], [50, 0], [0, 50], [-50, 0]],
+                    "vertices": [[0, -57.5], [57.5, 0], [0, 57.5], [-57.5, 0]],
                     // "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
                     // "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
                     "closed": true
@@ -231,26 +231,32 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             shareUtil.configKeyframes(selectedLayer, selectedKeyframes);
 
             var dropLayer = nodeLayers[key]["dropLayer"]
-            dropKeyframes["Transform.Opacity"][0] = times
+            dropKeyframes["Transform.Opacity"][0] = [times[0], times[1], times[1]+0.5]
             dropTmp["Position"] = dropLayer("Transform")("Position").value
             dropKeyframes["Transform.Position"][0] = times
-            dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*100, 750]]
+            dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*84, 750]]
             dropKeyframes["Transform.Rotation"][0] = times
             dropKeyframes["Contents.Group 1.Contents.Path 1.Path"][0] = times
             shareUtil.configKeyframes(dropLayer, dropKeyframes);
             shareUtil.configKeyframes(
                 nodeLayers[key]["dropTextLayer"], 
-                {"Transform.Rotation": [times, [0, -45]], "Transform.Opacity": [times, [0, 100], {"temporal": temporal}]}
+                {"Transform.Rotation": [times, [0, -45]], "Transform.Opacity": [[times[0], times[1], times[1]+0.5], [0, 100, 0]]}
             )
             dropTmp["sn"] += 1
-            for (var kQueue in precompUtil.queueLayers) {
-                $.writeln(kQueue)
-                var queue = precompUtil.queueLayers[kQueue]
-                for (var kElem in queue) {
-                    $.writeln(kElem)
-                }
-                $.writeln('===============================')
-            }
+
+            // 配置遍历结果队列动画
+            var queueKeyframes = {"Transform.Opacity": [times+[0.5, 0.5], [0, 100]]}
+            var elemLayers = precompUtil.queueLayers["inorder"][key]
+            shareUtil.configKeyframes(elemLayers["shapeLayer"], queueKeyframes)
+            shareUtil.configKeyframes(elemLayers["textLayer"], queueKeyframes)
+            // for (var kQueue in precompUtil.queueLayers) {
+            //     $.writeln(kQueue)
+            //     var queue = precompUtil.queueLayers[kQueue]
+            //     for (var kElem in queue) {
+            //         $.writeln(kElem)
+            //     }
+            //     $.writeln('===============================')
+            // }
         }
     }
 

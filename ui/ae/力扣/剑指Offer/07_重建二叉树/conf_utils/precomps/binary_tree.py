@@ -3,7 +3,7 @@ from ae.utils.py.color import hex_to_rgb1
 
 def preorder():
     basic = {
-        'name': '前序', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
+        'name': 'preorder', 'type': 'BINARY_TREE', 'width': 500, 'height': 500, 'duration': 30,
         'pos': [390, 540, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
     }
     len_elems = len(basic['elems']) - basic['elems'].count('null')
@@ -38,35 +38,6 @@ def preorder():
         # 可以用AtomX或其它插件的precomp,preset,effets替换
         'selected': {
             'name': 'Node Green/Elements.ai', 'scale': [80, 80, 80],
-            'keyframes': {
-                'Transform.Position': [
-                    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                    [
-                        [188, 60], [188, 60], [60, 252], [60, 252], [316, 252],
-                        [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
-                    ]
-                ],
-                # 'Transform.Opacity': [
-                #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                # ]
-            },
-        },
-        'tracker': {
-            'name': 'Node Tracker/Elements.ai', 'scale': [80, 80, 80],
-            'keyframes': {
-                'Transform.Position': [
-                    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                    [
-                        [188, 60], [188, 60], [60, 252], [60, 252], [316, 252],
-                        [316, 252], [188, 444], [188, 444], [444, 444], [444, 444]
-                    ]
-                ],
-                # 'Transform.Opacity': [
-                #     [0, 1, 1.1, 1.9, 2, 3, 3.1, 3.9, 4, 5, 5.1, 5.9, 6, 7, 7.1, 7.9, 8, 9],
-                #     [100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100, 0, 0, 100, 100],
-                # ]
-            },
         },
         'node': node,
         'edge': {
@@ -77,12 +48,6 @@ def preorder():
                 'Color': hex_to_rgb1('#B5FF6A'),
                 'Stroke Width': 5,
                 'effects': ['ADBE Glo2'],
-                'keyframes': [
-                    {
-                        'Contents.Group 1.Contents.Trim Paths 1.End': [[i * 1 + 0.5, i * 1 + 1], [0, 100]],
-                    }
-                    for i in range(len_elems - 1)
-                ],
                 'sound': {
                     'name': 'SFX - Fast Swoosh 15.wav',
                     'startTimes': [i * 1 + 0.5 for i in range(len_elems - 1)]
@@ -98,7 +63,7 @@ def preorder():
 
 def inorder():
     basic = {
-        'name': '中序', 'type': 'BINARY_TREE', 'width': 500, 'height': 800, 'duration': 30,
+        'name': 'inorder', 'type': 'BINARY_TREE', 'width': 500, 'height': 800, 'duration': 30,
         'Position': [390, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
         # 'pos': [1420, 500, 0], 'elems': [3, 9, 20, 'null', 'null', 15, 7], 'startTime': 1,
     }
