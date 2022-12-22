@@ -7,3 +7,13 @@ var TYPE_DIC = {
     'BEZIER': KeyframeInterpolationType.BEZIER,
     'HOLD': KeyframeInterpolationType.HOLD,
 }
+
+var FONTS = {
+    'cn': 'slideyouran-Regular',
+    'en': 'Arial-BoldMT',
+}
+
+var COLORS = {
+    'subtitles': '#FFFFFF',
+    'annotations': '#FFFC00',
+}

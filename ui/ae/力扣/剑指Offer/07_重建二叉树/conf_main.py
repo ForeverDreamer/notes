@@ -4,6 +4,7 @@ import re
 import math
 
 from conf_utils import *
+from ae.constants.share import *
 
 BASE_DIR = 'D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 版）/07. 重建二叉树/'
 IMPORT_AS_TYPE = ('COMP_CROPPED_LAYERS', 'FOOTAGE', 'COMP', 'PROJECT')
@@ -220,7 +221,7 @@ data = {
         {
             'name': '题目描述', 'box': 'true', 'rect': [1500, 300],
             'text': '输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。',
-            'Position': [960, 200, 0], 'span': {'inPoint': 10, 'outPoint': 20}, 'font': 'KaiTi',
+            'Position': [960, 200, 0], 'span': {'inPoint': 10, 'outPoint': 20}, 'font': FONTS["cn"],
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
@@ -231,7 +232,7 @@ data = {
         {
             'name': '示例1-1', 'box': 'true', 'rect': [1000, 150],
             'text': 'Input: preorder = [3,9,20,15,7]',
-            'Position': [500, 200, 0], 'span': {'inPoint': 20, 'outPoint': 60}, 'font': 'KaiTi',
+            'Position': [500, 200, 0], 'span': {'inPoint': 20, 'outPoint': 60}, 'font': FONTS["cn"],
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
@@ -242,7 +243,7 @@ data = {
         {
             'name': '示例1-2', 'box': 'true', 'rect': [1000, 150],
             'text': 'Input: inorder = [9,3,15,20,7]',
-            'Position': [1420, 200, 0], 'span': {'inPoint': 25, 'outPoint': 60}, 'font': 'KaiTi',
+            'Position': [1420, 200, 0], 'span': {'inPoint': 25, 'outPoint': 60}, 'font': FONTS["cn"],
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
@@ -252,8 +253,8 @@ data = {
         },
         {
             'name': '示例1-3', 'box': 'true', 'rect': [1000, 150],
-            'text': 'Output: [3,9,20,null,null,15,7]。',
-            'Position': [960, 880, 0], 'span': {'inPoint': 30, 'outPoint': 60}, 'font': 'KaiTi',
+            'text': 'Output: [3,9,20,null,null,15,7]',
+            'Position': [960, 880, 0], 'span': {'inPoint': 30, 'outPoint': 60}, 'font': FONTS["cn"],
             'presets': [
                 {
                     'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',

@@ -8,3 +8,8 @@ PIXEL_ASPECT = 1
 FRAME_RATE = 30
 
 IMPORT_AS_TYPE = ('COMP_CROPPED_LAYERS', 'PROJECT', 'COMP', 'FOOTAGE')
+
+FONTS = {
+    'cn': 'slideyouran-Regular',
+    'en': 'Arial-BoldMT',
+}

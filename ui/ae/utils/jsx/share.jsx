@@ -17,7 +17,7 @@ function js_null(v) {
 }
 
 ShareUtil.prototype.createSubtitles = function (subtitles) {
-	var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": "#F8F9FB"});
+	var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": 'KaiTi', "fontSize": 40, "fillColor": COLORS["subtitles"]});
 	textLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
 }
 
