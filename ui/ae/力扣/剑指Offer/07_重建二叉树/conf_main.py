@@ -85,9 +85,10 @@ with open("D:/沉浸式学习/数据结构与算法/力扣/剑指 Offer（第 2 
     i = 0
     for line in f.readlines():
         # subtitles.append({'text': line.strip(), 'start': i, 'end': i + 3})
-        if not line.strip():
+        text = line.strip()
+        if not text or text.startswith('#'):
             continue
-        subtitles.append([i, line.strip()])
+        subtitles.append([i, text])
         i += 1
 # subtitles = list(zip(*subtitles))
 subtitles = list(map(list, zip(*subtitles)))

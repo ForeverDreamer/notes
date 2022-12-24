@@ -38,6 +38,9 @@ TextUtil.prototype.add = function(comp, name, props) {
         textLayer.outPoint = props["span"]["outPoint"];
 	}
     textLayer("Transform")("Position").setValue(props["Position"])
+    if (props["keyframes"]) {
+		shareUtil.configKeyframes(textLayer, props["keyframes"])
+	}
     // textLayer.threeDLayer = true
     return textLayer
 }
@@ -57,7 +60,9 @@ TextUtil.prototype.overlay = function(comp, parent, name, props) {
     if (props["Opacity"]) {
         textLayer("Transform")("Opacity").setValue(props["Opacity"])
     }
-    
+    if (props["keyframes"]) {
+		shareUtil.configKeyframes(textLayer, props["keyframes"])
+	}
 
     return textLayer
 }

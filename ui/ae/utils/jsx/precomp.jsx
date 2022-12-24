@@ -65,6 +65,10 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     var offset = nodePath["Trim Paths"]["Offset"]
     var rotation = edgeShape["Rotation"]
 
+    var startTime = conf["startTime"]
+    var times = [startTime, startTime+0.5]
+    var step = [0.5, 0.5]
+
     function addNode(key, parentNode, direction, selected, drop, upEdge) {
         if (parentNode) {
             var parentPos = parentNode["Position"]
@@ -84,14 +88,20 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             default:
                 throw new TypeError("参数[direction]类型错误")
         }
+
+        var shapeKeyframes = {
+            "Transform.Opacity": [times, [0, 100], {"temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]]}]
+        }
         nodeShape["layerName"] = NODE_PREFIX + "." + "Shape" + "." + key
+        nodeShape["keyframes"] = shapeKeyframes
         var shapeLayer = shareUtil.addLayer(comp, nodeShape);
     
         selected["Position"] = nodeShape["Position"]
         selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
         var selectedLayer = shareUtil.addLayer(comp, selected);
         // selectedLayers[selected["layerName"]] = selectedLayer
-        var shapeTextLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, {"text": key});
+        var shapeTextLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, {"text": key, "keyframes": shapeKeyframes});
+        times += step
 
         // drop["Fill"]["Color"] = drop["Fill"]["Color"]
         drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + key
@@ -142,8 +152,14 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             throw new TypeError("参数[direction]类型错误")
         }
 
+        var edgeKeyframes = {
+            // "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], {"temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]]}]
+            "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], {"temporal": [[[0, 0.1], [300, 100]], [[0, 75], [0, 0.1]]]}]
+        }
         edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '->' + key
+        edgeShape["keyframes"] = edgeKeyframes
         var shapeLayer = shareUtil.addLayer(comp, edgeShape)
+        times += step
 
         edgePath["pathGroup"]["type"] = "Group"
         edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '->' + key

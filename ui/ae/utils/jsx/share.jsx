@@ -232,7 +232,15 @@ ShareUtil.prototype.configKeyframes = function (propGroup, keyframes) {
 				for (var i = 0; i < confTemporal.length; i++) {
 					var easeIn = new KeyframeEase(confTemporal[i][0][0], confTemporal[i][0][1]);
 					var easeOut = new KeyframeEase(confTemporal[i][1][0], confTemporal[i][1][1]);
-					prop.setTemporalEaseAtKey(i+1, [easeIn], [easeOut])
+					if (prop.propertyValueType === PropertyValueType.ThreeD) {
+						prop.setTemporalEaseAtKey(i+1, [easeIn, easeIn, easeIn], [easeOut, easeOut, easeOut])
+			
+					} else if (prop.propertyValueType === PropertyValueType.TwoD) {
+						prop.setTemporalEaseAtKey(i+1, [easeIn, easeIn], [easeOut, easeOut])
+					} else {
+						prop.setTemporalEaseAtKey(i+1, [easeIn], [easeOut])
+					}
+					
 				}
 			}
 			if (confExtra["spatial"]) {
