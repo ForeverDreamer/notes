@@ -24,19 +24,20 @@ with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf.json', "r") as 
     conf = json.loads(f.read())
 # 代码执行的顺序决定了Layers的顺序，合理安排代码执行顺序，避免创建好之后需要再调整Layer顺序
 statements += share_util.import_files(conf['files'])
+statements += share_util.create_scenes(conf['scenes'])
 
-time.sleep(CALL_INTERVAL)
-precomp_util = PrecompUtil(engine)
-statements += precomp_util.create_many(conf['precomps'])
-
-time.sleep(CALL_INTERVAL)
-statements += share_util.create_subtitles(conf['subtitles'])
-
-time.sleep(CALL_INTERVAL)
-statements += share_util.create_annotations(conf['annotations'])
-
-time.sleep(CALL_INTERVAL)
-camera_util = CameraUtil(engine)
-statements += camera_util.add_many(conf['cameras'])
+# time.sleep(CALL_INTERVAL)
+# precomp_util = PrecompUtil(engine)
+# statements += precomp_util.create_many(conf['precomps'])
+#
+# time.sleep(CALL_INTERVAL)
+# statements += share_util.create_subtitles(conf['subtitles'])
+#
+# time.sleep(CALL_INTERVAL)
+# statements += share_util.create_annotations(conf['annotations'])
+#
+# time.sleep(CALL_INTERVAL)
+# camera_util = CameraUtil(engine)
+# statements += camera_util.add_many(conf['cameras'])
 
 engine.execute('__main__', statements)

@@ -73,8 +73,11 @@ class ShareUtil:
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 90, 30);',
             'mainComp.openInViewer();',
-            'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", 1920, 1080, 1);',
-            'bgLayer.moveToEnd();',
+            'var bgWhiteLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#FFFFFF"), "BG", 1920, 1080, 1);',
+            'bgWhiteLayer.moveToEnd();',
+            'var bgBlackLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", 1920, 1080, 1);',
+            'bgBlackLayer.moveToEnd();',
+            'var subtitlesLayer = textUtil.add(mainComp, "视频字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": "#0B0909"});'
         ]
         statements.append('\n')
         # return self._engine.execute('ShareUtil.eval', statements)
@@ -191,6 +194,10 @@ class ShareUtil:
         #                     statements.append(f'var {child_layer} = mainComp.layers.add(shareUtil.findItemByName("{child["name"]}"));')
         #                     statements += self.configLayer(child_layer, child, parent_layer)
         # return self._engine.execute('ShareUtil.import_files', statements)
+        return statements
+
+    def create_scenes(self, scenes):
+        statements = ['//shareUtil.create_scenes', f'shareUtil.createScenes({scenes})', '\n']
         return statements
 
     def create_subtitles(self, subtitles):

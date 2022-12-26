@@ -16,9 +16,39 @@ function js_null(v) {
 	}
 }
 
+ShareUtil.prototype.createScenes = function (scenes) {
+	for (var sName in scenes) {
+		for (var i = 0; i < scenes[sName].length; i++) {
+			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
+			var shot = scenes[sName][i]
+			if (shot['subtitles']) {
+				this.createSubtitles(shot['subtitles'])
+			}
+			if (shot['annotations']) {
+				this.createAnnotations(shot['annotations'])
+			}
+			if (shot['precomps']) {
+
+			}
+			if (shot['audios']) {
+
+			}
+			if (shot['images']) {
+				shareUtil.addLayers(mainComp, shot['images'])
+			}
+			if (shot['videos']) {
+
+			}
+			if (shot['cameras']) {
+
+			}
+		}
+	}
+}
+
 ShareUtil.prototype.createSubtitles = function (subtitles) {
-	var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": 'KaiTi', "fontSize": 40, "fillColor": COLORS["subtitles"]});
-	textLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
+	// var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": 'KaiTi', "fontSize": 40, "fillColor": COLORS["subtitles"]});
+	subtitlesLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
 }
 
 ShareUtil.prototype.createAnnotations = function (annotations) {
@@ -142,6 +172,13 @@ ShareUtil.prototype.addLayer = function (comp, conf, item, parent) {
 		effectsUtil.add(layer, (conf["effects"]))
 	}
 	return layer;
+}
+
+ShareUtil.prototype.addLayers = function (comp, layers, item, parent) {
+	for (var i = 0; i < layers.length; i++) {
+		var layer = this.addLayer(comp, layers[i], item, parent)
+		layer.moveBefore(bgWhiteLayer)
+	}
 }
 
 ShareUtil.prototype.delItems = function (items) {

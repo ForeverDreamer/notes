@@ -1,1 +1,2 @@
-from .precomps import *
+# from .precomps import *
+from .scenes import *
