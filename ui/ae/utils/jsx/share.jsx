@@ -21,15 +21,6 @@ ShareUtil.prototype.createScenes = function (scenes) {
 		for (var i = 0; i < scenes[sName].length; i++) {
 			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
 			var shot = scenes[sName][i]
-			if (shot['subtitles']) {
-				this.createSubtitles(shot['subtitles'])
-			}
-			if (shot['annotations']) {
-				this.createAnnotations(shot['annotations'])
-			}
-			if (shot['precomps']) {
-
-			}
 			if (shot['audios']) {
 
 			}
@@ -38,6 +29,15 @@ ShareUtil.prototype.createScenes = function (scenes) {
 			}
 			if (shot['videos']) {
 
+			}
+			if (shot['precomps']) {
+				precompUtil.createMany(shot['precomps'])
+			}
+			if (shot['annotations']) {
+				this.createAnnotations(shot['annotations'])
+			}
+			if (shot['subtitles']) {
+				this.createSubtitles(shot['subtitles'])
 			}
 			if (shot['cameras']) {
 
@@ -105,12 +105,12 @@ ShareUtil.prototype.importFiles = function (files) {
 	}
 }
 
-ShareUtil.prototype.addLayer = function (comp, conf, item, parent) {
+ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	var layer;
 	if (item) {
-		layer = comp.layers.add(item);
+		layer = parentComp.layers.add(item);
 	} else {
-		layer = comp.layers.add(this.findItemByName(conf["name"]));
+		layer = parentComp.layers.add(this.findItemByName(conf["name"]));
 	}
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];
@@ -176,8 +176,7 @@ ShareUtil.prototype.addLayer = function (comp, conf, item, parent) {
 
 ShareUtil.prototype.addLayers = function (comp, layers, item, parent) {
 	for (var i = 0; i < layers.length; i++) {
-		var layer = this.addLayer(comp, layers[i], item, parent)
-		layer.moveBefore(bgWhiteLayer)
+		this.addLayer(comp, layers[i], item, parent)
 	}
 }
 

@@ -15,7 +15,7 @@ engine = Engine(version="18.0")
 statements = []
 share_util = ShareUtil(engine)
 # statements += share_util.eval(BASE_DIR + 'utils/jsx/init.jsx')
-statements += share_util.init()
+statements += share_util.head()
 
 # time.sleep(CALL_INTERVAL)
 # share_util.open_project('D:/Untitled Project.aep')
@@ -39,5 +39,5 @@ statements += share_util.create_scenes(conf['scenes'])
 # time.sleep(CALL_INTERVAL)
 # camera_util = CameraUtil(engine)
 # statements += camera_util.add_many(conf['cameras'])
-
+statements += share_util.tail()
 engine.execute('__main__', statements)

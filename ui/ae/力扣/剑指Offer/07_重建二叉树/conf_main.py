@@ -39,9 +39,10 @@ conf = {
     ],
     'scenes': {},
 }
+start_time = -1
 for name, func in inspect.getmembers(conf_utils, inspect.isfunction):
     print(name, func)
-    scene_name, scene = func()
+    scene_name, scene, start_time = func(start_time+1)
     conf['scenes'][scene_name] = scene
 # Serializing json
 obj = json.dumps(conf, indent=4)

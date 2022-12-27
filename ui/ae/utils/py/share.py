@@ -54,8 +54,8 @@ class ShareUtil:
     def log_execute(self, statements):
         pass
 
-    def init(self):
-        statements = ['//shareUtil.init']
+    def head(self):
+        statements = ['//share_util.head']
         statements += [
             '#includepath "../utils/jsx";',
             '#include "constants.jsx";',
@@ -71,20 +71,27 @@ class ShareUtil:
             # 'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
-            'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 90, 30);',
+            'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 150, 30);',
             'mainComp.openInViewer();',
-            'var bgWhiteLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#FFFFFF"), "BG", 1920, 1080, 1);',
-            'bgWhiteLayer.moveToEnd();',
-            'var bgBlackLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", 1920, 1080, 1);',
-            'bgBlackLayer.moveToEnd();',
             'var subtitlesLayer = textUtil.add(mainComp, "视频字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": "#0B0909"});'
         ]
         statements.append('\n')
         # return self._engine.execute('ShareUtil.eval', statements)
         return statements
 
+    def tail(self):
+        statements = ['//share_util.tail']
+        statements += [
+            'var bgWhiteLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#FFFFFF"), "BG", 1920, 1080, 1);',
+            'bgWhiteLayer.moveToEnd();',
+            'var bgBlackLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", 1920, 1080, 1);',
+            'bgBlackLayer.moveToEnd();',
+        ]
+        statements.append('\n')
+        return statements
+
     def eval(self, path):
-        statements = ['//shareUtil.eval']
+        statements = ['//share_util.eval']
         statements += [
             f'var file = new File("{path}");',
             'file.open("r");',
@@ -100,7 +107,7 @@ class ShareUtil:
             f'var aepFile = new File("{path}");',
             "app.open(aepFile);"
         ]
-        return self._engine.execute('ShareUtil.open_project', statements)
+        return self._engine.execute('share_util.open_project', statements)
 
     def configLayer(self, layer, conf, parent=None):
         statements = []
@@ -109,7 +116,7 @@ class ShareUtil:
             statements.append(f'{layer}.name = "{layer_name}";')
         anchor = conf.get('anchor')
         if anchor:
-            statements.append(f'shareUtil.setAnchorPoint({layer}, "{anchor}");')
+            statements.append(f'share_util.setAnchorPoint({layer}, "{anchor}");')
         pos = conf.get('pos')
         if pos:
             statements.append(f'{layer}("Transform")("Position").setValue({pos});')
@@ -172,7 +179,7 @@ class ShareUtil:
 
 
     def import_files(self, files):
-        statements = ['//shareUtil.import_files', f'shareUtil.importFiles({files});', '\n']
+        statements = ['//share_util.import_files', f'shareUtil.importFiles({files});', '\n']
         # statements = [
         #     '//shareUtil.import_files',
         #     'var importOptions = new ImportOptions();',
@@ -197,11 +204,11 @@ class ShareUtil:
         return statements
 
     def create_scenes(self, scenes):
-        statements = ['//shareUtil.create_scenes', f'shareUtil.createScenes({scenes})', '\n']
+        statements = ['//share_util.create_scenes', f'shareUtil.createScenes({scenes})', '\n']
         return statements
 
     def create_subtitles(self, subtitles):
-        statements = ['//shareUtil.create_subtitles', f'shareUtil.createSubtitles({subtitles})']
+        statements = ['//share_util.create_subtitles', f'shareUtil.createSubtitles({subtitles})']
         # # placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 50, "fillColor": '#FD9F18'}
         # placeholder = {"text": subtitles[0]["text"], "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40,
         #                "fillColor": '#F8F9FB'}
@@ -220,7 +227,7 @@ class ShareUtil:
         return statements
 
     def create_annotations(self, annotations):
-        statements = ['//shareUtil.create_annotations', f'shareUtil.createAnnotations({annotations})']
+        statements = ['//share_util.create_annotations', f'shareUtil.createAnnotations({annotations})']
         # statements.append('var textLayer;')
         # for annotation in annotations:
         #     span = annotation['span']

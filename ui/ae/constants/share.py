@@ -13,3 +13,5 @@ FONTS = {
     'cn': 'slideyouran-Regular',
     'en': 'Arial-BoldMT',
 }
+
+SUBTITLES_INTERVAL = 5

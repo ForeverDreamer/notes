@@ -102,23 +102,28 @@ class PrecompUtil:
         return statements
 
     def create_many(self, precomps):
-        statements = ['//precompUtil.create_many']
+        statements = ['//precomp_util.create_many']
         for conf in precomps:
-            # conf['elems'] = list(map(js_null, conf['elems']))
-            if conf['type'] == 'STACK':
-                statements += self._stack(conf)
-            elif conf['type'] == 'QUEUE':
-                # statements += self._queue(conf)
-                statements.append(f'precompUtil.queue(mainComp, {conf});')
-            elif conf['type'] == 'LINKED_LIST':
-                pass
-            elif conf['type'] == 'BINARY_TREE':
-                statements.append(f'precompUtil.binaryTree(mainComp, {conf});')
-            elif conf['type'] == 'GRAPH':
-                pass
-            elif conf['type'] == 'CODE':
-                statements += self._code(conf)
+            statements += self.create_one(conf)
         # return self._engine.execute('ShareUtil.create_precomps', statements)
+        statements.append('\n')
+        return statements
+
+    def create_one(self, conf):
+        statements = ['//precomp_util.create_one']
+        if conf['type'] == 'STACK':
+            statements += self._stack(conf)
+        elif conf['type'] == 'QUEUE':
+            # statements += self._queue(conf)
+            statements.append(f'precompUtil.queue(mainComp, {conf});')
+        elif conf['type'] == 'LINKED_LIST':
+            pass
+        elif conf['type'] == 'BINARY_TREE':
+            statements.append(f'precompUtil.binaryTree(mainComp, {conf});')
+        elif conf['type'] == 'GRAPH':
+            pass
+        elif conf['type'] == 'CODE':
+            statements += self._code(conf)
         statements.append('\n')
         return statements
 
