@@ -1,7 +1,7 @@
 function CameraUtil() {}
 
-CameraUtil.prototype.add = function(comp, name, centerPoint, props, keyframes) {
-    var cameraLayer = comp.layers.addCamera(name, centerPoint)
+CameraUtil.prototype.add = function(name, centerPoint, props, keyframes) {
+    var cameraLayer = mainComp.layers.addCamera(name, centerPoint)
     // cameraLayer("Transform")("Position").setValue([960, 540, -800])
     // cameraLayer("Camera Options")("Zoom").setValue(800)
     // cameraLayer("Camera Options")("Focus Distance").setValue(800)
@@ -11,8 +11,9 @@ CameraUtil.prototype.add = function(comp, name, centerPoint, props, keyframes) {
     // cameraLayer("Camera Options")("Zoom").setValuesAtTimes([1, 2, 7], [800, 1500, 1500])
 
     shareUtil.configProps(props)
-    shareUtil.configKeyframes(keyframes)
-
+    if (keyframes) {
+        shareUtil.configKeyframes(keyframes)
+    }
     // if (props) {
     //     for (var k in props) {
     //         var propChain = k.split(".")

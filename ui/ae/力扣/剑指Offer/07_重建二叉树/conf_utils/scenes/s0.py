@@ -17,7 +17,8 @@ def shot_0(start_time):
                 'Scale': [90, 90, 90],
                 'Position': [960, 540],
                 'startTime': start_time,
-                'span': {'inPoint': start_time, 'outPoint': end_time}
+                'span': {'inPoint': start_time, 'outPoint': end_time},
+                '3D': 'true',
             }
         ],
         'subtitles': subtitles,

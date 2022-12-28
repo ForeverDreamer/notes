@@ -159,7 +159,7 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 		layer.inPoint = conf["span"]['inPoint'];
 		layer.outPoint = conf["span"]['outPoint'];
 	}
-	if (conf['3D']) {
+	if (js_bool(conf['3D'])) {
 		layer.threeDLayer = true;
 	}
 	if (parent) {

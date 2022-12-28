@@ -18,7 +18,7 @@ def shot_0(start_time):
         'annotations': [
             {
                 'name': '中序遍历注解', 'text': '遍历结果按照[左子树|根节点|右子树]排序', 'Position': [1137, 800],
-                'font': FONTS["cn"], 'span': {'inPoint': end_time+17, 'outPoint': end_time+21}
+                'font': FONTS["cn"], 'span': {'inPoint': end_time+10, 'outPoint': end_time+21}
             },
         ],
         'precomps': [

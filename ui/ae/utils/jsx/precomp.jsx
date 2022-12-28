@@ -325,7 +325,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         if (js_bool(conf["animation"])) {
             nodeShape["keyframes"] = shapeKeyframes
             shapeTextProps["keyframes"] = shapeKeyframes
-            times += step
+            precompUtil.times += step
         }
         var shapeLayer = shareUtil.addLayer(comp, nodeShape);
 
@@ -404,7 +404,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '.' + key
         if (js_bool(conf["animation"])) {
             edgeShape["keyframes"] = edgeKeyframes
-            times += step
+            precompUtil.times += step
         }
         var shapeLayer = shareUtil.addLayer(comp, edgeShape)
 

@@ -56,6 +56,10 @@ class ShareUtil:
 
     def head(self):
         statements = ['//share_util.head']
+        camera_props = {
+            'Transform.Position': [960, 540, -800], 'Transform.Point of Interest': [960, 540, 0],
+            'Camera Options.Zoom': 800, 'Camera Options.Focus Distance': 800, 'Camera Options.Aperture': 7.6,
+        }
         statements += [
             '#includepath "../utils/jsx";',
             '#include "constants.jsx";',
@@ -68,12 +72,15 @@ class ShareUtil:
             '#include "precomp.jsx";',
             '#include "animation.jsx";',
             '#include "presets.jsx";',
+            '#include "camera.jsx";',
             # 'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 150, 30);',
             'mainComp.openInViewer();',
-            'var subtitlesLayer = textUtil.add(mainComp, "视频字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": "#0B0909"});'
+            'var subtitlesLayer = textUtil.add(mainComp, "视频字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": "#0B0909"});',
+            f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera_props})',
+            'cameraLayer.moveToEnd();',
         ]
         statements.append('\n')
         # return self._engine.execute('ShareUtil.eval', statements)
