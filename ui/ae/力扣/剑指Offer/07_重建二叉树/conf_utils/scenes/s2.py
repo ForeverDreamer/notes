@@ -1,133 +1,112 @@
-from .transcript import scenes
 from ae.constants.share import *
+from .transcript import scenes
 from ae.utils.py.color import hex_to_rgb1
 
-scene = scenes['s2']
 
 def shot_0(start_time):
     subtitles = []
-    for i, text in enumerate(scene[0]):
-        subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
+    for i, text in enumerate(scenes['s2'][0]):
+        subtitles.append([start_time + i * SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]
+
+    que_elem_width = 80
+    que_height = 80
     conf = {
         'subtitles': subtitles,
         'annotations': [
             {
-                'name': '题目描述', 'box': 'true', 'rect': [1500, 300],
-                'text': '输入某二叉树的前序遍历和中序遍历的结果\n请构建该二叉树并返回其根节点\n假设输入的前序遍历和中序遍历的结果中都不含重复的数字',
-                'Position': [960, 200, 0], 'span': {'inPoint': start_time, 'outPoint': end_time}, 'font': FONTS["cn"],
-                'presets': [
-                    {
-                        'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
-                        'keyframes': {'Type_on.Slider': {'times': [start_time, end_time], 'values': [0, 90]}}
-                    }
-                ]
-            },
-        ],
-        'end_time': end_time,
-    }
-    return conf
-
-
-def shot_1(start_time):
-    subtitles = []
-    for i, text in enumerate(scene[1]):
-        subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
-        i += 1
-    subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]
-    conf = {
-        'subtitles': subtitles,
-        'annotations': [
-            {
-                'name': '示例1', 'box': 'true', 'rect': [1000, 300],
-                'text': 'Input: preorder = [3,9,20,15,7]\nInput: inorder = [9,3,15,20,7]\nOutput: [3,9,20,null,null,15,7]',
-                'Position': [960, 200], 'span': {'inPoint': start_time, 'outPoint': end_time+9}, 'font': FONTS["cn"],
-                'presets': [
-                    {
-                        'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
-                        'keyframes': {'Type_on.Slider': {'times': [start_time, end_time], 'values': [0, 100]}}
-                    }
-                ]
+                'name': '前序遍历注解', 'text': '遍历结果按照[根节点|左子树|右子树]排序', 'Position': [1137, 800],
+                'font': FONTS["cn"], 'span': {'inPoint': end_time+17, 'outPoint': end_time+21}
             },
         ],
         'precomps': [
             {
-                'name': '示例1.二叉树', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
-                'duration': 8, 'Position': [960, 600], 'elems': [[3], [9], [20], ['null'], ['null'], [15], [7]], 'startTime': end_time+1,
-                'animation': 'true',
+                'name': '队列.前序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
+                'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                'traverse': 'preorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
+                'startTime': end_time + 1,
+                'unit': {
+                    'pathGroup': {'type': 'Rect', 'Size': [que_elem_width, que_height]},
+                    "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                    "Stroke": {'Stroke Width': 5, "Color": hex_to_rgb1("#000000")},
+                },
+                # 'effects': {'ADBE Drop Shadow': {}},
+            },
+            {
+                'name': '二叉树.前序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 800,
+                'duration': 20, 'Position': [960, 600], 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], ['null'], ['null'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                'startTime': end_time + 1, 'animation': 'false', 'traverse': 'preorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
+                    # 可以用AtomX或其它插件的precomp,preset,effets替换
+                    'selected': {
+                        'pathGroup': {'type': 'Ellipse', 'Size': [100, 100]},
+                        "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                        "Stroke": {'Stroke Width': 5, "Color": hex_to_rgb1("#000000")},
+                        'Opacity': 0,
+                    },
+                    'drop': {
+                        "pathGroup": {
+                            "type": "Group",
+                            "vertices": [[0, -50], [50, 0], [0, 50], [-50, 0]],
+                            "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0],
+                                           [0, 27.6142425537109]],
+                            "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0],
+                                            [0, -27.6142425537109]],
+                            "closed": 'true'
+                        },
+                        "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                        'Opacity': 0,
+                    },
+                    'path': {
+                        "pathGroup": {
+                            "type": "Group",
+                            'vertices': [[0, -50], [50, 0], [0, 50], [-50, 0]],
+                            'inTangents': [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0],
+                                           [0, 27.6142425537109]],
+                            'outTangents': [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0],
+                                            [0, -27.6142425537109]],
+                            "closed": 'true'
+                        },
+                        "Stroke": {
+                            'Stroke Width': 5,
+                            "Color": hex_to_rgb1("#FF0000")
+                        },
+                        "Trim Paths": {
+                            'Start': 50,
+                            'End': 50,
+                            'Offset': -135,
+                        },
+                        'effects': {'ADBE Glo2': {}},
+                    },
                 },
                 'edge': {
                     'shape': {'name': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80], 'Rotation': 30},
+                    'path': {
+                        "pathGroup": {
+                            'vertices': [[153, 95], [88, 211]],
+                            'closed': 'false',
+                        },
+                        "Stroke": {
+                            'Stroke Width': 5,
+                            "Color": hex_to_rgb1("#FF0000")
+                        },
+                        "Trim Paths": {
+                            'End': 0,
+                        },
+                        'effects': {'ADBE Glo2': {}},
+                    },
                 },
                 # '3D': 'true'
             }
         ],
-        'end_time': end_time+9,
-    }
-    return conf
-
-
-def shot_2(start_time):
-    subtitles = []
-    for i, text in enumerate(scene[2]):
-        subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
-        i += 1
-    subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]
-    conf = {
-        'subtitles': subtitles,
-        'annotations': [
-            {
-                'name': '示例 2', 'box': 'true', 'rect': [1500, 300],
-                'text': '示例 2\n如果前序遍历的结果是[-1]，中序遍历的结果是[-1]\n重建出来的二叉树为[-1]\n此种为空树情况',
-                'Position': [960, 200], 'span': {'inPoint': start_time, 'outPoint': end_time}, 'font': FONTS["cn"],
-                'presets': [
-                    {
-                        'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
-                        'keyframes': {'Type_on.Slider': {'times': [start_time, end_time], 'values': [0, 90]}}
-                    }
-                ]
-            },
-        ],
-        'end_time': end_time,
-    }
-    return conf
-
-
-def shot_3(start_time):
-    subtitles = []
-    for i, text in enumerate(scene[3]):
-        subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
-        i += 1
-    subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]
-    conf = {
-        'subtitles': subtitles,
-        'annotations': [
-            {
-                'name': '限制条件', 'box': 'true', 'rect': [1500, 300],
-                'text': '限制条件：0 <= 节点个数 <= 5000\n我们实现算法时需要根据限制条件考虑时间复杂度和空间复杂度问题\n否则即使本地调试通过，提交到力扣依然会因为复杂度太高而无法通过全部测试用例',
-                'Position': [960, 200], 'span': {'inPoint': start_time, 'outPoint': end_time}, 'font': FONTS["cn"],
-                'presets': [
-                    {
-                        'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
-                        'keyframes': {'Type_on.Slider': {'times': [start_time, end_time], 'values': [0, 90]}}
-                    }
-                ]
-            },
-        ],
-        'end_time': end_time,
+        'end_time': end_time+21,
     }
     return conf
 
 
 def create_all(start_time):
     conf_0 = shot_0(start_time)
-    conf_1 = shot_1(conf_0['end_time'] + 1)
-    conf_2 = shot_2(conf_1['end_time'] + 1)
-    return 's2', [conf_0, conf_1, conf_2], conf_2['end_time']
+    return 's2', [conf_0], conf_0['end_time']

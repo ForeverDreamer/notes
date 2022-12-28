@@ -1,4 +1,4 @@
-function PrecompUtil() { 
+function PrecompUtil() {
     this.queueLayers = {}
 }
 
@@ -11,8 +11,8 @@ PrecompUtil.prototype.stack = function (comp, conf) {
 }
 
 PrecompUtil.prototype.queue = function (comp, conf) {
-    var que_key = conf["key"]
-    this.queueLayers[que_key] = {}
+    var traverse = conf["traverse"]
+    this.queueLayers[traverse] = {}
     var elems = conf['elems']
     var unit = conf["unit"];
 
@@ -32,32 +32,23 @@ PrecompUtil.prototype.queue = function (comp, conf) {
             queueComp, shapeLayer, "Text" + "." + key,
             {"text": key, "font": "Arial-BoldItalicMT", "fontSize": 40, "Position": [elemWidth/2, elemHeight/2]}
         );
-        this.queueLayers[que_key][key] = {'shapeLayer': shapeLayer, "textLayer": textLayer}
+        this.queueLayers[traverse][key] = {'shapeLayer': shapeLayer, "textLayer": textLayer}
     }
     shareUtil.addLayer(comp, conf, queueComp);
     // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
 
-PrecompUtil.prototype._bt_inorder = function (nodeLayers, times, nodePath, edgePath, rootNode) {
+PrecompUtil.prototype._btTraverseSelectedDropQueue = function (key, traverse) {
+    var times = this.times
 
-    var times = times
-
-    var selectedKeyframes;
-    var dropKeyframes;
-    var dropTmp = {"Position": null, "sn": 0};
-    var nodePathKeyframes;
-    var edgePathKeyframes;
-    var forwardPath = []
-    var backwardPath = []
-    var temporal = [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]
-
-    selectedKeyframes = {
+    var selectedKeyframes = {
         "Transform.Opacity": [null, [0, 100], {"spatial": [{"type": 'HOLD'}]}]
     }
 
-    dropKeyframes = {
+    var dropTmp = precompUtil.dropTmp;
+    var dropKeyframes = {
         "Transform.Opacity": [null, [0, 100, 0]],
-        "Transform.Position": [null, null, {"temporal": temporal}],
+        "Transform.Position": [null, null, {"temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]]}],
         "Transform.Rotation": [null, [0, 45]],
         "Contents.Group 1.Contents.Path 1.Path": [
             null,
@@ -79,131 +70,121 @@ PrecompUtil.prototype._bt_inorder = function (nodeLayers, times, nodePath, edgeP
             ]
         ]
     }
+    // 选中
+    var selectedLayer = this.nodeLayers[key]["selectedLayer"]
+    if (selectedLayer("Transform")("Opacity").numKeys === 0) {
+        selectedKeyframes["Transform.Opacity"][0] = times-[0.5, 0.5];
+        shareUtil.configKeyframes(selectedLayer, selectedKeyframes);
+        // 掉落
+        var dropLayer = this.nodeLayers[key]["dropLayer"]
+        dropKeyframes["Transform.Opacity"][0] = [times[0], times[1], times[1]+0.5]
+        dropTmp["Position"] = dropLayer("Transform")("Position").value
+        dropKeyframes["Transform.Position"][0] = times
+        dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*80, 690]]
+        dropKeyframes["Transform.Rotation"][0] = times
+        dropKeyframes["Contents.Group 1.Contents.Path 1.Path"][0] = times
+        shareUtil.configKeyframes(dropLayer, dropKeyframes);
+        shareUtil.configKeyframes(
+            this.nodeLayers[key]["dropTextLayer"],
+            {"Transform.Rotation": [times, [0, -45]], "Transform.Opacity": [[times[0], times[1], times[1]+0.5], [0, 100, 0]]}
+        )
+        dropTmp["sn"] += 1
 
-    function configSelectedDrop(key) {
-        var selectedLayer = nodeLayers[key]["selectedLayer"]
-        if (selectedLayer("Transform")("Opacity").numKeys === 0) {
-            selectedKeyframes["Transform.Opacity"][0] = times-[0.5, 0.5];
-            shareUtil.configKeyframes(selectedLayer, selectedKeyframes);
-
-            var dropLayer = nodeLayers[key]["dropLayer"]
-            dropKeyframes["Transform.Opacity"][0] = [times[0], times[1], times[1]+0.5]
-            dropTmp["Position"] = dropLayer("Transform")("Position").value
-            dropKeyframes["Transform.Position"][0] = times
-            dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*84, 750]]
-            dropKeyframes["Transform.Rotation"][0] = times
-            dropKeyframes["Contents.Group 1.Contents.Path 1.Path"][0] = times
-            shareUtil.configKeyframes(dropLayer, dropKeyframes);
-            shareUtil.configKeyframes(
-                nodeLayers[key]["dropTextLayer"],
-                {"Transform.Rotation": [times, [0, -45]], "Transform.Opacity": [[times[0], times[1], times[1]+0.5], [0, 100, 0]]}
-            )
-            dropTmp["sn"] += 1
-
-            // 配置遍历结果队列动画
-            var queueKeyframes = {"Transform.Opacity": [times+[0.5, 0.5], [0, 100]]}
-            var elemLayers = precompUtil.queueLayers["inorder"][key]
-            shareUtil.configKeyframes(elemLayers["shapeLayer"], queueKeyframes)
-            shareUtil.configKeyframes(elemLayers["textLayer"], queueKeyframes)
-            // for (var kQueue in precompUtil.queueLayers) {
-            //     $.writeln(kQueue)
-            //     var queue = precompUtil.queueLayers[kQueue]
-            //     for (var kElem in queue) {
-            //         $.writeln(kElem)
-            //     }
-            //     $.writeln('===============================')
-            // }
-        }
-    }
-
-    function configforwardPath() {
-        nodePathKeyframes = {
-            'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [50, 0]],
-            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [50, 100]],
-        }
-        edgePathKeyframes = {
-            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [0, 100]],
-        }
-
-        for (var i = 0; i < forwardPath.length; i++) {
-            if (forwardPath[i].name.indexOf("Node") !== -1) {
-                // if (!keys[forwardPath[i].name]) {
-                //     shareUtil.configKeyframes(forwardPath[i],  {
-                //         'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, times[0]-1/FRAME_RATE], [50, 50]],
-                //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
-                //     });
-                // }
-                shareUtil.configKeyframes(forwardPath[i], nodePathKeyframes);
-            } else {
-                // if (!keys[forwardPath[i].name]) {
-                //     shareUtil.configKeyframes(forwardPath[i],  {
-                //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
-                //     });
-                // }
-                shareUtil.configKeyframes(forwardPath[i], edgePathKeyframes);
-            }
-            // keys[forwardPath[i].name] = true
-            times[0] += 1
-            times[1] = times[0] + 0.5
-        }
-        var key = forwardPath[i-1].name.split('.').slice(-1)
-        configSelectedDrop(key)
-        forwardPath = [];
-    }
-
-    function configBackwardPath() {
-        nodePathKeyframes = {
-            'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
-            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 50]],
-        }
-        edgePathKeyframes = {
-            'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 0]],
-        }
-
-        for (var i = 0; i < 2; i++) {
-            if (backwardPath[0].name.indexOf("Edge") !== -1) {
-                shareUtil.configKeyframes(backwardPath[0], edgePathKeyframes);
-            }
-            else {
-                shareUtil.configKeyframes(backwardPath[0], nodePathKeyframes);
-            }
-            times[0] += 1
-            times[1] = times[0] + 0.5
-            backwardPath.shift()
-        }
-        var key = backwardPath.shift().name.split('.').slice(-1)
-        configSelectedDrop(key)
-    }
-
-    function inorderProcess(node) {
-        // $.writeln("==================================")
-        // var nodeLayer = node["nodeLayer"]
-        // $.writeln(nodeLayer.name)
-        // var nodePathLayer = node["nodePathLayer"]
-        // $.writeln(nodePathLayer.name)
-        // shareUtil.configKeyframes(nodePathLayer, inorderKeyframe);
-        // for (var k in inorderKeyframe) {
-        //     inorderKeyframe[k][0][0] += 1
-        //     inorderKeyframe[k][0][1] = inorderKeyframe[k][0][0] + 0.5
+        // 队列
+        var queueKeyframes = {"Transform.Opacity": [times+[0.5, 0.5], [0, 100]]}
+        // var elemLayers = precompUtil.queueLayers[traverse][key]
+        var elemLayers = this.queueLayers[traverse][key]
+        shareUtil.configKeyframes(elemLayers["shapeLayer"], queueKeyframes)
+        shareUtil.configKeyframes(elemLayers["textLayer"], queueKeyframes)
+        // for (var kQueue in precompUtil.queueLayers) {
+        //     $.writeln(kQueue)
+        //     var queue = precompUtil.queueLayers[kQueue]
+        //     for (var kElem in queue) {
+        //         $.writeln(kElem)
+        //     }
+        //     $.writeln('===============================')
         // }
     }
+}
 
-
-    function preorder(root, func) {
-        // $.writeln(root["key"])
-        func(root["data"]);
-        if (root["left"]) {
-            preorder(root["left"], func);
-        }
-        if (root["right"]) {
-            preorder(root["right"], func);
-        }
+PrecompUtil.prototype._btTraverseForwardPath = function (traverse, forwardPath) {
+    var times = this.times
+    var nodePathKeyframes = {
+        'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [50, 0]],
+        'Contents.Group 1.Contents.Trim Paths 1.End': [times, [50, 100]],
+    }
+    var edgePathKeyframes = {
+        'Contents.Group 1.Contents.Trim Paths 1.End': [times, [0, 100]],
     }
 
-    // preorder(rootNode, processNode)
+    for (var i = 0; i < forwardPath.length; i++) {
+        if (forwardPath[i].name.indexOf("Node") !== -1) {
+            // if (!keys[forwardPath[i].name]) {
+            //     shareUtil.configKeyframes(forwardPath[i],  {
+            //         'Contents.Group 1.Contents.Trim Paths 1.Start': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+            //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [50, 50]],
+            //     });
+            // }
+            shareUtil.configKeyframes(forwardPath[i], nodePathKeyframes);
+            if (traverse === 'preorder') {
+                var key = forwardPath[i].name.split('.').slice(-1)
+                this._btTraverseSelectedDropQueue(key, traverse)
+            }
+        } else {
+            // if (!keys[forwardPath[i].name]) {
+            //     shareUtil.configKeyframes(forwardPath[i],  {
+            //         'Contents.Group 1.Contents.Trim Paths 1.End': [[0, times[0]-1/FRAME_RATE], [0, 0]],
+            //     });
+            // }
+            shareUtil.configKeyframes(forwardPath[i], edgePathKeyframes);
+        }
+        // keys[forwardPath[i].name] = true
+        times[0] += 1
+        times[1] = times[0] + 0.5
+    }
+    if (traverse === 'inorder') {
+        var key = forwardPath[i-1].name.split('.').slice(-1)
+        this._btTraverseSelectedDropQueue(key, traverse)
+    }
+    forwardPath.length = 0;
+}
+
+PrecompUtil.prototype._btTraverseBackwardPath = function (traverse, backwardPath) {
+    var times = this.times
+    var nodePathKeyframes = {
+        'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
+        'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 50]],
+    }
+    var edgePathKeyframes = {
+        'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 0]],
+    }
+
+    for (var i = 0; i < 2; i++) {
+        if (backwardPath[0].name.indexOf("Edge") !== -1) {
+            shareUtil.configKeyframes(backwardPath[0], edgePathKeyframes);
+        }
+        else {
+            shareUtil.configKeyframes(backwardPath[0], nodePathKeyframes);
+        }
+        times[0] += 1
+        times[1] = times[0] + 0.5
+        backwardPath.shift()
+    }
+    if (traverse === 'inorder') {
+        var key = backwardPath.shift().name.split('.').slice(-1)
+        this._btTraverseSelectedDropQueue(key, traverse)
+    }
+}
+
+PrecompUtil.prototype._btTraverse = function (traverse, nodePath, edgePath) {
+
+    function processNode(node) {
+        // $.writeln("==================================")
+    }
 
     // 对动画路径来说其实是前序遍历
-    function inorder(root, func) {
+    function recur(traverse, root, func, forwardPath, backwardPath) {
+        func(root)
         forwardPath.push(root["pathLayer"])
         var direction = "left"
         if (root[direction]) {
@@ -211,29 +192,48 @@ PrecompUtil.prototype._bt_inorder = function (nodeLayers, times, nodePath, edgeP
             backwardPath.unshift(root["pathLayer"])
             backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
             backwardPath.unshift(root[direction]["pathLayer"])
-            inorder(root[direction], func)
+            recur(traverse, root[direction], func, forwardPath, backwardPath)
         }
-        func(root)
         direction = "right"
         if (root[direction]) {
             forwardPath.push(root["edgeLayers"]["down"][direction]["pathLayer"])
             backwardPath.unshift(root["pathLayer"])
             backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
             backwardPath.unshift(root[direction]["pathLayer"])
-            inorder(root[direction], func)
+            recur(traverse, root[direction], func, forwardPath, backwardPath)
         }
-        if (!root["left"] && !root["right"]) {
-            // 配置路径动画
-            configforwardPath()
-            if (backwardPath.length > 0) {
-                configBackwardPath()
+        if (traverse === 'inorder') {
+            if (!root["left"] && !root["right"]) {
+                // 配置路径动画
+                precompUtil._btTraverseForwardPath(traverse, forwardPath)
+                if (backwardPath.length > 0) {
+                    precompUtil._btTraverseBackwardPath(traverse, backwardPath)
+                }
             }
         }
     }
 
-    inorder(rootNode, inorderProcess)
-    configBackwardPath()
-    shareUtil.configKeyframes(rootNode["pathLayer"], nodePathKeyframes);
+    function doTraverse(traverse, root, func) {
+        precompUtil.dropTmp = {"Position": null, "sn": 0};
+        var times = precompUtil.times
+        var forwardPath = []
+        var backwardPath = []
+
+        recur(traverse, root, func, forwardPath, backwardPath)
+        if (traverse === 'preorder') {
+            precompUtil._btTraverseForwardPath(traverse, forwardPath)
+            precompUtil._btTraverseBackwardPath(traverse, backwardPath)
+        } else if (traverse === 'inorder') {
+            precompUtil._btTraverseBackwardPath(traverse, backwardPath)
+            shareUtil.configKeyframes(root["pathLayer"], {
+                'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
+                'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 50]],
+            });
+        }
+
+    }
+
+    doTraverse(traverse, this.rootNode, processNode)
 
     // 音效
     if (nodePath["sound"]) {
@@ -277,22 +277,26 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     var EDGE_PREFIX = "Edge";
 
     var rootNodePos = [235*nodeScale, 75*nodeScale]
-    var nodeLayers = {}
-    var edgeLayers = {}
+    this.nodeLayers = {}
+    this.edgeLayers = {}
 
     if (nodePath) {
         var offset = nodePath["Trim Paths"]["Offset"]
     }
     var rotation = edgeShape["Rotation"]
 
-    var times = [0, 0.5]
+    this.times = [0, 0.5]
     var step = [0.5, 0.5]
 
     function addNode(elem, parentNode, direction, selected, drop, upEdge) {
+        var times = precompUtil.times
+        var nodeLayers = precompUtil.nodeLayers
         var key = elem[0]
+
         if (parentNode) {
             var parentPos = parentNode["Position"]
         }
+
         switch (direction) {
             case 'left':
                 nodeShape["Position"] = [parentPos[0]-horizontalDist, parentPos[1]+verticalDist]
@@ -370,6 +374,9 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     }
 
     function addEdge(elem, upNode, direction) {
+        var times = precompUtil.times
+        var edgeLayers = precompUtil.edgeLayers
+
         var key = elem[0]
         var upKey = upNode["key"];
         var upPos = upNode["Position"];
@@ -394,7 +401,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             // "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], {"temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]]}]
             "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], {"temporal": [[[0, 0.1], [300, 100]], [[0, 75], [0, 0.1]]]}]
         }
-        edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '->' + key
+        edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '.' + key
         if (js_bool(conf["animation"])) {
             edgeShape["keyframes"] = edgeKeyframes
             times += step
@@ -403,7 +410,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
 
         if (edgePath) {
             edgePath["pathGroup"]["type"] = "Group"
-            edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '->' + key
+            edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '.' + key
             edgePath["Position"] = edgeShape["Position"]
             var pathLayer = shapeUtil.add(comp, edgePath)
         }
@@ -421,10 +428,10 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         return edgeLayers[key]
     }
 
-    var rootNode = addNode(elems[0], null, null, selected, drop)
+    this.rootNode = addNode(elems[0], null, null, selected, drop)
 
     var i = 1;
-    var nodeQueue = [rootNode]
+    var nodeQueue = [this.rootNode]
 
     while (nodeQueue.length > 0) {
         var treeNode = nodeQueue.shift();
@@ -441,12 +448,10 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         }
         i += 1;
     }
-    if (conf["traverse"] === 'PREORDER') {
-        this._bt_inorder(nodeLayers, times, nodePath, edgePath, rootNode)
-    } else if (conf["traverse"] === 'INORDER') {
-        this._bt_inorder(nodeLayers, times, nodePath, edgePath, rootNode)
-    }
 
+    if (conf["traverse"]) {
+        this._btTraverse(conf["traverse"], nodePath, edgePath)
+    }
 
     var compLayer = parentComp.layers.add(comp);
     compLayer("Transform")("Position").setValue(conf["Position"])

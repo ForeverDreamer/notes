@@ -17,15 +17,15 @@ def shot_0(start_time):
         'subtitles': subtitles,
         'annotations': [
             {
-                'name': '前序遍历注解', 'text': '遍历结果按照[根节点|左子树|右子树]排序', 'Position': [1137, 800],
+                'name': '中序遍历注解', 'text': '遍历结果按照[左子树|根节点|右子树]排序', 'Position': [1137, 800],
                 'font': FONTS["cn"], 'span': {'inPoint': end_time+17, 'outPoint': end_time+21}
             },
         ],
         'precomps': [
             {
-                'name': '队列.前序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
+                'name': '队列.中序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
                 'elems': [[9, '#FADED8'], [3, '#0573E1'], [15, '#CEF2ED'], [20, '#CEF2ED'], [7, '#CEF2ED']],
-                'key': 'inorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
+                'traverse': 'inorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
                 'startTime': end_time + 1,
                 'unit': {
                     'pathGroup': {'type': 'Rect', 'Size': [que_elem_width, que_height]},
@@ -35,12 +35,11 @@ def shot_0(start_time):
                 # 'effects': {'ADBE Drop Shadow': {}},
             },
             {
-                'name': '二叉树.前序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 800,
-                'duration': 20, 'Position': [960, 600], 'elems': [[9, '#FADED8'], [3, '#0573E1'], [15, '#CEF2ED'], ['null'], ['null'], [20, '#CEF2ED'], [7, '#CEF2ED']],
-                'startTime': end_time + 1, 'animation': 'false', 'traverse': 'PREORDER',
+                'name': '二叉树.中序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 800,
+                'duration': 20, 'Position': [960, 600], 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], ['null'], ['null'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                'startTime': end_time + 1, 'animation': 'false', 'traverse': 'inorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
-                    # 可以用AtomX或其它插件的precomp,preset,effets替换
                     'selected': {
                         'pathGroup': {'type': 'Ellipse', 'Size': [100, 100]},
                         "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
