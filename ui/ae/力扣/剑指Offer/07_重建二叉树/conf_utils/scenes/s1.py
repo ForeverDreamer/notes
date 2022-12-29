@@ -2,7 +2,8 @@ from .transcript import scenes
 from ae.constants.share import *
 from ae.utils.py.color import hex_to_rgb1
 
-scene = scenes['s1']
+name = 's1'
+scene = scenes[name]
 
 def shot_0(start_time):
     subtitles = []
@@ -130,4 +131,4 @@ def create_all(start_time):
     conf_0 = shot_0(start_time)
     conf_1 = shot_1(conf_0['end_time'] + 1)
     conf_2 = shot_2(conf_1['end_time'] + 1)
-    return 's1', [conf_0, conf_1, conf_2], conf_2['end_time']
+    return name, [conf_0, conf_1, conf_2], conf_2['end_time']

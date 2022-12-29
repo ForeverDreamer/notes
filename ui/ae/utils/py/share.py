@@ -55,12 +55,8 @@ class ShareUtil:
         pass
 
     def head(self):
-        statements = ['//share_util.head']
-        camera_props = {
-            'Transform.Position': [960, 540, -800], 'Transform.Point of Interest': [960, 540, 0],
-            'Camera Options.Zoom': 800, 'Camera Options.Focus Distance': 800, 'Camera Options.Aperture': 7.6,
-        }
-        statements += [
+        statements = [
+            '//share_util.head',
             '#includepath "../utils/jsx";',
             '#include "constants.jsx";',
             '#include "json.jsx";',
@@ -73,28 +69,44 @@ class ShareUtil:
             '#include "animation.jsx";',
             '#include "presets.jsx";',
             '#include "camera.jsx";',
+            '\n',
+        ]
+        # return self._engine.execute('ShareUtil.eval', statements)
+        return statements
+
+    def body(self):
+        camera = {
+            'Transform.Position': [960, 540, -800], 'Transform.Point of Interest': [960, 540, 0],
+            'Camera Options.Zoom': 800, 'Camera Options.Focus Distance': 800, 'Camera Options.Aperture': 7.6,
+        }
+        statements = [
+            '//share_util.body',
             # 'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
-            'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 150, 30);',
+            'var mainComp = project.items.addComp("Main", 1920, 1080, 1, 200, 30);',
             'mainComp.openInViewer();',
             'var subtitlesLayer = textUtil.add(mainComp, "视频字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": "#0B0909"});',
-            f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera_props})',
+            f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
             'cameraLayer.moveToEnd();',
+            'var conf = jsonUtil.read(BASE_DIR + "力扣/剑指Offer/07_重建二叉树/conf.json");',
+            'shareUtil.importFiles(conf["files"]);',
+            'shareUtil.createScenes(conf["scenes"])',
+            '\n',
         ]
-        statements.append('\n')
         # return self._engine.execute('ShareUtil.eval', statements)
         return statements
 
     def tail(self):
-        statements = ['//share_util.tail']
-        statements += [
+        statements = [
+            '//share_util.tail',
+            'subtitlesLayer.moveToBeginning();',
             'var bgWhiteLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#FFFFFF"), "BG", 1920, 1080, 1);',
             'bgWhiteLayer.moveToEnd();',
             'var bgBlackLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", 1920, 1080, 1);',
             'bgBlackLayer.moveToEnd();',
+            '\n',
         ]
-        statements.append('\n')
         return statements
 
     def eval(self, path):

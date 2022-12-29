@@ -2,9 +2,12 @@ from ae.constants.share import *
 from .transcript import scenes
 
 
+name = 's0'
+
+
 def shot_0(start_time):
     subtitles = []
-    for i, text in enumerate(scenes['s0'][0]):
+    for i, text in enumerate(scenes[name][0]):
         subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
@@ -18,7 +21,6 @@ def shot_0(start_time):
                 'Position': [960, 540],
                 'startTime': start_time,
                 'span': {'inPoint': start_time, 'outPoint': end_time},
-                '3D': 'true',
             }
         ],
         'subtitles': subtitles,
@@ -36,4 +38,4 @@ def shot_0(start_time):
 
 def create_all(start_time):
     conf_0 = shot_0(start_time)
-    return 's0', [conf_0], conf_0['end_time']
+    return name, [conf_0], conf_0['end_time']

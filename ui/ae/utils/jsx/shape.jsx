@@ -1,6 +1,6 @@
 function ShapeUtil() {}
 
-ShapeUtil.prototype.add = function(comp, conf) {
+ShapeUtil.prototype.create_one = function(comp, conf) {
     var shapeLayer = comp.layers.addShape();
     shapeLayer.name = conf["layerName"];
     conf_pg = conf["pathGroup"]
@@ -22,7 +22,7 @@ ShapeUtil.prototype.add = function(comp, conf) {
         if (conf_pg["Size"]) {
             pathGroup("Size").setValue(conf_pg["Size"])
         }
-        pathGroup("Position").setValue(conf["Position"])
+        pathGroup("Position").setValue(conf["Position"] ? conf["Position"] : [0, 0])
     }
 
     if (conf["Stroke"]) {
@@ -52,6 +52,14 @@ ShapeUtil.prototype.add = function(comp, conf) {
     shapeGroup("Transform")("Anchor Point").setValue(conf["Position"]);
     shapeGroup("Transform")("Position").setValue(conf["Position"]);
 
+    if (conf['startTime']) {
+		shapeLayer.startTime = conf['startTime'];
+	}
+	if (conf["span"]) {
+		shapeLayer.inPoint = conf["span"]['inPoint'];
+		shapeLayer.outPoint = conf["span"]['outPoint'];
+	}
+
     if (conf["effects"]) {
         effectsUtil.add(shapeLayer, conf["effects"])
     }
@@ -61,6 +69,12 @@ ShapeUtil.prototype.add = function(comp, conf) {
     }
 
     return shapeLayer
+}
+
+ShapeUtil.prototype.create_many = function(comp, shapes) {
+    for (var i = 0; i < shapes.length; i++) {
+        this.create_one(comp, shapes[i])
+    }
 }
 
 ShapeUtil.prototype.remove = function(comp, conf) {

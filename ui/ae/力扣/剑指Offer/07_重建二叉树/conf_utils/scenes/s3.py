@@ -2,10 +2,12 @@ from ae.constants.share import *
 from .transcript import scenes
 from ae.utils.py.color import hex_to_rgb1
 
+name = 's3'
+
 
 def shot_0(start_time):
     subtitles = []
-    for i, text in enumerate(scenes['s3'][0]):
+    for i, text in enumerate(scenes[name][0]):
         subtitles.append([start_time + i * SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
@@ -101,11 +103,11 @@ def shot_0(start_time):
                 # '3D': 'true'
             }
         ],
-        'end_time': end_time,
+        'end_time': end_time+21,
     }
     return conf
 
 
 def create_all(start_time):
     conf_0 = shot_0(start_time)
-    return 's3', [conf_0], conf_0['end_time']
+    return name, [conf_0], conf_0['end_time']

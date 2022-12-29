@@ -27,7 +27,7 @@ PrecompUtil.prototype.queue = function (comp, conf) {
         unit["Position"] = [elemWidth / 2 + elemWidth * i, elemHeight / 2]
         unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i][1])
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
-        var shapeLayer = shapeUtil.add(queueComp, unit)
+        var shapeLayer = shapeUtil.create_one(queueComp, unit)
         var textLayer = textUtil.overlay(
             queueComp, shapeLayer, "Text" + "." + key,
             {"text": key, "font": "Arial-BoldItalicMT", "fontSize": 40, "Position": [elemWidth/2, elemHeight/2]}
@@ -333,7 +333,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             selected["Position"] = nodeShape["Position"]
             selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
             selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem[1])
-            var selectedLayer = shapeUtil.add(comp, selected)
+            var selectedLayer = shapeUtil.create_one(comp, selected)
             // selectedLayers[selected["layerName"]] = selectedLayer
         }
         var shapeTextLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, shapeTextProps);
@@ -342,7 +342,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             // drop["Fill"]["Color"] = drop["Fill"]["Color"]
             drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + key
             drop["Position"] = nodeShape["Position"]
-            var dropLayer = shapeUtil.add(comp, drop)
+            var dropLayer = shapeUtil.create_one(comp, drop)
             // dropLayers[drop["layerName"]] = dropLayer
             var dropTextLayer = textUtil.overlay(comp, dropLayer, NODE_PREFIX + "." + "Drop" + '.' + "Text" + "." + key, {"text": key, "Opacity": 0});
         }
@@ -352,7 +352,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             nodePath["layerName"] = NODE_PREFIX + "."  + "Path" + "." + key;
             // path["Position"] = shapeLayer("Transform")("Position").value.slice(0, 2)
             nodePath["Position"] = nodeShape["Position"]
-            var pathLayer = shapeUtil.add(comp, nodePath)
+            var pathLayer = shapeUtil.create_one(comp, nodePath)
             // nodePathLayers.push(pathLayer)
         }
 
@@ -412,7 +412,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             edgePath["pathGroup"]["type"] = "Group"
             edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '.' + key
             edgePath["Position"] = edgeShape["Position"]
-            var pathLayer = shapeUtil.add(comp, edgePath)
+            var pathLayer = shapeUtil.create_one(comp, edgePath)
         }
 
         edgeLayers[key] = {

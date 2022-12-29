@@ -10,7 +10,7 @@ CameraUtil.prototype.add = function(name, centerPoint, props, keyframes) {
     // cameraLayer("Transform")("Position").setValuesAtTimes([1, 2, 3, 7], [[960, 540, -800], [960, 300, -800], [960, 300, -800], [960, 700, -800]])
     // cameraLayer("Camera Options")("Zoom").setValuesAtTimes([1, 2, 7], [800, 1500, 1500])
 
-    shareUtil.configProps(props)
+    shareUtil.configProps(cameraLayer, props)
     if (keyframes) {
         shareUtil.configKeyframes(keyframes)
     }

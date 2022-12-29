@@ -16,15 +16,15 @@ statements = []
 share_util = ShareUtil(engine)
 # statements += share_util.eval(BASE_DIR + 'utils/jsx/init.jsx')
 statements += share_util.head()
-
+statements += share_util.body()
 # time.sleep(CALL_INTERVAL)
 # share_util.open_project('D:/Untitled Project.aep')
 # share_util.set_anchor_point(3, ['Transform', 'Anchor Point'], 'TOP_LEFT', 'false')
-with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf.json', "r") as f:
-    conf = json.loads(f.read())
+# with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf.json', "r") as f:
+#     conf = json.loads(f.read())
 # 代码执行的顺序决定了Layers的顺序，合理安排代码执行顺序，避免创建好之后需要再调整Layer顺序
-statements += share_util.import_files(conf['files'])
-statements += share_util.create_scenes(conf['scenes'])
+# statements += share_util.import_files(conf['files'])
+# statements += share_util.create_scenes(conf['scenes'])
 
 # time.sleep(CALL_INTERVAL)
 # precomp_util = PrecompUtil(engine)

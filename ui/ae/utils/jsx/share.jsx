@@ -39,8 +39,11 @@ ShareUtil.prototype.createScenes = function (scenes) {
 			if (shot['subtitles']) {
 				this.createSubtitles(shot['subtitles'])
 			}
-			if (shot['cameras']) {
-
+			if (shot['shapes']) {
+				shapeUtil.create_many(mainComp, shot['shapes'])
+			}
+			if (shot['camera']) {
+				this.configKeyframes(cameraLayer, shot['camera'])
 			}
 		}
 	}
