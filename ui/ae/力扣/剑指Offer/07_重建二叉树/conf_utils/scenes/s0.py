@@ -16,7 +16,7 @@ def shot_0(start_time):
         'images': [
             {
                 'name': '题目描述.jpg',
-                'layerName': '题目描述',
+                'layerName': '题目描述1',
                 'Scale': [90, 90, 90],
                 'Position': [960, 540],
                 'startTime': start_time,

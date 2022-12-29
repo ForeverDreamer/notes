@@ -19,14 +19,15 @@ def shot_0(start_time):
         'subtitles': subtitles,
         'annotations': [
             {
-                'name': '前序遍历注解', 'text': '遍历结果按照[根节点|左子树|右子树]排序', 'Position': [1137, 800],
-                'font': FONTS["cn"], 'span': {'inPoint': end_time+10, 'outPoint': end_time+21}
+                'name': '前序遍历注解', 'text': '遍历结果按照[根节点|左子树|右子树]排序\n第一个元素就是根节点，但无法确定左子树和右子树', 'Position': [1000, 770],
+                'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'span': {'inPoint': end_time+10, 'outPoint': end_time+21}
             },
         ],
         'precomps': [
             {
                 'name': '队列.前序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
-                'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                # 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                'elems': [[3], [9], [20], [15], [7]],
                 'traverse': 'preorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
                 'startTime': end_time + 1,
                 'unit': {
@@ -37,8 +38,10 @@ def shot_0(start_time):
                 # 'effects': {'ADBE Drop Shadow': {}},
             },
             {
-                'name': '二叉树.前序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 800,
-                'duration': 20, 'Position': [960, 600], 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], ['null'], ['null'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                'name': '二叉树.前序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 850,
+                # 'duration': 20, 'Position': [960, 600], 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], ['null'], ['null'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                'duration': 17.5, 'Position': [960, 500],
+                'elems': [[3], [9], [20], ['null'], ['null'], [15], [7]],
                 'startTime': end_time + 1, 'animation': 'false', 'traverse': 'preorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},

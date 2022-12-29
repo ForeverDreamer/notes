@@ -19,14 +19,14 @@ def shot_0(start_time):
         'subtitles': subtitles,
         'annotations': [
             {
-                'name': '中序遍历注解', 'text': '遍历结果按照[左子树|根节点|右子树]排序', 'Position': [1137, 800],
-                'font': FONTS["cn"], 'span': {'inPoint': end_time+10, 'outPoint': end_time+21}
+                'name': '中序遍历注解', 'text': '遍历结果按照[左子树|根节点|右子树]排序\n需要先定位根节点，才能确定左子树和右子树', 'Position': [1000, 770],
+                'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'span': {'inPoint': end_time+10, 'outPoint': end_time+21}
             },
         ],
         'precomps': [
             {
                 'name': '队列.中序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
-                'elems': [[9, '#FADED8'], [3, '#0573E1'], [15, '#CEF2ED'], [20, '#CEF2ED'], [7, '#CEF2ED']],
+                'elems': [[9], [3], [15], [20], [7]],
                 'traverse': 'inorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
                 'startTime': end_time + 1,
                 'unit': {
@@ -37,8 +37,8 @@ def shot_0(start_time):
                 # 'effects': {'ADBE Drop Shadow': {}},
             },
             {
-                'name': '二叉树.中序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 800,
-                'duration': 20, 'Position': [960, 600], 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], ['null'], ['null'], [15, '#CEF2ED'], [7, '#CEF2ED']],
+                'name': '二叉树.中序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 850,
+                'duration': 17.5, 'Position': [960, 500], 'elems': [[3], [9], [20], ['null'], ['null'], [15], [7]],
                 'startTime': end_time + 1, 'animation': 'false', 'traverse': 'inorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},

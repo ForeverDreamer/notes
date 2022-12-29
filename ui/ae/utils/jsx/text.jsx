@@ -27,6 +27,14 @@ TextUtil.prototype.add = function(comp, name, props) {
         textLayer = comp.layers.addBoxText(props["rect"]);
         props["justification"] = ParagraphJustification.LEFT_JUSTIFY
     } else {
+        switch (props["justification"]) {
+            case 'LEFT_JUSTIFY':
+                props["justification"] = ParagraphJustification.LEFT_JUSTIFY
+                break;
+            case 'RIGHT_JUSTIFY':
+                props["justification"] = ParagraphJustification.RIGHT_JUSTIFY
+                break;
+        }
         textLayer = comp.layers.addText(props["text"]);
     }
     textLayer.name = name;

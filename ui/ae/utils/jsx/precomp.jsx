@@ -25,7 +25,9 @@ PrecompUtil.prototype.queue = function (comp, conf) {
         var key = elems[i][0]
         unit["layerName"] = "Shape" + "." + key
         unit["Position"] = [elemWidth / 2 + elemWidth * i, elemHeight / 2]
-        unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i][1])
+        if (elems[i][1]) {
+            unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i][1])
+        }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
         var shapeLayer = shapeUtil.create_one(queueComp, unit)
         var textLayer = textUtil.overlay(
@@ -80,7 +82,7 @@ PrecompUtil.prototype._btTraverseSelectedDropQueue = function (key, traverse) {
         dropKeyframes["Transform.Opacity"][0] = [times[0], times[1], times[1]+0.5]
         dropTmp["Position"] = dropLayer("Transform")("Position").value
         dropKeyframes["Transform.Position"][0] = times
-        dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*80, 690]]
+        dropKeyframes["Transform.Position"][1] = [dropTmp["Position"], [50+dropTmp["sn"]*80, 810]]
         dropKeyframes["Transform.Rotation"][0] = times
         dropKeyframes["Contents.Group 1.Contents.Path 1.Path"][0] = times
         shareUtil.configKeyframes(dropLayer, dropKeyframes);
@@ -96,6 +98,14 @@ PrecompUtil.prototype._btTraverseSelectedDropQueue = function (key, traverse) {
         var elemLayers = this.queueLayers[traverse][key]
         shareUtil.configKeyframes(elemLayers["shapeLayer"], queueKeyframes)
         shareUtil.configKeyframes(elemLayers["textLayer"], queueKeyframes)
+        if (traverse === "preorder" && key === '3') {
+            shareUtil.configKeyframes(selectedLayer, {
+                "Contents.Group 1.Contents.Fill 1.Color": [[times[0], times[1]+17.5], [colorUtil.hexToRgb1('#FFFFFF'), colorUtil.hexToRgb1('#0573E1')], {"spatial": [{"type": 'HOLD'}]}]
+            });
+            shareUtil.configKeyframes(elemLayers["shapeLayer"], {
+                "Contents.Group 1.Contents.Fill 1.Color": [[times[0], times[1]+17.5], [colorUtil.hexToRgb1('#FFFFFF'), colorUtil.hexToRgb1('#0573E1')], {"spatial": [{"type": 'HOLD'}]}]
+            });
+        }
         // for (var kQueue in precompUtil.queueLayers) {
         //     $.writeln(kQueue)
         //     var queue = precompUtil.queueLayers[kQueue]
@@ -127,7 +137,7 @@ PrecompUtil.prototype._btTraverseForwardPath = function (traverse, forwardPath) 
             // }
             shareUtil.configKeyframes(forwardPath[i], nodePathKeyframes);
             if (traverse === 'preorder') {
-                var key = forwardPath[i].name.split('.').slice(-1)
+                var key = forwardPath[i].name.split('.').slice(-1)[0]
                 this._btTraverseSelectedDropQueue(key, traverse)
             }
         } else {
@@ -143,7 +153,7 @@ PrecompUtil.prototype._btTraverseForwardPath = function (traverse, forwardPath) 
         times[1] = times[0] + 0.5
     }
     if (traverse === 'inorder') {
-        var key = forwardPath[i-1].name.split('.').slice(-1)
+        var key = forwardPath[i-1].name.split('.').slice(-1)[0]
         this._btTraverseSelectedDropQueue(key, traverse)
     }
     forwardPath.length = 0;
@@ -158,8 +168,16 @@ PrecompUtil.prototype._btTraverseBackwardPath = function (traverse, backwardPath
     var edgePathKeyframes = {
         'Contents.Group 1.Contents.Trim Paths 1.End': [times, [100, 0]],
     }
-
-    for (var i = 0; i < 2; i++) {
+    var length;
+    switch (traverse) {
+		case 'preorder':
+			length = backwardPath.length
+			break;
+		case 'inorder':
+			length = 2
+			break;
+	}
+    for (var i = 0; i < length; i++) {
         if (backwardPath[0].name.indexOf("Edge") !== -1) {
             shareUtil.configKeyframes(backwardPath[0], edgePathKeyframes);
         }
@@ -171,7 +189,7 @@ PrecompUtil.prototype._btTraverseBackwardPath = function (traverse, backwardPath
         backwardPath.shift()
     }
     if (traverse === 'inorder') {
-        var key = backwardPath.shift().name.split('.').slice(-1)
+        var key = backwardPath.shift().name.split('.').slice(-1)[0]
         this._btTraverseSelectedDropQueue(key, traverse)
     }
 }
@@ -182,9 +200,26 @@ PrecompUtil.prototype._btTraverse = function (traverse, nodePath, edgePath) {
         // $.writeln("==================================")
     }
 
-    // 对动画路径来说其实是前序遍历
-    function recur(traverse, root, func, forwardPath, backwardPath) {
+    function preorder(traverse, root, func, forwardPath, backwardPath) {
         func(root)
+        forwardPath.push(root["pathLayer"])
+        backwardPath.unshift(root["pathLayer"])
+        var direction = "left"
+        if (root[direction]) {
+            forwardPath.push(root["edgeLayers"]["down"][direction]["pathLayer"])
+            backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
+            preorder(traverse, root[direction], func, forwardPath, backwardPath)
+        }
+        direction = "right"
+        if (root[direction]) {
+            forwardPath.push(root["edgeLayers"]["down"][direction]["pathLayer"])
+            backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
+            preorder(traverse, root[direction], func, forwardPath, backwardPath)
+        }
+    }
+
+    // 对动画路径来说其实是前序遍历
+    function inorder(traverse, root, func, forwardPath, backwardPath) {
         forwardPath.push(root["pathLayer"])
         var direction = "left"
         if (root[direction]) {
@@ -192,23 +227,22 @@ PrecompUtil.prototype._btTraverse = function (traverse, nodePath, edgePath) {
             backwardPath.unshift(root["pathLayer"])
             backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
             backwardPath.unshift(root[direction]["pathLayer"])
-            recur(traverse, root[direction], func, forwardPath, backwardPath)
+            inorder(traverse, root[direction], func, forwardPath, backwardPath)
         }
+        func(root)
         direction = "right"
         if (root[direction]) {
             forwardPath.push(root["edgeLayers"]["down"][direction]["pathLayer"])
             backwardPath.unshift(root["pathLayer"])
             backwardPath.unshift(root["edgeLayers"]["down"][direction]["pathLayer"])
             backwardPath.unshift(root[direction]["pathLayer"])
-            recur(traverse, root[direction], func, forwardPath, backwardPath)
+            inorder(traverse, root[direction], func, forwardPath, backwardPath)
         }
-        if (traverse === 'inorder') {
-            if (!root["left"] && !root["right"]) {
-                // 配置路径动画
-                precompUtil._btTraverseForwardPath(traverse, forwardPath)
-                if (backwardPath.length > 0) {
-                    precompUtil._btTraverseBackwardPath(traverse, backwardPath)
-                }
+        if (!root["left"] && !root["right"]) {
+            // 配置路径动画
+            precompUtil._btTraverseForwardPath(traverse, forwardPath)
+            if (backwardPath.length > 0) {
+                precompUtil._btTraverseBackwardPath(traverse, backwardPath)
             }
         }
     }
@@ -219,11 +253,12 @@ PrecompUtil.prototype._btTraverse = function (traverse, nodePath, edgePath) {
         var forwardPath = []
         var backwardPath = []
 
-        recur(traverse, root, func, forwardPath, backwardPath)
         if (traverse === 'preorder') {
+            preorder(traverse, root, func, forwardPath, backwardPath)
             precompUtil._btTraverseForwardPath(traverse, forwardPath)
             precompUtil._btTraverseBackwardPath(traverse, backwardPath)
         } else if (traverse === 'inorder') {
+            inorder(traverse, root, func, forwardPath, backwardPath)
             precompUtil._btTraverseBackwardPath(traverse, backwardPath)
             shareUtil.configKeyframes(root["pathLayer"], {
                 'Contents.Group 1.Contents.Trim Paths 1.Start': [times, [0, 50]],
@@ -332,7 +367,9 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         if (selected) {
             selected["Position"] = nodeShape["Position"]
             selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
-            selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem[1])
+            if (elem[1]) {
+                selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem[1])
+            }
             var selectedLayer = shapeUtil.create_one(comp, selected)
             // selectedLayers[selected["layerName"]] = selectedLayer
         }
