@@ -366,8 +366,8 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         if (selected) {
             selected["Position"] = nodeShape["Position"]
             selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
-            if (elem[1]) {
-                selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem[1])
+            if (elem["Color"]) {
+                selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem["Color"])
             }
             var selectedLayer = shapeUtil.create_one(comp, selected)
             // selectedLayers[selected["layerName"]] = selectedLayer
@@ -495,6 +495,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     if (conf['3D']) {
 		compLayer.threeDLayer = true;
 	}
+    shareUtil.configMasks(compLayer, conf["Masks"])
     return {'comp': comp, 'compLayer': compLayer};
 }
 

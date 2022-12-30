@@ -231,6 +231,42 @@ def shot_0(start_time):
                 },
                 # 'effects': {'ADBE Drop Shadow': {}},
             },
+            {
+                'name': '二叉树.数据定位', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
+                'startTime': start_time, 'duration': duration, 'Position': [435, 490],
+                'elems': [{'key': 3, 'Color': '#0573E1'}, {'key': 9, 'Color': '#FADED8'}, {'key': 20, 'Color': '#CEF2ED'},
+                          {'key': None}, {'key': None}, {'key': 15, 'Color': '#CEF2ED'}, {'key': 7, 'Color': '#CEF2ED'}],
+                'animation': 'false',
+                'node': {
+                    'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
+                    'selected': {
+                        'pathGroup': {'type': 'Ellipse', 'Size': [100, 100]},
+                        "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                    },
+                },
+                'edge': {
+                    'shape': {'name': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80],
+                              'Rotation': 30},
+                },
+                'Masks': [
+                    {
+                        'vertices': [[187, 1], [130, 58], [186, 116], [244, 56]],
+                        'inTangents': [[0, 0], [2, -50], [-29, -2], [-5, 45]],
+                        'outTangents': [[0, 0], [-1.5, 38.3], [34, 2.4], [5, -44.7]],
+                    },
+                    {
+                        'vertices': [[129, 87], [-5, 247], [57, 315], [159, 115]],
+                        'inTangents': [[0, 0], [12, -33], [-38, 4], [0, 0]],
+                        'outTangents': [[0, 0], [-12, 33], [121, -13], [0, 0]],
+                    },
+                    {
+                        'vertices': [[245, 90], [205, 122], [115, 491], [548, 475]],
+                        'inTangents': [[0, 0], [0, 0], [-2.5, -151.7], [-49, 80]],
+                        'outTangents': [[0, 0], [0, 0], [2.2, 135.5], [44.7, -73]],
+                    },
+                ]
+                # '3D': 'true'
+            }
         ],
         'end_time': end_time,
     }

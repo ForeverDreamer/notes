@@ -134,30 +134,7 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	if (typeof conf["Opacity"] !== "undefined") {
 		layer("Transform")("Opacity").setValue(conf["Opacity"]);
 	}
-	var masks = conf['Masks']
-	if (masks) {
-		for (var i = 0; i < masks.length; i++) {
-			var conf_mask = masks[i]
-			var mask = layer.Masks.addProperty("Mask");
-			maskShape = mask("maskShape");
-			var shape = maskShape.value;
-			if (conf_mask["vertices"]) {
-				shape.vertices = conf_mask["vertices"];
-			}
-			if (conf_mask["inTangents"]) {
-				shape.inTangents = conf_mask["inTangents"];
-			}
-			if (conf_mask["outTangents"]) {
-				shape.outTangents = conf_mask["outTangents"];
-			}
-			var closed = js_bool(conf_mask["closed"]);
-			shape.closed =  closed ? closed : true;
-			maskShape.setValue(shape);
-			if (conf_mask["Mask Feather"]) {
-				layer.Masks("Mask 1")("Mask Feather").setValue(conf_mask["Mask Feather"])
-			}
-		}
-	}
+	shareUtil.configMasks(layer, conf["Masks"])
 	if (conf['startTime']) {
 		layer.startTime = conf['startTime'];
 	}
@@ -207,6 +184,33 @@ ShareUtil.prototype.findItemByName = function (name) {
 		}
 	}
 	return null;
+}
+
+ShareUtil.prototype.configMasks = function (layer, masks) {
+	if (!masks) {
+		return
+	}
+	for (var i = 0; i < masks.length; i++) {
+		var conf_mask = masks[i]
+		var mask = layer.Masks.addProperty("Mask");
+		maskShape = mask("maskShape");
+		var shape = maskShape.value;
+		if (conf_mask["vertices"]) {
+			shape.vertices = conf_mask["vertices"];
+		}
+		if (conf_mask["inTangents"]) {
+			shape.inTangents = conf_mask["inTangents"];
+		}
+		if (conf_mask["outTangents"]) {
+			shape.outTangents = conf_mask["outTangents"];
+		}
+		var closed = js_bool(conf_mask["closed"]);
+		shape.closed =  closed ? closed : true;
+		maskShape.setValue(shape);
+		if (conf_mask["Mask Feather"]) {
+			layer.Masks("Mask 1")("Mask Feather").setValue(conf_mask["Mask Feather"])
+		}
+	}
 }
 
 ShareUtil.prototype.configProps = function (layer, props) {
