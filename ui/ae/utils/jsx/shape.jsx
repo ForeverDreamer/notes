@@ -77,6 +77,12 @@ ShapeUtil.prototype.create_many = function(comp, shapes) {
     }
 }
 
+ShapeUtil.prototype.create_vectors = function(comp, vectors) {
+    for (var i = 0; i < vectors.length; i++) {
+        shareUtil.addLayer(comp, vectors[i])
+    }
+}
+
 ShapeUtil.prototype.remove = function(comp, conf) {
 }
 

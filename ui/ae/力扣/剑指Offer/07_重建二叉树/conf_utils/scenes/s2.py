@@ -27,7 +27,7 @@ def shot_0(start_time):
             {
                 'name': '队列.前序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
                 # 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], [15, '#CEF2ED'], [7, '#CEF2ED']],
-                'elems': [[3], [9], [20], [15], [7]],
+                'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}],
                 'traverse': 'preorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
                 'startTime': end_time + 1,
                 'unit': {
@@ -41,7 +41,7 @@ def shot_0(start_time):
                 'name': '二叉树.前序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 850,
                 # 'duration': 20, 'Position': [960, 600], 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], ['null'], ['null'], [15, '#CEF2ED'], [7, '#CEF2ED']],
                 'duration': 17.5, 'Position': [960, 500],
-                'elems': [[3], [9], [20], ['null'], ['null'], [15], [7]],
+                'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
                 'startTime': end_time + 1, 'animation': 'false', 'traverse': 'preorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},

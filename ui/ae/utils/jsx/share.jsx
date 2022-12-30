@@ -42,6 +42,9 @@ ShareUtil.prototype.createScenes = function (scenes) {
 			if (shot['shapes']) {
 				shapeUtil.create_many(mainComp, shot['shapes'])
 			}
+			if (shot['vectors']) {
+				shapeUtil.create_vectors(mainComp, shot['vectors'])
+			}
 			if (shot['camera']) {
 				this.configKeyframes(cameraLayer, shot['camera'])
 			}

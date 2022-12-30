@@ -26,7 +26,7 @@ def shot_0(start_time):
         'precomps': [
             {
                 'name': '队列.中序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
-                'elems': [[9], [3], [15], [20], [7]],
+                'elems': [{'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}],
                 'traverse': 'inorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
                 'startTime': end_time + 1,
                 'unit': {
@@ -38,7 +38,7 @@ def shot_0(start_time):
             },
             {
                 'name': '二叉树.中序遍历演示', 'type': 'BINARY_TREE', 'width': 500, 'height': 850,
-                'duration': 17.5, 'Position': [960, 500], 'elems': [[3], [9], [20], ['null'], ['null'], [15], [7]],
+                'duration': 17.5, 'Position': [960, 500], 'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
                 'startTime': end_time + 1, 'animation': 'false', 'traverse': 'inorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},

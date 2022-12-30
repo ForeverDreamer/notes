@@ -57,7 +57,8 @@ def shot_1(start_time):
         'precomps': [
             {
                 'name': '示例1.二叉树', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
-                'duration': 8, 'Position': [960, 600], 'elems': [[3], [9], [20], ['null'], ['null'], [15], [7]], 'startTime': end_time+1,
+                'startTime': end_time+1,'duration': 8, 'Position': [960, 600],
+                'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
                 'animation': 'true',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},

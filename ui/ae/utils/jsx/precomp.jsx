@@ -2,10 +2,6 @@ function PrecompUtil() {
     this.queueLayers = {}
 }
 
-PrecompUtil.prototype.stack = function (nodeLayer, edgeLayer, elems) {
-
-}
-
 PrecompUtil.prototype.stack = function (comp, conf) {
 
 }
@@ -22,14 +18,17 @@ PrecompUtil.prototype.queue = function (comp, conf) {
     var elemWidth = unit["pathGroup"]["Size"][1]
 	// var height = layer.sourceRectAtTime(startTime, false).height
     for (var i = 0; i < elems.length; i++) {
-        var key = elems[i][0]
+        var key = elems[i]["key"]
         unit["layerName"] = "Shape" + "." + key
         unit["Position"] = [elemWidth / 2 + elemWidth * i, elemHeight / 2]
-        if (elems[i][1]) {
+        if (elems[i]["Color"]) {
             unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i][1])
         }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
         var shapeLayer = shapeUtil.create_one(queueComp, unit)
+        if (elems[i]["keyframes"]) {
+            shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
+        }
         var textLayer = textUtil.overlay(
             queueComp, shapeLayer, "Text" + "." + key,
             {"text": key, "font": "Arial-BoldItalicMT", "fontSize": 40, "Position": [elemWidth/2, elemHeight/2]}
@@ -326,7 +325,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     function addNode(elem, parentNode, direction, selected, drop, upEdge) {
         var times = precompUtil.times
         var nodeLayers = precompUtil.nodeLayers
-        var key = elem[0]
+        var key = elem["key"]
 
         if (parentNode) {
             var parentPos = parentNode["Position"]
@@ -472,13 +471,13 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
 
     while (nodeQueue.length > 0) {
         var treeNode = nodeQueue.shift();
-        if (elems[i] && js_null(elems[i][0])) {
+        if (elems[i] && elems[i]["key"]) {
             var edgeLayer = addEdge(elems[i], treeNode, "left")
             var nodeLayer = addNode(elems[i], treeNode, "left", selected, drop, edgeLayer)
             nodeQueue.push(nodeLayer)
         }
         i += 1;
-        if (elems[i] && js_null(elems[i][0])) {
+        if (elems[i] && elems[i]["key"]) {
             var edgeLayer = addEdge(elems[i], treeNode, "right")
             var nodeLayer = addNode(elems[i], treeNode, "right", selected, drop, edgeLayer)
             nodeQueue.push(nodeLayer)

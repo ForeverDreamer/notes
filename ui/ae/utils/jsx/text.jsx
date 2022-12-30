@@ -41,6 +41,9 @@ TextUtil.prototype.add = function(comp, name, props) {
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
     shareUtil.setAnchorPoint(textLayer, props["Anchor Point"])
+    if (props['startTime']) {
+		textLayer.startTime = props['startTime'];
+	}
     if (props["span"]) {
 		textLayer.inPoint = props["span"]["inPoint"];
         textLayer.outPoint = props["span"]["outPoint"];
