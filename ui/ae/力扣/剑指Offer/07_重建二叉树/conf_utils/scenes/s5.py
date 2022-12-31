@@ -1,3 +1,5 @@
+import json
+
 from ae.constants.share import *
 from .transcript import scenes
 from ae.utils.py.color import hex_to_rgb1
@@ -16,6 +18,10 @@ def shot_0(start_time):
     que_elem_width = 80
     que_height = 80
     duration = 20
+
+    with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf_utils/scenes/s5.json', "r") as f:
+        conf_shot_0 = json.loads(f.read())[0]
+
     conf = {
         'subtitles': subtitles,
         'annotations': [
@@ -37,7 +43,7 @@ def shot_0(start_time):
             {
                 'name': '前序右子树', 'text': '右子树',
                 'Position': [1124, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
-                'startTime': start_time+7.5, 'duration': duration-7.5,
+                'startTime': start_time+7.5, 'duration': duration-12.5,
             },
             {
                 'name': '中序遍历注解', 'text': '中序遍历结果按照[左子树|根节点|右子树]排序\n需要先定位根节点，才能确定左子树和右子树',
@@ -57,7 +63,7 @@ def shot_0(start_time):
             {
                 'name': '中序右子树', 'text': '右子树',
                 'Position': [1124, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
-                'startTime': start_time + 3.5, 'duration': duration-3.5,
+                'startTime': start_time + 3.5, 'duration': duration-8.5,
             },
         ],
         'vectors': [
@@ -80,7 +86,7 @@ def shot_0(start_time):
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '前序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1140, 405], 'Rotation': -30,
-                'startTime': start_time + 7.5, 'duration': duration - 7.5,
+                'startTime': start_time + 7.5, 'duration': duration - 12.5,
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 7.5], [[0, 0, 0], [40, 40, 40]]]
                 }
@@ -104,7 +110,7 @@ def shot_0(start_time):
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '中序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1140, 844], 'Rotation': -30,
-                'startTime': start_time + 3.5, 'duration': duration - 3.5,
+                'startTime': start_time + 3.5, 'duration': duration - 8.5,
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 3.5], [[0, 0, 0], [40, 40, 40]]]
                 }
@@ -233,7 +239,7 @@ def shot_0(start_time):
             },
             {
                 'name': '二叉树.数据定位', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
-                'startTime': start_time, 'duration': duration, 'Position': [435, 490],
+                'startTime': start_time, 'duration': duration+5, 'Position': [435, 490],
                 'elems': [{'key': 3, 'Color': '#0573E1'}, {'key': 9, 'Color': '#FADED8'}, {'key': 20, 'Color': '#CEF2ED'},
                           {'key': None}, {'key': None}, {'key': 15, 'Color': '#CEF2ED'}, {'key': 7, 'Color': '#CEF2ED'}],
                 'animation': 'false',
@@ -248,23 +254,19 @@ def shot_0(start_time):
                     'shape': {'name': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80],
                               'Rotation': 30},
                 },
-                'Masks': [
-                    {
-                        'vertices': [[187, 1], [130, 58], [186, 116], [244, 56]],
-                        'inTangents': [[0, 0], [2, -50], [-29, -2], [-5, 45]],
-                        'outTangents': [[0, 0], [-1.5, 38.3], [34, 2.4], [5, -44.7]],
-                    },
-                    {
-                        'vertices': [[129, 87], [-5, 247], [57, 315], [159, 115]],
-                        'inTangents': [[0, 0], [12, -33], [-38, 4], [0, 0]],
-                        'outTangents': [[0, 0], [-12, 33], [121, -13], [0, 0]],
-                    },
-                    {
-                        'vertices': [[245, 90], [205, 122], [115, 491], [548, 475]],
-                        'inTangents': [[0, 0], [0, 0], [-2.5, -151.7], [-49, 80]],
-                        'outTangents': [[0, 0], [0, 0], [2.2, 135.5], [44.7, -73]],
-                    },
-                ]
+                'Masks': conf_shot_0['precomps']['2']['Masks'],
+                'keyframes': {
+                    'Masks.Mask 1.Mask Opacity': [[start_time, start_time + 0.5], [0, 100],
+                                                  {"spatial": [{"type": 'HOLD'}]}],
+                    'Masks.Mask 2.Mask Opacity': [[start_time+1, start_time + 1.5], [0, 100],
+                                                  {"spatial": [{"type": 'HOLD'}]}],
+                    'Masks.Mask 3.Mask Opacity': [[start_time+2, start_time + 2.5], [0, 100],
+                                                  {"spatial": [{"type": 'HOLD'}]}],
+                    'Masks.Mask 4.Mask Opacity': [[start_time+3, start_time + 3.5], [0, 100],
+                                                  {"spatial": [{"type": 'HOLD'}]}],
+                    'Masks.Mask 5.Mask Opacity': [[start_time+4, start_time + 4.5], [0, 100],
+                                                  {"spatial": [{"type": 'HOLD'}]}],
+                }
                 # '3D': 'true'
             }
         ],
@@ -273,6 +275,235 @@ def shot_0(start_time):
     return conf
 
 
+def shot_1(start_time):
+    subtitles = []
+    for i, text in enumerate(scenes[name][1]):
+        subtitles.append([start_time + i * SUBTITLES_INTERVAL, text])
+        i += 1
+    subtitles = list(map(list, zip(*subtitles)))
+    end_time = subtitles[0][-1]
+
+    que_elem_width = 80
+    que_height = 80
+    duration = 20
+
+    conf = {
+        'subtitles': subtitles,
+        'annotations': [
+            {
+                'name': '前序根节点', 'text': '根节点',
+                'Position': [1135, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'startTime': start_time + 0.5, 'duration': duration - 0.5,
+            },
+            {
+                'name': '前序左子树', 'text': '左子树',
+                'Position': [1300, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'startTime': start_time + 6, 'duration': duration - 6,
+            },
+            {
+                'name': '前序右子树', 'text': '右子树',
+                'Position': [1459, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'startTime': start_time + 7.5, 'duration': duration - 10,
+            },
+            {
+                'name': '中序根节点', 'text': '根节点',
+                'Position': [1300, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'startTime': start_time + 0.5, 'duration': duration - 0.5,
+            },
+            {
+                'name': '中序左子树', 'text': '左子树',
+                'Position': [1135, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'startTime': start_time + 2, 'duration': duration - 2,
+            },
+            {
+                'name': '中序右子树', 'text': '右子树',
+                'Position': [1459, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'startTime': start_time + 3.5, 'duration': duration - 6.5,
+            },
+        ],
+        'vectors': [
+            {
+                'name': 'Edge Black/Elements.ai', 'layerName': '前序根节点箭头', 'Anchor Point': 'TOP',
+                'Scale': [40, 40, 40], 'Position': [1230, 405], 'Rotation': 30,
+                'startTime': start_time + 0.5, 'duration': duration - 0.5,
+                'keyframes': {
+                    "Transform.Scale": [[start_time, start_time + 0.5], [[0, 0, 0], [40, 40, 40]]]
+                }
+            },
+            {
+                'name': 'Edge Black/Elements.ai', 'layerName': '前序左子树箭头', 'Anchor Point': 'TOP',
+                'Scale': [40, 40, 40], 'Position': [1380, 405], 'Rotation': -30,
+                'startTime': start_time + 6, 'duration': duration - 6,
+                'keyframes': {
+                    "Transform.Scale": [[start_time, start_time + 6], [[0, 0, 0], [40, 40, 40]]]
+                }
+            },
+            {
+                'name': 'Edge Black/Elements.ai', 'layerName': '前序右子树箭头', 'Anchor Point': 'TOP',
+                'Scale': [40, 40, 40], 'Position': [1460, 405], 'Rotation': -30,
+                'startTime': start_time + 7.5, 'duration': duration - 7.5,
+                'keyframes': {
+                    "Transform.Scale": [[start_time, start_time + 7.5], [[0, 0, 0], [40, 40, 40]]]
+                }
+            },
+            {
+                'name': 'Edge Black/Elements.ai', 'layerName': '中序根节点箭头', 'Anchor Point': 'TOP',
+                'Scale': [40, 40, 40], 'Position': [1380, 844], 'Rotation': -30,
+                'startTime': start_time + 0.5, 'duration': duration - 0.5,
+                'keyframes': {
+                    "Transform.Scale": [[start_time, start_time + 0.5], [[0, 0, 0], [40, 40, 40]]]
+                }
+            },
+            {
+                'name': 'Edge Black/Elements.ai', 'layerName': '中序左子树箭头', 'Anchor Point': 'TOP',
+                'Scale': [40, 40, 40], 'Position': [1230, 838], 'Rotation': 30,
+                'startTime': start_time + 2, 'duration': duration - 2,
+                'keyframes': {
+                    "Transform.Scale": [[start_time, start_time + 2], [[0, 0, 0], [40, 40, 40]]]
+                }
+            },
+            {
+                'name': 'Edge Black/Elements.ai', 'layerName': '中序右子树箭头', 'Anchor Point': 'TOP',
+                'Scale': [40, 40, 40], 'Position': [1460, 844], 'Rotation': -30,
+                'startTime': start_time + 3.5, 'duration': duration - 3.5,
+                'keyframes': {
+                    "Transform.Scale": [[start_time, start_time + 3.5], [[0, 0, 0], [40, 40, 40]]]
+                }
+            },
+        ],
+        'precomps': [
+            {
+                'name': '队列.前序左边数据定位', 'type': 'QUEUE', 'Position': [860, 365], 'Anchor Point': 'LEFT',
+                'elems': [
+                    {
+                        'key': 3,
+                        'Color': '#0573E1',
+                    }, {
+                        'key': 9,
+                        'Color': '#FADED8',
+                    },
+                ],
+                'traverse': 'preorder', 'width': que_elem_width * 5, 'height': que_height,
+                'startTime': start_time, 'duration': duration,
+                'unit': {
+                    'pathGroup': {'type': 'Rect', 'Size': [que_elem_width, que_height]},
+                    "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                    "Stroke": {'Stroke Width': 5, "Color": hex_to_rgb1("#000000")},
+                },
+            },
+            {
+                'name': '队列.前序右边数据定位', 'type': 'QUEUE', 'Position': [1020, 365], 'Anchor Point': 'LEFT',
+                'elems': [
+                    {
+                        'key': 20,
+                        'keyframes': {
+                            'Contents.Group 1.Contents.Fill 1.Color': [
+                                [0, 0.5],
+                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                {"spatial": [{"type": 'HOLD'}]}
+                            ]
+                        }
+                    }, {
+                        'key': 15,
+                        'keyframes': {
+                            'Contents.Group 1.Contents.Fill 1.Color': [
+                                [1, 1.5],
+                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                {"spatial": [{"type": 'HOLD'}]}
+                            ]
+                        }
+                    }, {
+                        'key': 7,
+                        'keyframes': {
+                            'Contents.Group 1.Contents.Fill 1.Color': [
+                                [2, 2.5],
+                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                {"spatial": [{"type": 'HOLD'}]}
+                            ]
+                        }
+                    }
+                ],
+                'traverse': 'preorder', 'width': que_elem_width * 5, 'height': que_height,
+                'startTime': start_time, 'duration': duration,
+                'unit': {
+                    'pathGroup': {'type': 'Rect', 'Size': [que_elem_width, que_height]},
+                    "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                    "Stroke": {'Stroke Width': 5, "Color": hex_to_rgb1("#000000")},
+                },
+                'keyframes': {
+                    'Transform.Position': [[start_time, start_time+0.5], [[1020, 365], [1260, 365]]]
+                }
+            },
+            {
+                'name': '队列.中序左边数据定位', 'type': 'QUEUE', 'Position': [860, 805], 'Anchor Point': 'LEFT',
+                'elems': [
+                    {
+                        'key': 9,
+                        'Color': '#FADED8',
+                    },
+                    {
+                        'key': 3,
+                        'Color': '#0573E1',
+                    },
+                ],
+                'traverse': 'inorder', 'width': que_elem_width * 5, 'height': que_height,
+                'startTime': start_time, 'duration': duration,
+                'unit': {
+                    'pathGroup': {'type': 'Rect', 'Size': [que_elem_width, que_height]},
+                    "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                    "Stroke": {'Stroke Width': 5, "Color": hex_to_rgb1("#000000")},
+                },
+            },
+            {
+                'name': '队列.中序右边数据定位', 'type': 'QUEUE', 'Position': [1020, 805], 'Anchor Point': 'LEFT',
+                'elems': [
+                    {
+                        'key': 15,
+                        'keyframes': {
+                            'Contents.Group 1.Contents.Fill 1.Color': [
+                                [1, 1.5],
+                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                {"spatial": [{"type": 'HOLD'}]}
+                            ]
+                        }
+                    }, {
+                        'key': 20,
+                        'keyframes': {
+                            'Contents.Group 1.Contents.Fill 1.Color': [
+                                [0, 0.5],
+                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                {"spatial": [{"type": 'HOLD'}]}
+                            ]
+                        }
+                    }, {
+                        'key': 7,
+                        'keyframes': {
+                            'Contents.Group 1.Contents.Fill 1.Color': [
+                                [2, 2.5],
+                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                {"spatial": [{"type": 'HOLD'}]}
+                            ]
+                        }
+                    }
+                ],
+                'traverse': 'inorder', 'width': que_elem_width * 5, 'height': que_height,
+                'startTime': start_time, 'duration': duration,
+                'unit': {
+                    'pathGroup': {'type': 'Rect', 'Size': [que_elem_width, que_height]},
+                    "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+                    "Stroke": {'Stroke Width': 5, "Color": hex_to_rgb1("#000000")},
+                },
+                'keyframes': {
+                    'Transform.Position': [[start_time, start_time + 0.5], [[1020, 805], [1260, 805]]]
+                }
+            },
+        ],
+        'end_time': end_time,
+    }
+    return conf
+
+
 def create_all(start_time):
     conf_0 = shot_0(start_time)
-    return name, [conf_0], conf_0['end_time']
+    conf_1 = shot_1(conf_0['end_time'] + 1)
+    return name, [conf_0, conf_1], conf_1['end_time']

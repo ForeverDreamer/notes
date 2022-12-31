@@ -134,7 +134,7 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	if (typeof conf["Opacity"] !== "undefined") {
 		layer("Transform")("Opacity").setValue(conf["Opacity"]);
 	}
-	shareUtil.configMasks(layer, conf["Masks"])
+	this.configMasks(layer, conf["Masks"])
 	if (conf['startTime']) {
 		layer.startTime = conf['startTime'];
 	}
@@ -203,6 +203,9 @@ ShareUtil.prototype.configMasks = function (layer, masks) {
 		}
 		if (conf_mask["outTangents"]) {
 			shape.outTangents = conf_mask["outTangents"];
+		}
+		if (conf_mask["inverted"]) {
+			mask.inverted = conf_mask["inverted"];
 		}
 		var closed = js_bool(conf_mask["closed"]);
 		shape.closed =  closed ? closed : true;

@@ -22,7 +22,7 @@ PrecompUtil.prototype.queue = function (comp, conf) {
         unit["layerName"] = "Shape" + "." + key
         unit["Position"] = [elemWidth / 2 + elemWidth * i, elemHeight / 2]
         if (elems[i]["Color"]) {
-            unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i][1])
+            unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i]["Color"])
         }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
         var shapeLayer = shapeUtil.create_one(queueComp, unit)
@@ -496,6 +496,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
 		compLayer.threeDLayer = true;
 	}
     shareUtil.configMasks(compLayer, conf["Masks"])
+    shareUtil.configKeyframes(compLayer, conf["keyframes"])
     return {'comp': comp, 'compLayer': compLayer};
 }
 
