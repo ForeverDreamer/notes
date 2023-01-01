@@ -43,7 +43,7 @@ def shot_0(start_time):
             {
                 'name': '前序右子树', 'text': '右子树',
                 'Position': [1124, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
-                'startTime': start_time+7.5, 'duration': duration-12.5,
+                'span': {'inPoint': start_time + 7.5, 'outPoint': start_time + 20},
             },
             {
                 'name': '中序遍历注解', 'text': '中序遍历结果按照[左子树|根节点|右子树]排序\n需要先定位根节点，才能确定左子树和右子树',
@@ -63,7 +63,7 @@ def shot_0(start_time):
             {
                 'name': '中序右子树', 'text': '右子树',
                 'Position': [1124, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
-                'startTime': start_time + 3.5, 'duration': duration-8.5,
+                'span': {'inPoint': start_time + 3.5, 'outPoint': start_time + 20},
             },
         ],
         'vectors': [
@@ -86,7 +86,7 @@ def shot_0(start_time):
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '前序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1140, 405], 'Rotation': -30,
-                'startTime': start_time + 7.5, 'duration': duration - 12.5,
+                'span': {'inPoint': start_time + 7.5, 'outPoint': start_time + 20},
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 7.5], [[0, 0, 0], [40, 40, 40]]]
                 }
@@ -110,7 +110,7 @@ def shot_0(start_time):
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '中序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1140, 844], 'Rotation': -30,
-                'startTime': start_time + 3.5, 'duration': duration - 8.5,
+                'span': {'inPoint': start_time + 3.5, 'outPoint': start_time + 20},
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 3.5], [[0, 0, 0], [40, 40, 40]]]
                 }
@@ -286,45 +286,46 @@ def shot_1(start_time):
     que_elem_width = 80
     que_height = 80
     duration = 20
+    font_size = 40
 
     conf = {
         'subtitles': subtitles,
         'annotations': [
             {
                 'name': '前序根节点', 'text': '根节点',
-                'Position': [1135, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'Position': [1205, 485], 'font': FONTS['cn'], 'fontSize': font_size, 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
             },
             {
                 'name': '前序左子树', 'text': '左子树',
-                'Position': [1300, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'Position': [1330, 490], 'font': FONTS['cn'], 'fontSize': font_size, 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
                 'startTime': start_time + 6, 'duration': duration - 6,
             },
             {
                 'name': '前序右子树', 'text': '右子树',
-                'Position': [1459, 485], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'Position': [1459, 485], 'font': FONTS['cn'], 'fontSize': font_size, 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
                 'startTime': start_time + 7.5, 'duration': duration - 10,
             },
             {
                 'name': '中序根节点', 'text': '根节点',
-                'Position': [1300, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'Position': [1330, 927], 'font': FONTS['cn'], 'fontSize': font_size, 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
             },
             {
                 'name': '中序左子树', 'text': '左子树',
-                'Position': [1135, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'Position': [1205, 922], 'font': FONTS['cn'], 'fontSize': font_size, 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
                 'startTime': start_time + 2, 'duration': duration - 2,
             },
             {
                 'name': '中序右子树', 'text': '右子树',
-                'Position': [1459, 922], 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
+                'Position': [1459, 922], 'font': FONTS['cn'], 'fontSize': font_size, 'justification': 'LEFT_JUSTIFY', 'Anchor Point': 'LEFT',
                 'startTime': start_time + 3.5, 'duration': duration - 6.5,
             },
         ],
         'vectors': [
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '前序根节点箭头', 'Anchor Point': 'TOP',
-                'Scale': [40, 40, 40], 'Position': [1230, 405], 'Rotation': 30,
+                'Scale': [40, 40, 40], 'Position': [1300, 405], 'Rotation': 30,
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 0.5], [[0, 0, 0], [40, 40, 40]]]
@@ -332,7 +333,7 @@ def shot_1(start_time):
             },
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '前序左子树箭头', 'Anchor Point': 'TOP',
-                'Scale': [40, 40, 40], 'Position': [1380, 405], 'Rotation': -30,
+                'Scale': [40, 40, 40], 'Position': [1380, 405],
                 'startTime': start_time + 6, 'duration': duration - 6,
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 6], [[0, 0, 0], [40, 40, 40]]]
@@ -348,7 +349,7 @@ def shot_1(start_time):
             },
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '中序根节点箭头', 'Anchor Point': 'TOP',
-                'Scale': [40, 40, 40], 'Position': [1380, 844], 'Rotation': -30,
+                'Scale': [40, 40, 40], 'Position': [1380, 844],
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 0.5], [[0, 0, 0], [40, 40, 40]]]
@@ -356,7 +357,7 @@ def shot_1(start_time):
             },
             {
                 'name': 'Edge Black/Elements.ai', 'layerName': '中序左子树箭头', 'Anchor Point': 'TOP',
-                'Scale': [40, 40, 40], 'Position': [1230, 838], 'Rotation': 30,
+                'Scale': [40, 40, 40], 'Position': [1300, 838], 'Rotation': 30,
                 'startTime': start_time + 2, 'duration': duration - 2,
                 'keyframes': {
                     "Transform.Scale": [[start_time, start_time + 2], [[0, 0, 0], [40, 40, 40]]]

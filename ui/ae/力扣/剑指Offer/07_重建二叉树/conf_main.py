@@ -27,6 +27,18 @@ conf = {
                 }
             ],
         },
+        {
+            'path': f'{CONF_BASE_DIR}Linus Torvalds.jfif', 'import_as_type': IMPORT_AS_TYPE[1],
+        },
+        {
+            'path': f'{CONF_BASE_DIR}linux.png', 'import_as_type': IMPORT_AS_TYPE[1],
+        },
+        {
+            'path': f'{CONF_BASE_DIR}git.bmp', 'import_as_type': IMPORT_AS_TYPE[1],
+        },
+        # {
+        #     'path': f'{BASE_DIR}代码调试.mp4', 'import_as_type': IMPORT_AS_TYPE[1],
+        # },
         # {
         #     'path': 'G:/BaiduNetdiskDownload/AtomX 2021-08 整理/AtomX Packages/AtomX All-In-One_Trendy Graphics v5.4/Atom Preview Assets/Sound Effects/Magic/SFX - Magic 25.wav',
         #     'import_as_type': IMPORT_AS_TYPE[1],
