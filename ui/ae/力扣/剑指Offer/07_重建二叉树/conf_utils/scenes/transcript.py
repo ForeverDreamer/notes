@@ -73,4 +73,11 @@ scenes = {
             '咱们话不多说，上代码！',
         ],
     ],
+    's7': [
+        [
+            '程序世界两大神器：Linux和Git 的创造者',
+            'Linus Torvalds曾经曰过：Talk is cheap, show me the code!',
+            '咱们话不多说，上代码！',
+        ],
+    ],
 }

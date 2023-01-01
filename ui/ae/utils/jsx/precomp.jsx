@@ -2,14 +2,50 @@ function PrecompUtil() {
     this.queueLayers = {}
 }
 
-PrecompUtil.prototype.code_line = function (comp, line) {
+PrecompUtil.prototype.create_code_line = function (codesFolder, parentComp, line, conf) {
+    var indent = line.shift()
+    var sn = line.pop()
+    var pos = [0, conf['heightLine']/2]
+    var lineComp = codesFolder.items.addComp("line." + sn, conf['widthLine'], conf['heightLine'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+
     for (var i = 0; i < line.length; i++) {
         var snippet = line[i]
+        snippet["Anchor Point"] = "LEFT"
+        snippet["Position"] = pos
+        snippet["fontSize"] = conf["fontSize"]
+        var textLayer = textUtil.add(lineComp, snippet["text"], snippet)
+        var top = textLayer.sourceRectAtTime(0, false).top
+        var left = textLayer.sourceRectAtTime(0, false).left
+        var width = textLayer.sourceRectAtTime(0, false).width
+        var height = textLayer.sourceRectAtTime(0, false).height
+        pos[0] += width
     }
+    var conf = {"layerName": "line." + sn, "Anchor Point": "LEFT", "Position": [indent*48, sn*conf['heightLine']+30]}
+    shareUtil.addLayer(parentComp, conf, lineComp);
 }
 
-PrecompUtil.prototype.codes = function (comp, lines) {
+PrecompUtil.prototype.create_codes = function (parentComp, conf) {
+    var codesFolder = project.items.addFolder("Codes")
+    var codesComp = codesFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    var lines = conf["lines"]
+    var indent
+    var sn
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i]
+        if (line.length === 0) {
+            continue
+        }
+        line.push(i)
+        indent = line[0]
+        sn = i
+        this.create_code_line(codesFolder, codesComp, line, conf)
 
+    }
+    var currentLine = conf["currentLine"]
+    currentLine["Position"] = [indent*48, sn*conf['heightLine']+30]
+    currentLineLayer = shapeUtil.create_one(codesComp, currentLine)
+    currentLineLayer.moveToEnd()
+    shareUtil.addLayer(parentComp, conf, codesComp);
 }
 
 PrecompUtil.prototype.stack = function (comp, conf) {

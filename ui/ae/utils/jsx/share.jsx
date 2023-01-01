@@ -36,6 +36,9 @@ ShareUtil.prototype.createScenes = function (scenes) {
 			if (shot['annotations']) {
 				this.createAnnotations(shot['annotations'])
 			}
+			if (shot['codes']) {
+				precompUtil.create_codes(mainComp, shot['codes'])
+			}
 			if (shot['subtitles']) {
 				this.createSubtitles(shot['subtitles'])
 			}
