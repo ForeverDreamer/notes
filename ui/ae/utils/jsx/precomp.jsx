@@ -2,6 +2,16 @@ function PrecompUtil() {
     this.queueLayers = {}
 }
 
+PrecompUtil.prototype.code_line = function (comp, line) {
+    for (var i = 0; i < line.length; i++) {
+        var snippet = line[i]
+    }
+}
+
+PrecompUtil.prototype.codes = function (comp, lines) {
+
+}
+
 PrecompUtil.prototype.stack = function (comp, conf) {
 
 }
