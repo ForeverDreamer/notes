@@ -5,20 +5,30 @@ function PrecompUtil() {
 PrecompUtil.prototype.create_code_line = function (codesFolder, parentComp, line, conf) {
     var indent = line.shift()
     var sn = line.pop()
-    var pos = [0, conf['heightLine']/2]
     var lineComp = codesFolder.items.addComp("line." + sn, conf['widthLine'], conf['heightLine'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
-
+    lineComp.bgColor = colorUtil.hexToRgb1(COMP_BGCOLOR)
+    var pos_x = 0
     for (var i = 0; i < line.length; i++) {
         var snippet = line[i]
         snippet["Anchor Point"] = "LEFT"
-        snippet["Position"] = pos
+        var pos_y = conf['heightLine']/2
+        // if (snippet["fillColor"]) {
+        //     pos_y -= 2
+        // }
+        if (snippet["text"] === ',') {
+            pos_y += 7.5
+        } else if (snippet["text"] === ' ') {
+            pos_x += 7
+        }
+        snippet["Position"] = [pos_x, pos_y]
+        snippet["font"] = conf["font"]
         snippet["fontSize"] = conf["fontSize"]
         var textLayer = textUtil.add(lineComp, snippet["text"], snippet)
         var top = textLayer.sourceRectAtTime(0, false).top
         var left = textLayer.sourceRectAtTime(0, false).left
         var width = textLayer.sourceRectAtTime(0, false).width
         var height = textLayer.sourceRectAtTime(0, false).height
-        pos[0] += width
+        pos_x += width+2
     }
     var conf = {"layerName": "line." + sn, "Anchor Point": "LEFT", "Position": [indent*48, sn*conf['heightLine']+30]}
     shareUtil.addLayer(parentComp, conf, lineComp);
@@ -27,9 +37,11 @@ PrecompUtil.prototype.create_code_line = function (codesFolder, parentComp, line
 PrecompUtil.prototype.create_codes = function (parentComp, conf) {
     var codesFolder = project.items.addFolder("Codes")
     var codesComp = codesFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    codesComp.bgColor = colorUtil.hexToRgb1(COMP_BGCOLOR)
     var lines = conf["lines"]
     var indent
     var sn
+
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i]
         if (line.length === 0) {
