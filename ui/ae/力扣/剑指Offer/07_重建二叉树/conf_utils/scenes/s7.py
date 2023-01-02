@@ -14,8 +14,8 @@ def shot_0(start_time):
     end_time = subtitles[0][-1]
     conf = {
         'codes': {
-            'layerName': '代码', 'Position': [950, 500], 'duration': 60, 'width': 1200, 'height': 1000,
-            'widthLine': 1200, 'heightLine': 35, 'font': 'MicrosoftSansSerif', 'fontSize': 25,
+            'layerName': '代码', 'Position': [950, 550], 'duration': 60, 'width': 1200, 'height': 1000,
+            'widthLine': 1200, 'heightLine': 30, 'font': 'MicrosoftSansSerif', 'fontSize': 25,
             'currentLine': {
                 'layerName': 'currentLine',
                 'Anchor Point': 'LEFT',
@@ -45,6 +45,7 @@ def shot_0(start_time):
                     4,
                     {'text': 'return None', 'fillColor': CODE_COLORS['keyword']},
                 ],
+                [],
                 [
                     3,
                     {'text': 'idx_preorder_root = idx_preorder_left'},
@@ -61,6 +62,7 @@ def shot_0(start_time):
                     3,
                     {'text': 'size_of_left_subtree = idx_inorder_root - idx_inorder_left'},
                 ],
+                [],
                 [
                     3,
                     {'text': 'root.left = rebuild('},
