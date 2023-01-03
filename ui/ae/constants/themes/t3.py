@@ -7,12 +7,12 @@ COLORS = {
     'bg': '#FFFFFF',
     'text': '#000000',
     'subtitle': '#F20CCC',
-    'annotation': '#F20CCC',
+    'annotation': '#0476D9',
     'tree': {
         'fillColor': {
             'default': '#FFFFFF',
             'root': '#0476D9',
-            'left': '#F2637E',
+            'left': '#F20CCC',
             'right': '#F2CC0C',
         },
         'pathColor': '#0476D9'
@@ -21,7 +21,7 @@ COLORS = {
         'fillColor': {
             'default': '#FFFFFF',
             'root': '#0476D9',
-            'left': '#F2637E',
+            'left': '#F20CCC',
             'right': '#F2CC0C',
         },
     }
@@ -30,8 +30,8 @@ COLORS = {
 CODE_COLORS = {
     'keyword': '#0C007F',
     'number': '#1D22FF',
-    'builtin': '#95CCE3',
-    'kwargs': '#A2598F',
+    'builtin': '#00B4FF',
+    'kwargs': '#F2637E',
     'annotation': '#01CD2A',
     'currentLine': '#008AFF'
 }

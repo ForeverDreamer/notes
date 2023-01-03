@@ -24,14 +24,11 @@ PrecompUtil.prototype.create_code_line = function (codesFolder, parentComp, line
         snippet["font"] = conf["font"]
         snippet["fontSize"] = conf["fontSize"]
         var textLayer = textUtil.add(lineComp, snippet["text"], snippet)
-        var top = textLayer.sourceRectAtTime(0, false).top
-        var left = textLayer.sourceRectAtTime(0, false).left
         var width = textLayer.sourceRectAtTime(0, false).width
-        var height = textLayer.sourceRectAtTime(0, false).height
         pos_x += width+2
     }
     var conf = {"layerName": "line." + sn, "Anchor Point": "LEFT", "Position": [indent*48, sn*conf['heightLine']+30]}
-    shareUtil.addLayer(parentComp, conf, lineComp);
+    return shareUtil.addLayer(parentComp, conf, lineComp);
 }
 
 PrecompUtil.prototype.create_codes = function (parentComp, conf) {
@@ -42,6 +39,7 @@ PrecompUtil.prototype.create_codes = function (parentComp, conf) {
     var indent
     var sn
 
+    var lineLayers = []
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i]
         if (line.length === 0) {
@@ -50,10 +48,19 @@ PrecompUtil.prototype.create_codes = function (parentComp, conf) {
         line.push(i)
         indent = line[0]
         sn = i
-        this.create_code_line(codesFolder, codesComp, line, conf)
-
+        lineLayers.push(this.create_code_line(codesFolder, codesComp, line, conf))
     }
+
     var currentLine = conf["currentLine"]
+    var times = []
+    var values = []
+    var extra = currentLine["keyframes"]["Transform.Position"][2]
+    for (var i = 0; i < 101; i++) {
+        times.push(conf["startTime"]+i*1)
+        var sn = currentLine["keyframes"]["Transform.Position"][1][i]
+        values.push(lineLayers[sn]("Transform")("Position").value)
+    }
+    currentLine["keyframes"]["Transform.Position"] = [times, values, extra]
     currentLine["Position"] = [indent*48, sn*conf['heightLine']+30]
     currentLineLayer = shapeUtil.create_one(codesComp, currentLine)
     currentLineLayer.moveToEnd()

@@ -14,7 +14,7 @@ def shot_0(start_time):
     end_time = subtitles[0][-1]
     conf = {
         'codes': {
-            'layerName': '代码', 'Position': [950, 550], 'duration': 60, 'width': 1200, 'height': 1000,
+            'layerName': '代码', 'Position': [1420, 550], 'duration': 60, 'width': 1200, 'height': 1000,
             'widthLine': 1200, 'heightLine': 30, 'font': 'MicrosoftSansSerif', 'fontSize': 25,
             'startTime': start_time,
             'currentLine': {
@@ -24,7 +24,19 @@ def shot_0(start_time):
                 # 'startTime': start_time,
                 # 'span': {'inPoint': start_time, 'outPoint': end_time + 3},
                 'pathGroup': {'type': 'Rect', 'Size': [1200, 30]},
-                'Fill': {'Color': hex_to_rgb1(CODE_COLORS['currentLine'])}
+                'Fill': {'Color': hex_to_rgb1(CODE_COLORS['currentLine'])},
+                'keyframes': {
+                    'Transform.Position': [
+                        None,
+                        [
+                            24, 2, 18, 19, 20, 21, 22, 23, 3, 5, 6, 7, 8, 9, 10, 11, 9, 3, 5, 6, 7, 8, 9, 10, 11, 9, 3,
+                            4, 9, 13, 14, 15, 13, 3, 4, 13, 17, 9, 13, 14, 15, 13, 3, 5, 6, 7, 8, 9, 10, 11, 9, 3, 5, 6,
+                            7, 8, 9, 10, 11, 9, 3, 4, 9, 13, 14, 15, 13, 3, 4, 13, 17, 9, 13, 14, 15, 13, 3, 5, 6, 7, 8,
+                            9, 10, 11, 9, 3, 4, 9, 13, 14, 15, 13, 3, 4, 13, 17, 13, 17, 13, 17, 23
+                        ],
+                        {'spatial': [{"type": 'HOLD'}]*101}
+                    ]
+                }
             },
             'lines': [
                 [0, {'text': 'class', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '}, {'text': 'Solution:'}],
