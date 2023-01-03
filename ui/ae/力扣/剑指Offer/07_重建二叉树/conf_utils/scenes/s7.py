@@ -16,6 +16,7 @@ def shot_0(start_time):
         'codes': {
             'layerName': '代码', 'Position': [950, 550], 'duration': 60, 'width': 1200, 'height': 1000,
             'widthLine': 1200, 'heightLine': 30, 'font': 'MicrosoftSansSerif', 'fontSize': 25,
+            'startTime': start_time,
             'currentLine': {
                 'layerName': 'currentLine',
                 'Anchor Point': 'LEFT',

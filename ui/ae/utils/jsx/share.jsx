@@ -63,6 +63,7 @@ ShareUtil.prototype.createSubtitles = function (subtitles) {
 ShareUtil.prototype.createAnnotations = function (annotations) {
 	for (var i = 0; i < annotations.length; i++) {
 		var conf = annotations[i]
+		conf["fillColor"] = COLORS["annotation"]
 		var keyframes = conf["keyframes"]
 		var presets = conf["presets"]
 

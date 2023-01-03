@@ -1,3 +1,5 @@
+import importlib
+
 AE_WINDOW_NAME = 'Adobe After Effects'
 BASE_DIR = 'D:/data_files/notes/ui/ae/'
 # 脚本调用间隔，否则会各种报错
@@ -9,18 +11,21 @@ FRAME_RATE = 30
 
 IMPORT_AS_TYPE = ('COMP_CROPPED_LAYERS', 'FOOTAGE', 'COMP', 'PROJECT')
 
-FONTS = {
-    'cn': 'slideyouran-Regular',
-    'en': 'Arial-BoldMT',
-}
-
 SUBTITLES_INTERVAL = 5
 
-CODE_COLORS = {
-    'keyword': '#0C007F',
-    'number': '#1D22FF',
-    'builtin': '#95CCE3',
-    'kwargs': '#A2598F',
-    'annotation': '#01CD2A',
-    'currentLine': '#008AFF'
-}
+mdl = importlib.import_module(f'ae.constants.themes.t{3}')
+
+# 这种方式虽然可行但会导致ide报错提示！
+# # is there an __all__?  if so respect it
+# if "__all__" in mdl.__dict__:
+#     names = mdl.__dict__["__all__"]
+# else:
+#     # otherwise we import all names that don't begin with _
+#     names = [x for x in mdl.__dict__ if not x.startswith("_")]
+#
+# # now drag them in
+# globals().update({k: getattr(mdl, k) for k in names})
+FONTS = mdl.FONTS
+COLORS = mdl.COLORS
+CODE_COLORS = mdl.CODE_COLORS
+VECTORS = mdl.VECTORS

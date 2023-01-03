@@ -68,7 +68,7 @@ def shot_0(start_time):
         ],
         'vectors': [
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '前序根节点箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '前序根节点箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [895, 405], 'Rotation': 30,
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
                 'keyframes': {
@@ -76,7 +76,7 @@ def shot_0(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '前序左子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '前序左子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [980, 405], 'Rotation': -30,
                 'startTime': start_time + 6, 'duration': duration - 6,
                 'keyframes': {
@@ -84,7 +84,7 @@ def shot_0(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '前序右子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '前序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1140, 405], 'Rotation': -30,
                 'span': {'inPoint': start_time + 7.5, 'outPoint': start_time + 20},
                 'keyframes': {
@@ -92,7 +92,7 @@ def shot_0(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '中序根节点箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '中序根节点箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [980, 844], 'Rotation': -30,
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
                 'keyframes': {
@@ -100,7 +100,7 @@ def shot_0(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '中序左子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '中序左子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [895, 838], 'Rotation': 30,
                 'startTime': start_time + 2, 'duration': duration - 2,
                 'keyframes': {
@@ -108,7 +108,7 @@ def shot_0(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '中序右子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '中序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1140, 844], 'Rotation': -30,
                 'span': {'inPoint': start_time + 3.5, 'outPoint': start_time + 20},
                 'keyframes': {
@@ -126,7 +126,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [0, 0.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#0573E1')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['root'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -135,7 +135,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [6, 7.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#FADED8')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['left'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -144,7 +144,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [7.5, 8],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -153,7 +153,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [7.5, 8],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -162,7 +162,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [7.5, 8],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -185,7 +185,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [2, 2.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#FADED8')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['left'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -195,7 +195,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [0, 0.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#0573E1')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['root'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -204,7 +204,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [3.5, 4],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -213,7 +213,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [3.5, 4],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -222,7 +222,7 @@ def shot_0(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [3.5, 4],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -240,18 +240,23 @@ def shot_0(start_time):
             {
                 'name': '二叉树.数据定位', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
                 'startTime': start_time, 'duration': duration+5, 'Position': [435, 490],
-                'elems': [{'key': 3, 'Color': '#0573E1'}, {'key': 9, 'Color': '#FADED8'}, {'key': 20, 'Color': '#CEF2ED'},
-                          {'key': None}, {'key': None}, {'key': 15, 'Color': '#CEF2ED'}, {'key': 7, 'Color': '#CEF2ED'}],
+                'elems': [
+                    {'key': 3, 'Color': COLORS['tree']['fillColor']['root']},
+                    {'key': 9, 'Color': COLORS['tree']['fillColor']['left']},
+                    {'key': 20, 'Color': COLORS['tree']['fillColor']['right']},
+                    {'key': None}, {'key': None},
+                    {'key': 15, 'Color': COLORS['tree']['fillColor']['right']},
+                    {'key': 7, 'Color': COLORS['tree']['fillColor']['right']}],
                 'animation': 'false',
                 'node': {
-                    'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
+                    'shape': {'name': f'Node Shape {VECTORS["node"]["shape"]}/Elements.ai', 'Scale': [80, 80, 80]},
                     'selected': {
                         'pathGroup': {'type': 'Ellipse', 'Size': [100, 100]},
                         "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
                     },
                 },
                 'edge': {
-                    'shape': {'name': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80],
+                    'shape': {'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80],
                               'Rotation': 30},
                 },
                 'Masks': conf_shot_0['precomps']['2']['Masks'],
@@ -324,7 +329,7 @@ def shot_1(start_time):
         ],
         'vectors': [
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '前序根节点箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '前序根节点箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1300, 405], 'Rotation': 30,
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
                 'keyframes': {
@@ -332,7 +337,7 @@ def shot_1(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '前序左子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '前序左子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1380, 405],
                 'startTime': start_time + 6, 'duration': duration - 6,
                 'keyframes': {
@@ -340,7 +345,7 @@ def shot_1(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '前序右子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '前序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1460, 405], 'Rotation': -30,
                 'startTime': start_time + 7.5, 'duration': duration - 7.5,
                 'keyframes': {
@@ -348,7 +353,7 @@ def shot_1(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '中序根节点箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '中序根节点箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1380, 844],
                 'startTime': start_time + 0.5, 'duration': duration - 0.5,
                 'keyframes': {
@@ -356,7 +361,7 @@ def shot_1(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '中序左子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '中序左子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1300, 838], 'Rotation': 30,
                 'startTime': start_time + 2, 'duration': duration - 2,
                 'keyframes': {
@@ -364,7 +369,7 @@ def shot_1(start_time):
                 }
             },
             {
-                'name': 'Edge Black/Elements.ai', 'layerName': '中序右子树箭头', 'Anchor Point': 'TOP',
+                'name': f'Edge {VECTORS["edge"]["shape"]}/Elements.ai', 'layerName': '中序右子树箭头', 'Anchor Point': 'TOP',
                 'Scale': [40, 40, 40], 'Position': [1460, 844], 'Rotation': -30,
                 'startTime': start_time + 3.5, 'duration': duration - 3.5,
                 'keyframes': {
@@ -378,10 +383,10 @@ def shot_1(start_time):
                 'elems': [
                     {
                         'key': 3,
-                        'Color': '#0573E1',
+                        'Color': COLORS['queue']['fillColor']['left'],
                     }, {
                         'key': 9,
-                        'Color': '#FADED8',
+                        'Color': COLORS['queue']['fillColor']['root'],
                     },
                 ],
                 'traverse': 'preorder', 'width': que_elem_width * 5, 'height': que_height,
@@ -400,7 +405,7 @@ def shot_1(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [0, 0.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -409,7 +414,7 @@ def shot_1(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [1, 1.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -418,7 +423,7 @@ def shot_1(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [2, 2.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -440,11 +445,11 @@ def shot_1(start_time):
                 'elems': [
                     {
                         'key': 9,
-                        'Color': '#FADED8',
+                        'Color': COLORS['queue']['fillColor']['left'],
                     },
                     {
                         'key': 3,
-                        'Color': '#0573E1',
+                        'Color': COLORS['queue']['fillColor']['root'],
                     },
                 ],
                 'traverse': 'inorder', 'width': que_elem_width * 5, 'height': que_height,
@@ -463,7 +468,7 @@ def shot_1(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [1, 1.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -472,7 +477,7 @@ def shot_1(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [0, 0.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }
@@ -481,7 +486,7 @@ def shot_1(start_time):
                         'keyframes': {
                             'Contents.Group 1.Contents.Fill 1.Color': [
                                 [2, 2.5],
-                                [hex_to_rgb1('#FFFFFF'), hex_to_rgb1('#CEF2ED')],
+                                [hex_to_rgb1(COLORS['queue']['fillColor']['default']), hex_to_rgb1(COLORS['queue']['fillColor']['right'])],
                                 {"spatial": [{"type": 'HOLD'}]}
                             ]
                         }

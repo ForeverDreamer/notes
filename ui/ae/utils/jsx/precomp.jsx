@@ -6,7 +6,7 @@ PrecompUtil.prototype.create_code_line = function (codesFolder, parentComp, line
     var indent = line.shift()
     var sn = line.pop()
     var lineComp = codesFolder.items.addComp("line." + sn, conf['widthLine'], conf['heightLine'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
-    lineComp.bgColor = colorUtil.hexToRgb1(COMP_BGCOLOR)
+    lineComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     var pos_x = 0
     for (var i = 0; i < line.length; i++) {
         var snippet = line[i]
@@ -37,7 +37,7 @@ PrecompUtil.prototype.create_code_line = function (codesFolder, parentComp, line
 PrecompUtil.prototype.create_codes = function (parentComp, conf) {
     var codesFolder = project.items.addFolder("Codes")
     var codesComp = codesFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
-    codesComp.bgColor = colorUtil.hexToRgb1(COMP_BGCOLOR)
+    codesComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     var lines = conf["lines"]
     var indent
     var sn
