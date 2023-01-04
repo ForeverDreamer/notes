@@ -33,6 +33,9 @@ ShareUtil.prototype.createScenes = function (scenes) {
 			if (shot['precomps']) {
 				precompUtil.createMany(shot['precomps'])
 			}
+			if (shot['misc']) {
+				precompUtil.misc(mainComp, shot['misc'])
+			}
 			if (shot['annotations']) {
 				this.createAnnotations(shot['annotations'])
 			}
@@ -63,7 +66,9 @@ ShareUtil.prototype.createSubtitles = function (subtitles) {
 ShareUtil.prototype.createAnnotations = function (annotations) {
 	for (var i = 0; i < annotations.length; i++) {
 		var conf = annotations[i]
-		conf["fillColor"] = COLORS["annotation"]
+		if (!conf["fillColor"]) {
+			conf["fillColor"] = COLORS["annotation"]
+		}
 		var keyframes = conf["keyframes"]
 		var presets = conf["presets"]
 

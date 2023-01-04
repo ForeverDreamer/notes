@@ -56,6 +56,12 @@ TextUtil.prototype.add = function(comp, name, props) {
     return textLayer
 }
 
+TextUtil.prototype.addMany = function(comp, texts) {
+    for (var i = 0; i < texts.length; i++) {
+        this.add(comp, texts[i]["text"], texts[i])
+    }
+}
+
 TextUtil.prototype.overlay = function(comp, parent, name, props) {
     var textLayer = comp.layers.addText(props["text"]);
     textLayer.name = name;

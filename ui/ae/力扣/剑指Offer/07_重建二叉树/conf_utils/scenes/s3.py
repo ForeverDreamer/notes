@@ -13,8 +13,6 @@ def shot_0(start_time):
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]
 
-    que_elem_width = 80
-    que_height = 80
     conf = {
         'subtitles': subtitles,
         'annotations': [
@@ -27,10 +25,10 @@ def shot_0(start_time):
             {
                 'name': '队列.中序遍历演示', 'type': 'QUEUE', 'Position': [914, 890],
                 'elems': [{'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}],
-                'traverse': 'inorder', 'width': que_elem_width * 5, 'height': que_height, 'duration': 20,
+                'traverse': 'inorder', 'width': QUE_ELEM_WIDTH * 5, 'height': QUE_ELEM_HEIGHT, 'duration': 20,
                 'startTime': end_time + 1,
                 'unit': {
-                    'pathGroup': {'type': 'Rect', 'Size': [que_elem_width, que_height]},
+                    'pathGroup': {'type': 'Rect', 'Size': [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]},
                     "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
                     "Stroke": {'Stroke Width': 5, "Color": hex_to_rgb1("#000000")},
                 },

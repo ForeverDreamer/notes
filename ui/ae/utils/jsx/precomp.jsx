@@ -48,14 +48,17 @@ PrecompUtil.prototype.create_codes = function (parentComp, conf) {
         line.push(i)
         indent = line[0]
         sn = i
-        lineLayers.push(this.create_code_line(codesFolder, codesComp, line, conf))
+        var layer = this.create_code_line(codesFolder, codesComp, line, conf)
+        if (i > 4) {
+            lineLayers.push(layer)
+        }
     }
 
     var currentLine = conf["currentLine"]
     var times = []
     var values = []
     var extra = currentLine["keyframes"]["Transform.Position"][2]
-    for (var i = 0; i < 101; i++) {
+    for (var i = 0; i < 72; i++) {
         times.push(conf["startTime"]+i*1)
         var sn = currentLine["keyframes"]["Transform.Position"][1][i]
         values.push(lineLayers[sn]("Transform")("Position").value)
@@ -65,6 +68,23 @@ PrecompUtil.prototype.create_codes = function (parentComp, conf) {
     currentLineLayer = shapeUtil.create_one(codesComp, currentLine)
     currentLineLayer.moveToEnd()
     shareUtil.addLayer(parentComp, conf, codesComp);
+}
+
+PrecompUtil.prototype.misc = function (parentComp, misc) {
+    for (var i = 0; i < misc.length; i++) {
+        var conf = misc[i]
+        var miscComp = project.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+        if (conf["texts"]) {
+            textUtil.addMany(miscComp, conf["texts"])
+        }
+        if (conf["vectors"]) {
+            shapeUtil.create_vectors(miscComp, conf['vectors'])
+        }
+        if (conf["shapes"]) {
+            shapeUtil.create_many(miscComp, conf["shapes"])
+        }
+        shareUtil.addLayer(parentComp, conf, miscComp);
+    }
 }
 
 PrecompUtil.prototype.stack = function (comp, conf) {
@@ -82,10 +102,16 @@ PrecompUtil.prototype.queue = function (comp, conf) {
     var elemHeight = unit["pathGroup"]["Size"][0]
     var elemWidth = unit["pathGroup"]["Size"][1]
 	// var height = layer.sourceRectAtTime(startTime, false).height
+    var stroke_add = unit['Stroke']['Stroke Width'] * 2
+    var pos_x = elemWidth / 2 + stroke_add
     for (var i = 0; i < elems.length; i++) {
         var key = elems[i]["key"]
         unit["layerName"] = "Shape" + "." + key
-        unit["Position"] = [elemWidth / 2 + elemWidth * i, elemHeight / 2]
+        if (i > 0) {
+            pos_x += elemWidth
+            pos_x -= 1
+        }
+        unit["Position"] = [pos_x, elemHeight / 2 + stroke_add]
         if (elems[i]["Color"]) {
             unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i]["Color"])
         }
@@ -96,7 +122,7 @@ PrecompUtil.prototype.queue = function (comp, conf) {
         }
         var textLayer = textUtil.overlay(
             queueComp, shapeLayer, "Text" + "." + key,
-            {"text": key, "font": "Arial-BoldItalicMT", "fontSize": 40, "Position": [elemWidth/2, elemHeight/2]}
+            {"text": key, "font": "Arial-BoldItalicMT", "fontSize": unit["fontSize"], "Position": [elemWidth/2, elemHeight/2]}
         );
         this.queueLayers[traverse][key] = {'shapeLayer': shapeLayer, "textLayer": textLayer}
     }

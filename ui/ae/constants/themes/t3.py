@@ -29,9 +29,12 @@ COLORS = {
 
 CODE_COLORS = {
     'keyword': '#0C007F',
+    'dunder': '#E157B1',
+    'self': '#94568D',
+    'func': '#286197',
     'number': '#1D22FF',
     'builtin': '#00B4FF',
-    'kwargs': '#F2637E',
+    'kwargs': '#B73E98',
     'annotation': '#01CD2A',
     'currentLine': '#008AFF'
 }
