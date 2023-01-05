@@ -76,9 +76,6 @@ scenes = {
     ],
     's7': [
         [
-            '程序世界两大神器：Linux和Git 的创造者',
-            'Linus Torvalds曾经曰过：Talk is cheap, show me the code!',
-            '咱们话不多说，上代码！',
             '首先实例化并调用主函数',
             '定义递归重建函数',
             '初始化遍历结果数组的左右边界',
