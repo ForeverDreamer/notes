@@ -1,7 +1,7 @@
 function ShapeUtil() {}
 
-ShapeUtil.prototype.create_one = function(comp, conf) {
-    var shapeLayer = comp.layers.addShape();
+ShapeUtil.prototype.create_one = function(parentComp, conf) {
+    var shapeLayer = parentComp.layers.addShape();
     shapeLayer.name = conf["layerName"];
     conf_pg = conf["pathGroup"]
     var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
@@ -71,9 +71,9 @@ ShapeUtil.prototype.create_one = function(comp, conf) {
     return shapeLayer
 }
 
-ShapeUtil.prototype.create_many = function(comp, shapes) {
+ShapeUtil.prototype.create_many = function(parentComp, shapes) {
     for (var i = 0; i < shapes.length; i++) {
-        this.create_one(comp, shapes[i])
+        this.create_one(parentComp, shapes[i])
     }
 }
 

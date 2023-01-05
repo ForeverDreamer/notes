@@ -498,6 +498,13 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
             shapeTextProps["keyframes"] = shapeKeyframes
             precompUtil.times += step
         }
+        if (elem["keyframes"]) {
+            nodeShape["keyframes"] = elem["keyframes"]
+            shapeTextProps["keyframes"] = elem["keyframes"]
+            if (upEdge) {
+                shareUtil.configKeyframes(upEdge["shapeLayer"], elem["keyframes"])
+            }
+        }
         var shapeLayer = shareUtil.addLayer(comp, nodeShape);
 
         if (selected) {

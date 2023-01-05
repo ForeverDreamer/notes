@@ -17,6 +17,8 @@ def shot_0(start_time):
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
     stroke_add = QUE_UNIT['Stroke']['Stroke Width'] * 4
     duration = 60
+    temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
+
     conf = {
         'subtitles': subtitles,
         # 'annotations': [
@@ -29,9 +31,61 @@ def shot_0(start_time):
         'precomps': [
             {
                 'name': '代码.二叉树重建', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
-                'startTime': start_time, 'duration': 8, 'Anchor Point': 'LEFT_TOP', 'Position': [50, 250],
-                'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
-                'animation': 'true',
+                'startTime': start_time, 'duration': duration, 'Anchor Point': 'LEFT_TOP', 'Position': [50, 250],
+                'elems': [
+                    {
+                        'key': 3,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, 12, 12.5],
+                                [0, 0, 100],
+                                # {"temporal": temporal}
+                            ]
+                        }
+                    },
+                    {
+                        'key': 9,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, 18, 18.5],
+                                [0, 0, 100],
+                                # {"temporal": temporal}
+                            ]
+                        }
+                    },
+                    {
+                        'key': 20,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, 34, 34.5],
+                                [0, 0, 100],
+                                # {"temporal": temporal}
+                            ]
+                        }
+                    },
+                    {'key': None}, {'key': None},
+                    {
+                        'key': 15,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, 40, 40.5],
+                                [0, 0, 100],
+                                # {"temporal": temporal}
+                            ]
+                        }
+                    },
+                    {
+                        'key': 7,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, 56, 56.5],
+                                [0, 0, 100],
+                                # {"temporal": temporal}
+                            ]
+                        }
+                    }
+                ],
+                'animation': 'false',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
                 },
@@ -40,12 +94,18 @@ def shot_0(start_time):
                               'Rotation': 30},
                 },
                 # '3D': 'true'
+                'keyframes': {
+
+                }
             }
         ],
         'misc': [
             {
                 'layerName': '代码.队列.前序', 'Position': [771.5, 135.5],
                 'width': 300, 'height': 150, 'duration': duration,
+                'keyframes': {
+                    'Transform.Opacity': [[0, 8], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                },
                 'texts': [
                     {
                         'name': '名字', 'text': '前序',
@@ -58,7 +118,7 @@ def shot_0(start_time):
                         'name': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
                         'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}],
                         'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5, 'height': QUE_ELEM_HEIGHT + stroke_add,
-                        'duration': 20,
+                        'duration': duration,
                         'startTime': start_time,
                         'unit': QUE_UNIT,
                     },
@@ -67,6 +127,18 @@ def shot_0(start_time):
                     {
                         'layerName': '根节点.选中框', 'Position': [108, 103.5],
                         'width': 150, 'height': 100, 'duration': duration,
+                        'keyframes': {
+                            'Transform.Opacity': [
+                                [0, 10, 14, 16, 20, 22, 24, 26],
+                                [0, 100, 0, 100, 0, 100, 0, 100],
+                                {"spatial": [{"type": 'HOLD'}]*8}
+                            ],
+                            'Transform.Position': [
+                                [0, 16, 26, 26.5],
+                                [[108, 103.5], [148, 103.5], [148, 103.5], [108, 103.5]],
+                                # {"spatial": [{"type": 'HOLD'}]*2 + [{"type": 'LINEAR'}]}],
+                                {"spatial": [{"type": 'HOLD'}] * 3 + [{"type": 'LINEAR'}]}],
+                        },
                         'texts': [
                             {
                                 'name': 'idx_p_root', 'text': 'idx_p_root',
@@ -86,6 +158,15 @@ def shot_0(start_time):
                     {
                         'layerName': '左边界.选中框', 'Position': [148, 52.5],
                         'width': 150, 'height': 100, 'duration': duration,
+                        'keyframes': {
+                            'Transform.Position': [
+                                [8, 14, 14.5, 20, 20.5, 22, 22.5, 24, 24.5, 26, 26.5],
+                                [
+                                    [108, 52.5], [108, 52.5], [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5],
+                                    [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5], [148, 52.5]
+                                ],
+                            ],
+                        },
                         'texts': [
                             {
                                 'name': 'idx_pl', 'text': 'idx_pl', 'fillColor': COLORS['queue']['fillColor']['left'],
@@ -104,6 +185,9 @@ def shot_0(start_time):
                     {
                         'layerName': '右边界.选中框', 'Position': [265, 52.5],
                         'width': 150, 'height': 100, 'duration': duration,
+                        'keyframes': {
+                            'Transform.Position': [[8, 14, 14.5], [[265, 52.5], [265, 52.5], [148, 52.5]]],
+                        },
                         'texts': [
                             {
                                 'name': 'idx_pr', 'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
@@ -124,6 +208,9 @@ def shot_0(start_time):
             {
                 'layerName': '代码.队列.中序', 'Position': [771.5, 316],
                 'width': 300, 'height': 150, 'duration': duration,
+                'keyframes': {
+                    'Transform.Opacity': [[0, 8], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                },
                 'texts': [
                     {
                         'name': '名字', 'text': '中序',
@@ -134,9 +221,9 @@ def shot_0(start_time):
                 'precomps': [
                     {
                         'name': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
-                        'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}],
+                        'elems': [{'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}],
                         'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5, 'height': QUE_ELEM_HEIGHT + stroke_add,
-                        'duration': 20,
+                        'duration': duration,
                         'startTime': start_time,
                         'unit': QUE_UNIT,
                     },
@@ -207,6 +294,21 @@ def shot_0(start_time):
                         'layerName': 'idx_dic', 'text': 'idx_dic = {9: 0, 3: 1, 15: 2, 20: 3, 7: 4}',
                         'Position': [215, 484], 'fontSize': 25,
                         'span': {'inPoint': start_time, 'outPoint': end_time},
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                ],
+                'shapes': [
+                    {
+                        'layerName': 'idx_dic.选中框',
+                        'Position': [196.5, 482.5],
+                        # 'startTime': start_time,
+                        # 'span': {'inPoint': start_time, 'outPoint': end_time + 3},
+                        'pathGroup': {'type': 'Rect', 'Size': [55, 30]},
+                        'Stroke': {'Stroke Width': 3, 'Color': hex_to_rgb1('#FF0000')},
+                        'keyframes': {
+                        }
                     },
                 ],
                 'precomps': [

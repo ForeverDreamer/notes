@@ -58,7 +58,8 @@ TextUtil.prototype.add = function(comp, name, props) {
 
 TextUtil.prototype.addMany = function(comp, texts) {
     for (var i = 0; i < texts.length; i++) {
-        this.add(comp, texts[i]["text"], texts[i])
+        var layerName = texts[i]["layerName"] ? texts[i]["layerName"] : texts[i]["text"]
+        this.add(comp, layerName, texts[i])
     }
 }
 
