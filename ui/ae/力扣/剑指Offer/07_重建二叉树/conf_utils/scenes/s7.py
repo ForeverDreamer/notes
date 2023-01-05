@@ -16,7 +16,7 @@ def shot_0(start_time):
     QUE_ELEM_HEIGHT = 40
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
     stroke_add = QUE_UNIT['Stroke']['Stroke Width'] * 4
-    duration = 60
+    duration = 90
     temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
 
     conf = {
@@ -319,7 +319,7 @@ def shot_0(start_time):
                             {'key': 'rebuild( )'}, {'key': 'rebuild( )'}
                         ],
                         'width': STACK_ELEM_WIDTH + stroke_add, 'height': STACK_ELEM_HEIGHT*6 + stroke_add,
-                        'duration': 20,
+                        'duration': duration,
                         'startTime': start_time,
                         'unit': STACK_UNIT,
                     },
@@ -415,6 +415,7 @@ def shot_0(start_time):
                             {'text': 'root.left = rebuild(idx_pl +'}, {'text': ' '},
                             {'text': '1', 'fillColor': CODE_COLORS['number']},
                             {'text': ', idx_pl + size_left, idx_il, idx_i_root -'},
+                            {'text': ' '}, {'text': '1', 'fillColor': CODE_COLORS['number']},
                         ],
                         [
                             3,
