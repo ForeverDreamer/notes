@@ -1,13 +1,14 @@
 FONTS = {
     'cn': 'slideyouran-Regular',
-    'en': 'Arial-BoldMT',
+    # 'en': 'Arial-BoldMT',
+    'en': 'MicrosoftSansSerif'
 }
 
 COLORS = {
     'bg': '#FFFFFF',
     'text': '#000000',
     'subtitle': '#F20CCC',
-    'annotation': '#0476D9',
+    'annotation': '#01CD2A',
     'tree': {
         'fillColor': {
             'default': '#FFFFFF',

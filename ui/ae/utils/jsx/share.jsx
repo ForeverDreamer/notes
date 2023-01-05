@@ -31,13 +31,13 @@ ShareUtil.prototype.createScenes = function (scenes) {
 
 			}
 			if (shot['precomps']) {
-				precompUtil.createMany(shot['precomps'])
+				precompUtil.createMany(mainComp, shot['precomps'])
 			}
 			if (shot['misc']) {
 				precompUtil.misc(mainComp, shot['misc'])
 			}
 			if (shot['annotations']) {
-				this.createAnnotations(shot['annotations'])
+				this.createAnnotations(mainComp, shot['annotations'])
 			}
 			if (shot['codes']) {
 				precompUtil.create_codes(mainComp, shot['codes'])
@@ -63,7 +63,7 @@ ShareUtil.prototype.createSubtitles = function (subtitles) {
 	subtitlesLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
 }
 
-ShareUtil.prototype.createAnnotations = function (annotations) {
+ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {
 	for (var i = 0; i < annotations.length; i++) {
 		var conf = annotations[i]
 		if (!conf["fillColor"]) {
@@ -72,7 +72,7 @@ ShareUtil.prototype.createAnnotations = function (annotations) {
 		var keyframes = conf["keyframes"]
 		var presets = conf["presets"]
 
-		var textLayer = textUtil.add(mainComp, conf["name"], conf)
+		var textLayer = textUtil.add(parentComp, conf["name"], conf)
 
 		if (keyframes) {
 			this.configKeyframes(textLayer, keyframes)

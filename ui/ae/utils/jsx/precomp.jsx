@@ -83,6 +83,15 @@ PrecompUtil.prototype.misc = function (parentComp, misc) {
         if (conf["shapes"]) {
             shapeUtil.create_many(miscComp, conf["shapes"])
         }
+        if (conf["precomps"]) {
+            this.createMany(miscComp, conf['precomps'])
+        }
+        if (conf['codes']) {
+				this.create_codes(mainComp, conf['codes'])
+			}
+        if (conf["misc"]) {
+            this.misc(miscComp, conf['misc'])
+        }
         shareUtil.addLayer(parentComp, conf, miscComp);
     }
 }
@@ -618,9 +627,9 @@ PrecompUtil.prototype.createOne = function (parentComp, conf) {
     return comp
 }
 
-PrecompUtil.prototype.createMany = function (precomps) {
+PrecompUtil.prototype.createMany = function (parentComp, precomps) {
     for (var i = 0; i < precomps.length; i++) {
-        this.createOne(mainComp, precomps[i])
+        this.createOne(parentComp, precomps[i])
     }
 }
 
