@@ -157,12 +157,9 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	if (parent) {
 		layer.setParentWithJump(parent)
 	}
-	if (conf["keyframes"]) {
-		this.configKeyframes(layer, conf["keyframes"])
-	}
-	if (conf["effects"]) {
-		effectsUtil.add(layer, (conf["effects"]))
-	}
+	this.configMasks(layer, conf["Masks"])
+	this.configKeyframes(layer, conf["keyframes"])
+	effectsUtil.add(layer, (conf["effects"]))
 	return layer;
 }
 

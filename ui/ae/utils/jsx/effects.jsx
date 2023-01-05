@@ -1,6 +1,9 @@
 function EffectsUtil() {}
 
 EffectsUtil.prototype.add = function(layer, effects) {
+    if (!effects) {
+        return
+    }
     for (var name in effects) {
         var props = effects[name]["props"]
         var keyframes = effects[name]["keyframes"]

@@ -74,6 +74,8 @@ PrecompUtil.prototype.misc = function (parentComp, misc) {
     for (var i = 0; i < misc.length; i++) {
         var conf = misc[i]
         var miscComp = project.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+        miscComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
+
         if (conf["texts"]) {
             textUtil.addMany(miscComp, conf["texts"])
         }
@@ -87,8 +89,8 @@ PrecompUtil.prototype.misc = function (parentComp, misc) {
             this.createMany(miscComp, conf['precomps'])
         }
         if (conf['codes']) {
-				this.create_codes(mainComp, conf['codes'])
-			}
+            this.create_codes(miscComp, conf['codes'])
+        }
         if (conf["misc"]) {
             this.misc(miscComp, conf['misc'])
         }
@@ -96,20 +98,54 @@ PrecompUtil.prototype.misc = function (parentComp, misc) {
     }
 }
 
-PrecompUtil.prototype.stack = function (comp, conf) {
+PrecompUtil.prototype.stack = function (parentComp, conf) {
+    var elems = conf['elems']
+    var unit = conf["unit"];
 
+    var stackComp = project.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    stackComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
+
+    var elemWidth = unit["pathGroup"]["Size"][0]
+    var elemHeight = unit["pathGroup"]["Size"][1]
+	// var height = layer.sourceRectAtTime(startTime, false).height
+    var stroke_add = unit['Stroke']['Stroke Width'] * 2
+    var pos_y = elemHeight * elems.length - elemHeight / 2
+    for (var i = 0; i < elems.length; i++) {
+        var key = elems[i]["key"]
+        unit["layerName"] = "Shape" + "." + key
+        if (i > 0) {
+            pos_y -= elemHeight
+            pos_y += 1
+        }
+        unit["Position"] = [elemWidth / 2 + stroke_add, pos_y]
+        if (elems[i]["Color"]) {
+            unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i]["Color"])
+        }
+        // var shapeLayer = shareUtil.addLayer(queueComp, unit);
+        var shapeLayer = shapeUtil.create_one(stackComp, unit)
+        if (elems[i]["keyframes"]) {
+            shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
+        }
+        var textLayer = textUtil.overlay(
+            stackComp, shapeLayer, "Text" + "." + key,
+            {"text": key, "font": "Arial-BoldItalicMT", "fontSize": unit["fontSize"], "Position": [elemWidth/2, elemHeight/2]}
+        );
+    }
+    shareUtil.addLayer(parentComp, conf, stackComp);
+    // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
 
-PrecompUtil.prototype.queue = function (comp, conf) {
+PrecompUtil.prototype.queue = function (parentComp, conf) {
     var traverse = conf["traverse"]
     this.queueLayers[traverse] = {}
     var elems = conf['elems']
     var unit = conf["unit"];
 
     var queueComp = project.items.addComp(conf["name"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    queueComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
 
-    var elemHeight = unit["pathGroup"]["Size"][0]
-    var elemWidth = unit["pathGroup"]["Size"][1]
+    var elemWidth = unit["pathGroup"]["Size"][0]
+    var elemHeight = unit["pathGroup"]["Size"][1]
 	// var height = layer.sourceRectAtTime(startTime, false).height
     var stroke_add = unit['Stroke']['Stroke Width'] * 2
     var pos_x = elemWidth / 2 + stroke_add
@@ -135,7 +171,7 @@ PrecompUtil.prototype.queue = function (comp, conf) {
         );
         this.queueLayers[traverse][key] = {'shapeLayer': shapeLayer, "textLayer": textLayer}
     }
-    shareUtil.addLayer(comp, conf, queueComp);
+    shareUtil.addLayer(parentComp, conf, queueComp);
     // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
 
@@ -391,6 +427,7 @@ PrecompUtil.prototype._btTraverse = function (traverse, nodePath, edgePath) {
 
 PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
     var comp = project.items.addComp(conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);
+    comp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
 
     var elems = conf["elems"];
     
@@ -589,12 +626,7 @@ PrecompUtil.prototype.binaryTree = function (parentComp, conf) {
         this._btTraverse(conf["traverse"], nodePath, edgePath)
     }
 
-    var compLayer = parentComp.layers.add(comp);
-    compLayer("Transform")("Position").setValue(conf["Position"])
-    compLayer.startTime = conf["startTime"]
-    if (conf['3D']) {
-		compLayer.threeDLayer = true;
-	}
+    var compLayer = shareUtil.addLayer(parentComp, conf, comp)
     shareUtil.configMasks(compLayer, conf["Masks"])
     shareUtil.configKeyframes(compLayer, conf["keyframes"])
     return {'comp': comp, 'compLayer': compLayer};

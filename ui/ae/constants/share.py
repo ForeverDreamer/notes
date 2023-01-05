@@ -13,8 +13,18 @@ FRAME_RATE = 30
 # 队列
 QUE_ELEM_WIDTH = 80
 QUE_ELEM_HEIGHT = 80
-UNIT = {
+QUE_UNIT = {
     'pathGroup': {'type': 'Rect', 'Size': [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]},
+    "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
+    "Stroke": {'Stroke Width': 1, "Color": hex_to_rgb1("#000000")},
+    'fontSize': 25,
+}
+
+# 栈
+STACK_ELEM_WIDTH = 150
+STACK_ELEM_HEIGHT = 50
+STACK_UNIT = {
+    'pathGroup': {'type': 'Rect', 'Size': [STACK_ELEM_WIDTH, STACK_ELEM_HEIGHT]},
     "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
     "Stroke": {'Stroke Width': 1, "Color": hex_to_rgb1("#000000")},
     'fontSize': 25,
