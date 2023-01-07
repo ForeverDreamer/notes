@@ -47,6 +47,7 @@ mdl = importlib.import_module(f'ae.constants.themes.t{3}')
 # # now drag them in
 # globals().update({k: getattr(mdl, k) for k in names})
 FONTS = mdl.FONTS
+FONT_SIZES = mdl.FONT_SIZES
 COLORS = mdl.COLORS
 CODE_COLORS = mdl.CODE_COLORS
 VECTORS = mdl.VECTORS

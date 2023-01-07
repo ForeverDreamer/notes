@@ -288,12 +288,74 @@ def shot_0(start_time):
             },
             {
                 'layerName': '代码.合成', 'duration': duration, 'width': 1419, 'height': 934,
-                'startTime': start_time, 'Anchor Point': 'LEFT_TOP', 'Position': [620, 45],
+                'startTime': start_time, 'Anchor Point': 'LEFT_TOP', 'Position': [595, 45],
                 'texts': [
                     {
                         'layerName': 'idx_dic', 'text': 'idx_dic = {9: 0, 3: 1, 15: 2, 20: 3, 7: 4}',
-                        'Position': [215, 484], 'fontSize': 25,
-                        'span': {'inPoint': start_time, 'outPoint': end_time},
+                        'Position': [215, 484], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'idx_pl', 'text': 'idx_pl: 0',
+                        'Position': [644, 660], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'idx_pr', 'text': 'idx_pr: 4',
+                        'Position': [810, 691], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'idx_il', 'text': 'idx_il: 0',
+                        'Position': [631, 722], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'idx_ir', 'text': 'idx_ir: 4',
+                        'Position': [781, 751], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'idx_pl.idx_pr.idx_il.idx_ir', 'text': 'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
+                        'Position': [1111, 270], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'idx_p_root', 'text': 'idx_p_root: 0',
+                        'Position': [818, 390], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'idx_i_root', 'text': 'idx_i_root: 1',
+                        'Position': [1057, 420], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'root', 'text': 'root: 3',
+                        'Position': [995, 447], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
+                        'keyframes': {
+                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                        }
+                    },
+                    {
+                        'layerName': 'size_left', 'text': 'size_left: 1',
+                        'Position': [900, 480], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
                         'keyframes': {
                             'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
                         }
@@ -315,8 +377,65 @@ def shot_0(start_time):
                     {
                         'layerName': '函数调用栈', 'type': 'STACK', 'Position': [8, 618], 'Anchor Point': 'LEFT_TOP',
                         'elems': [
-                            {'key': '<module>'}, {'key': 'buildTree( )'}, {'key': 'rebuild( )'}, {'key': 'rebuild( )'},
-                            {'key': 'rebuild( )'}, {'key': 'rebuild( )'}
+                            {
+                                'key': '<module>',
+                                'keyframes': {
+                                    "Transform.Opacity": [
+                                        [0, 1],
+                                        [0, 100],
+                                        {'spatial': [{"type": 'HOLD'}] * 2}
+                                    ]
+                                }
+                            },
+                            {
+                                'key': 'buildTree( )',
+                                'keyframes': {
+                                    "Transform.Opacity": [
+                                        [0, 2],
+                                        [0, 100],
+                                        {'spatial': [{"type": 'HOLD'}] * 2}
+                                    ]
+                                }
+                            },
+                            {
+                                'key': 'rebuild( )',
+                                'keyframes': {
+                                    "Transform.Opacity": [
+                                        [0, 9],
+                                        [0, 100],
+                                        {'spatial': [{"type": 'HOLD'}] * 2}
+                                    ]
+                                }
+                            }, {
+                                'key': 'rebuild( )',
+                                'keyframes': {
+                                    "Transform.Opacity": [
+                                        [0, 15],
+                                        [0, 100],
+                                        {'spatial': [{"type": 'HOLD'}] * 2}
+                                    ]
+                                }
+                            },
+                            {
+                                'key': 'rebuild( )',
+                                'keyframes': {
+                                    "Transform.Opacity": [
+                                        [0, 21, 23, 23.1, 25, 25.1, 27, 27.1],
+                                        [0, 100, 100, 0, 0, 100, 100, 0],
+                                        {'spatial': [{"type": 'HOLD'}] * 8}
+                                    ]
+                                }
+                            },
+                            {
+                                'key': 'rebuild( )',
+                                'keyframes': {
+                                    "Transform.Opacity": [
+                                        [0, 100],
+                                        [0, 100],
+                                        {'spatial': [{"type": 'HOLD'}] * 2}
+                                    ]
+                                }
+                            }
                         ],
                         'width': STACK_ELEM_WIDTH + stroke_add, 'height': STACK_ELEM_HEIGHT*6 + stroke_add,
                         'duration': duration,
@@ -326,7 +445,7 @@ def shot_0(start_time):
                 ],
                 'codes': {
                     'layerName': '代码', 'Position': [370, 0], 'duration': duration, 'width': 1200, 'height': 934,
-                    'widthLine': 1200, 'heightLine': 30, 'font': 'MicrosoftSansSerif', 'fontSize': 25,
+                    'widthLine': 1200, 'heightLine': 30, 'font': 'MicrosoftSansSerif', 'fontSize': FONT_SIZES['code'],
                     'startTime': start_time, 'Anchor Point': 'LEFT_TOP',
                     'currentLine': {
                         'layerName': 'currentLine',
@@ -345,6 +464,11 @@ def shot_0(start_time):
                                     9, 3, 4, 9, 10, 3, 4, 10, 11, 10, 11, 10, 11, 17, 18
                                 ],
                                 {'spatial': [{"type": 'HOLD'}]*72}
+                            ],
+                            "Transform.Opacity": [
+                                [0, 1],
+                                [0, 100],
+                                {"spatial": [{"type": 'HOLD'}]*2}
                             ]
                         }
                     },
@@ -415,7 +539,7 @@ def shot_0(start_time):
                             {'text': 'root.left = rebuild(idx_pl +'}, {'text': ' '},
                             {'text': '1', 'fillColor': CODE_COLORS['number']},
                             {'text': ', idx_pl + size_left, idx_il, idx_i_root -'},
-                            {'text': ' '}, {'text': '1', 'fillColor': CODE_COLORS['number']},
+                            {'text': ' '}, {'text': '1', 'fillColor': CODE_COLORS['number']}, {'text': ')'},
                         ],
                         [
                             3,

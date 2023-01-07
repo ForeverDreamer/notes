@@ -59,7 +59,7 @@ PrecompUtil.prototype.create_codes = function (parentComp, conf) {
     var values = []
     var extra = currentLine["keyframes"]["Transform.Position"][2]
     for (var i = 0; i < 72; i++) {
-        times.push(conf["startTime"]+i*1)
+        times.push(conf["startTime"]+1+i*1)
         var sn = currentLine["keyframes"]["Transform.Position"][1][i]
         values.push(lineLayers[sn]("Transform")("Position").value)
     }
@@ -123,12 +123,13 @@ PrecompUtil.prototype.stack = function (parentComp, conf) {
         }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
         var shapeLayer = shapeUtil.create_one(stackComp, unit)
+        var textProps = {"text": key, "font": "Arial-BoldItalicMT", "fontSize": unit["fontSize"], "Position": [elemWidth/2, elemHeight/2]}
         if (elems[i]["keyframes"]) {
             shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
+            textProps["keyframes"] = elems[i]["keyframes"]
         }
-        var textLayer = textUtil.overlay(
-            stackComp, shapeLayer, "Text" + "." + key,
-            {"text": key, "font": "Arial-BoldItalicMT", "fontSize": unit["fontSize"], "Position": [elemWidth/2, elemHeight/2]}
+        textUtil.overlay(
+            stackComp, shapeLayer, "Text" + "." + key, textProps
         );
     }
     shareUtil.addLayer(parentComp, conf, stackComp);

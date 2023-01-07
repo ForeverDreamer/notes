@@ -4,6 +4,10 @@ FONTS = {
     'en': 'MicrosoftSansSerif'
 }
 
+FONT_SIZES = {
+    'code': 25
+}
+
 COLORS = {
     'bg': '#FFFFFF',
     'text': '#000000',
