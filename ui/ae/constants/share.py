@@ -11,14 +11,15 @@ PIXEL_ASPECT = 1
 FRAME_RATE = 30
 
 # 队列
-QUE_ELEM_WIDTH = 80
-QUE_ELEM_HEIGHT = 80
+QUE_ELEM_WIDTH = 60
+QUE_ELEM_HEIGHT = 60
 QUE_UNIT = {
     'pathGroup': {'type': 'Rect', 'Size': [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]},
     "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
     "Stroke": {'Stroke Width': 1, "Color": hex_to_rgb1("#000000")},
     'fontSize': 25,
 }
+STROKE_ADD = QUE_UNIT['Stroke']['Stroke Width'] * 4
 
 # 栈
 STACK_ELEM_WIDTH = 150

@@ -376,6 +376,10 @@ def shot_0(start_time):
                 'precomps': [
                     {
                         'layerName': '函数调用栈', 'type': 'STACK', 'Position': [8, 618], 'Anchor Point': 'LEFT_TOP',
+                        'width': STACK_ELEM_WIDTH + stroke_add, 'height': STACK_ELEM_HEIGHT * 6 + stroke_add,
+                        'duration': duration,
+                        'startTime': start_time,
+                        'unit': STACK_UNIT,
                         'elems': [
                             {
                                 'key': '<module>',
@@ -437,10 +441,6 @@ def shot_0(start_time):
                                 }
                             }
                         ],
-                        'width': STACK_ELEM_WIDTH + stroke_add, 'height': STACK_ELEM_HEIGHT*6 + stroke_add,
-                        'duration': duration,
-                        'startTime': start_time,
-                        'unit': STACK_UNIT,
                     },
                 ],
                 'codes': {

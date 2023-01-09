@@ -31,16 +31,16 @@ ShareUtil.prototype.createScenes = function (scenes) {
 
 			}
 			if (shot['precomps']) {
-				precompUtil.createMany(mainComp, shot['precomps'])
+				precompUtil.createMany(project.items, mainComp, shot['precomps'])
 			}
 			if (shot['misc']) {
-				precompUtil.misc(mainComp, shot['misc'])
+				precompUtil.misc(project.items, mainComp, shot['misc'])
 			}
 			if (shot['annotations']) {
 				this.createAnnotations(mainComp, shot['annotations'])
 			}
 			if (shot['codes']) {
-				precompUtil.create_codes(mainComp, shot['codes'])
+				precompUtil.create_codes(project.items, mainComp, shot['codes'])
 			}
 			if (shot['subtitles']) {
 				this.createSubtitles(shot['subtitles'])
@@ -143,7 +143,6 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	if (typeof conf["Opacity"] !== "undefined") {
 		layer("Transform")("Opacity").setValue(conf["Opacity"]);
 	}
-	this.configMasks(layer, conf["Masks"])
 	if (conf['startTime']) {
 		layer.startTime = conf['startTime'];
 	}
@@ -213,8 +212,8 @@ ShareUtil.prototype.configMasks = function (layer, masks) {
 		if (conf_mask["inverted"]) {
 			mask.inverted = conf_mask["inverted"];
 		}
-		var closed = js_bool(conf_mask["closed"]);
-		shape.closed =  closed ? closed : true;
+		// var closed = js_bool(conf_mask["closed"]);
+		shape.closed =  conf_mask["closed"] ? conf_mask["closed"] : true;
 		maskShape.setValue(shape);
 		if (conf_mask["Mask Feather"]) {
 			layer.Masks("Mask 1")("Mask Feather").setValue(conf_mask["Mask Feather"])

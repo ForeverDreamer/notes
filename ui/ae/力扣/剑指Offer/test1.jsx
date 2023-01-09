@@ -14,9 +14,9 @@
 var project = app.project;
 var mainComp = project.activeItem;
 
-var layer = mainComp.layer(16)
+var layer = mainComp.layer(4)
 // var path = layer("Contents")("Rectangle 1")("Contents")("Path 1")("Path").value
-precomps_2_masks = []
+masks_layer_4 = []
 for (var i = 1; i <= 5; i++) {
     $.writeln("=========================================")
     // $.writeln(layer("Masks")("Mask "+i)("Mask Opacity").value)
@@ -30,44 +30,48 @@ for (var i = 1; i <= 5; i++) {
         "outTangents": path.outTangents,
         "inverted": layer("Masks")("Mask "+i).inverted,
     }
-    precomps_2_masks.push(mask)
+    masks_layer_4.push(mask)
 }
 
-// var layer = mainComp.layer(17)
-// precomps_1_masks = []
-// for (var i = 1; i <= 1; i++) {
+
+// var layer = mainComp.layer(3)
+// masks_layer_3 = []
+// for (var i = 1; i <= 3; i++) {
+//     $.writeln("=========================================")
+//     // $.writeln(layer("Masks")("Mask "+i)("Mask Opacity").value)
 //     var path = layer("Masks")("Mask "+i)("Mask Path").value
+//     $.writeln(path.vertices)
+//     $.writeln(path.inTangents)
+//     $.writeln(path.outTangents)
 //     var mask = {
 //         "vertices": path.vertices,
 //         "inTangents": path.inTangents,
 //         "outTangents": path.outTangents,
 //         "inverted": layer("Masks")("Mask "+i).inverted,
 //     }
-//     precomps_1_masks.push(mask)
+//     masks_layer_3.push(mask)
 // }
 
-// var layer = mainComp.layer(18)
-// precomps_0_masks = []
-// for (var i = 1; i <= 1; i++) {
+// var layer = mainComp.layer(2)
+// masks_layer_2 = []
+// for (var i = 1; i <= 3; i++) {
+//     $.writeln("=========================================")
+//     // $.writeln(layer("Masks")("Mask "+i)("Mask Opacity").value)
 //     var path = layer("Masks")("Mask "+i)("Mask Path").value
+//     $.writeln(path.vertices)
+//     $.writeln(path.inTangents)
+//     $.writeln(path.outTangents)
 //     var mask = {
 //         "vertices": path.vertices,
 //         "inTangents": path.inTangents,
 //         "outTangents": path.outTangents,
 //         "inverted": layer("Masks")("Mask "+i).inverted,
 //     }
-//     precomps_0_masks.push(mask)
+//     masks_layer_2.push(mask)
 // }
 
 jsonUtil.write(
     BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf_utils/scenes/s5.json', 
-    [
-        {
-            "precomps": {
-                // 0:{"Masks": precomps_0_masks}, 
-                // 1:{"Masks": precomps_1_masks}, 
-                2:{"Masks": precomps_2_masks}
-            }
-        },
-    ]
+    // {"4": masks_layer_4, "3": masks_layer_3, "2": masks_layer_2},
+    {"4": masks_layer_4}
 )
