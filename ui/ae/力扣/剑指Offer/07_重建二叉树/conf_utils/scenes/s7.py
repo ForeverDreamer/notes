@@ -6,6 +6,8 @@ name = 's7'
 
 
 def shot_0(start_time):
+    sn = 0
+    prefix = f'{name}.{sn}'
     subtitles = []
     for i, text in enumerate(scenes[name][0]):
         subtitles.append([start_time + i * SUBTITLES_INTERVAL, text])
@@ -19,6 +21,81 @@ def shot_0(start_time):
     duration = 90
     temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
 
+    keyframes = {
+        'preorder': {
+            'root': {
+                'Opacity': [
+                    [0, 11, 14, 16, 20, 22, 24, 26],
+                    [0, 100, 0, 100, 0, 100, 0, 100],
+                    {"spatial": [{"type": 'HOLD'}] * 8}
+                ],
+                'Position': [
+                    [0, 16, 26, 26.5],
+                    [[108, 103.5], [148, 103.5], [148, 103.5], [108, 103.5]],
+                    # {"spatial": [{"type": 'HOLD'}] * 3 + [{"type": 'LINEAR'}]}
+                ],
+            },
+            'left': {
+                'Opacity': [
+                    [0, 9],
+                    [0, 100],
+                    {"spatial": [{"type": 'HOLD'}] * 2}
+                ],
+                'Position': [
+                    [9, 14, 14.5, 20, 20.5, 22, 22.5, 24, 24.5, 26, 26.5],
+                    [
+                        [108, 52.5], [108, 52.5], [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5],
+                        [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5], [148, 52.5]
+                    ],
+                ]
+            },
+            'right': {
+                'Opacity': [
+                    [0, 9],
+                    [0, 100],
+                    {"spatial": [{"type": 'HOLD'}] * 2}
+                ],
+                'Position': [[8, 14, 14.5], [[265, 52.5], [265, 52.5], [148, 52.5]]]
+            },
+        },
+        'inorder': {
+            'root': {
+                'Opacity': [
+                    [0, 12],
+                    [0, 100],
+                    {"spatial": [{"type": 'HOLD'}] * 2}
+                ],
+                'Position':  [
+                    [0, 16, 26, 26.5],
+                    [[108, 103.5], [148, 103.5], [148, 103.5], [108, 103.5]],
+                    # {"spatial": [{"type": 'HOLD'}] * 3 + [{"type": 'LINEAR'}]}
+                ],
+            },
+            'left': {
+                'Opacity': [
+                    [0, 9],
+                    [0, 100],
+                    {"spatial": [{"type": 'HOLD'}] * 2}
+                ],
+                'Position':[
+                    [9, 14, 14.5, 20, 20.5, 22, 22.5, 24, 24.5, 26, 26.5],
+                    [
+                        [108, 52.5], [108, 52.5], [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5],
+                        [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5], [148, 52.5]
+                    ],
+                ]
+            },
+            'right': {
+                'Opacity': [
+                    [0, 9],
+                    [0, 100],
+                    {"spatial": [{"type": 'HOLD'}] * 2}
+                ],
+                'Position': [[8, 14, 14.5], [[265, 52.5], [265, 52.5], [148, 52.5]]]
+            },
+        },
+    }
+
     conf = {
         'subtitles': subtitles,
         # 'annotations': [
@@ -30,7 +107,7 @@ def shot_0(start_time):
         # ],
         'precomps': [
             {
-                'name': '代码.二叉树重建', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
+                'layerName': f'{prefix}.二叉树', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
                 'startTime': start_time, 'duration': duration, 'Anchor Point': 'LEFT_TOP', 'Position': [50, 250],
                 'elems': [
                     {
@@ -101,130 +178,107 @@ def shot_0(start_time):
         ],
         'misc': [
             {
-                'layerName': '代码.队列.前序', 'Position': [771.5, 135.5],
-                'width': 300, 'height': 150, 'duration': duration,
+                'layerName': f'{prefix}.队列.前序', 'width': 300, 'height': 150, 'Position': [771.5, 135.5],
+                'startTime': start_time, 'duration': duration,
                 'keyframes': {
-                    'Transform.Opacity': [[0, 8], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                    'Transform.Opacity': [[0, 1], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
                 },
                 'texts': [
                     {
                         'name': '名字', 'text': '前序',
                         'Anchor Point': 'LEFT', 'Position': [0, 75], 'font': FONTS['cn'], 'fontSize': 40,
-                        'span': {'inPoint': start_time, 'outPoint': end_time},
                     },
                 ],
                 'precomps': [
                     {
-                        'name': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
+                        'layerName': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
                         'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}],
                         'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5, 'height': QUE_ELEM_HEIGHT + stroke_add,
-                        'duration': duration,
-                        'startTime': start_time,
-                        'unit': QUE_UNIT,
+                        'unit': QUE_UNIT, 'duration': duration,
                     },
                 ],
                 'misc': [
                     {
-                        'layerName': '根节点.选中框', 'Position': [108, 103.5],
-                        'width': 150, 'height': 100, 'duration': duration,
+                        'layerName': '根节点.选中框', 'width': 150, 'height': 100, 'Position': [108, 103.5],
+                        'duration': duration,
                         'keyframes': {
-                            'Transform.Opacity': [
-                                [0, 10, 14, 16, 20, 22, 24, 26],
-                                [0, 100, 0, 100, 0, 100, 0, 100],
-                                {"spatial": [{"type": 'HOLD'}]*8}
-                            ],
-                            'Transform.Position': [
-                                [0, 16, 26, 26.5],
-                                [[108, 103.5], [148, 103.5], [148, 103.5], [108, 103.5]],
-                                # {"spatial": [{"type": 'HOLD'}]*2 + [{"type": 'LINEAR'}]}],
-                                {"spatial": [{"type": 'HOLD'}] * 3 + [{"type": 'LINEAR'}]}],
+                            'Transform.Opacity': keyframes['preorder']['root']['Opacity'],
+                            'Transform.Position': keyframes['preorder']['root']['Position'],
                         },
                         'texts': [
                             {
                                 'name': 'idx_p_root', 'text': 'idx_p_root',
                                 'fillColor': COLORS['queue']['fillColor']['root'],
                                 'Position': [75, 80], 'fontSize': 25,
-                                'span': {'inPoint': start_time, 'outPoint': end_time},
                             },
                         ],
                         'vectors': [
                             {
                                 'name': 'Queue Code Selected Root/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 37],
-                                'startTime': start_time,
                             }
                         ],
                     },
                     {
-                        'layerName': '左边界.选中框', 'Position': [148, 52.5],
-                        'width': 150, 'height': 100, 'duration': duration,
+                        'layerName': '左边界.选中框', 'width': 150, 'height': 100, 'Position': [148, 52.5],
+                        'duration': duration,
                         'keyframes': {
-                            'Transform.Position': [
-                                [8, 14, 14.5, 20, 20.5, 22, 22.5, 24, 24.5, 26, 26.5],
-                                [
-                                    [108, 52.5], [108, 52.5], [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5],
-                                    [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5], [148, 52.5]
-                                ],
-                            ],
+                            'Transform.Opacity': keyframes['preorder']['left']['Opacity'],
+                            'Transform.Position': keyframes['preorder']['left']['Position'],
                         },
                         'texts': [
                             {
                                 'name': 'idx_pl', 'text': 'idx_pl', 'fillColor': COLORS['queue']['fillColor']['left'],
                                 'Position': [75, 15], 'fontSize': 25,
-                                'span': {'inPoint': start_time, 'outPoint': end_time},
                             },
                         ],
                         'vectors': [
                             {
                                 'name': 'Queue Code Selected Left/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 100 - 37],
-                                'startTime': start_time,
                             }
                         ],
                     },
                     {
-                        'layerName': '右边界.选中框', 'Position': [265, 52.5],
-                        'width': 150, 'height': 100, 'duration': duration,
+                        'layerName': '右边界.选中框', 'width': 150, 'height': 100, 'Position': [265, 52.5],
+                        'duration': duration,
                         'keyframes': {
-                            'Transform.Position': [[8, 14, 14.5], [[265, 52.5], [265, 52.5], [148, 52.5]]],
+                            'Transform.Opacity': keyframes['preorder']['right']['Opacity'],
+                            'Transform.Position': keyframes['preorder']['right']['Position'],
                         },
                         'texts': [
                             {
                                 'name': 'idx_pr', 'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
                                 'Position': [75, 15], 'fontSize': 25,
-                                'span': {'inPoint': start_time, 'outPoint': end_time},
                             },
                         ],
                         'vectors': [
                             {
                                 'name': 'Queue Code Selected Right/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 100 - 37],
-                                'startTime': start_time,
                             }
                         ],
                     }
                 ],
             },
             {
-                'layerName': '代码.队列.中序', 'Position': [771.5, 316],
-                'width': 300, 'height': 150, 'duration': duration,
+                'layerName': f'{prefix}.队列.中序', 'width': 300, 'height': 150, 'Position': [771.5, 316],
+                'startTime': start_time, 'duration': duration,
                 'keyframes': {
-                    'Transform.Opacity': [[0, 8], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                    'Transform.Opacity': [[0, 1], [0, 100], {"spatial": [{"type": 'HOLD'}] * 2}],
                 },
                 'texts': [
                     {
                         'name': '名字', 'text': '中序',
                         'Anchor Point': 'LEFT', 'Position': [0, 75], 'font': FONTS['cn'], 'fontSize': 40,
-                        'span': {'inPoint': start_time, 'outPoint': end_time},
                     },
                 ],
                 'precomps': [
                     {
-                        'name': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
+                        'layerName': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
                         'elems': [{'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}],
                         'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5, 'height': QUE_ELEM_HEIGHT + stroke_add,
                         'duration': duration,
-                        'startTime': start_time,
                         'unit': QUE_UNIT,
                     },
                 ],
@@ -232,6 +286,10 @@ def shot_0(start_time):
                     {
                         'layerName': '根节点.选中框', 'Position': [108, 103.5],
                         'width': 150, 'height': 100, 'duration': duration,
+                        'keyframes': {
+                            'Transform.Opacity': keyframes['inorder']['root']['Opacity'],
+                            'Transform.Position': keyframes['inorder']['root']['Position'],
+                        },
                         'texts': [
                             {
                                 'name': 'idx_p_root', 'text': 'idx_p_root',
@@ -244,18 +302,20 @@ def shot_0(start_time):
                             {
                                 'name': 'Queue Code Selected Root/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 37],
-                                'startTime': start_time,
                             }
                         ],
                     },
                     {
                         'layerName': '左边界.选中框', 'Position': [148, 52.5],
                         'width': 150, 'height': 100, 'duration': duration,
+                        'keyframes': {
+                            'Transform.Opacity': keyframes['inorder']['left']['Opacity'],
+                            'Transform.Position': keyframes['inorder']['left']['Position'],
+                        },
                         'texts': [
                             {
                                 'name': 'idx_pl', 'text': 'idx_pl', 'fillColor': COLORS['queue']['fillColor']['left'],
                                 'Position': [75, 15], 'fontSize': 25,
-                                'span': {'inPoint': start_time, 'outPoint': end_time},
                             },
                         ],
                         'vectors': [
@@ -269,32 +329,35 @@ def shot_0(start_time):
                     {
                         'layerName': '右边界.选中框', 'Position': [265, 52.5],
                         'width': 150, 'height': 100, 'duration': duration,
+                        'keyframes': {
+                            'Transform.Opacity': keyframes['inorder']['right']['Opacity'],
+                            'Transform.Position': keyframes['inorder']['right']['Position'],
+                        },
                         'texts': [
                             {
                                 'name': 'idx_pr', 'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
                                 'Position': [75, 15], 'fontSize': 25,
-                                'span': {'inPoint': start_time, 'outPoint': end_time},
                             },
                         ],
                         'vectors': [
                             {
                                 'name': 'Queue Code Selected Right/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 100 - 37],
-                                'startTime': start_time,
                             }
                         ],
                     }
                 ],
             },
             {
-                'layerName': '代码.合成', 'duration': duration, 'width': 1419, 'height': 934,
-                'startTime': start_time, 'Anchor Point': 'LEFT_TOP', 'Position': [595, 45],
+                'layerName': f'{prefix}.代码', 'width': 1419, 'height': 934,
+                'Anchor Point': 'LEFT_TOP', 'Position': [595, 45],
+                'startTime': start_time, 'duration': duration,
                 'texts': [
                     {
                         'layerName': 'idx_dic', 'text': 'idx_dic = {9: 0, 3: 1, 15: 2, 20: 3, 7: 4}',
                         'Position': [215, 484], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
                         'keyframes': {
-                            'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
+                            'Transform.Opacity': [[0, 8], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
                         }
                     },
                     {
@@ -326,7 +389,8 @@ def shot_0(start_time):
                         }
                     },
                     {
-                        'layerName': 'idx_pl.idx_pr.idx_il.idx_ir', 'text': 'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
+                        'layerName': 'idx_pl.idx_pr.idx_il.idx_ir',
+                        'text': 'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
                         'Position': [1111, 270], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
                         'keyframes': {
                             'Transform.Opacity': [[0, 7], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
@@ -459,21 +523,24 @@ def shot_0(start_time):
                             'Transform.Position': [
                                 None,
                                 [
-                                    18, 2, 12, 13, 14, 15, 16, 17, 3, 5, 6, 7, 8, 9, 3, 5, 6, 7, 8, 9, 3, 4, 9, 10, 3, 4, 10, 11,
-                                    9, 10, 3, 5, 6, 7, 8, 9, 3, 5, 6, 7, 8, 9, 3, 4, 9, 10, 3, 4, 10, 11, 9, 10, 3, 5, 6, 7, 8,
+                                    18, 2, 12, 13, 14, 15, 16, 17, 3, 5, 6, 7, 8, 9, 3, 5, 6, 7, 8, 9, 3, 4, 9, 10, 3,
+                                    4, 10, 11,
+                                    9, 10, 3, 5, 6, 7, 8, 9, 3, 5, 6, 7, 8, 9, 3, 4, 9, 10, 3, 4, 10, 11, 9, 10, 3, 5,
+                                    6, 7, 8,
                                     9, 3, 4, 9, 10, 3, 4, 10, 11, 10, 11, 10, 11, 17, 18
                                 ],
-                                {'spatial': [{"type": 'HOLD'}]*72}
+                                {'spatial': [{"type": 'HOLD'}] * 72}
                             ],
                             "Transform.Opacity": [
                                 [0, 1],
                                 [0, 100],
-                                {"spatial": [{"type": 'HOLD'}]*2}
+                                {"spatial": [{"type": 'HOLD'}] * 2}
                             ]
                         }
                     },
                     'lines': [
-                        [0, {'text': 'class', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '}, {'text': 'TreeNode:'}],
+                        [0, {'text': 'class', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                         {'text': 'TreeNode:'}],
                         [
                             1,
                             {'text': 'def', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
@@ -495,7 +562,8 @@ def shot_0(start_time):
                             {'text': 'None', 'fillColor': CODE_COLORS['keyword']},
                         ],
                         [],
-                        [0, {'text': 'class', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '}, {'text': 'Solution:'}],
+                        [0, {'text': 'class', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                         {'text': 'Solution:'}],
                         [
                             1,
                             {'text': 'def', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
@@ -510,7 +578,8 @@ def shot_0(start_time):
                         ],
                         [
                             3,
-                            {'text': 'if', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '}, {'text': 'idx_pl > idx_pr:'},
+                            {'text': 'if', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                            {'text': 'idx_pl > idx_pr:'},
                         ],
                         [
                             4,
@@ -566,9 +635,11 @@ def shot_0(start_time):
                         [],
                         [
                             2,
-                            {'text': 'idx_dic = {element: i'}, {'text': ' '}, {'text': 'for', 'fillColor': CODE_COLORS['keyword']},
-                            {'text': ' '},  {'text': ' i, element'}, {'text': ' '},
-                            {'text': 'in', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '}, {'text': 'enumerate', 'fillColor': CODE_COLORS['builtin']},
+                            {'text': 'idx_dic = {element: i'}, {'text': ' '},
+                            {'text': 'for', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '}, {'text': ' i, element'}, {'text': ' '},
+                            {'text': 'in', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                            {'text': 'enumerate', 'fillColor': CODE_COLORS['builtin']},
                             {'text': '(inorder)'}
                         ],
                         [
@@ -581,14 +652,20 @@ def shot_0(start_time):
                             0,
                             {'text': 'print', 'fillColor': CODE_COLORS['builtin']}, {'text': '(Solution().buildTree('},
                             {'text': 'preorder', 'fillColor': CODE_COLORS['kwargs']}, {'text': '=['},
-                            {'text': '3', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '}, {'text': '9', 'fillColor': CODE_COLORS['number']},
-                            {'text': ','}, {'text': ' '}, {'text': '20', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
-                            {'text': '15', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '}, {'text': '7', 'fillColor': CODE_COLORS['number']},
+                            {'text': '3', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
+                            {'text': '9', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','}, {'text': ' '}, {'text': '20', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','}, {'text': ' '},
+                            {'text': '15', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
+                            {'text': '7', 'fillColor': CODE_COLORS['number']},
                             {'text': '],'}, {'text': ' '},
                             {'text': 'inorder', 'fillColor': CODE_COLORS['kwargs']}, {'text': '=['},
-                            {'text': '9', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '}, {'text': '3', 'fillColor': CODE_COLORS['number']},
-                            {'text': ','}, {'text': ' '}, {'text': '15', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
-                            {'text': '20', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '}, {'text': '7', 'fillColor': CODE_COLORS['number']},
+                            {'text': '9', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
+                            {'text': '3', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','}, {'text': ' '}, {'text': '15', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','}, {'text': ' '},
+                            {'text': '20', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
+                            {'text': '7', 'fillColor': CODE_COLORS['number']},
                             {'text': ']))'},
                         ],
                     ],
