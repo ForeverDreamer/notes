@@ -81,6 +81,13 @@ class ShareUtil:
             'Transform.Position': [960, 540, -800], 'Transform.Point of Interest': [960, 540, 0],
             'Camera Options.Zoom': 800, 'Camera Options.Focus Distance': 800, 'Camera Options.Aperture': 7.6,
         }
+        # subtitles_bg = {
+        #                    'layerName': '字幕背景',
+        #                    'Position': [960, 1025],
+        #                    'pathGroup': {'type': 'Rect', 'Size': [1000, 40]},
+        #                    'Gradient Fill': {'Start Point': [-500, 0], 'End Point': [500, 0], 'Opacity': 70},
+        # }
+
         statements = [
             '//share_util.body',
             # 'app.purge(PurgeTarget.ALL_CACHES);',
@@ -88,7 +95,7 @@ class ShareUtil:
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp(NAME, WIDTH, HEIGHT, PIXEL_ASPECT, DURATION, FRAME_RATE);',
             'mainComp.openInViewer();',
-            'var subtitlesLayer = textUtil.add(mainComp, "视频字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025, 0], "font": "KaiTi", "fontSize": 40, "fillColor": COLORS["subtitle"]});',
+            'var subtitlesLayer = textUtil.add(mainComp, "字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025], "font": "KaiTi", "fontSize": 40, "fillColor": COLORS["subtitle"]});',
             f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
             'cameraLayer.moveToEnd();',
             'shareUtil.importFiles(conf["files"]);',
@@ -99,8 +106,13 @@ class ShareUtil:
         return statements
 
     def tail(self):
+        subtitles_bg = {
+            'name': 'Subtitles BG/Elements.ai', 'layerName': '字幕背景',
+            'Scale': [100, 100, 100], 'Position': [960, 1025],
+        }
         statements = [
             '//share_util.tail',
+            f'var subtitlesBg = shareUtil.addLayer(mainComp, {subtitles_bg})',
             'subtitlesLayer.moveToBeginning();',
             'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1(COLORS["bg"]), "BG", WIDTH, HEIGHT, PIXEL_ASPECT);',
             'bgLayer.moveToEnd();',

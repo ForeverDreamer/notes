@@ -37,6 +37,12 @@ ShapeUtil.prototype.create_one = function(parentComp, conf) {
             fillGroup(k).setValue(conf["Fill"][k])
         }
     }
+    // if (conf["Gradient Fill"]) {
+    //     var gFillGroup = shapeGroup("Contents").addProperty("ADBE Vector Graphic - G-Fill")
+    //     for (var k in conf["Gradient Fill"]) {
+    //         gFillGroup(k).setValue(conf["Gradient Fill"][k])
+    //     }
+    // }
     if (conf["Trim Paths"]) {
         var trimGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - Trim")
         for (var k in conf["Trim Paths"]) {

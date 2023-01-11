@@ -19,6 +19,7 @@ def shot_0(start_time):
 
     duration = 20
 
+    # 工作量大或相互关联的配置提到前边统一填写，避免滚轮滚上滚下到处找，头都晕了~
     times = {
         'que1': {
             'Opacity':  [0, 8],
