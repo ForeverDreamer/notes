@@ -90,7 +90,7 @@ class ShareUtil:
 
         statements = [
             '//share_util.body',
-            # 'app.purge(PurgeTarget.ALL_CACHES);',
+            'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp(NAME, WIDTH, HEIGHT, PIXEL_ASPECT, DURATION, FRAME_RATE);',

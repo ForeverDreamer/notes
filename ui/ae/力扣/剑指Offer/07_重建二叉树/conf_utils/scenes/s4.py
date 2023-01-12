@@ -14,6 +14,8 @@ def shot_0(start_time):
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
+    duration = end_time - start_time
+
     conf = {
         'images': [
             {

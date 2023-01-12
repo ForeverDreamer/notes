@@ -17,7 +17,7 @@ def shot_0(start_time):
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
 
-    duration = 20
+    duration = end_time - start_time
 
     # 工作量大或相互关联的配置提到前边统一填写，避免滚轮滚上滚下到处找，头都晕了~
     times = {

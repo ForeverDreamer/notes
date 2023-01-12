@@ -49,10 +49,9 @@ TextUtil.prototype.add = function(comp, name, props) {
         textLayer.outPoint = props["span"]["outPoint"];
 	}
     textLayer("Transform")("Position").setValue(props["Position"])
-    if (props["keyframes"]) {
-		shareUtil.configKeyframes(textLayer, props["keyframes"])
-	}
+    shareUtil.configKeyframes(textLayer, props["keyframes"])
     // textLayer.threeDLayer = true
+    presetsUtil.add(textLayer, props["presets"])
     return textLayer
 }
 

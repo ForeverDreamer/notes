@@ -21,39 +21,9 @@ ShareUtil.prototype.createScenes = function (scenes) {
 		for (var i = 0; i < scenes[sName].length; i++) {
 			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
 			var shot = scenes[sName][i]
-			if (shot['audios']) {
-
-			}
-			if (shot['images']) {
-				shareUtil.addLayers(mainComp, shot['images'])
-			}
-			if (shot['videos']) {
-
-			}
-			if (shot['precomps']) {
-				precompUtil.createMany(project.items, mainComp, shot['precomps'])
-			}
-			if (shot['misc']) {
-				precompUtil.misc(project.items, mainComp, shot['misc'])
-			}
-			if (shot['annotations']) {
-				this.createAnnotations(mainComp, shot['annotations'])
-			}
-			if (shot['codes']) {
-				precompUtil.create_codes(project.items, mainComp, shot['codes'])
-			}
-			if (shot['subtitles']) {
-				this.createSubtitles(shot['subtitles'])
-			}
-			if (shot['shapes']) {
-				shapeUtil.create_many(mainComp, shot['shapes'])
-			}
-			if (shot['vectors']) {
-				shapeUtil.create_vectors(mainComp, shot['vectors'])
-			}
-			if (shot['camera']) {
-				this.configKeyframes(cameraLayer, shot['camera'])
-			}
+			shot['width'] = WIDTH
+			shot['height'] = HEIGHT
+			precompUtil.comp(project.items, mainComp, shot)
 		}
 	}
 }
@@ -69,20 +39,8 @@ ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {
 		if (!conf["fillColor"]) {
 			conf["fillColor"] = COLORS["annotation"]
 		}
-		var keyframes = conf["keyframes"]
-		var presets = conf["presets"]
 
-		var textLayer = textUtil.add(parentComp, conf["name"], conf)
-
-		if (keyframes) {
-			this.configKeyframes(textLayer, keyframes)
-		}
-
-		if (presets) {
-			for (var j = 0; j < presets.length; j++) {
-				presetsUtil.add(textLayer, presets[j])
-			}
-		}
+		textUtil.add(parentComp, conf["name"], conf)
 	}
 }
 
@@ -158,6 +116,7 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	}
 	this.configMasks(layer, conf["Masks"])
 	this.configKeyframes(layer, conf["keyframes"])
+	presetsUtil.add(layer, conf["presets"])
 	effectsUtil.add(layer, (conf["effects"]))
 	return layer;
 }
@@ -255,10 +214,15 @@ ShareUtil.prototype.configKeyframes = function (propGroup, keyframes) {
 		for (var i = 1; i < propChain.length; i++) {
 			prop = prop(propChain[i])
 		}
-		// var numKeys = prop.numKeys
-		// for (var i = numKeys; i >= 1; i--) {
-		// 	prop.removeKey(i)
-		// }
+
+		var clear = keyframes[k][3]
+		if (clear) {
+			var numKeys = prop.numKeys
+			for (var i = numKeys; i >= 1; i--) {
+				prop.removeKey(i)
+			}
+		}
+
 		var values
 		if (propChain[propChain.length-1] === "Path") {
 			values = []

@@ -3,7 +3,7 @@ var NAME = "Main"
 var WIDTH = 1920
 var HEIGHT = 1080
 var PIXEL_ASPECT = 1
-var DURATION = 30
+var DURATION = 120
 var FRAME_RATE = 30
 
 var TYPE_DIC = {

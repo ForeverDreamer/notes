@@ -18,7 +18,7 @@ def shot_0(start_time):
     QUE_ELEM_HEIGHT = 40
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
     stroke_add = QUE_UNIT['Stroke']['Stroke Width'] * 4
-    duration = 90
+    duration = end_time - start_time
     temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
 
     # 工作量大或相互关联的配置提到前边统一填写，避免滚轮滚上滚下到处找，头都晕了~

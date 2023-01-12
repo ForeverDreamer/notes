@@ -19,7 +19,7 @@ def shot_0(start_time):
     QUE_ELEM_HEIGHT = 80
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
     QUE_UNIT['fontSize'] = None
-    duration = 20
+    duration = end_time - start_time
 
     conf = {
         'subtitles': subtitles,

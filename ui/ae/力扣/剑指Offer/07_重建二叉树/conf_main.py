@@ -52,10 +52,10 @@ conf = {
     'theme': THEME,
 }
 
-start_time = -1
+start_time = 0
 for name, func in inspect.getmembers(conf_utils, inspect.isfunction):
     print(name, func)
-    scene_name, scene, start_time = func(start_time+1)
+    scene_name, scene, start_time = func(start_time)
     conf['scenes'][scene_name] = scene
 
 obj = json.dumps(conf, indent=4)

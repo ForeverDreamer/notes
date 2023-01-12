@@ -6,17 +6,21 @@ name = 's6'
 
 
 def shot_0(start_time):
+    sn = 0
+    prefix = f'{name}.{sn}'
     subtitles = []
     for i, text in enumerate(scenes[name][0]):
         subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
+    duration = end_time - start_time
+
     conf = {
         'images': [
             {
                 'name': 'Linus Torvalds.jfif',
-                'layerName': 'Linus Torvalds.jfif',
+                'layerName': f'{prefix}.Linus Torvalds.jfif',
                 'Scale': [75, 75, 75],
                 'Position': [920, 210],
                 'startTime': start_time,
@@ -24,7 +28,7 @@ def shot_0(start_time):
             },
             {
                 'name': 'linux.png',
-                'layerName': 'linux.png',
+                'layerName': f'{prefix}.linux.png',
                 'Scale': [50, 50, 50],
                 'Position': [390, 730],
                 'startTime': start_time,
@@ -32,7 +36,7 @@ def shot_0(start_time):
             },
             {
                 'name': 'git.bmp',
-                'layerName': 'git.bmp',
+                'layerName': f'{prefix}.git.bmp',
                 'Scale': [50, 50, 50],
                 'Position': [1475, 730],
                 'startTime': start_time,
