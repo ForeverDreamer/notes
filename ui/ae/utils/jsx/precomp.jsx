@@ -235,14 +235,27 @@ PrecompUtil.prototype._btTraverseSelectedDropQueue = function (key, traverse) {
         var elemLayers = this.queueLayers[traverse][key]
         shareUtil.configKeyframes(elemLayers["shapeLayer"], queueKeyframes)
         shareUtil.configKeyframes(elemLayers["textLayer"], queueKeyframes)
-        if (traverse === "preorder" && key === '3') {
-            shareUtil.configKeyframes(selectedLayer, {
-                "Contents.Group 1.Contents.Fill 1.Color": [[times[0], times[1]+17.5], [colorUtil.hexToRgb1('#FFFFFF'), colorUtil.hexToRgb1('#0573E1')], {"spatial": [{"type": 'HOLD'}]}]
-            });
-            shareUtil.configKeyframes(elemLayers["shapeLayer"], {
-                "Contents.Group 1.Contents.Fill 1.Color": [[times[0], times[1]+17.5], [colorUtil.hexToRgb1('#FFFFFF'), colorUtil.hexToRgb1('#0573E1')], {"spatial": [{"type": 'HOLD'}]}]
-            });
-        }
+        // if (traverse === "preorder" && key === '3') {
+        //     shareUtil.configKeyframes(selectedLayer, {
+        //         "Contents.Group 1.Contents.Fill 1.Color": [
+        //             [times[0], times[1]+0.5],
+        //             [
+        //                 colorUtil.hexToRgb1(COLORS["tree"]["fillColor"]["default"]),
+        //                 colorUtil.hexToRgb1(COLORS["tree"]["fillColor"]["root"])
+        //             ],
+        //             {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}
+        //         ]
+        //     });
+        //     shareUtil.configKeyframes(elemLayers["shapeLayer"], {
+        //         "Contents.Group 1.Contents.Fill 1.Color": [
+        //             [times[0], times[1]+0.5],
+        //             [
+        //                 colorUtil.hexToRgb1(COLORS["tree"]["fillColor"]["default"]),
+        //                 colorUtil.hexToRgb1(COLORS["tree"]["fillColor"]["root"])
+        //             ],
+        //             {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}]
+        //     });
+        // }
         // for (var kQueue in precompUtil.queueLayers) {
         //     $.writeln(kQueue)
         //     var queue = precompUtil.queueLayers[kQueue]
@@ -512,6 +525,7 @@ PrecompUtil.prototype.binaryTree = function (items, parentComp, conf) {
         if (selected) {
             selected["Position"] = nodeShape["Position"]
             selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
+            selected["keyframes"] = elem["selectedKeyframes"]
             if (elem["Color"]) {
                 selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem["Color"])
             }

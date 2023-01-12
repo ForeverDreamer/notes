@@ -13,7 +13,7 @@ def shot_0(start_time):
         subtitles.append([start_time + i * SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]
+    end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
     QUE_ELEM_WIDTH = 40
     QUE_ELEM_HEIGHT = 40
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]

@@ -12,7 +12,7 @@ COLORS = {
     'bg': '#FFFFFF',
     'text': '#000000',
     'subtitle': '#F20CCC',
-    'annotation': '#01CD2A',
+    'annotation': '#000000',
     'tree': {
         'fillColor': {
             'default': '#FFFFFF',

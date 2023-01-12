@@ -31,8 +31,6 @@ STACK_UNIT = {
     'fontSize': 25,
 }
 
-SPATIAL_HOLD = [{"type": 'HOLD'}]
-
 IMPORT_AS_TYPE = ('COMP_CROPPED_LAYERS', 'FOOTAGE', 'COMP', 'PROJECT')
 
 SUBTITLES_INTERVAL = 5
@@ -49,8 +47,24 @@ mdl = importlib.import_module(f'ae.constants.themes.t{3}')
 #
 # # now drag them in
 # globals().update({k: getattr(mdl, k) for k in names})
+
+PATH_EFFECTS = {'ADBE Glo2': {}}
+PATH_STROKE = 8
+
 FONTS = mdl.FONTS
 FONT_SIZES = mdl.FONT_SIZES
 COLORS = mdl.COLORS
 CODE_COLORS = mdl.CODE_COLORS
 VECTORS = mdl.VECTORS
+SPATIAL_HOLD = [{"type": 'HOLD'}]
+
+THEME = {
+    'FONTS': FONTS,
+    'FONT_SIZES': FONT_SIZES,
+    'COLORS': COLORS,
+    'CODE_COLORS': CODE_COLORS,
+    'VECTORS': VECTORS,
+    'SPATIAL_HOLD': SPATIAL_HOLD,
+}
+
+PATH_COLOR = COLORS['subtitle']

@@ -22,10 +22,10 @@ PresetsUtil.prototype.add = function(layer, conf) {
             for (var i = 1; i < propChain.length; i++) {
                 prop = prop(propChain[i])
             }
-            var numKeys = prop.numKeys 
-            for (var i = numKeys; i >= 1; i--) {
-                prop.removeKey(i)
-            }
+            // var numKeys = prop.numKeys
+            // for (var i = numKeys; i >= 1; i--) {
+            //     prop.removeKey(i)
+            // }
             prop.setValuesAtTimes(keyframes[k]["times"], keyframes[k]["values"]);
         }
     }

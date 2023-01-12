@@ -49,11 +49,7 @@ conf = {
         # },
     ],
     'scenes': {},
-    'theme': {
-        'FONTS': FONTS,
-        'COLORS': COLORS,
-        'CODE_COLORS': CODE_COLORS,
-    }
+    'theme': THEME,
 }
 
 start_time = -1

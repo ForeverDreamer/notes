@@ -11,7 +11,7 @@ def shot_0(start_time):
         subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]
+    end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
     conf = {
         'subtitles': subtitles,
         'annotations': [
