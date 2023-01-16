@@ -15,7 +15,7 @@ engine = Engine(version="18.0")
 statements = []
 share_util = ShareUtil(engine)
 # statements += share_util.eval(BASE_DIR + 'utils/jsx/init.jsx')
-statements += share_util.head()
+statements += share_util.head('力扣/剑指Offer/07_重建二叉树/conf.json')
 statements += share_util.body()
 # time.sleep(CALL_INTERVAL)
 # share_util.open_project('D:/Untitled Project.aep')

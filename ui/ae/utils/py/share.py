@@ -54,13 +54,13 @@ class ShareUtil:
     def log_execute(self, statements):
         pass
 
-    def head(self):
+    def head(self, conf_path):
         statements = [
             '//share_util.head',
             '#includepath "../utils/jsx";',
             '#include "json.jsx";',
             'var BASE_DIR = "D:/data_files/notes/ui/ae/"',
-            'var conf = jsonUtil.read(BASE_DIR + "力扣/剑指Offer/07_重建二叉树/conf.json");',
+            f'var conf = jsonUtil.read(BASE_DIR + "{conf_path}");',
             '#include "constants.jsx";',
             '#include "color.jsx";',
             '#include "text.jsx";',
