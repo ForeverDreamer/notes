@@ -2,7 +2,7 @@ function PrecompUtil() {
     this.queueLayers = {}
 }
 
-PrecompUtil.prototype.create_code_line = function (items, parentComp, line, conf) {
+PrecompUtil.prototype.line = function (items, parentComp, line, conf) {
     var indent = line.shift()
     var sn = line.pop()
     var lineComp = items.addComp("line." + sn, conf['widthLine'], conf['heightLine'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
@@ -31,7 +31,7 @@ PrecompUtil.prototype.create_code_line = function (items, parentComp, line, conf
     return shareUtil.addLayer(parentComp, conf, lineComp);
 }
 
-PrecompUtil.prototype.create_codes = function (items, parentComp, conf) {
+PrecompUtil.prototype.codes = function (items, parentComp, conf) {
     var codesFolder = items.addFolder("Codes")
     var codesComp = codesFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     codesComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
@@ -48,7 +48,7 @@ PrecompUtil.prototype.create_codes = function (items, parentComp, conf) {
         line.push(i)
         indent = line[0]
         sn = i
-        var layer = this.create_code_line(codesFolder.items, codesComp, line, conf)
+        var layer = this.line(codesFolder.items, codesComp, line, conf)
         if (i > 4) {
             lineLayers.push(layer)
         }
@@ -65,7 +65,7 @@ PrecompUtil.prototype.create_codes = function (items, parentComp, conf) {
     }
     currentLine["keyframes"]["Transform.Position"] = [times, values, extra]
     currentLine["Position"] = [indent * 48, sn * conf['heightLine'] + 30]
-    currentLineLayer = shapeUtil.create_one(codesComp, currentLine)
+    currentLineLayer = shapeUtil.addOne(codesComp, currentLine)
     currentLineLayer.moveToEnd()
     shareUtil.addLayer(parentComp, conf, codesComp);
 }
@@ -87,33 +87,34 @@ PrecompUtil.prototype.comp = function (items, parentComp, conf) {
         textUtil.addMany(newComp, conf["texts"])
     }
     if (conf["vectors"]) {
-        shapeUtil.create_vectors(newComp, conf['vectors'])
+        shapeUtil.addVectors(newComp, conf['vectors'])
     }
     if (conf["shapes"]) {
-        shapeUtil.create_many(newComp, conf["shapes"])
+        shapeUtil.addMany(newComp, conf["shapes"])
     }
     if (conf["precomps"]) {
-        this.createMany(compFolder.items, newComp, conf['precomps'])
+        this.addMany(compFolder.items, newComp, conf['precomps'])
+    }
+    if (conf['line']) {
+        this.line(compFolder.items, newComp, conf['line'])
     }
     if (conf['codes']) {
-        this.create_codes(compFolder.items, newComp, conf['codes'])
+        this.codes(compFolder.items, newComp, conf['codes'])
     }
     if (conf["comp"]) {
         this.comp(compFolder.items, newComp, conf['comp'])
     }
-    if (conf["misc"]) {
-        this.misc(compFolder.items, newComp, conf['misc'])
-    }
-    if (conf['codes']) {
-        precompUtil.create_codes(compFolder.items, newComp, conf['codes'])
-    }
     if (conf['subtitles']) {
-        shareUtil.createSubtitles(conf['subtitles'])
+        shareUtil.addSubtitles(conf['subtitles'])
     }
     if (conf['camera']) {
         shareUtil.configKeyframes(cameraLayer, conf['camera'])
     }
     shareUtil.addLayer(parentComp, conf, newComp);
+}
+
+PrecompUtil.prototype.linkedList = function (items, parentComp, conf) {
+
 }
 
 PrecompUtil.prototype.misc = function (items, parentComp, misc) {
@@ -209,7 +210,7 @@ PrecompUtil.prototype.queue = function (items, parentComp, conf) {
             unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i]["Color"])
         }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
-        var shapeLayer = shapeUtil.create_one(queueComp, unit)
+        var shapeLayer = shapeUtil.addOne(queueComp, unit)
         if (elems[i]["keyframes"]) {
             shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
         }
@@ -807,34 +808,33 @@ PrecompUtil.prototype.graph = function (nodeLayer, edgeLayer, elems) {
 
 }
 
-PrecompUtil.prototype.createOne = function (items, parentComp, conf) {
+PrecompUtil.prototype.addOne = function (items, parentComp, conf) {
     var comp;
-    if (conf["type"] === "STACK") {
+    if (conf["type"] === "LINE") {
+        comp = this.line(parentComp, conf)
+    } else if (conf["type"] === "CODES") {
+        comp = this.codes(parentComp, conf)
+    } else if (conf["type"] === "COMP") {
+        comp = this.comp(parentComp, conf)
+    } else if (conf["type"] === "STACK") {
         comp = this.stack(parentComp, conf)
     } else if (conf["type"] === "QUEUE") {
         comp = this.queue(items, parentComp, conf)
     } else if (conf["type"] === "LINKED_LIST") {
-
+        comp = this.linkedList(items, parentComp, conf)
     } else if (conf["type"] === "BINARY_TREE") {
         comp = this.binaryTree(items, parentComp, conf)
     } else if (conf["type"] === "B-TREE") {
         comp = this.bTree(items, parentComp, conf)
     } else if (conf["type"] === "GRAPH") {
         comp = this.graph(conf)
-    } else if (conf["type"] === "CODE") {
-
-    }
-    if (conf["children"]) {
-        for (var j = 0; j < conf["children"].length; j++) {
-            this.createOne(items, comp, conf["children"][j])
-        }
     }
     return comp
 }
 
-PrecompUtil.prototype.createMany = function (items, parentComp, precomps) {
+PrecompUtil.prototype.addMany = function (items, parentComp, precomps) {
     for (var i = 0; i < precomps.length; i++) {
-        this.createOne(items, parentComp, precomps[i])
+        this.addOne(items, parentComp, precomps[i])
     }
 }
 

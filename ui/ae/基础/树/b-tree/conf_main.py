@@ -11,28 +11,6 @@ conf = {
         {
             'path': f'{CONF_BASE_DIR}Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0]
         },
-        # {
-        #     'path': f'{CONF_BASE_DIR}题目描述.jpg', 'import_as_type': IMPORT_AS_TYPE[1]
-        # },
-        # {
-        #     'path': f'{CONF_BASE_DIR}test.mp3', 'import_as_type': IMPORT_AS_TYPE[1],
-        #     'layers': [
-        #         {
-        #             'name': 'test.mp3',
-        #             'startTime': 1.2,
-        #             'Anchor Point': 'null',
-        #         }
-        #     ],
-        # },
-        # {
-        #     'path': f'{CONF_BASE_DIR}Linus Torvalds.jfif', 'import_as_type': IMPORT_AS_TYPE[1],
-        # },
-        # {
-        #     'path': f'{CONF_BASE_DIR}linux.png', 'import_as_type': IMPORT_AS_TYPE[1],
-        # },
-        # {
-        #     'path': f'{CONF_BASE_DIR}git.bmp', 'import_as_type': IMPORT_AS_TYPE[1],
-        # },
     ],
     'scenes': {},
     'theme': THEME,

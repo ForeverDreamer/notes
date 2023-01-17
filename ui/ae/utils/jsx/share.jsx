@@ -1,22 +1,6 @@
 function ShareUtil() { }
 
-function js_bool(v) {
-	if (v === 'true') {
-		return true
-	} else {
-		return false
-	}
-}
-
-function js_null(v) {
-	if (v === 'null') {
-		return null
-	} else {
-		return v
-	}
-}
-
-ShareUtil.prototype.createScenes = function (scenes) {
+ShareUtil.prototype.addScenes = function (scenes) {
 	for (var sName in scenes) {
 		for (var i = 0; i < scenes[sName].length; i++) {
 			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
@@ -28,21 +12,11 @@ ShareUtil.prototype.createScenes = function (scenes) {
 	}
 }
 
-ShareUtil.prototype.createSubtitles = function (subtitles) {
+ShareUtil.prototype.addSubtitles = function (subtitles) {
 	// var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": 'KaiTi', "fontSize": 40, "fillColor": COLORS["subtitles"]});
 	subtitlesLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
 }
 
-ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {
-	for (var i = 0; i < annotations.length; i++) {
-		var conf = annotations[i]
-		if (!conf["fillColor"]) {
-			conf["fillColor"] = COLORS["annotation"]
-		}
-
-		textUtil.add(parentComp, conf["name"], conf)
-	}
-}
 
 ShareUtil.prototype.importFiles = function (files) {
 	for (var i = 0; i < files.length; i++) {
@@ -117,7 +91,7 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	this.configMasks(layer, conf["Masks"])
 	this.configKeyframes(layer, conf["keyframes"])
 	presetsUtil.add(layer, conf["presets"])
-	effectsUtil.add(layer, (conf["effects"]))
+	effectsUtil.add(layer, conf["effects"])
 	return layer;
 }
 

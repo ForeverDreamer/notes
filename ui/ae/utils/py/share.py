@@ -99,7 +99,7 @@ class ShareUtil:
             f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
             'cameraLayer.moveToEnd();',
             'shareUtil.importFiles(conf["files"]);',
-            'shareUtil.createScenes(conf["scenes"])',
+            'shareUtil.addScenes(conf["scenes"])',
             '\n',
         ]
         # return self._engine.execute('ShareUtil.eval', statements)

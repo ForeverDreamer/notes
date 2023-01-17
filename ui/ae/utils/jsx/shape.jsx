@@ -1,6 +1,6 @@
 function ShapeUtil() {}
 
-ShapeUtil.prototype.create_one = function(parentComp, conf) {
+ShapeUtil.prototype.addOne = function(parentComp, conf) {
     var shapeLayer = parentComp.layers.addShape();
     shapeLayer.name = conf["layerName"];
     conf_pg = conf["pathGroup"]
@@ -16,13 +16,18 @@ ShapeUtil.prototype.create_one = function(parentComp, conf) {
         if (conf_pg["outTangents"]) {
             shape.outTangents = conf_pg["outTangents"]
         }
-        shape.closed = js_bool(conf_pg["closed"]);
+        shape.closed = conf_pg["closed"];
         pathGroup("Path").setValue(shape);
     } else {
         if (conf_pg["Size"]) {
             pathGroup("Size").setValue(conf_pg["Size"])
         }
         pathGroup("Position").setValue(conf["Position"] ? conf["Position"] : [0, 0])
+    }
+
+    if (conf["RC"]) {
+        var rcGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - RC")
+        rcGroup("Radius").setValue(conf["RC"]['Radius'])
     }
 
     if (conf["Stroke"]) {
@@ -66,24 +71,20 @@ ShapeUtil.prototype.create_one = function(parentComp, conf) {
 		shapeLayer.outPoint = conf["span"]['outPoint'];
 	}
 
-    if (conf["effects"]) {
-        effectsUtil.add(shapeLayer, conf["effects"])
-    }
+    effectsUtil.add(shapeLayer, conf["effects"])
 
-    if (conf["keyframes"]) {
-        shareUtil.configKeyframes(shapeLayer, conf["keyframes"])
-    }
+    shareUtil.configKeyframes(shapeLayer, conf["keyframes"])
 
     return shapeLayer
 }
 
-ShapeUtil.prototype.create_many = function(parentComp, shapes) {
+ShapeUtil.prototype.addMany = function(parentComp, shapes) {
     for (var i = 0; i < shapes.length; i++) {
-        this.create_one(parentComp, shapes[i])
+        this.addOne(parentComp, shapes[i])
     }
 }
 
-ShapeUtil.prototype.create_vectors = function(comp, vectors) {
+ShapeUtil.prototype.addVectors = function(comp, vectors) {
     for (var i = 0; i < vectors.length; i++) {
         shareUtil.addLayer(comp, vectors[i])
     }

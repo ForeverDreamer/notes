@@ -21,7 +21,7 @@ TextUtil.prototype.configTextDocument = function(textProp, props) {
     textProp.setValue(textDocument);
 }
 
-TextUtil.prototype.add = function(comp, name, props) {
+TextUtil.prototype.addOne = function(comp, name, props) {
     var textLayer;
     if (props["box"]) {
         textLayer = comp.layers.addBoxText(props["rect"]);
@@ -58,7 +58,7 @@ TextUtil.prototype.add = function(comp, name, props) {
 TextUtil.prototype.addMany = function(comp, texts) {
     for (var i = 0; i < texts.length; i++) {
         var layerName = texts[i]["layerName"] ? texts[i]["layerName"] : texts[i]["text"]
-        this.add(comp, layerName, texts[i])
+        this.addOne(comp, layerName, texts[i])
     }
 }
 

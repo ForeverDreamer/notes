@@ -15,6 +15,7 @@ def shot_0(start_time):
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
     duration = end_time - start_time
+    QUE_UNIT['RC'] = {'Radius': 10}
 
     conf = {
         'layerName': prefix, 'startTime': start_time, 'duration': duration,
