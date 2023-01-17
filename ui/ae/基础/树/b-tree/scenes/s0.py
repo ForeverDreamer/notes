@@ -31,16 +31,27 @@ def shot_0(start_time):
                 }
             }
         ],
-        # 'images': [
-        #     {
-        #         'name': '题目描述.jpg',
-        #         'layerName': f'{prefix}.题目描述',
-        #         'Scale': [90, 90, 90],
-        #         'Position': [960, 540],
-        #         'startTime': start_time,
-        #         'span': {'inPoint': start_time, 'outPoint': end_time},
-        #     }
-        # ],
+        'precomps': [
+            {
+                'layerName': f'{prefix}.B-Tree', 'type': 'B-TREE', 'width': 800, 'height': 800,
+                'Anchor Point': 'LEFT_TOP', 'Position': [695, 849],
+                'startTime': start_time, 'duration': duration,
+                'animation': False,
+                # 'levels': [
+                #     [[{'key': 16}]],
+                #     [[{'key': 2}, {'key': 9}], [{'key': 19}]],
+                #     [
+                #         [{'key': 1}], [{'key': 5}, {'key': 6}, {'key': 7}], [{'key': 12}],
+                #         [{'key': 17}, {'key': 18}], [{'key': 20}, {'key': 21}],
+                #     ],
+                # ],
+                'elems': [
+                    {'key': 21}, {'key': 17}, {'key': 19}, {'key': 1}, {'key': 20}, {'key': 9}, {'key': 16}, {'key': 2},
+                    {'key': 6}, {'key': 12}, {'key': 18}, {'key': 5}, {'key': 7}
+                ],
+                'unit': QUE_UNIT,
+            },
+        ],
         'subtitles': subtitles,
         # 'texts': [
         #     {

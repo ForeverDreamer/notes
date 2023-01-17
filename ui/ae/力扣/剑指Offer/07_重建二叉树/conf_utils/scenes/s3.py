@@ -45,7 +45,7 @@ def shot_0(start_time):
                 'layerName': f'{prefix}.二叉树', 'type': 'BINARY_TREE',
                 'width': 500, 'height': 850, 'Anchor Point': 'LEFT_TOP', 'Position': [695, 86],
                 'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
-                'startTime': start_time,  'duration': duration,'animation': 'false', 'traverse': 'inorder',
+                'startTime': start_time,  'duration': duration, 'animation': 'false', 'traverse': 'inorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
                     'selected': {
