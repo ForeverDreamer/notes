@@ -19,23 +19,23 @@ def shot_0(start_time):
 
     conf = {
         'layerName': prefix, 'startTime': start_time, 'duration': duration,
-        'presets': [
-            {
-                'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Transitions - Movement/Slide - drop.ffx',
-                'keyframes': {
-                    'Slide Master Control.Transition Completion': [
-                        [0, 1],
-                        [0, 100],
-                        {"temporal": [[[0, 0.1], [200, 50]], [[0, 30], [0, 0.1]]]},
-                        True
-                    ]
-                }
-            }
-        ],
+        # 'presets': [
+        #     {
+        #         'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Transitions - Movement/Slide - drop.ffx',
+        #         'keyframes': {
+        #             'Slide Master Control.Transition Completion': [
+        #                 [0, 1],
+        #                 [0, 100],
+        #                 {"temporal": [[[0, 0.1], [200, 50]], [[0, 30], [0, 0.1]]]},
+        #                 True
+        #             ]
+        #         }
+        #     }
+        # ],
         'precomps': [
             {
                 'layerName': f'{prefix}.B-Tree', 'type': 'B-TREE', 'width': 800, 'height': 800,
-                'Anchor Point': 'LEFT_TOP', 'Position': [695, 849],
+                'Anchor Point': 'LEFT_TOP', 'Position': [530, 100],
                 'startTime': start_time, 'duration': duration,
                 'animation': False,
                 # 'levels': [

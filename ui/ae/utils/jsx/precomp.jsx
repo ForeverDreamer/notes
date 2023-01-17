@@ -70,39 +70,36 @@ PrecompUtil.prototype.codes = function (items, parentComp, conf) {
     shareUtil.addLayer(parentComp, conf, codesComp);
 }
 
-PrecompUtil.prototype.comp = function (items, parentComp, conf) {
-    var compFolder = items.addFolder(conf["layerName"])
-    var newComp = compFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
-    newComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
+PrecompUtil.prototype.misc = function (items, parentComp, conf) {
+    var miscFolder = items.addFolder(conf["layerName"])
+    var miscComp = miscFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    miscComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     if (conf['audios']) {
 
     }
     if (conf['images']) {
-        shareUtil.addLayers(newComp, conf['images'])
+        shareUtil.addLayers(miscComp, conf['images'])
     }
     if (conf['videos']) {
 
     }
     if (conf["texts"]) {
-        textUtil.addMany(newComp, conf["texts"])
+        textUtil.addMany(miscComp, conf["texts"])
     }
     if (conf["vectors"]) {
-        shapeUtil.addVectors(newComp, conf['vectors'])
+        shapeUtil.addVectors(miscComp, conf['vectors'])
     }
     if (conf["shapes"]) {
-        shapeUtil.addMany(newComp, conf["shapes"])
+        shapeUtil.addMany(miscComp, conf["shapes"])
     }
     if (conf["precomps"]) {
-        this.addMany(compFolder.items, newComp, conf['precomps'])
-    }
-    if (conf['line']) {
-        this.line(compFolder.items, newComp, conf['line'])
+        this.addMany(miscFolder.items, miscComp, conf['precomps'])
     }
     if (conf['codes']) {
-        this.codes(compFolder.items, newComp, conf['codes'])
+        this.codes(miscFolder.items, miscComp, conf['codes'])
     }
-    if (conf["comp"]) {
-        this.comp(compFolder.items, newComp, conf['comp'])
+    if (conf["miscs"]) {
+        this.miscs(miscFolder.items, miscComp, conf['miscs'])
     }
     if (conf['subtitles']) {
         shareUtil.addSubtitles(conf['subtitles'])
@@ -110,40 +107,17 @@ PrecompUtil.prototype.comp = function (items, parentComp, conf) {
     if (conf['camera']) {
         shareUtil.configKeyframes(cameraLayer, conf['camera'])
     }
-    shareUtil.addLayer(parentComp, conf, newComp);
+    shareUtil.addLayer(parentComp, conf, miscComp);
+}
+
+PrecompUtil.prototype.miscs = function (items, parentComp, miscs) {
+    for (var i = 0; i < miscs.length; i++) {
+        this.misc(items, parentComp, miscs[i])
+    }
 }
 
 PrecompUtil.prototype.linkedList = function (items, parentComp, conf) {
 
-}
-
-PrecompUtil.prototype.misc = function (items, parentComp, misc) {
-    for (var i = 0; i < misc.length; i++) {
-        var conf = misc[i]
-        var miscFolder = items.addFolder(conf["layerName"])
-        var miscComp = miscFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
-        miscComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
-
-        if (conf["texts"]) {
-            textUtil.addMany(miscComp, conf["texts"])
-        }
-        if (conf["vectors"]) {
-            shapeUtil.create_vectors(miscComp, conf['vectors'])
-        }
-        if (conf["shapes"]) {
-            shapeUtil.create_many(miscComp, conf["shapes"])
-        }
-        if (conf["precomps"]) {
-            this.createMany(miscFolder.items, miscComp, conf['precomps'])
-        }
-        if (conf['codes']) {
-            this.create_codes(miscFolder.items, miscComp, conf['codes'])
-        }
-        if (conf["misc"]) {
-            this.misc(miscFolder.items, miscComp, conf['misc'])
-        }
-        shareUtil.addLayer(parentComp, conf, miscComp);
-    }
 }
 
 PrecompUtil.prototype.stack = function (parentComp, conf) {
@@ -771,8 +745,60 @@ PrecompUtil.prototype._bTreeNode = function (leaf) {
     return {"leaf": leaf, "keys": [], "children": []}
 }
 
-PrecompUtil.prototype._bTreeCreate = function () {
+PrecompUtil.prototype._bTreeAdd = function (items, parentComp, pos, unit, duration) {
+    var strokeAdd = unit['Stroke']['Stroke Width'] * 4
+    var elem_width = unit["pathGroup"]["Size"][0]
+    var elem_height = unit["pathGroup"]["Size"][1]
+    var height = elem_height + strokeAdd
+
+    
+    function addEdge() {
+
+    }
+
+    function addNode(node, level) {
+        if (level > 0) {
+            addEdge()
+        }
+    }
+
     // 层序遍历
+    function add() {
+        var level = 0
+        var queue = [[{"parent": null, "level": level, "children": [precompUtil._btree.root]}]]
+        while (queue.length > 0) {
+            var levelNodes = queue.shift()
+            for (var i = 0; i < levelNodes.length; i++) {
+                var children = levelNodes[i]["children"]
+                var tmpNodes = []
+                for (var j = 0; j < children.length; j++) {
+                    var node = children[j]
+                    var width =  elem_width * node.keys.length + strokeAdd
+                    var conf = {
+                        "layerName": "level"+level, "type": "QUEUE", "traverse": "inorder",
+                        "width": width, "height": height, "Position": pos,
+                        "duration": duration,
+                        "unit": unit,
+                    }
+                    var elems = []
+                    for (var k = 0; k < node.keys.length; k++) {
+                        elems.push({"key": node.keys[k]})
+                    }
+                    conf["elems"] = elems
+                    precompUtil.queue(items, parentComp, conf)
+                    if (node.children.length > 0) {
+                        tmpNodes.push({"parent": node, "level": level+1, "children": node.children})
+                    }
+                }
+                queue.push(tmpNodes)
+                pos[0] += elem_width
+            }
+            level += 1
+            pos[1] += elem_height
+        }
+    }
+
+    add()
 }
 
 PrecompUtil.prototype._bTreeUpdate = function () {
@@ -789,7 +815,7 @@ PrecompUtil.prototype.bTree = function (items, parentComp, conf) {
 
     var unit = conf["unit"]
     var elems = conf["elems"];
-    var nodePos = [conf["width"]/2, unit["pathGroup"]["Size"][1]/2]
+    var rootPos = [conf["width"]/2, unit["pathGroup"]["Size"][1]/2]
 
     // if (conf["levels"]) {
     //     this._bTreeLevels(items, parentComp, conf)
@@ -798,7 +824,7 @@ PrecompUtil.prototype.bTree = function (items, parentComp, conf) {
         this._bTreeInsert(elems[i], conf)
     }
     if (!conf["animation"]) {
-        this._bTreeCreate()
+        this._bTreeAdd(items, comp, rootPos, unit, conf["duration"])
     }
 
     shareUtil.addLayer(parentComp, conf, comp)
@@ -810,12 +836,10 @@ PrecompUtil.prototype.graph = function (nodeLayer, edgeLayer, elems) {
 
 PrecompUtil.prototype.addOne = function (items, parentComp, conf) {
     var comp;
-    if (conf["type"] === "LINE") {
-        comp = this.line(parentComp, conf)
-    } else if (conf["type"] === "CODES") {
+    if (conf["type"] === "CODES") {
         comp = this.codes(parentComp, conf)
-    } else if (conf["type"] === "COMP") {
-        comp = this.comp(parentComp, conf)
+    } else if (conf["type"] === "MISCS") {
+        comp = this.miscs(parentComp, conf)
     } else if (conf["type"] === "STACK") {
         comp = this.stack(parentComp, conf)
     } else if (conf["type"] === "QUEUE") {

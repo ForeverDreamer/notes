@@ -21,10 +21,10 @@ TextUtil.prototype.configTextDocument = function(textProp, props) {
     textProp.setValue(textDocument);
 }
 
-TextUtil.prototype.addOne = function(comp, name, props) {
+TextUtil.prototype.addOne = function(parentComp, name, props) {
     var textLayer;
     if (props["box"]) {
-        textLayer = comp.layers.addBoxText(props["rect"]);
+        textLayer = parentComp.layers.addBoxText(props["rect"]);
         props["justification"] = ParagraphJustification.LEFT_JUSTIFY
     } else {
         switch (props["justification"]) {
@@ -35,7 +35,7 @@ TextUtil.prototype.addOne = function(comp, name, props) {
                 props["justification"] = ParagraphJustification.RIGHT_JUSTIFY
                 break;
         }
-        textLayer = comp.layers.addText(props["text"]);
+        textLayer = parentComp.layers.addText(props["text"]);
     }
     textLayer.name = name;
     var textProp = textLayer("Source Text");
@@ -55,10 +55,10 @@ TextUtil.prototype.addOne = function(comp, name, props) {
     return textLayer
 }
 
-TextUtil.prototype.addMany = function(comp, texts) {
+TextUtil.prototype.addMany = function(parentComp, texts) {
     for (var i = 0; i < texts.length; i++) {
         var layerName = texts[i]["layerName"] ? texts[i]["layerName"] : texts[i]["text"]
-        this.addOne(comp, layerName, texts[i])
+        this.addOne(parentComp, layerName, texts[i])
     }
 }
 

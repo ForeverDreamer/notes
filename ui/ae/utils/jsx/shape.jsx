@@ -84,9 +84,9 @@ ShapeUtil.prototype.addMany = function(parentComp, shapes) {
     }
 }
 
-ShapeUtil.prototype.addVectors = function(comp, vectors) {
+ShapeUtil.prototype.addVectors = function(parentComp, vectors) {
     for (var i = 0; i < vectors.length; i++) {
-        shareUtil.addLayer(comp, vectors[i])
+        shareUtil.addLayer(parentComp, vectors[i])
     }
 }
 

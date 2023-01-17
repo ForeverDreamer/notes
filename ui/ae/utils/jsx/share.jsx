@@ -7,7 +7,7 @@ ShareUtil.prototype.addScenes = function (scenes) {
 			var shot = scenes[sName][i]
 			shot['width'] = WIDTH
 			shot['height'] = HEIGHT
-			precompUtil.comp(project.items, mainComp, shot)
+			precompUtil.misc(project.items, mainComp, shot)
 		}
 	}
 }
@@ -95,9 +95,9 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	return layer;
 }
 
-ShareUtil.prototype.addLayers = function (comp, layers, item, parent) {
+ShareUtil.prototype.addLayers = function (parentComp, layers, item, parent) {
 	for (var i = 0; i < layers.length; i++) {
-		this.addLayer(comp, layers[i], item, parent)
+		this.addLayer(parentComp, layers[i], item, parent)
 	}
 }
 
