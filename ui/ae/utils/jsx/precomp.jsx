@@ -745,56 +745,120 @@ PrecompUtil.prototype._bTreeNode = function (leaf) {
     return {"leaf": leaf, "keys": [], "children": []}
 }
 
-PrecompUtil.prototype._bTreeAdd = function (items, parentComp, pos, unit, duration) {
+PrecompUtil.prototype._bTreeAdd = function (items, parentComp, unit) {
     var strokeAdd = unit['Stroke']['Stroke Width'] * 4
     var elem_width = unit["pathGroup"]["Size"][0]
     var elem_height = unit["pathGroup"]["Size"][1]
     var height = elem_height + strokeAdd
 
-    
-    function addEdge() {
-
+    function addEdges(parentPos, childrenPos, level, rc) {
+        parentPos[1] -= rc/2
+        for (var i = 0; i < childrenPos.length; i++) {
+            if (i > 0) {
+                parentPos[0] += elem_width
+            }
+            
+            var anchorPoint
+            if (parentPos[0] > childrenPos[i][0]) {
+                anchorPoint = "RIGHT_TOP"
+            } else {
+                anchorPoint = "LEFT_TOP"
+            }
+            var unit = {
+                "layerName": level+"."+i,
+                "Anchor Point": anchorPoint, 'Position': parentPos,
+                "pathGroup": {
+                    "type": "Group",
+                    "vertices": [parentPos, childrenPos[i]],
+                    "closed": 'false',
+                },
+                "Stroke": {
+                    "Stroke Width": 1,
+                    "Color": colorUtil.hexToRgb1("#000000")
+                },
+            }
+            shapeUtil.addOne(parentComp, unit)
+        }
     }
 
-    function addNode(node, level) {
-        if (level > 0) {
-            addEdge()
+    function addNode(node, width, level, idx, pos) {
+        var conf = {
+            "layerName": level+"."+idx, "type": "QUEUE", "traverse": "inorder",
+            "width": width, "height": height, "Anchor Point": "LEFT_DOWN", "Position": pos,
+            "duration": parentComp.duration,
+            "unit": unit,
         }
+        var elems = []
+        for (var k = 0; k < node.keys.length; k++) {
+            elems.push({"key": node.keys[k]})
+        }
+        conf["elems"] = elems
+        precompUtil.queue(items, parentComp, conf)
+        pos[0] += width
+        return pos
     }
 
     // 层序遍历
     function add() {
         var level = 0
         var queue = [[{"parent": null, "level": level, "children": [precompUtil._btree.root]}]]
+        var queue_inv = [[{"parent": null, "level": level, "children": [precompUtil._btree.root]}]]
         while (queue.length > 0) {
-            var levelNodes = queue.shift()
-            for (var i = 0; i < levelNodes.length; i++) {
-                var children = levelNodes[i]["children"]
-                var tmpNodes = []
+            var ChildrenArr = queue.shift()
+            var tmpChildrenArr = []
+            for (var i = 0; i < ChildrenArr.length; i++) {
+                var children = ChildrenArr[i]["children"]
+                for (var j = 0; j < children.length; j++) {
+                    var node = children[j]
+                    if (node.children.length > 0) {
+                        tmpChildrenArr.push({"parent": node, "level": level+1, "children": node.children})
+                    }
+                }
+            }
+            if (tmpChildrenArr.length > 0) {
+                queue.push(tmpChildrenArr)
+                queue_inv.unshift(tmpChildrenArr)
+                level += 1
+            }
+        }
+        var pos = null
+        var posArr = []
+        var start_x = 0
+        var step_x = start_x
+        while (queue_inv.length > 0) {
+            var ChildrenArr = queue_inv.shift()
+            for (var i = 0; i < ChildrenArr.length; i++) {
+                var level = ChildrenArr[i]["level"]
+                var children = ChildrenArr[i]["children"]
+                var childrenPos = []
                 for (var j = 0; j < children.length; j++) {
                     var node = children[j]
                     var width =  elem_width * node.keys.length + strokeAdd
-                    var conf = {
-                        "layerName": "level"+level, "type": "QUEUE", "traverse": "inorder",
-                        "width": width, "height": height, "Position": pos,
-                        "duration": duration,
-                        "unit": unit,
+                    if (level < 2) {
+                        pos[0] = posArr.shift() - width/2
+                        if (i === 0 && j === 0) {
+                            start_x = pos[0]
+                            step_x = start_x
+                        }
+                    } else {
+                        if (!pos) {
+                            pos = [0, parentComp.height]
+                        } else {
+                            pos[0] += elem_width
+                        }
                     }
-                    var elems = []
-                    for (var k = 0; k < node.keys.length; k++) {
-                        elems.push({"key": node.keys[k]})
-                    }
-                    conf["elems"] = elems
-                    precompUtil.queue(items, parentComp, conf)
-                    if (node.children.length > 0) {
-                        tmpNodes.push({"parent": node, "level": level+1, "children": node.children})
-                    }
+                    pos = addNode(children[j], width, level, j, pos)
+                    childrenPos.push([pos[0] - width/2, pos[1]-elem_height])
                 }
-                queue.push(tmpNodes)
-                pos[0] += elem_width
+                pos_x = step_x + (pos[0]-step_x)/2
+                posArr.push(pos_x)
+                if (level > 0) {
+                    var parent = ChildrenArr[i]["parent"]
+                    addEdges([pos_x - (elem_width * parent.keys.length + strokeAdd)/2, pos[1]-elem_height*2], childrenPos, level, unit["RC"]["Radius"])
+                }
+                step_x = pos[0] + elem_width
             }
-            level += 1
-            pos[1] += elem_height
+            pos[1] -= elem_height*2
         }
     }
 
@@ -824,7 +888,7 @@ PrecompUtil.prototype.bTree = function (items, parentComp, conf) {
         this._bTreeInsert(elems[i], conf)
     }
     if (!conf["animation"]) {
-        this._bTreeAdd(items, comp, rootPos, unit, conf["duration"])
+        this._bTreeAdd(items, comp, unit, conf["duration"])
     }
 
     shareUtil.addLayer(parentComp, conf, comp)

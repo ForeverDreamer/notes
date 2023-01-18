@@ -82,7 +82,7 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 		layer.inPoint = conf["span"]['inPoint'];
 		layer.outPoint = conf["span"]['outPoint'];
 	}
-	if (js_bool(conf['3D'])) {
+	if (conf['3D']) {
 		layer.threeDLayer = true;
 	}
 	if (parent) {
@@ -259,7 +259,7 @@ ShareUtil.prototype.configKeyframes = function (propGroup, keyframes) {
 }
 
 ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
-	if (js_null(direction) === null) {
+	if (direction === null) {
 		return
 	}
 	var top = layer.sourceRectAtTime(0, false).top
