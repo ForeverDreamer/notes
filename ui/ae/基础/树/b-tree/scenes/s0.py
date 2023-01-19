@@ -37,7 +37,13 @@ def shot_0(start_time):
                 'layerName': f'{prefix}.B-Tree', 'type': 'B-TREE', 'width': 800, 'height': 800,
                 'Anchor Point': 'LEFT_TOP', 'Position': [530, 100],
                 'startTime': start_time, 'duration': duration,
-                'animation': False,
+                'animationElems': [
+                    {'key': 21, 'oper': 'I'}, {'key': 17, 'oper': 'I'}, {'key': 19, 'oper': 'I'},
+                    {'key': 1, 'oper': 'I'}, {'key': 20, 'oper': 'I'}, {'key': 9, 'oper': 'I'},
+                    {'key': 16, 'oper': 'I'}, {'key': 2, 'oper': 'I'}, {'key': 6, 'oper': 'I'},
+                    {'key': 12, 'oper': 'I'}, {'key': 18, 'oper': 'I'}, {'key': 5, 'oper': 'I'},
+                    {'key': 7, 'oper': 'I'}, {'key': 18, 'oper': 'S'}, {'key': 1, 'oper': 'D'},
+                ],
                 # 'levels': [
                 #     [[{'key': 16}]],
                 #     [[{'key': 2}, {'key': 9}], [{'key': 19}]],

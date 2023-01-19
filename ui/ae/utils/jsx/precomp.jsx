@@ -680,6 +680,10 @@ PrecompUtil.prototype._bTreeElems = function (items, parentComp, conf) {
     var nodePos = [conf["width"]/2, unit["pathGroup"]["size"][1]/2]
 }
 
+PrecompUtil.prototype._bTreeNode = function (leaf) {
+    return {"leaf": leaf, "keys": [], "children": [], "animation": []}
+}
+
 PrecompUtil.prototype._bTreeSplitChildren = function (node, i) {
     var order = this._btree.order
     var mid = order / 2
@@ -726,7 +730,7 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (node, key) {
     }
 }
 
-PrecompUtil.prototype._bTreeInsert = function (elem, conf) {
+PrecompUtil.prototype._bTreeInsert = function (elem) {
     var root = this._btree.root
     // 根节点满了，分裂节点，树的高度加1
     if (root.keys.length === this._btree.order - 1) {
@@ -739,10 +743,6 @@ PrecompUtil.prototype._bTreeInsert = function (elem, conf) {
         this._bTreeInsertNonFull(root, elem["key"])
     }
         
-}
-
-PrecompUtil.prototype._bTreeNode = function (leaf) {
-    return {"leaf": leaf, "keys": [], "children": []}
 }
 
 PrecompUtil.prototype._bTreeAdd = function (items, parentComp, unit) {
@@ -770,7 +770,7 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, unit) {
                 "pathGroup": {
                     "type": "Group",
                     "vertices": [parentPos, childrenPos[i]],
-                    "closed": 'false',
+                    "closed": false,
                 },
                 "Stroke": {
                     "Stroke Width": 1,
@@ -821,6 +821,7 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, unit) {
                 level += 1
             }
         }
+        var maxLevel = level
         var pos = null
         var posArr = []
         var start_x = 0
@@ -834,7 +835,7 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, unit) {
                 for (var j = 0; j < children.length; j++) {
                     var node = children[j]
                     var width =  elem_width * node.keys.length + strokeAdd
-                    if (level < 2) {
+                    if (level < maxLevel) {
                         pos[0] = posArr.shift() - width/2
                         if (i === 0 && j === 0) {
                             start_x = pos[0]
@@ -865,8 +866,36 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, unit) {
     add()
 }
 
-PrecompUtil.prototype._bTreeUpdate = function () {
-    
+PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, unit, animationElems) {
+    function insert(elem) {
+        // 插入数据的同时记录需要更新的节点信息
+        this._bTreeInsert(elem)
+        // 配置插入动画
+    }
+
+    function del(elem) {
+        // 删除数据的同时记录需要更新的节点信息
+        // 配置删除动画
+    }
+
+    function search(elem) {
+        // 搜索数据的同时记录需要更新的节点信息
+        // 配置搜索动画
+    }
+
+    for (var i = 0; i < animationElems.length; i++) {
+        var elem = animationElems[i]
+        switch (elem.oper) {
+            case 'S':
+                search(elem)
+                break;
+            case 'D':
+                del(elem)
+                break;
+            default:
+                insert(elem)
+        }
+    }
 }
 
 PrecompUtil.prototype.bTree = function (items, parentComp, conf) {
@@ -879,16 +908,14 @@ PrecompUtil.prototype.bTree = function (items, parentComp, conf) {
 
     var unit = conf["unit"]
     var elems = conf["elems"];
-    var rootPos = [conf["width"]/2, unit["pathGroup"]["Size"][1]/2]
 
-    // if (conf["levels"]) {
-    //     this._bTreeLevels(items, parentComp, conf)
-    // }
-    for (var i = 0; i < elems.length; i++) {
-        this._bTreeInsert(elems[i], conf)
-    }
-    if (!conf["animation"]) {
-        this._bTreeAdd(items, comp, unit, conf["duration"])
+    if (conf["animationElems"]) {
+        this._bTreeAnimation(items, comp, unit, conf["animationElems"])
+    } else {
+        for (var i = 0; i < elems.length; i++) {
+            this._bTreeInsert(elems[i])
+        }
+        this._bTreeAdd(items, comp, unit)
     }
 
     shareUtil.addLayer(parentComp, conf, comp)
