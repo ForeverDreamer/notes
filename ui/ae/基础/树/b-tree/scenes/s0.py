@@ -17,6 +17,36 @@ def shot_0(start_time):
     duration = end_time - start_time
     QUE_UNIT['RC'] = {'Radius': 10}
 
+    elems = [
+        {'key': 21, 'oper': 'I'}, {'key': 17, 'oper': 'I'}, {'key': 19, 'oper': 'I'},
+        {'key': 1, 'oper': 'I'}, {'key': 20, 'oper': 'I'}, {'key': 9, 'oper': 'I'},
+        {'key': 16, 'oper': 'I'}, {'key': 2, 'oper': 'I'}, {'key': 6, 'oper': 'I'},
+        {'key': 12, 'oper': 'I'}, {'key': 18, 'oper': 'I'}, {'key': 5, 'oper': 'I'},
+        {'key': 7, 'oper': 'I'}, {'key': 18, 'oper': 'S'}, {'key': 1, 'oper': 'D'},
+    ]
+
+    texts = []
+    text_start_time = 0
+    for i, elem in enumerate(elems):
+        conf_text = {
+            'name': f'{prefix}.操作指令', 'Position': [400, 50],
+            'font': FONTS['subtitle'], 'fillColor': COLORS['subtitle'], 'fontSize': 40,
+            'keyframes': {
+                'Transform.Opacity': [
+                    [text_start_time, text_start_time+i+1, text_start_time+i+2],
+                    [0, 100, 0],
+                    {'spatial': SPATIAL_HOLD*3}
+                ]
+            }
+        }
+        oper = '插入'
+        if elem['oper'] == 'S':
+            oper = '搜索'
+        elif elem['oper'] == 'D':
+            oper = '删除'
+        conf_text['text'] = oper + ' ' + str(elem['key'])
+        texts.append(conf_text)
+
     conf = {
         'layerName': prefix, 'startTime': start_time, 'duration': duration,
         # 'presets': [
@@ -32,42 +62,31 @@ def shot_0(start_time):
         #         }
         #     }
         # ],
-        'precomps': [
-            {
-                'layerName': f'{prefix}.B-Tree', 'type': 'B-TREE', 'width': 800, 'height': 800,
-                'Anchor Point': 'LEFT_TOP', 'Position': [530, 100],
-                'startTime': start_time, 'duration': duration,
-                'animationElems': [
-                    {'key': 21, 'oper': 'I'}, {'key': 17, 'oper': 'I'}, {'key': 19, 'oper': 'I'},
-                    {'key': 1, 'oper': 'I'}, {'key': 20, 'oper': 'I'}, {'key': 9, 'oper': 'I'},
-                    {'key': 16, 'oper': 'I'}, {'key': 2, 'oper': 'I'}, {'key': 6, 'oper': 'I'},
-                    {'key': 12, 'oper': 'I'}, {'key': 18, 'oper': 'I'}, {'key': 5, 'oper': 'I'},
-                    {'key': 7, 'oper': 'I'}, {'key': 18, 'oper': 'S'}, {'key': 1, 'oper': 'D'},
-                ],
-                # 'levels': [
-                #     [[{'key': 16}]],
-                #     [[{'key': 2}, {'key': 9}], [{'key': 19}]],
-                #     [
-                #         [{'key': 1}], [{'key': 5}, {'key': 6}, {'key': 7}], [{'key': 12}],
-                #         [{'key': 17}, {'key': 18}], [{'key': 20}, {'key': 21}],
-                #     ],
-                # ],
-                'elems': [
-                    {'key': 21}, {'key': 17}, {'key': 19}, {'key': 1}, {'key': 20}, {'key': 9}, {'key': 16}, {'key': 2},
-                    {'key': 6}, {'key': 12}, {'key': 18}, {'key': 5}, {'key': 7}
-                ],
-                'unit': QUE_UNIT,
-            },
-        ],
+        'misc': {
+            'layerName': 'B-Tree合成', 'width': 800, 'height': 800, 'startTime': start_time, 'duration': duration,
+            'texts': texts,
+            'vectors': [
+                {
+                    'name': 'Indicator/Elements.ai', 'layerName': 'Indicator',
+                    'Scale': [100, 100, 100], 'Position': [400, 50],
+                }
+            ],
+            'precomps': [
+                {
+                    'layerName': 'B-Tree', 'type': 'B-TREE', 'width': 800, 'height': 800,
+                    'Position': [400, 400],
+                    'startTime': start_time, 'duration': duration,
+                    'animation': True,
+                    'elems': elems,
+                    # 'elems': [
+                    #     {'key': 21}, {'key': 17}, {'key': 19}, {'key': 1}, {'key': 20}, {'key': 9}, {'key': 16}, {'key': 2},
+                    #     {'key': 6}, {'key': 12}, {'key': 18}, {'key': 5}, {'key': 7}
+                    # ],
+                    'unit': QUE_UNIT,
+                },
+            ],
+        },
         'subtitles': subtitles,
-        # 'texts': [
-        #     {
-        #         'name': f'{prefix}.题目官网链接', 'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/',
-        #         'fillColor': '#FFA119', 'Position': [1200, 890],
-        #         'start_time': start_time,
-        #         'span': {'inPoint': start_time, 'outPoint': end_time}, 'keyframes': {'Opacity': [[0, 0.5, 5, 9], [0, 100, 100, 0]]}
-        #     },
-        # ],
         'end_time': end_time,
     }
     return conf

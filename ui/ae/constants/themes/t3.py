@@ -1,7 +1,8 @@
 FONTS = {
     'cn': 'slideyouran-Regular',
     # 'en': 'Arial-BoldMT',
-    'en': 'MicrosoftSansSerif'
+    'en': 'MicrosoftSansSerif',
+    'subtitle': 'KaiTi',
 }
 
 FONT_SIZES = {

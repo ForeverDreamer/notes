@@ -21,7 +21,7 @@ TextUtil.prototype.configTextDocument = function(textProp, props) {
     textProp.setValue(textDocument);
 }
 
-TextUtil.prototype.addOne = function(parentComp, name, props) {
+TextUtil.prototype.addOne = function(parentComp, layerName, props) {
     var textLayer;
     if (props["box"]) {
         textLayer = parentComp.layers.addBoxText(props["rect"]);
@@ -37,7 +37,7 @@ TextUtil.prototype.addOne = function(parentComp, name, props) {
         }
         textLayer = parentComp.layers.addText(props["text"]);
     }
-    textLayer.name = name;
+    textLayer.name = layerName;
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
     shareUtil.setAnchorPoint(textLayer, props["Anchor Point"])

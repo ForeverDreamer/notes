@@ -85,9 +85,15 @@ ShapeUtil.prototype.addMany = function(parentComp, shapes) {
 }
 
 ShapeUtil.prototype.addVectors = function(parentComp, vectors) {
+    var vectorLayers = {}
     for (var i = 0; i < vectors.length; i++) {
-        shareUtil.addLayer(parentComp, vectors[i])
+        var layerName = vectors[i]["layerName"]
+        vectorLayers[layerName] = {}
+        vectorLayers[layerName]["layer"] = shareUtil.addLayer(parentComp, vectors[i])
+        vectorLayers[layerName]["keyframes"] = {'Transform.Position': [[], []]}
+        vectorLayers[layerName]["time"] = 0
     }
+    return vectorLayers
 }
 
 ShapeUtil.prototype.remove = function(comp, conf) {
