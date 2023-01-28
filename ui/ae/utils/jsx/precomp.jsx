@@ -690,7 +690,7 @@ PrecompUtil.prototype._bTreeNode = function (leaf) {
     return {"leaf": leaf, "keys": [], "children": [], "animation": []}
 }
 
-PrecompUtil.prototype._bTreeSplitChildren = function (node, i, animation) {
+PrecompUtil.prototype._bTreeSplitChildren = function (parentComp, node, i, animation) {
     var order = this._btree.order
     var mid = order / 2
     var child = node.children[i]
@@ -712,7 +712,46 @@ PrecompUtil.prototype._bTreeSplitChildren = function (node, i, animation) {
     // return level, node_idx, key_idx
 }
 
-PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation, layersRoot) {
+PrecompUtil.prototype._bTreeConfigIndicator = function (layersRoot) {
+    var paths = layersRoot.split(".")
+    var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]
+    for (var j = 0; j < paths.length; j++) {
+        indicator = indicator[paths[j]]
+    }
+    indicator = indicator["vectors"]["Indicator"]
+    var layer = indicator["layer"]
+    var keyframes = indicator["keyframes"]["Transform.Position"]
+    var time = indicator["time"]
+    var prop = layer("Transform")("Position")
+    var pos = keyframes[1].slice(-1)[0]
+    if (keyframes[1].length === 0) {
+        pos = prop.value
+    } else {
+        pos = keyframes[1].slice(-1)[0]
+    }
+    indicator["keyframes"]["Transform.Position"] = [keyframes[0].concat([time]), keyframes[1].concat([[pos[0]+30, pos[1]]])]
+    indicator["time"] += 1
+}
+
+PrecompUtil.prototype._bTreeAnimationAddKey = function (parentComp) {
+    var unit = {
+            "layerName": "_bTreeAnimationAddKey",
+            "Anchor Point": "LEFT_TOP", 'Position': [400, 400],
+            "pathGroup": {
+                "type": "Rect",
+                "Size": [60, 60]
+            },
+            "Stroke": {
+                "Stroke Width": 1,
+                "Color": colorUtil.hexToRgb1("#000000")
+            },
+            'keyframes': {
+            }
+    }
+    shapeUtil.addOne(parentComp, unit)
+}
+
+PrecompUtil.prototype._bTreeInsertNonFull = function (parentComp, node, key, animation, layersRoot) {
     var i = node.keys.length - 1
     if (node.leaf) {
         node.keys.push(null)
@@ -720,24 +759,8 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation, laye
             node.keys[i + 1] = node.keys[i]
             i -= 1
             if (animation) {
-                var paths = layersRoot.split(".")
-                var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]
-                for (var j = 0; j < paths.length; j++) {
-                    indicator = indicator[paths[j]]
-                }
-                indicator = indicator["vectors"]["Indicator"]
-                var layer = indicator["layer"]
-                var keyframes = indicator["keyframes"]["Transform.Position"]
-                var time = indicator["time"]
-                var prop = layer("Transform")("Position")
-                var pos = keyframes[1].slice(-1)[0]
-                if (keyframes[1].length === 0) {
-                    pos = prop.value
-                } else {
-                    pos = keyframes[1].slice(-1)[0]
-                }
-                indicator["keyframes"]["Transform.Position"] = [keyframes[0].concat([time]), keyframes[1].concat([[pos[0]+30, pos[1]]])]
-                indicator["time"] += 1
+                this._bTreeConfigIndicator(layersRoot)
+                this._bTreeAnimationAddKey(parentComp)
             }
         }
         node.keys[i + 1] = key
@@ -745,48 +768,32 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation, laye
         while (i >= 0 && key < node.keys[i]) {
             i -= 1
             if (animation) {
-                var paths = layersRoot.split(".")
-                var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]
-                for (var j = 0; j < paths.length; j++) {
-                    indicator = indicator[paths[j]]
-                }
-                indicator = indicator["vectors"]["Indicator"]
-                var layer = indicator["layer"]
-                var keyframes = indicator["keyframes"]["Transform.Position"]
-                var time = indicator["time"]
-                var prop = layer("Transform")("Position")
-                var pos = keyframes[1].slice(-1)[0]
-                if (keyframes[1].length === 0) {
-                    pos = prop.value
-                } else {
-                    pos = keyframes[1].slice(-1)[0]
-                }
-                indicator["keyframes"]["Transform.Position"] = [keyframes[0].concat([time]), keyframes[1].concat([[pos[0]+30, pos[1]]])]
-                indicator["time"] += 1
+                this._bTreeConfigIndicator(layersRoot)
+                this._bTreeAnimationAddKey(parentComp)
             }
         }
         i += 1
         if (node.children[i].keys.length === this._btree.order - 1) {
-            this._bTreeSplitChildren(node, i)
+            this._bTreeSplitChildren(parentComp, node, i)
             if (key > node.keys[i]) {
                 i += 1
             }
         }
-        this._bTreeInsertNonFull(node.children[i], key)
+        this._bTreeInsertNonFull(parentComp, node.children[i], key)
     }
 }
 
-PrecompUtil.prototype._bTreeInsert = function (elem, animation, layersRoot) {
+PrecompUtil.prototype._bTreeInsert = function (parentComp, elem, animation, layersRoot) {
     var root = this._btree.root
     // 根节点满了，分裂节点，树的高度加1
     if (root.keys.length === this._btree.order - 1) {
         var new_root = this._bTreeNode(false)
         this._btree.root = new_root
         new_root.children.unshift(root)
-        this._bTreeSplitChildren(new_root, 0, animation)
-        this._bTreeInsertNonFull(new_root, elem["key"], animation, layersRoot)
+        this._bTreeSplitChildren(parentComp, new_root, 0, animation)
+        this._bTreeInsertNonFull(parentComp, new_root, elem["key"], animation, layersRoot)
     }else {
-        this._bTreeInsertNonFull(root, elem["key"], animation, layersRoot)
+        this._bTreeInsertNonFull(parentComp, root, elem["key"], animation, layersRoot)
     }
         
 }
@@ -795,7 +802,7 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, elems, unit) {
     for (var i = 0; i < elems.length; i++) {
         var elem = elems[i]
         if (elem.oper === "I") {
-            this._bTreeInsert(elems[i])
+            this._bTreeInsert(parentComp, elems[i])
         }
     }
 
@@ -854,23 +861,23 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, elems, unit) {
     // 层序遍历
     function add() {
         var level = 0
-        var queue = [[{"parent": null, "level": level, "children": [precompUtil._btree.root]}]]
-        var queue_inv = [[{"parent": null, "level": level, "children": [precompUtil._btree.root]}]]
+        var queue = [[{"parent": null, "level": level, "nodes": [precompUtil._btree.root]}]]
+        var queueInv = [[{"parent": null, "level": level, "nodes": [precompUtil._btree.root]}]]
         while (queue.length > 0) {
-            var ChildrenArr = queue.shift()
-            var tmpChildrenArr = []
-            for (var i = 0; i < ChildrenArr.length; i++) {
-                var children = ChildrenArr[i]["children"]
+            var levelNodes = queue.shift()
+            var tmpLevelNodes = []
+            for (var i = 0; i < levelNodes.length; i++) {
+                var children = levelNodes[i]["nodes"]
                 for (var j = 0; j < children.length; j++) {
                     var node = children[j]
                     if (node.children.length > 0) {
-                        tmpChildrenArr.push({"parent": node, "level": level+1, "children": node.children})
+                        tmpLevelNodes.push({"parent": node, "level": level+1, "nodes": node.children})
                     }
                 }
             }
-            if (tmpChildrenArr.length > 0) {
-                queue.push(tmpChildrenArr)
-                queue_inv.unshift(tmpChildrenArr)
+            if (tmpLevelNodes.length > 0) {
+                queue.push(tmpLevelNodes)
+                queueInv.unshift(tmpLevelNodes)
                 level += 1
             }
         }
@@ -879,14 +886,14 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, elems, unit) {
         var posArr = []
         var start_x = 0
         var step_x = start_x
-        while (queue_inv.length > 0) {
-            var ChildrenArr = queue_inv.shift()
-            for (var i = 0; i < ChildrenArr.length; i++) {
-                var level = ChildrenArr[i]["level"]
-                var children = ChildrenArr[i]["children"]
+        while (queueInv.length > 0) {
+            var levelNodes = queueInv.shift()
+            for (var i = 0; i < levelNodes.length; i++) {
+                var level = levelNodes[i]["level"]
+                var nodes = levelNodes[i]["nodes"]
                 var childrenPos = []
-                for (var j = 0; j < children.length; j++) {
-                    var node = children[j]
+                for (var j = 0; j < nodes.length; j++) {
+                    var node = nodes[j]
                     var width =  elem_width * node.keys.length + strokeAdd
                     if (level < maxLevel) {
                         pos[0] = posArr.shift() - width/2
@@ -901,13 +908,13 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, elems, unit) {
                             pos[0] += elem_width
                         }
                     }
-                    pos = addNode(children[j], width, level, j, pos)
+                    pos = addNode(nodes[j], width, level, j, pos)
                     childrenPos.push([pos[0] - width/2, pos[1]-elem_height])
                 }
                 pos_x = step_x + (pos[0]-step_x)/2
                 posArr.push(pos_x)
                 if (level > 0) {
-                    var parent = ChildrenArr[i]["parent"]
+                    var parent = levelNodes[i]["parent"]
                     addEdges([pos_x - (elem_width * parent.keys.length + strokeAdd)/2, pos[1]-elem_height*2], childrenPos, level, unit["RC"]["Radius"])
                 }
                 step_x = pos[0] + elem_width
@@ -923,7 +930,7 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, elems, laye
 
     function insert(elem) {
         // 插入数据的同时记录需要更新的节点信息
-        precompUtil._bTreeInsert(elem, true, layersRoot)
+        precompUtil._bTreeInsert(parentComp, elem, true, layersRoot)
         // 配置插入动画
     }
 
