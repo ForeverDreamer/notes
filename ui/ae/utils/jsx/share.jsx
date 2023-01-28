@@ -1,13 +1,21 @@
-function ShareUtil() { }
+function ShareUtil() {
+	this.scenes = {}
+	this.sName = null
+	this.shot = null
+}
 
 ShareUtil.prototype.addScenes = function (scenes) {
 	for (var sName in scenes) {
+		this.sName = sName
+		this.scenes[sName] = {}
 		for (var i = 0; i < scenes[sName].length; i++) {
+			this.shot = i
+			this.scenes[sName][i] = {}
 			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
 			var shot = scenes[sName][i]
 			shot['width'] = WIDTH
 			shot['height'] = HEIGHT
-			precompUtil.misc(project.items, mainComp, shot)
+			precompUtil.misc(project.items, mainComp, shot, this.scenes[sName][i])
 		}
 	}
 }

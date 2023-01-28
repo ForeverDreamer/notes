@@ -70,33 +70,34 @@ PrecompUtil.prototype.codes = function (items, parentComp, conf) {
     shareUtil.addLayer(parentComp, conf, codesComp);
 }
 
-PrecompUtil.prototype.misc = function (items, parentComp, conf) {
+PrecompUtil.prototype.misc = function (items, parentComp, conf, layersCollecter) {
     var miscFolder = items.addFolder(conf["layerName"])
-    var miscComp = miscFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    var miscComp = miscFolder.items.addComp(conf["layerName"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"], FRAME_RATE);
     miscComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
-    if (conf['subtitles']) {
-        shareUtil.addSubtitles(conf['subtitles'])
+    if (conf["subtitles"]) {
+        shareUtil.addSubtitles(conf["subtitles"])
     }
-    if (conf['camera']) {
-        shareUtil.configKeyframes(cameraLayer, conf['camera'])
+    if (conf["camera"]) {
+        shareUtil.configKeyframes(cameraLayer, conf["camera"])
     }
-    if (conf['audios']) {
-        shareUtil.addLayers(miscComp, conf['audios'])
+    if (conf["audios"]) {
+        shareUtil.addLayers(miscComp, conf["audios"])
     }
-    if (conf['images']) {
-        shareUtil.addLayers(miscComp, conf['images'])
+    if (conf["images"]) {
+        shareUtil.addLayers(miscComp, conf["images"])
     }
-    if (conf['videos']) {
-        shareUtil.addLayers(miscComp, conf['videos'])
+    if (conf["videos"]) {
+        shareUtil.addLayers(miscComp, conf["videos"])
     }
-    if (conf['codes']) {
-        this.codes(miscFolder.items, miscComp, conf['codes'])
+    if (conf["codes"]) {
+        this.codes(miscFolder.items, miscComp, conf["codes"])
     }
     if (conf["texts"]) {
         textUtil.addMany(miscComp, conf["texts"])
     }
     if (conf["vectors"]) {
-        this.vectorLayers = shapeUtil.addVectors(miscComp, conf['vectors'])
+        layersCollecter["vectors"] = {}
+        shapeUtil.addVectors(miscComp, conf["vectors"], layersCollecter["vectors"])
     }
     if (conf["shapes"]) {
         shapeUtil.addMany(miscComp, conf["shapes"])
@@ -105,12 +106,14 @@ PrecompUtil.prototype.misc = function (items, parentComp, conf) {
         this.addMany(miscFolder.items, miscComp, conf['precomps'])
     }
     if (conf["misc"]) {
-        this.misc(miscFolder.items, miscComp, conf['misc'])
+        layersCollecter["misc"] = {}
+        this.misc(miscFolder.items, miscComp, conf["misc"], layersCollecter["misc"])
     }
     if (conf["miscs"]) {
-        this.miscs(miscFolder.items, miscComp, conf['miscs'])
+        this.miscs(miscFolder.items, miscComp, conf["miscs"])
     }
-    shareUtil.addLayer(parentComp, conf, miscComp);
+    var compLayer = shareUtil.addLayer(parentComp, conf, miscComp);
+    layersCollecter["comp"] = compLayer
 }
 
 PrecompUtil.prototype.miscs = function (items, parentComp, miscs) {
@@ -709,7 +712,7 @@ PrecompUtil.prototype._bTreeSplitChildren = function (node, i, animation) {
     // return level, node_idx, key_idx
 }
 
-PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation) {
+PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation, layersRoot) {
     var i = node.keys.length - 1
     if (node.leaf) {
         node.keys.push(null)
@@ -717,7 +720,12 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation) {
             node.keys[i + 1] = node.keys[i]
             i -= 1
             if (animation) {
-                var indicator = this.vectorLayers["Indicator"]
+                var paths = layersRoot.split(".")
+                var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]
+                for (var j = 0; j < paths.length; j++) {
+                    indicator = indicator[paths[j]]
+                }
+                indicator = indicator["vectors"]["Indicator"]
                 var layer = indicator["layer"]
                 var keyframes = indicator["keyframes"]["Transform.Position"]
                 var time = indicator["time"]
@@ -737,7 +745,12 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation) {
         while (i >= 0 && key < node.keys[i]) {
             i -= 1
             if (animation) {
-                var indicator = this.vectorLayers["Indicator"]
+                var paths = layersRoot.split(".")
+                var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]
+                for (var j = 0; j < paths.length; j++) {
+                    indicator = indicator[paths[j]]
+                }
+                indicator = indicator["vectors"]["Indicator"]
                 var layer = indicator["layer"]
                 var keyframes = indicator["keyframes"]["Transform.Position"]
                 var time = indicator["time"]
@@ -763,7 +776,7 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (node, key, animation) {
     }
 }
 
-PrecompUtil.prototype._bTreeInsert = function (elem, animation) {
+PrecompUtil.prototype._bTreeInsert = function (elem, animation, layersRoot) {
     var root = this._btree.root
     // 根节点满了，分裂节点，树的高度加1
     if (root.keys.length === this._btree.order - 1) {
@@ -771,9 +784,9 @@ PrecompUtil.prototype._bTreeInsert = function (elem, animation) {
         this._btree.root = new_root
         new_root.children.unshift(root)
         this._bTreeSplitChildren(new_root, 0, animation)
-        this._bTreeInsertNonFull(new_root, elem["key"], animation)
+        this._bTreeInsertNonFull(new_root, elem["key"], animation, layersRoot)
     }else {
-        this._bTreeInsertNonFull(root, elem["key"], animation)
+        this._bTreeInsertNonFull(root, elem["key"], animation, layersRoot)
     }
         
 }
@@ -906,10 +919,11 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, elems, unit) {
     add()
 }
 
-PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, elems, unit) {
+PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, elems, layersRoot) {
+
     function insert(elem) {
         // 插入数据的同时记录需要更新的节点信息
-        precompUtil._bTreeInsert(elem, true)
+        precompUtil._bTreeInsert(elem, true, layersRoot)
         // 配置插入动画
     }
 
@@ -936,16 +950,17 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, elems, unit
                 insert(elem)
         }
     }
-
-    var posKeyframes = precompUtil.vectorLayers["Indicator"]["keyframes"]["Transform.Position"]
+    
+    var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["misc"]["vectors"]["Indicator"]
+    var posKeyframes = indicator["keyframes"]["Transform.Position"]
     var spatial = []
     for (var i = 0; i < posKeyframes[0].length; i++) {
         spatial.push({"type": "HOLD"})
     }
     posKeyframes.push({"spatial": spatial})
     shareUtil.configKeyframes(
-        precompUtil.vectorLayers["Indicator"]["layer"],
-        precompUtil.vectorLayers["Indicator"]["keyframes"]
+        indicator["layer"],
+        indicator["keyframes"]
     )
 }
 
@@ -962,7 +977,7 @@ PrecompUtil.prototype.bTree = function (items, parentComp, conf) {
     var elems = conf["elems"]
 
     if (conf["animation"]) {
-        this._bTreeAnimation(items, comp, elems, unit)
+        this._bTreeAnimation(items, comp, elems, conf["layersRoot"])
     } else {
         this._bTreeAdd(items, comp, elems, unit)
     }
