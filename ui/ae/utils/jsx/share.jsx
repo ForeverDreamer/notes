@@ -10,7 +10,7 @@ ShareUtil.prototype.addScenes = function (scenes) {
 		this.scenes[sName] = {}
 		for (var i = 0; i < scenes[sName].length; i++) {
 			this.shot = i
-			this.scenes[sName][i] = {}
+			this.scenes[sName][i] = {"time": 0}
 			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
 			var shot = scenes[sName][i]
 			shot['width'] = WIDTH

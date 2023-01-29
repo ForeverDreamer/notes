@@ -68,7 +68,7 @@ def shot_0(start_time):
             'vectors': [
                 {
                     'name': 'Indicator/Elements.ai', 'layerName': 'Indicator',
-                    'Scale': [100, 100, 100], 'Position': [400, 50],
+                    'Scale': [100, 100, 100], 'Anchor Point': 'TOP', 'Position': [400, 50],
                 }
             ],
             'precomps': [
