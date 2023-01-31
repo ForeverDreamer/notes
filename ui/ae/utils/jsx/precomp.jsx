@@ -191,20 +191,23 @@ PrecompUtil.prototype.queue = function (items, parentComp, conf, layersCollecter
             unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i]["Color"])
         }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
-        var shapeLayer = shapeUtil.addOne(queueComp, unit)
+        var textProps = { "text": key, "font": "Arial-BoldItalicMT", "fontSize": unit["fontSize"], "Position": [elemWidth / 2, elemHeight / 2] }
         if (elems[i]["keyframes"]) {
-            shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
+            unit["keyframes"] = elems[i]["keyframes"]
+            textProps["keyframes"] = elems[i]["keyframes"]
+            // shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
         }
+        var shapeLayer = shapeUtil.addOne(queueComp, unit)
         var textLayer = textUtil.overlay(
             queueComp, shapeLayer, "Text" + "." + key,
-            { "text": key, "font": "Arial-BoldItalicMT", "fontSize": unit["fontSize"], "Position": [elemWidth / 2, elemHeight / 2] }
+            textProps
         );
         layersCollecter["keys"][key] = {'shapeLayer': shapeLayer, "textLayer": textLayer, "keyframes": {}}
     }
 
     layersCollecter["layer"] = shareUtil.addLayer(parentComp, conf, queueComp)
     layersCollecter["keyframes"] = {}
-    return layersCollecter
+    // return layersCollecter
     // layersCollecter[layerName]["time"] = 0
     // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
 }
@@ -782,13 +785,14 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
 
     var oldPos
     var newPos
-    var layer 
+    var oldLayer
     if (layersCollecter[oldLayerName]) {
-        layer = layersCollecter[oldLayerName].layer
-        oldPos = layersCollecter[oldLayerName].layer("Transform")("Position").value
-        newPos = [oldPos[0]-100, oldPos[1]]
+        oldLayer = layersCollecter[oldLayerName].layer
+        oldPos = oldLayer("Transform")("Position").value
+        newPos = [oldPos[0]-QUE_ELEM_WIDTH/2, oldPos[1]]
+        // layersCollecter[oldLayerName]["keys"]["21"].shapeLayer("Contents")("Group 1")("Contents")("Fill 1")("Color").setValue([0, 1, 1])
     } else {
-        newPos = [400, 400]
+        newPos = [400-QUE_ELEM_WIDTH, 400]
     }
     var conf = {
         'layerName': newLayerName, 'type': 'QUEUE',
@@ -798,11 +802,24 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
         'startTime': conf["startTime"], 'duration': conf["duration"],
         'unit': QUE_UNIT,
     }
-    if (layer) {
-        conf["keyframes"] = {"Transform.Position": [[time, time+1], [oldPos, newPos]]}
+    if (oldLayer) {
+        conf["elems"][0]["keyframes"] = {"Transform.Opacity": [[time+1, time+2], [0, 100]]}
+        conf["keyframes"] = {
+            "Transform.Position": [[time+2, time+3], [oldPos-QUE_ELEM_WIDTH, newPos]]
+        }
+        shareUtil.configKeyframes(
+            oldLayer,
+            {
+                "Transform.Opacity": [[time+1, time+2], [100, 0], {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}] }]
+            }
+        )
+        shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 3
     }
+
     layersCollecter[newLayerName] = {}
-    return this.queue(items, parentComp, conf, layersCollecter[newLayerName])
+    this.queue(items, parentComp, conf, layersCollecter[newLayerName])
+    shareUtil.configKeyframes(layersCollecter[newLayerName])
+    return layersCollecter[newLayerName]
 }
 
 PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, key, conf, layersCollecter) {
@@ -818,6 +835,7 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
             i -= 1
             // 移动标杆
             this._bTreeMoveIndicator(conf)
+            shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
         }
         // 移动node, keys有变动就重建node(queue合成)，配置edge的vertices顶点变动keyframes
         node.keys[i + 1] = key
@@ -845,7 +863,6 @@ PrecompUtil.prototype._bTreeInsert = function (items, parentComp, elem, conf, la
     // 根节点满了，分裂节点，树的高度加1
     if (root.keys.length === this._btree.order - 1) {
         var new_root = this._bTreeNode(false)
-        this._btree.root = new_root
         new_root.children.unshift(root)
         this._bTreeSplitChildren(items, parentComp, new_root, 0, conf, layersCollecter)
         this._bTreeInsertNonFull(items, parentComp, new_root, key, conf, layersCollecter)
