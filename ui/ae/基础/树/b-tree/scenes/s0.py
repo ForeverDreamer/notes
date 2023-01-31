@@ -65,12 +65,12 @@ def shot_0(start_time):
         'misc': {
             'layerName': 'B-Tree合成', 'width': 800, 'height': 800, 'startTime': start_time, 'duration': duration,
             'texts': texts,
-            'vectors': [
-                {
-                    'name': 'Indicator/Elements.ai', 'layerName': 'Indicator',
-                    'Scale': [100, 100, 100], 'Anchor Point': 'TOP', 'Position': [400, 50],
-                }
-            ],
+            # 'vectors': [
+            #     {
+            #         'name': 'Indicator/Elements.ai', 'layerName': 'Indicator',
+            #         'Scale': [100, 100, 100], 'Anchor Point': 'TOP', 'Position': [400, 50],
+            #     }
+            # ],
             'precomps': [
                 {
                     'layerName': 'B-Tree', 'type': 'B-TREE', 'width': 800, 'height': 800,

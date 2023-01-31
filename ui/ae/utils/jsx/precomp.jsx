@@ -113,8 +113,7 @@ PrecompUtil.prototype.misc = function (items, parentComp, conf, layersCollecter)
     if (conf["miscs"]) {
         this.miscs(miscFolder.items, miscComp, conf["miscs"])
     }
-    var compLayer = shareUtil.addLayer(parentComp, conf, miscComp);
-    layersCollecter["comp"] = compLayer
+    layersCollecter["layer"] = shareUtil.addLayer(parentComp, conf, miscComp);
 }
 
 PrecompUtil.prototype.miscs = function (items, parentComp, miscs) {
@@ -794,18 +793,35 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
     } else {
         newPos = [400-QUE_ELEM_WIDTH, 400]
     }
-    var conf = {
-        'layerName': newLayerName, 'type': 'QUEUE',
+
+    var misc = {
+        'layerName': 'node-'+newLayerName, 'width': QUE_ELEM_WIDTH * newNode.keys.length + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
         'Anchor Point': 'LEFT_TOP', 'Position': newPos,
-        'elems': newNode.keys,
-        'width': QUE_ELEM_WIDTH * newNode.keys.length + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
         'startTime': conf["startTime"], 'duration': conf["duration"],
-        'unit': QUE_UNIT,
+        'vectors': [
+            {
+                'name': 'Indicator/Elements.ai', 'layerName': 'Indicator',
+                'Scale': [100, 100, 100], 'Anchor Point': 'TOP', 'Position': [0, 0],
+            }
+        ],
+        'precomps': [
+            {
+                'layerName': newLayerName, 'type': 'QUEUE',
+                'Anchor Point': 'LEFT_TOP', 'Position': [0, 0],
+                'elems': newNode.keys,
+                'width': QUE_ELEM_WIDTH * newNode.keys.length + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
+                'startTime': conf["startTime"], 'duration': conf["duration"],
+                'unit': QUE_UNIT,
+            }
+        ],
+        // "keyframes": {
+        //     "Transform.Position": [[time+2, time+3], [[oldPos[0]-QUE_ELEM_WIDTH, oldPos[1]], newPos]]
+        // }
     }
     if (oldLayer) {
-        conf["elems"][0]["keyframes"] = {"Transform.Opacity": [[time+1, time+2], [0, 100]]}
-        conf["keyframes"] = {
-            "Transform.Position": [[time+2, time+3], [oldPos-QUE_ELEM_WIDTH, newPos]]
+        misc["precomps"][0]["elems"][0]["keyframes"] = {"Transform.Opacity": [[time+1, time+2], [0, 100]]}
+        misc["keyframes"] = {
+            "Transform.Position": [[time+2, time+3], [[oldPos[0]-QUE_ELEM_WIDTH, oldPos[1]], newPos]]
         }
         shareUtil.configKeyframes(
             oldLayer,
@@ -817,7 +833,7 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
     }
 
     layersCollecter[newLayerName] = {}
-    this.queue(items, parentComp, conf, layersCollecter[newLayerName])
+    this.misc(items, parentComp, misc, layersCollecter[newLayerName])
     shareUtil.configKeyframes(layersCollecter[newLayerName])
     return layersCollecter[newLayerName]
 }
@@ -834,7 +850,7 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
             node.keys[i + 1] = node.keys[i]
             i -= 1
             // 移动标杆
-            this._bTreeMoveIndicator(conf)
+            // this._bTreeMoveIndicator(conf)
             shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
         }
         // 移动node, keys有变动就重建node(queue合成)，配置edge的vertices顶点变动keyframes
@@ -1019,7 +1035,7 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, conf, layer
     }
 
     for (var i = 0; i < elems.length; i++) {
-        this._bTreeIndicatorResetPos(conf)
+        // this._bTreeIndicatorResetPos(conf)
         var elem = elems[i]
         switch (elem.oper) {
             case 'S':
@@ -1070,8 +1086,8 @@ PrecompUtil.prototype.bTree = function (items, parentComp, conf, layersCollecter
     }
 
     shareUtil.addLayer(parentComp, conf, comp)
-    var indicator = this._bTreeIndicator(conf["layersRoot"])
-    indicator["layer"].moveToBeginning()
+    // var indicator = this._bTreeIndicator(conf["layersRoot"])
+    // indicator["layer"].moveToBeginning()
 }
 
 PrecompUtil.prototype.graph = function (nodeLayer, edgeLayer, elems) {
