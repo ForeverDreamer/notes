@@ -787,7 +787,12 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
     var oldLayer
     if (layersCollecter[oldLayerName]) {
         oldLayer = layersCollecter[oldLayerName].layer
-        oldPos = oldLayer("Transform")("Position").value
+        posProp = oldLayer("Transform")("Position")
+        if (posProp.numKeys > 0) {
+            oldPos = posProp.keyValue(posProp.numKeys)
+        } else {
+            oldPos = oldLayer("Transform")("Position").value
+        }
         newPos = [oldPos[0]-QUE_ELEM_WIDTH/2, oldPos[1]]
         // layersCollecter[oldLayerName]["keys"]["21"].shapeLayer("Contents")("Group 1")("Contents")("Fill 1")("Color").setValue([0, 1, 1])
     } else {
@@ -798,11 +803,11 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
     var height = QUE_ELEM_HEIGHT + STROKE_ADD
     var misc = {
         'layerName': newLayerName, 'width': width, 'height': height,
-        'Anchor Point': 'LEFT_TOP', 'Position': newPos,
+        'Anchor Point': 'LEFT_TOP', 'Position': oldPos,
         'startTime': conf["startTime"], 'duration': conf["duration"],
         "keyframes": {
             "Transform.Opacity": [
-                [time, time+1, time+2],
+                [conf["startTime"], oldLayer? time : time+1, oldLayer? time+5 : time+2],
                 [0, 100, 0],
                 {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}, {"type": 'HOLD'}] }
             ]
@@ -840,13 +845,12 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
     }
     if (oldLayer) {
         misc["precomps"][0]["elems"][0]["keyframes"] = {"Transform.Opacity": [[time+2, time+3], [0, 100]]}
-        misc["keyframes"] = {
-            "Transform.Position": [
-                [time+3, time+4],
-                [[oldPos[0]-QUE_ELEM_WIDTH, oldPos[1]], newPos],
-                {"temporal": [[[0, 0.1], [500,  65]], [[0.1, 75], [0, 0.1]]]}
-            ]
-        }
+        misc["keyframes"]["Transform.Position"] = [
+            [time+3, time+4],
+            [[oldPos[0]-QUE_ELEM_WIDTH, oldPos[1]], newPos],
+            // [newPos, [newPos[0]+QUE_ELEM_WIDTH, newPos[1]]],
+            {"temporal": [[[0, 0.1], [500,  65]], [[0.1, 75], [0, 0.1]]]}
+        ]
         // oldLayer("Transform")("Opacity").setValue(0)
         // shareUtil.configKeyframes(
         //     oldLayer,
@@ -860,7 +864,7 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, oldLa
     layersCollecter[newLayerName] = {}
     this.misc(items, parentComp, misc, layersCollecter[newLayerName])
     layersCollecter[newLayerName]["vectors"]["Indicator"]["layer"].moveToBeginning()
-    shareUtil.configKeyframes(layersCollecter[newLayerName]["layer"])
+    // shareUtil.configKeyframes(layersCollecter[newLayerName]["layer"])
     return layersCollecter[newLayerName]
 }
 
@@ -888,7 +892,8 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
         while (i >= 0 && key["key"] < node.keys[i]["key"]) {
             i -= 1
             // 移动标杆
-            this._bTreeMoveIndicator(items, itemslayersRoot)
+            // this._bTreeMoveIndicator(items, itemslayersRoot)
+            indicatorMoveTimes += 1
         }
         i += 1
         if (node.children[i].keys.length === this._btree.order - 1) {
