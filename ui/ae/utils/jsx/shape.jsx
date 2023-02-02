@@ -1,8 +1,9 @@
 function ShapeUtil() {}
 
-ShapeUtil.prototype.addOne = function(parentComp, conf) {
+ShapeUtil.prototype.addOne = function(parentComp, conf, layersCollecter) {
     var shapeLayer = parentComp.layers.addShape();
-    shapeLayer.name = conf["layerName"];
+    var layerName = conf["layerName"];
+    shapeLayer.name = layerName;
     conf_pg = conf["pathGroup"]
     var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
     var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - " + conf_pg["type"]);
@@ -74,13 +75,13 @@ ShapeUtil.prototype.addOne = function(parentComp, conf) {
     effectsUtil.add(shapeLayer, conf["effects"])
 
     shareUtil.configKeyframes(shapeLayer, conf["keyframes"])
-
+    layersCollecter["layer"] = shapeLayer
     return shapeLayer
 }
 
-ShapeUtil.prototype.addMany = function(parentComp, shapes) {
+ShapeUtil.prototype.addMany = function(parentComp, shapes, layersCollecter) {
     for (var i = 0; i < shapes.length; i++) {
-        this.addOne(parentComp, shapes[i])
+        this.addOne(parentComp, shapes[i], layersCollecter)
     }
 }
 
@@ -89,7 +90,7 @@ ShapeUtil.prototype.addVectors = function(parentComp, vectors, layersCollecter) 
         var layerName = vectors[i]["layerName"]
         layersCollecter[layerName] = {
             "layer": shareUtil.addLayer(parentComp, vectors[i]),
-            "keyframes": {},
+            // "keyframes": {},
             // "time": 0
         }
     }
