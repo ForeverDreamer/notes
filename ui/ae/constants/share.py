@@ -1,6 +1,8 @@
 import importlib
 from ae.utils.py.color import hex_to_rgb1
 
+mdl = importlib.import_module(f'ae.constants.themes.t{3}')
+
 AE_WINDOW_NAME = 'Adobe After Effects'
 BASE_DIR = 'D:/data_files/notes/ui/ae/'
 # 脚本调用间隔，否则会各种报错
@@ -16,7 +18,7 @@ QUE_ELEM_HEIGHT = 60
 QUE_UNIT = {
     'pathGroup': {'type': 'Rect', 'Size': [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]},
     "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
-    "Stroke": {'Stroke Width': 1, "Color": hex_to_rgb1("#000000")},
+    "Stroke": {'Stroke Width': 1, "Color": hex_to_rgb1(mdl.COLORS['text'])},
     'fontSize': 25,
 }
 STROKE_ADD = QUE_UNIT['Stroke']['Stroke Width'] * 4
@@ -34,8 +36,6 @@ STACK_UNIT = {
 IMPORT_AS_TYPE = ('COMP_CROPPED_LAYERS', 'FOOTAGE', 'COMP', 'PROJECT')
 
 SUBTITLES_INTERVAL = 5
-
-mdl = importlib.import_module(f'ae.constants.themes.t{3}')
 
 # 这种方式虽然可行但会导致ide报错提示！
 # # is there an __all__?  if so respect it

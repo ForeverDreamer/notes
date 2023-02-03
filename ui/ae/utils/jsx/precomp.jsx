@@ -724,28 +724,43 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
     // return level, node_idx, key_idx
 }
 
-PrecompUtil.prototype._bTreeIndicatorResetPos = function (conf) {
-    if (!this._btree.root.ui) {
+PrecompUtil.prototype._bTreeIndicatorResetPos = function (conf, layersCollecter) {
+    var i = this._btree.root.keys.length - 1
+    if (i < 0) {
         return
     }
-    var nodeLayer = this._btree.root.ui.layer
-    var indicator = this._bTreeIndicator(conf["layersRoot"])
+    var keyLayer = layersCollecter[this._btree.root.keys[i].key].layer
+    var indicator = this._bTreeIndicator(conf)
     var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
-    var frameTime = conf["startTime"] + shotTime
+    // var frameTime = conf["startTime"] + shotTime
     // var top = nodeLayer.sourceRectAtTime(frameTime, false).top
     // var left = nodeLayer.sourceRectAtTime(frameTime, false).left
-    var width = nodeLayer.sourceRectAtTime(frameTime, false).width
-    var pos = nodeLayer("Transform")("Position").value
-    indicator["layer"]("Transform")("Position").setValue([pos[0]+width, pos[1]])
+    // var width = nodeLayer.sourceRectAtTime(frameTime, false).width
+    var pos = keyLayer("Transform")("Position").value
+    indicator["layer"]("Transform")("Position").setValueAtTime(
+        shotTime, [pos[0]+QUE_ELEM_WIDTH/2, pos[1]]
+    )
 }
 
-PrecompUtil.prototype._bTreeIndicator = function (layersRoot) {
-    var paths = layersRoot.split(".")
+PrecompUtil.prototype._bTreeIndicator = function (conf) {
+    var paths = conf["layersRoot"].split(".")
     var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]
     for (var j = 0; j < paths.length; j++) {
         indicator = indicator[paths[j]]
     }
     return indicator["vectors"]["Indicator"]
+}
+
+PrecompUtil.prototype._bTreeIndicatorPos = function (conf) {
+    var paths = conf["layersRoot"].split(".")
+    var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]
+    for (var j = 0; j < paths.length; j++) {
+        indicator = indicator[paths[j]]
+    }
+    indicator = indicator["vectors"]["Indicator"]
+    var layer = indicator["layer"]
+    var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
+    return layer("Transform")("Position").valueAtTime(shotTime, false)
 }
 
 PrecompUtil.prototype._bTreeSetIndicatorPos = function (pos, conf) {
@@ -754,20 +769,25 @@ PrecompUtil.prototype._bTreeSetIndicatorPos = function (pos, conf) {
     // layer("Transform")("Position").setValue(pos)
 }
 
-PrecompUtil.prototype._bTreeMoveIndicator = function (conf) {
+PrecompUtil.prototype._bTreeMoveIndicator = function (conf, offset_x, offset_y) {
+    if (offset_x === 0 && offset_y === 0) {
+        return
+    }
     var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
-    var indicator = this._bTreeIndicator(conf["layersRoot"])
+    var indicator = this._bTreeIndicator(conf)
     var layer = indicator["layer"]
-    var oldPos = layer("Transform")("Position").value
+    var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
     shareUtil.configKeyframes(
         layer,
         {
             "Transform.Position": [
                 [shotTime, shotTime+1],
-                [oldPos, [oldPos[0]-QUE_ELEM_WIDTH, oldPos[1]]]
+                [oldPos, [oldPos[0]-QUE_ELEM_WIDTH*offset_x, oldPos[1]+QUE_ELEM_HEIGHT*2*offset_y]],
+                {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}
             ]
         }
     )
+    shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     // var keyframes = indicator["keyframes"]["Transform.Position"]
     // var time = indicator["time"]
     // var prop = layer("Transform")("Position")
@@ -783,7 +803,24 @@ PrecompUtil.prototype._bTreeMoveIndicator = function (conf) {
 
 PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node, idx, conf, layersCollecter) {
     var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
-    var rootPos = [400, 400]
+    for (var i = 0; i < idx; i++) {
+        var layer = layersCollecter[node.keys[i].key].layer
+        var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+        shareUtil.configKeyframes(
+            layer,
+            {
+                "Transform.Position": [
+                    [shotTime, shotTime+1],
+                    [oldPos, [oldPos[0]-QUE_ELEM_WIDTH, oldPos[1]]],
+                    // {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}
+                ]
+            }
+        )
+        shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+    }
+    
+    var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
+    var indicatorPos = this._bTreeIndicatorPos(conf)
     var layerName = node.keys[idx].key
 
     QUE_UNIT['layerName'] = layerName
@@ -791,19 +828,25 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
     QUE_UNIT['Position'] = pos
     var misc = {
         'layerName': layerName, 'width': QUE_ELEM_WIDTH, 'height': QUE_ELEM_HEIGHT, 'duration': conf["duration"],
-        'Position': [rootPos[0]-QUE_ELEM_WIDTH/2+QUE_ELEM_WIDTH*idx, rootPos[1]+node.level*QUE_ELEM_HEIGHT],
+        'Position': [indicatorPos[0]-QUE_ELEM_WIDTH/2, indicatorPos[1]+node.level*QUE_ELEM_HEIGHT],
         'texts': [
             {
                 'text': layerName, 'Position': pos,
-                'font': FONTS['subtitle'], 'fillColor': COLORS['subtitle'], 'fontSize': 40,
+                'font': FONTS['subtitle'], 'fillColor': COLORS['text'], 'fontSize': 40,
             }
         ],
         'shapes': [
             QUE_UNIT
         ],
-        'keyframes': {}
+        'keyframes': {
+            "Transform.Opacity": [
+                [shotTime, shotTime+1],
+                [0, 100],
+                {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}
+            ]
+        }
     }
-
+    shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     layersCollecter[layerName] = {}
     this.misc(items, parentComp, misc, layersCollecter[layerName])
     // layersCollecter[layerName]["vectors"]["Indicator"]["layer"].moveToBeginning()
@@ -813,19 +856,22 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
 
 PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, key, conf, layersCollecter) {
     var i = node.keys.length - 1
-    if (i >= 0) {
-        this._bTreeSetIndicatorPos(layersCollecter[node.keys[i].key].layer("Transform")("Position").value, conf)
-    }
+    // if (i >= 0) {
+    //     this._bTreeSetIndicatorPos(layersCollecter[node.keys[i].key].layer("Transform")("Position").value, conf)
+    // }
+    var moved = false
     if (node.leaf) {
         node.keys.push(null)
         while (i >= 0 && key["key"] < node.keys[i]["key"]) {
             node.keys[i + 1] = node.keys[i]
             i -= 1
             // 移动标杆
-            this._bTreeMoveIndicator(conf)
-            // indicatorMoveTimes += 1
-            shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+            this._bTreeMoveIndicator(conf, 1, 0)
+            moved = true
         }
+        // if (moved) {
+        //     this._bTreeMoveIndicator(conf, 1, 0)
+        // }
         // 移动node, keys有变动就重建node(queue合成)，配置edge的vertices顶点变动keyframes
         node.keys[i + 1] = key
         node["ui"] = this._bTreeAnimationAddKey(items, parentComp, node, i + 1, conf, layersCollecter)
@@ -833,7 +879,7 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
         while (i >= 0 && key["key"] < node.keys[i]["key"]) {
             i -= 1
             // 移动标杆
-            this._bTreeMoveIndicator(conf)
+            this._bTreeMoveIndicator(conf, 1, 0)
             // indicatorMoveTimes += 1
         }
         i += 1
@@ -842,6 +888,7 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
             if (key["key"] > node.keys[i]["key"]) {
                 i += 1
             }
+            this._bTreeMoveIndicator(conf, 0, 1)
         }
         this._bTreeInsertNonFull(items, parentComp, node.children[i], key)
     }
@@ -1027,7 +1074,7 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, conf, layer
     }
 
     for (var i = 0; i < elems.length; i++) {
-        // this._bTreeIndicatorResetPos(conf)
+        this._bTreeIndicatorResetPos(conf, layersCollecter)
         var elem = elems[i]
         switch (elem.oper) {
             case 'S':
@@ -1078,8 +1125,8 @@ PrecompUtil.prototype.bTree = function (items, parentComp, conf, layersCollecter
     }
 
     shareUtil.addLayer(parentComp, conf, comp)
-    // var indicator = this._bTreeIndicator(conf["layersRoot"])
-    // indicator["layer"].moveToBeginning()
+    var indicator = this._bTreeIndicator(conf)
+    indicator["layer"].moveToBeginning()
 }
 
 PrecompUtil.prototype.graph = function (nodeLayer, edgeLayer, elems) {
