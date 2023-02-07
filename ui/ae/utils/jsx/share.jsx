@@ -10,12 +10,12 @@ ShareUtil.prototype.addScenes = function (scenes) {
 		this.scenes[sName] = {}
 		for (var i = 0; i < scenes[sName].length; i++) {
 			this.shot = i
-			this.scenes[sName][i] = {"time": 0}
+			var conf = scenes[sName][i]
+			this.scenes[sName][i] = {"time": conf["startTime"]}
 			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
-			var shot = scenes[sName][i]
-			shot['width'] = WIDTH
-			shot['height'] = HEIGHT
-			precompUtil.misc(project.items, mainComp, shot, this.scenes[sName][i])
+			conf['width'] = WIDTH
+			conf['height'] = HEIGHT
+			precompUtil.misc(project.items, mainComp, conf, this.scenes[sName][i])
 		}
 	}
 }

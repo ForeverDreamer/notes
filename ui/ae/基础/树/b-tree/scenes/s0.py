@@ -14,8 +14,9 @@ def shot_0(start_time):
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
-    duration = end_time - start_time
-    QUE_UNIT['RC'] = {'Radius': 10}
+    # duration = end_time - start_time
+    duration = 70
+    # QUE_UNIT['RC'] = {'Radius': 10}
 
     elems = [
         {'key': 21, 'oper': 'I'}, {'key': 17, 'oper': 'I'}, {'key': 19, 'oper': 'I'},
@@ -63,19 +64,19 @@ def shot_0(start_time):
         #     }
         # ],
         'misc': {
-            'layerName': 'B-Tree合成', 'width': 800, 'height': 800, 'startTime': start_time, 'duration': duration,
+            'layerName': 'B-Tree合成', 'width': 1920, 'height': 1080, 'startTime': start_time, 'duration': duration,
             'texts': texts,
             'vectors': [
                 {
                     'name': 'Indicator/Elements.ai', 'layerName': 'Indicator',
-                    'Scale': [100, 100, 100], 'Opacity': 100, 'Position': [400, 400],
+                    'Scale': [100, 100, 100], 'Opacity': 0, 'Position': [960, 100],
                     # 'Anchor Point': 'TOP', 'Position': [400, 200],
                 }
             ],
             'precomps': [
                 {
-                    'layerName': 'B-Tree', 'type': 'B-TREE', 'width': 800, 'height': 800,
-                    'Position': [400, 400],
+                    'layerName': 'B-Tree', 'type': 'B-TREE', 'width': 1920, 'height': 1080,
+                    'Position': [960, 540],
                     'startTime': start_time, 'duration': duration,
                     'animation': True,
                     'elems': elems,
