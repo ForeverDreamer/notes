@@ -720,93 +720,165 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
         child.children = child.children.slice(0, mid)
     }
 
-    var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
-
     function animationSplit() {
-        for (var i = idx; i <= idx+1; i++) {
-            var childNode = node.children[i]
-            for (var j = 0; j < childNode.keys.length; j++) {
-                var key = childNode.keys[j]
+        function relocateNodes() {
+            var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
+            // 中间节点
+            // 1.移动父节点两侧的keys，并同步移动indicator和受影响的子节点keys和edges
+            for (var i = 0; i < idx; i++) {
+                var key = node.keys[i]
                 var layer = layersCollecter[key.key].layer
                 var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
                 shareUtil.configKeyframes(
                     layer,
                     {
                         "Transform.Position": [
-                            [shotTime, shotTime+1],
-                            [oldPos, [oldPos[0], oldPos[1]+QUE_ELEM_HEIGHT*2]],
-                            {"temporal": precompUtil.temporal}
+                            [shotTime, shotTime + 1],
+                            [oldPos, [oldPos[0]-QUE_ELEM_WIDTH/2, oldPos[1]]],
+                            { "temporal": precompUtil.temporal }
                         ]
                     }
                 )
             }
-        }
-        shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
-
-        shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
-        var parentPosArr = []
-        var parentLayerName = node.level+'.'+node.idx
-        for (var i = 0; i < node.keys.length; i++) {
-            var key = node.keys[i]
-            // parentLayerName += key.key
-            var layer = layersCollecter[key.key].layer
-            var pos = layer("Transform")("Position").valueAtTime(shotTime, false)
-            parentPosArr.push([pos[0]-QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
-            if (!node.keys[i+1]) {
-                parentPosArr.push([pos[0]+QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
-            }
-        }
-
-        var childrenPosArr = []
-        var childrenLayerNames = []
-        for (var i = 0; i < node.children.length; i++) {
-            var childNode = node.children[i]
-            var firstKeyPos = layersCollecter[childNode.keys[0].key].layer("Transform")("Position").valueAtTime(shotTime, false)
-            childrenPosArr.push([firstKeyPos[0]-QUE_ELEM_WIDTH/2+childNode.keys.length*QUE_ELEM_WIDTH/2, firstKeyPos[1]-QUE_ELEM_HEIGHT/2])
-            // var childLayerName = ''
-            // for (var j = 0; j < childNode.keys.length; j++) {
-            //     childLayerName += childNode.keys[j].key
-            // }
-            childrenLayerNames.push(childNode.level+'.'+childNode.idx)
-        }
-
-        for (var i = 0; i < parentPosArr.length; i++) {
-            var anchorPoint
-            if (parentPosArr[i][0] > childrenPosArr[i][0]) {
-                anchorPoint = "RIGHT_TOP"
-            } else {
-                anchorPoint = "LEFT_TOP"
-            }
-            var layerName = parentLayerName+'_'+childrenLayerNames[i]
-            var unit = {
-                "layerName": layerName,
-                "Anchor Point": anchorPoint, 'Position': parentPosArr[i],
-                "pathGroup": {
-                    "type": "Group",
-                    "vertices": [parentPosArr[i], childrenPosArr[i]],
-                    "closed": false,
-                },
-                "Stroke": {
-                    "Stroke Width": 1,
-                    "Color": colorUtil.hexToRgb1("#000000")
-                },
-                "Trim Paths": {
-                    'Start': 0,
-                },
-                "keyframes": {
-                    "Contents.Group 1.Contents.Trim Paths 1.End": [
-                            [shotTime, shotTime+1],
-                            [0, 100],
-                            {"temporal": precompUtil.temporal}
+            for (var i = idx+1; i < node.keys.length; i++) {
+                var key = node.keys[i]
+                var layer = layersCollecter[key.key].layer
+                var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+                shareUtil.configKeyframes(
+                    layer,
+                    {
+                        "Transform.Position": [
+                            [shotTime, shotTime + 1],
+                            [oldPos, [oldPos[0]+QUE_ELEM_WIDTH/2, oldPos[1]]],
+                            { "temporal": precompUtil.temporal }
                         ]
-                },
+                    }
+                )
             }
-            layersCollecter[layerName] = {}
-            shapeUtil.addOne(parentComp, unit, layersCollecter[layerName])
-            node.childrenEdges.splice(i, 0, layersCollecter[layerName])
-            node.children[i].parentEdge = layersCollecter[layerName]
+
+            // 2.上升到父节点指定位置
+            var key = node.keys[idx]
+            var layer = layersCollecter[key.key].layer
+            var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+
+            var referKey = node.keys[idx-1]
+            var referPos
+            var newPos
+            if (referKey) {
+                referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
+                newPos = [referPos[0]+QUE_ELEM_WIDTH/2, referPos[1]]
+            } else {
+                referKey = node.keys[idx+1]
+                if (referKey) {
+                    referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
+                    newPos = [referPos[0]-QUE_ELEM_WIDTH/2, referPos[1]]
+                } else {
+                    newPos = [oldPos[0], oldPos[1] - QUE_ELEM_HEIGHT * 2]
+                }
+            }
+
+            shareUtil.configKeyframes(
+                layer,
+                {
+                    "Transform.Position": [
+                        [shotTime, shotTime + 1],
+                        [oldPos, newPos],
+                        { "temporal": precompUtil.temporal }
+                    ]
+                }
+            )
+            // 两侧节点
+            // for (var i = idx; i <= idx + 1; i++) {
+            //     var childNode = node.children[i]
+            //     for (var j = 0; j < childNode.keys.length; j++) {
+            //         var key = childNode.keys[j]
+            //         var layer = layersCollecter[key.key].layer
+            //         var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+            //         shareUtil.configKeyframes(
+            //             layer,
+            //             {
+            //                 "Transform.Position": [
+            //                     [shotTime, shotTime + 1],
+            //                     [oldPos, [oldPos[0], oldPos[1] + QUE_ELEM_HEIGHT * 2]],
+            //                     { "temporal": precompUtil.temporal }
+            //                 ]
+            //             }
+            //         )
+            //     }
+            // }
+            
+            shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
         }
-        shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+
+        function relocateEdges() {
+            shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
+            var parentPosArr = []
+            var parentLayerName = node.level+'.'+node.idx
+            for (var i = 0; i < node.keys.length; i++) {
+                var key = node.keys[i]
+                // parentLayerName += key.key
+                var layer = layersCollecter[key.key].layer
+                var pos = layer("Transform")("Position").valueAtTime(shotTime, false)
+                parentPosArr.push([pos[0]-QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
+                if (!node.keys[i+1]) {
+                    parentPosArr.push([pos[0]+QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
+                }
+            }
+    
+            var childrenPosArr = []
+            var childrenLayerNames = []
+            for (var i = 0; i < node.children.length; i++) {
+                var childNode = node.children[i]
+                var firstKeyPos = layersCollecter[childNode.keys[0].key].layer("Transform")("Position").valueAtTime(shotTime, false)
+                childrenPosArr.push([firstKeyPos[0]-QUE_ELEM_WIDTH/2+childNode.keys.length*QUE_ELEM_WIDTH/2, firstKeyPos[1]-QUE_ELEM_HEIGHT/2])
+                // var childLayerName = ''
+                // for (var j = 0; j < childNode.keys.length; j++) {
+                //     childLayerName += childNode.keys[j].key
+                // }
+                childrenLayerNames.push(childNode.level+'.'+childNode.idx)
+            }
+    
+            for (var i = 0; i < parentPosArr.length; i++) {
+                var anchorPoint
+                if (parentPosArr[i][0] > childrenPosArr[i][0]) {
+                    anchorPoint = "RIGHT_TOP"
+                } else {
+                    anchorPoint = "LEFT_TOP"
+                }
+                var layerName = parentLayerName+'_'+childrenLayerNames[i]
+                var unit = {
+                    "layerName": layerName,
+                    "Anchor Point": anchorPoint, 'Position': parentPosArr[i],
+                    "pathGroup": {
+                        "type": "Group",
+                        "vertices": [parentPosArr[i], childrenPosArr[i]],
+                        "closed": false,
+                    },
+                    "Stroke": {
+                        "Stroke Width": 1,
+                        "Color": colorUtil.hexToRgb1("#000000")
+                    },
+                    "Trim Paths": {
+                        'Start': 0,
+                    },
+                    "keyframes": {
+                        "Contents.Group 1.Contents.Trim Paths 1.End": [
+                                [shotTime, shotTime+1],
+                                [0, 100],
+                                {"temporal": precompUtil.temporal}
+                            ]
+                    },
+                }
+                layersCollecter[layerName] = {}
+                shapeUtil.addOne(parentComp, unit, layersCollecter[layerName])
+                node.childrenEdges.splice(i, 0, layersCollecter[layerName])
+                node.children[i].parentEdge = layersCollecter[layerName]
+            }
+            shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+        }
+
+        relocateNodes()
+        relocateEdges()
     }
 
     animationSplit()
@@ -825,7 +897,7 @@ PrecompUtil.prototype._bTreeIndicatorResetPos = function (conf, layersCollecter)
     // var top = nodeLayer.sourceRectAtTime(frameTime, false).top
     // var left = nodeLayer.sourceRectAtTime(frameTime, false).left
     // var width = nodeLayer.sourceRectAtTime(frameTime, false).width
-    var pos = keyLayer("Transform")("Position").value
+    var pos = keyLayer("Transform")("Position").valueAtTime(shotTime, false)
     indicator["layer"]("Transform")("Position").setValueAtTime(
         shotTime, [pos[0]+QUE_ELEM_WIDTH/2, pos[1]]
     )

@@ -15,7 +15,7 @@ def shot_0(start_time):
     subtitles = list(map(list, zip(*subtitles)))
     end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
     # duration = end_time - start_time
-    duration = 70
+    duration = 100
     # QUE_UNIT['RC'] = {'Radius': 10}
 
     elems = [
@@ -69,7 +69,7 @@ def shot_0(start_time):
             'vectors': [
                 {
                     'name': 'Indicator/Elements.ai', 'layerName': 'Indicator',
-                    'Scale': [100, 100, 100], 'Opacity': 0, 'Position': [960, 100],
+                    'Scale': [100, 100, 100], 'Opacity': 0, 'Position': [960, 900],
                     # 'Anchor Point': 'TOP', 'Position': [400, 200],
                 }
             ],
