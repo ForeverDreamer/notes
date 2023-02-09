@@ -723,7 +723,7 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
     var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
 
     function animationSplit() {
-        for (var i = 0; i < node.children.length; i++) {
+        for (var i = idx; i <= idx+1; i++) {
             var childNode = node.children[i]
             for (var j = 0; j < childNode.keys.length; j++) {
                 var key = childNode.keys[j]
@@ -974,7 +974,7 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
     shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
     if (node.parentEdge) {
         var edgeLayer = node.parentEdge.layer
-        var path = edgeLayer("Contents")("Group 1")("Contents")("Path 1")("Path").value
+        var path = edgeLayer("Contents")("Group 1")("Contents")("Path 1")("Path").valueAtTime(shotTime, false)
         // 计算边界key所处的位置
         var parentPos = path.vertices[0]
         var childPos = path.vertices[1]
@@ -1293,9 +1293,9 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, conf, layer
                 insert(elem)
         }
         shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
-        if (i === 5) {
-            break
-        }
+        // if (i === 5) {
+        //     break
+        // }
     }
     
     // var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["misc"]["vectors"]["Indicator"]
