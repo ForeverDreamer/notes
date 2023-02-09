@@ -926,11 +926,13 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
     //         _moveKey(i, QUE_ELEM_WIDTH)
     //     }
     // }
+
     for (var i = 0; i < idx; i++) {
         // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
         _moveKey(i, -QUE_ELEM_WIDTH)
         // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     }
+
     // for (var i = node.keys.length-1; i > idx; i--) {
     //     this._bTreeMoveIndicator(conf, 0.5, 0)
     //     _moveKey(i, QUE_ELEM_WIDTH/2)
@@ -966,54 +968,59 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
     shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     layersCollecter[layerName] = {}
     this.misc(items, parentComp, misc, layersCollecter[layerName])
-    // 重新定位nodes
-    // if (node.level > 0) {
-    //     for (var i = 0; i < node.keys.length; i++) {
-    //         _moveKey(i, QUE_ELEM_WIDTH)
-    //     }
-    // }
-    // for (var i = 0; i < node.children.length; i++) {
-    //         var childNode = node.children[i]
-    //         var edgeLayer = childNode.parentEdge.layer
-    //         var path = edgeLayer("Contents")("Group 1")("Contents")("Path 1")("Path").value
-    //         // 计算边界key所处的位置
-    //         var parentPos = path.vertices[0]
-    //         var childPos = path.vertices[1]
-    //         var startKeyLayer = parentPos[0] > childPos[0] ? childNode.keys[childNode.keys.length-1].key.layer : childNode.keys[childNode.keys[0]].key.layer
-    //         var startPos = startKeyLayer("Transform")("Position").valueAtTime(shotTime, false)
-    //         startPos[0] = parentPos[0] > childPos[0] ? startPos[0]+QUE_ELEM_WIDTH : startPos[0]-QUE_ELEM_WIDTH
-    //         // 同时移动所有key和父连接线的终点到节点整体的中间位置
-    //         for (var j = 0; j < childNode.keys.length; j++) {
-    //             var keyLayer = layersCollecter[childNode.keys[j].key].layer
-    //             var oldPos = keyLayer("Transform")("Position").valueAtTime(shotTime, false)
-    //             shareUtil.configKeyframes(
-    //                 keyLayer,
-    //                 {
-    //                     "Transform.Position": [
-    //                         [shotTime, shotTime+1],
-    //                         [oldPos, [startPos[0]-(parentPos[0]-childPos[0]), oldPos[1]]],
-    //                         // {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}
-    //                         {"temporal": [[[0, 0.1], [500,  65]], [[0.1, 75], [0, 0.1]]]}
-    //                     ]
-    //                 }
-    //             )
-    //         }
-    // }
+
+    shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+    this._bTreeShowIndicator(false, conf)
+    shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
     if (node.parentEdge) {
         var edgeLayer = node.parentEdge.layer
         var path = edgeLayer("Contents")("Group 1")("Contents")("Path 1")("Path").value
         // 计算边界key所处的位置
         var parentPos = path.vertices[0]
         var childPos = path.vertices[1]
-        var startKeyLayer
+
+        var distance
         if (parentPos[0] > childPos[0]) {
-            startKeyLayer = layersCollecter[node.keys[node.keys.length-1].key].layer
+            distance = -QUE_ELEM_WIDTH/2
+        } else {
+            distance = QUE_ELEM_WIDTH/2
+        }
+        // 重新定位edges
+        shareUtil.configKeyframes(
+            edgeLayer,
+            {
+                "Contents.Group 1.Contents.Path 1.Path": [
+                    [shotTime, shotTime + 1],
+                    [
+                        {
+                            "vertices": path.vertices,
+                            "closed": false
+                        },
+                        {
+                            "vertices": [path.vertices[0],[path.vertices[1][0]+distance, path.vertices[1][1]]],
+                            "closed": false
+                        }
+                    ],
+                    { "temporal": precompUtil.temporal }
+                ]
+            }
+        )
+
+        var startKeyLayer
+        var startPos
+        if (parentPos[0] > childPos[0]) {
+            // startKeyLayer = layersCollecter[node.keys[node.keys.length-1].key].layer
+            // startPos = startKeyLayer("Transform")("Position").valueAtTime(shotTime, false)
+            // distance = startPos[0]-parentPos[0]
+            distance = 0
         } else {
             startKeyLayer = layersCollecter[node.keys[0].key].layer
+            startPos = startKeyLayer("Transform")("Position").valueAtTime(shotTime, false)
+            distance = parentPos[0]-startPos[0]+QUE_ELEM_WIDTH/2
         }
         // var startKeyLayer = parentPos[0] > childPos[0] ? layersCollecter[node.keys[node.keys.length-1].key].layer : layersCollecter[node.keys[0].key].layer
-        var startPos = startKeyLayer("Transform")("Position").valueAtTime(shotTime, false)
-        startPos[0] = parentPos[0] > childPos[0] ? startPos[0]-QUE_ELEM_WIDTH : startPos[0]+QUE_ELEM_WIDTH
+        // var startPos = startKeyLayer("Transform")("Position").valueAtTime(shotTime, false)
+        // startPos[0] = parentPos[0] > childPos[0] ? startPos[0]-QUE_ELEM_WIDTH : startPos[0]+QUE_ELEM_WIDTH
         // 同时移动所有key和父连接线的终点到节点整体的中间位置
         for (var j = 0; j < node.keys.length; j++) {
             var keyLayer = layersCollecter[node.keys[j].key].layer
@@ -1023,40 +1030,16 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
                 {
                     "Transform.Position": [
                         [shotTime, shotTime+1],
-                        [oldPos, [startPos[0]-(parentPos[0]-childPos[0]), oldPos[1]]],
+                        // [oldPos, [oldPos[0]-(parentPos[0]-childPos[0]), oldPos[1]]],
+                        [oldPos, [oldPos[0]+distance, oldPos[1]]],
                         // {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}
-                        {"temporal": [[[0, 0.1], [500,  65]], [[0.1, 75], [0, 0.1]]]}
+                        {"temporal": this.temporal}
                     ]
                 }
             )
         }
     }
-    
-    // 重新定位edges
-    // var dropKeyframes = {
-    //     "Transform.Opacity": [null, [0, 100, 0]],
-    //     "Transform.Position": [null, null, { "temporal": [[[0, 0.1], [1000, 100]], [[0, 75], [0, 0.1]]] }],
-    //     "Transform.Rotation": [null, [0, 45]],
-    //     "Contents.Group 1.Contents.Path 1.Path": [
-    //         null,
-    //         [
-    //             {
-    //                 "vertices": [[0, -50], [50, 0], [0, 50], [-50, 0]],
-    //                 "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0],
-    //                 [0, 27.6142425537109]],
-    //                 "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0],
-    //                 [0, -27.6142425537109]],
-    //                 "closed": 'true'
-    //             },
-    //             {
-    //                 "vertices": [[0, -57.5], [57.5, 0], [0, 57.5], [-57.5, 0]],
-    //                 // "inTangents": [[-27.6142425537109, 0], [0, -27.6142425537109], [27.6142425537109, 0], [0, 27.6142425537109]],
-    //                 // "outTangents": [[27.6142425537109, 0], [0, 27.6142425537109], [-27.6142425537109, 0], [0, -27.6142425537109]],
-    //                 "closed": true
-    //             }
-    //         ]
-    //     ]
-    // }
+
     shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     return layersCollecter[layerName]
 }
