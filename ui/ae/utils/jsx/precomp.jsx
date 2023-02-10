@@ -702,7 +702,7 @@ PrecompUtil.prototype._bTreeNode = function (leaf, level, idx, parent) {
     }
 }
 
-PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, idx, conf, layersCollecter) {
+PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, idx, conf, layersCollecter, internal) {
     var order = this._btree.order
     var mid = order / 2
     var child = node.children[idx]
@@ -721,176 +721,213 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
     }
 
     function animationSplit() {
-        function relocateNodes() {
-            var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
-            // 中间节点
-            // 1.移动父节点两侧的keys，并同步移动indicator和受影响的子节点keys和edges
-            for (var i = 0; i < idx; i++) {
-                var key = node.keys[i]
-                var layer = layersCollecter[key.key].layer
-                var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
-                shareUtil.configKeyframes(
-                    layer,
-                    {
-                        "Transform.Position": [
-                            [shotTime, shotTime + 1],
-                            [oldPos, [oldPos[0]-QUE_ELEM_WIDTH/2, oldPos[1]]],
-                            { "temporal": precompUtil.temporal }
-                        ]
-                    }
-                )
-            }
-            for (var i = idx+1; i < node.keys.length; i++) {
-                var key = node.keys[i]
-                var layer = layersCollecter[key.key].layer
-                var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
-                shareUtil.configKeyframes(
-                    layer,
-                    {
-                        "Transform.Position": [
-                            [shotTime, shotTime + 1],
-                            [oldPos, [oldPos[0]+QUE_ELEM_WIDTH/2, oldPos[1]]],
-                            { "temporal": precompUtil.temporal }
-                        ]
-                    }
-                )
-            }
-
-            // 2.上升到父节点指定位置
-            var key = node.keys[idx]
+        var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
+        // 中间节点
+        // 移动父节点两侧的keys
+        for (var i = 0; i < idx; i++) {
+            var key = node.keys[i]
             var layer = layersCollecter[key.key].layer
             var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
-
-            var referKey = node.keys[idx-1]
-            var referPos
-            var newPos
-            if (referKey) {
-                referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
-                newPos = [referPos[0]+QUE_ELEM_WIDTH/2, referPos[1]]
-            } else {
-                referKey = node.keys[idx+1]
-                if (referKey) {
-                    referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
-                    newPos = [referPos[0]-QUE_ELEM_WIDTH/2, referPos[1]]
-                } else {
-                    newPos = [oldPos[0], oldPos[1] - QUE_ELEM_HEIGHT * 2]
-                }
-            }
-
             shareUtil.configKeyframes(
                 layer,
                 {
                     "Transform.Position": [
                         [shotTime, shotTime + 1],
-                        [oldPos, newPos],
+                        [oldPos, [oldPos[0]-QUE_ELEM_WIDTH/2, oldPos[1]]],
                         { "temporal": precompUtil.temporal }
                     ]
                 }
             )
-            // 两侧节点
-            // for (var i = idx; i <= idx + 1; i++) {
-            //     var childNode = node.children[i]
-            //     for (var j = 0; j < childNode.keys.length; j++) {
-            //         var key = childNode.keys[j]
-            //         var layer = layersCollecter[key.key].layer
-            //         var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
-            //         shareUtil.configKeyframes(
-            //             layer,
-            //             {
-            //                 "Transform.Position": [
-            //                     [shotTime, shotTime + 1],
-            //                     [oldPos, [oldPos[0], oldPos[1] + QUE_ELEM_HEIGHT * 2]],
-            //                     { "temporal": precompUtil.temporal }
-            //                 ]
-            //             }
-            //         )
-            //     }
-            // }
-            
-            shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+        }
+        for (var i = idx+1; i < node.keys.length; i++) {
+            var key = node.keys[i]
+            var layer = layersCollecter[key.key].layer
+            var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+            shareUtil.configKeyframes(
+                layer,
+                {
+                    "Transform.Position": [
+                        [shotTime, shotTime + 1],
+                        [oldPos, [oldPos[0]+QUE_ELEM_WIDTH/2, oldPos[1]]],
+                        { "temporal": precompUtil.temporal }
+                    ]
+                }
+            )
+        }
+        // 同步移动indicator
+        if (node.keys[idx+1]) {
+            precompUtil._bTreeMoveIndicator(conf, 0.5, 0, true)
+        } else {
+            precompUtil._bTreeMoveIndicator(conf, -0.5, 0, true)
         }
 
-        function relocateEdges() {
-            shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
-            var parentPosArr = []
-            var parentLayerName = node.level+'.'+node.idx
-            for (var i = 0; i < node.keys.length; i++) {
-                var key = node.keys[i]
-                // parentLayerName += key.key
-                var layer = layersCollecter[key.key].layer
-                var pos = layer("Transform")("Position").valueAtTime(shotTime, false)
-                parentPosArr.push([pos[0]-QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
-                if (!node.keys[i+1]) {
-                    parentPosArr.push([pos[0]+QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
-                }
+        // 上升到父节点指定位置
+        var key = node.keys[idx]
+        var layer = layersCollecter[key.key].layer
+        var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+
+        var referKey = node.keys[idx-1]
+        var referPos
+        var newPos
+        if (referKey) {
+            referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
+            newPos = [referPos[0]+QUE_ELEM_WIDTH/2, referPos[1]]
+        } else {
+            referKey = node.keys[idx+1]
+            if (referKey) {
+                referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
+                newPos = [referPos[0]-QUE_ELEM_WIDTH/2, referPos[1]]
+            } else {
+                newPos = [oldPos[0], oldPos[1] - QUE_ELEM_HEIGHT * 2]
             }
-    
-            var childrenPosArr = []
-            var childrenLayerNames = []
-            for (var i = 0; i < node.children.length; i++) {
+        }
+
+        shareUtil.configKeyframes(
+            layer,
+            {
+                "Transform.Position": [
+                    [shotTime, shotTime + 1],
+                    [oldPos, newPos],
+                    { "temporal": precompUtil.temporal }
+                ]
+            }
+        )
+
+        // 重定位受影响的两侧子节点keys
+        if (internal) {
+            for (var i = 0; i < idx; i++) {
                 var childNode = node.children[i]
-                var firstKeyPos = layersCollecter[childNode.keys[0].key].layer("Transform")("Position").valueAtTime(shotTime, false)
-                childrenPosArr.push([firstKeyPos[0]-QUE_ELEM_WIDTH/2+childNode.keys.length*QUE_ELEM_WIDTH/2, firstKeyPos[1]-QUE_ELEM_HEIGHT/2])
-                // var childLayerName = ''
-                // for (var j = 0; j < childNode.keys.length; j++) {
-                //     childLayerName += childNode.keys[j].key
-                // }
-                childrenLayerNames.push(childNode.level+'.'+childNode.idx)
-            }
-    
-            for (var i = 0; i < parentPosArr.length; i++) {
-                var anchorPoint
-                if (parentPosArr[i][0] > childrenPosArr[i][0]) {
-                    anchorPoint = "RIGHT_TOP"
-                } else {
-                    anchorPoint = "LEFT_TOP"
-                }
-                var layerName = parentLayerName+'_'+childrenLayerNames[i]
-                var unit = {
-                    "layerName": layerName,
-                    "Anchor Point": anchorPoint, 'Position': parentPosArr[i],
-                    "pathGroup": {
-                        "type": "Group",
-                        "vertices": [parentPosArr[i], childrenPosArr[i]],
-                        "closed": false,
-                    },
-                    "Stroke": {
-                        "Stroke Width": 1,
-                        "Color": colorUtil.hexToRgb1("#000000")
-                    },
-                    "Trim Paths": {
-                        'Start': 0,
-                    },
-                    "keyframes": {
-                        "Contents.Group 1.Contents.Trim Paths 1.End": [
-                                [shotTime, shotTime+1],
-                                [0, 100],
-                                {"temporal": precompUtil.temporal}
+                for (var j = 0; j < childNode.keys.length; j++) {
+                    var key = childNode.keys[j]
+                    var layer = layersCollecter[key.key].layer
+                    var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+                    shareUtil.configKeyframes(
+                        layer,
+                        {
+                            "Transform.Position": [
+                                [shotTime, shotTime + 1],
+                                [oldPos, [oldPos[0] - QUE_ELEM_WIDTH / 2, oldPos[1]]],
+                                { "temporal": precompUtil.temporal }
                             ]
-                    },
+                        }
+                    )
                 }
-                layersCollecter[layerName] = {}
-                shapeUtil.addOne(parentComp, unit, layersCollecter[layerName])
-                node.childrenEdges.splice(i, 0, layersCollecter[layerName])
-                node.children[i].parentEdge = layersCollecter[layerName]
             }
-            shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+            for (var i = idx+2; i < node.children.length; i++) {
+                var childNode = node.children[i]
+                for (var j = 0; j < childNode.keys.length; j++) {
+                    var key = childNode.keys[j]
+                    var layer = layersCollecter[key.key].layer
+                    var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+                    shareUtil.configKeyframes(
+                        layer,
+                        {
+                            "Transform.Position": [
+                                [shotTime, shotTime + 1],
+                                [oldPos, [oldPos[0] + QUE_ELEM_WIDTH / 2, oldPos[1]]],
+                                { "temporal": precompUtil.temporal }
+                            ]
+                        }
+                    )
+                }
+            }
+        }
+        
+        shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+
+        shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
+        var parentPosArr = []
+        var parentLayerNames = []
+        for (var i = 0; i < node.keys.length; i++) {
+            
+            var key = node.keys[i]
+            parentLayerNames.push(node.level+'.'+node.idx+'.'+i)
+            // parentLayerName += key.key
+            var layer = layersCollecter[key.key].layer
+            var pos = layer("Transform")("Position").valueAtTime(shotTime, false)
+            parentPosArr.push([pos[0]-QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
+            if (!node.keys[i+1]) {
+                parentLayerNames.push(node.level+'.'+node.idx+'.'+(i+1))
+                parentPosArr.push([pos[0]+QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
+            }
         }
 
-        relocateNodes()
-        relocateEdges()
+        var childrenPosArr = []
+        var childrenLayerNames = []
+        for (var i = 0; i < node.children.length; i++) {
+            var childNode = node.children[i]
+            var firstKeyPos = layersCollecter[childNode.keys[0].key].layer("Transform")("Position").valueAtTime(shotTime, false)
+            childrenPosArr.push([firstKeyPos[0]-QUE_ELEM_WIDTH/2+childNode.keys.length*QUE_ELEM_WIDTH/2, firstKeyPos[1]-QUE_ELEM_HEIGHT/2])
+            // var childLayerName = ''
+            // for (var j = 0; j < childNode.keys.length; j++) {
+            //     childLayerName += childNode.keys[j].key
+            // }
+            childrenLayerNames.push(childNode.level+'.'+childNode.idx)
+        }
+
+        for (var i = 0; i < parentPosArr.length; i++) {
+            var anchorPoint
+            if (parentPosArr[i][0] > childrenPosArr[i][0]) {
+                anchorPoint = "RIGHT_TOP"
+            } else {
+                anchorPoint = "LEFT_TOP"
+            }
+            var layerName = parentLayerNames[i]+'_'+childrenLayerNames[i]
+            var unit = {
+                "layerName": layerName,
+                "Anchor Point": anchorPoint, 'Position': parentPosArr[i],
+                "pathGroup": {
+                    "type": "Group",
+                    "vertices": [parentPosArr[i], childrenPosArr[i]],
+                    "closed": false,
+                },
+                "Stroke": {
+                    "Stroke Width": 1,
+                    "Color": colorUtil.hexToRgb1("#000000")
+                },
+                "Trim Paths": {
+                    'Start': 0,
+                },
+                "keyframes": {
+                    "Contents.Group 1.Contents.Trim Paths 1.End": [
+                            [shotTime, shotTime+1],
+                            [0, 100],
+                            {"temporal": precompUtil.temporal}
+                        ]
+                },
+            }
+            // 隐藏旧的edges
+            if (layersCollecter[layerName]) {
+                // layersCollecter[layerName].layer("Transform")("Opacity").setValueAtTime(shotTime, 0)
+                shareUtil.configKeyframes(
+                    layersCollecter[layerName].layer,
+                    {
+                        "Transform.Opacity": [
+                            [conf["startTime"], shotTime-2],
+                            [100, 0],
+                            {"spatial": precompUtil.spatial}
+                        ]
+                    }
+                )
+            }
+            layersCollecter[layerName] = {}
+            shapeUtil.addOne(parentComp, unit, layersCollecter[layerName])
+            node.childrenEdges.splice(i, 0, layersCollecter[layerName])
+            node.children[i].parentEdge = layersCollecter[layerName]
+        }
+        shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     }
 
     animationSplit()
-    this._bTreeIndicatorResetPos(conf, layersCollecter)
+    this._bTreeIndicatorResetPos(conf, node, layersCollecter)
 }
 
-PrecompUtil.prototype._bTreeIndicatorResetPos = function (conf, layersCollecter) {
+PrecompUtil.prototype._bTreeIndicatorResetPos = function (conf, node, layersCollecter) {
     var i = this._btree.root.keys.length - 1
     if (i < 0) {
         return
     }
-    var keyLayer = layersCollecter[this._btree.root.keys[i].key].layer
+    var keyLayer = layersCollecter[node.keys[i].key].layer
     var indicator = this._bTreeIndicator(conf)
     var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
     // var frameTime = conf["startTime"] + shotTime
@@ -930,7 +967,7 @@ PrecompUtil.prototype._bTreeSetIndicatorPos = function (pos, conf) {
     // layer("Transform")("Position").setValue(pos)
 }
 
-PrecompUtil.prototype._bTreeMoveIndicator = function (conf, offset_x, offset_y) {
+PrecompUtil.prototype._bTreeMoveIndicator = function (conf, offset_x, offset_y, notHold) {
     this._bTreeShowIndicator(true, conf)
     if (offset_x === 0 && offset_y === 0) {
         return
@@ -939,15 +976,20 @@ PrecompUtil.prototype._bTreeMoveIndicator = function (conf, offset_x, offset_y) 
     var indicator = this._bTreeIndicator(conf)
     var layer = indicator["layer"]
     var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
+    var keyframes = {
+        "Transform.Position": [
+            [shotTime, shotTime+1],
+            [oldPos, [oldPos[0]+QUE_ELEM_WIDTH*offset_x, oldPos[1]+QUE_ELEM_HEIGHT*2*offset_y]],
+        ]
+    }
+    if (!notHold) {
+        keyframes["Transform.Position"].push({"spatial": this.spatial})
+    } else {
+        keyframes["Transform.Position"].push({"temporal": precompUtil.temporal, "spatial": [{"type": 'BEZIER'}, {"type": 'BEZIER'}]})
+    }
     shareUtil.configKeyframes(
         layer,
-        {
-            "Transform.Position": [
-                [shotTime, shotTime+1],
-                [oldPos, [oldPos[0]+QUE_ELEM_WIDTH*offset_x, oldPos[1]+QUE_ELEM_HEIGHT*2*offset_y]],
-                {"spatial": precompUtil.spatial}
-            ]
-        }
+        keyframes
     )
     shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     // var keyframes = indicator["keyframes"]["Transform.Position"]
@@ -964,11 +1006,11 @@ PrecompUtil.prototype._bTreeMoveIndicator = function (conf, offset_x, offset_y) 
 }
 
 PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node, idx, conf, layersCollecter, moved) {
-    var shotTime
-    shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
-    shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
+    // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+    var shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
 
     function _moveKey(i, distance) {
+        shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
         if (!node.keys[i]) {
             return
         }
@@ -980,11 +1022,11 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
                 "Transform.Position": [
                     [shotTime, shotTime+1],
                     [oldPos, [oldPos[0]+distance, oldPos[1]]],
-                    // {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}]}
-                    {"temporal": [[[0, 0.1], [500,  65]], [[0.1, 75], [0, 0.1]]]}
+                    {"temporal": precompUtil.temporal}
                 ]
             }
         )
+        // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     }
 
     // if (moved) {
@@ -999,6 +1041,9 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
     //     }
     // }
 
+    if (idx > 0) {
+        shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+    }
     for (var i = 0; i < idx; i++) {
         // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
         _moveKey(i, -QUE_ELEM_WIDTH)
@@ -1037,12 +1082,12 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
             ]
         }
     }
-    shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+    // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     layersCollecter[layerName] = {}
     this.misc(items, parentComp, misc, layersCollecter[layerName])
 
-    shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
-    this._bTreeShowIndicator(false, conf)
+    // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+    // this._bTreeShowIndicator(false, conf)
     shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
     if (node.parentEdge) {
         var edgeLayer = node.parentEdge.layer
@@ -1143,18 +1188,22 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
             moved = true
         }
         i += 1
+        var splited = false
         if (node.children[i].keys.length === this._btree.order - 1) {
-            this._bTreeSplitChildren(items, parentComp, node, i, conf, layersCollecter)
+            this._bTreeSplitChildren(items, parentComp, node, i, conf, layersCollecter, true)
             // this._bTreeMoveIndicator(conf, node.children[i+1].keys.length, 1)
             if (key["key"] > node.keys[i]["key"]) {
                 i += 1
             }
+            splited = true
+            // this._bTreeMoveIndicator(conf, node.children[i].keys.length, 1)
         }
-        if (moved) {
-            this._bTreeMoveIndicator(conf, 0, 1)
-        } else {
-            this._bTreeMoveIndicator(conf, node.children[i].keys.length, 1)
-        }
+        // if (splited) {
+        //     this._bTreeMoveIndicator(conf, node.children[i].keys.length, 1)
+        // } else {
+        //     this._bTreeMoveIndicator(conf, 0, 1)
+        // }
+        // this._bTreeMoveIndicator(conf, node.children[i].keys.length, 1)
 
         this._bTreeInsertNonFull(items, parentComp, node.children[i], key, conf, layersCollecter)
     }
@@ -1196,7 +1245,7 @@ PrecompUtil.prototype._bTreeInsert = function (items, parentComp, elem, conf, la
         root.level += 1
         new_root.children.unshift(root)
         this._btree.root = new_root
-        this._bTreeSplitChildren(items, parentComp, new_root, 0, conf, layersCollecter)
+        this._bTreeSplitChildren(items, parentComp, new_root, 0, conf, layersCollecter, false)
         this._bTreeInsertNonFull(items, parentComp, new_root, key, conf, layersCollecter)
     }else {
         this._bTreeInsertNonFull(items, parentComp, root, key, conf, layersCollecter)
@@ -1333,7 +1382,7 @@ PrecompUtil.prototype._bTreeAdd = function (items, parentComp, elems, unit) {
 }
 
 PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, conf, layersCollecter) {
-    shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
+    // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     var elems = conf["elems"]
     function insert(elem) {
         // 插入数据的同时记录需要更新的节点信息
@@ -1352,7 +1401,7 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, conf, layer
     }
 
     for (var i = 0; i < elems.length; i++) {
-        this._bTreeIndicatorResetPos(conf, layersCollecter)
+        this._bTreeIndicatorResetPos(conf, precompUtil._btree.root, layersCollecter)
         var elem = elems[i]
         switch (elem.oper) {
             case 'S':
@@ -1365,9 +1414,9 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, conf, layer
                 insert(elem)
         }
         shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
-        // if (i === 5) {
-        //     break
-        // }
+        if (i === 3) {
+            break
+        }
     }
     
     // var indicator = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["misc"]["vectors"]["Indicator"]

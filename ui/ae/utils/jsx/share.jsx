@@ -246,7 +246,7 @@ ShareUtil.prototype.configKeyframes = function (propGroup, keyframes) {
 			if (confExtra["spatial"]) {
 				var confSpatial = confExtra["spatial"]
 				for (var i = 0; i < confSpatial.length; i++) {
-					prop.setInterpolationTypeAtKey(i+1, TYPE_DIC[confSpatial[i]["type"]])
+					prop.setInterpolationTypeAtKey(prop.numKeys-i, TYPE_DIC[confSpatial[i]["type"]])
 					var inTangents = confSpatial[i]["inTangents"]
 					if (!inTangents) {
 						continue
