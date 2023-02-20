@@ -702,15 +702,15 @@ PrecompUtil.prototype._bTreeNode = function (leaf, level, idx, parent) {
     }
 }
 
-PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, idx, conf, layersCollecter, internal) {
+PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, parent, idx, conf, layersCollecter) {
     var order = this._btree.order
     var mid = order / 2
-    var child = node.children[idx]
-    var new_child = this._bTreeNode(child.leaf, node.level+1, idx+1, node)
+    var child = parent.children[idx]
+    var new_child = this._bTreeNode(child.leaf, child.level, idx+1, parent)
 
     // 移动左右的node和受到推挤的其它node, keys有变动就重建node(queue合成)
-    node.children.splice(idx+1, 0, new_child)
-    node.keys.splice(idx, 0, child.keys[mid-1])
+    parent.children.splice(idx+1, 0, new_child)
+    parent.keys.splice(idx, 0, child.keys[mid-1])
     new_child.keys = child.keys.slice(mid, order-1)
     child.keys = child.keys.slice(0, mid-1)
     // 如果不是叶节点，还要把子节点分裂成左右两部分
@@ -725,7 +725,7 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
         // 中间节点
         // 移动父节点两侧的keys
         for (var i = 0; i < idx; i++) {
-            var key = node.keys[i]
+            var key = parent.keys[i]
             var layer = layersCollecter[key.key].layer
             var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
             shareUtil.configKeyframes(
@@ -739,8 +739,8 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
                 }
             )
         }
-        for (var i = idx+1; i < node.keys.length; i++) {
-            var key = node.keys[i]
+        for (var i = idx+1; i < parent.keys.length; i++) {
+            var key = parent.keys[i]
             var layer = layersCollecter[key.key].layer
             var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
             shareUtil.configKeyframes(
@@ -755,25 +755,25 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
             )
         }
         // 同步移动indicator
-        if (node.keys[idx+1]) {
-            precompUtil._bTreeMoveIndicator(conf, 0.5, 0, true)
-        } else {
-            precompUtil._bTreeMoveIndicator(conf, -0.5, 0, true)
-        }
+        // if (node.keys[idx+1]) {
+        //     precompUtil._bTreeMoveIndicator(conf, 0.5, 0, true)
+        // } else {
+        //     precompUtil._bTreeMoveIndicator(conf, -0.5, 0, true)
+        // }
 
         // 上升到父节点指定位置
-        var key = node.keys[idx]
+        var key = parent.keys[idx]
         var layer = layersCollecter[key.key].layer
         var oldPos = layer("Transform")("Position").valueAtTime(shotTime, false)
 
-        var referKey = node.keys[idx-1]
+        var referKey = parent.keys[idx-1]
         var referPos
         var newPos
         if (referKey) {
             referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
             newPos = [referPos[0]+QUE_ELEM_WIDTH/2, referPos[1]]
         } else {
-            referKey = node.keys[idx+1]
+            referKey = parent.keys[idx+1]
             if (referKey) {
                 referPos = layersCollecter[referKey.key].layer("Transform")("Position").valueAtTime(shotTime, false)
                 newPos = [referPos[0]-QUE_ELEM_WIDTH/2, referPos[1]]
@@ -794,9 +794,9 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
         )
 
         // 重定位受影响的两侧子节点keys
-        if (internal) {
+        if (!child.leaf) {
             for (var i = 0; i < idx; i++) {
-                var childNode = node.children[i]
+                var childNode = parent.children[i]
                 for (var j = 0; j < childNode.keys.length; j++) {
                     var key = childNode.keys[j]
                     var layer = layersCollecter[key.key].layer
@@ -813,8 +813,8 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
                     )
                 }
             }
-            for (var i = idx+2; i < node.children.length; i++) {
-                var childNode = node.children[i]
+            for (var i = idx+2; i < parent.children.length; i++) {
+                var childNode = parent.children[i]
                 for (var j = 0; j < childNode.keys.length; j++) {
                     var key = childNode.keys[j]
                     var layer = layersCollecter[key.key].layer
@@ -838,24 +838,24 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
         shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
         var parentPosArr = []
         var parentLayerNames = []
-        for (var i = 0; i < node.keys.length; i++) {
+        for (var i = 0; i < parent.keys.length; i++) {
             
-            var key = node.keys[i]
-            parentLayerNames.push(node.level+'.'+node.idx+'.'+i)
+            var key = parent.keys[i]
+            parentLayerNames.push(parent.level+'.'+parent.idx+'.'+i)
             // parentLayerName += key.key
             var layer = layersCollecter[key.key].layer
             var pos = layer("Transform")("Position").valueAtTime(shotTime, false)
             parentPosArr.push([pos[0]-QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
-            if (!node.keys[i+1]) {
-                parentLayerNames.push(node.level+'.'+node.idx+'.'+(i+1))
+            if (!parent.keys[i+1]) {
+                parentLayerNames.push(parent.level+'.'+parent.idx+'.'+(i+1))
                 parentPosArr.push([pos[0]+QUE_ELEM_WIDTH/2, pos[1]+QUE_ELEM_HEIGHT/2])
             }
         }
 
         var childrenPosArr = []
         var childrenLayerNames = []
-        for (var i = 0; i < node.children.length; i++) {
-            var childNode = node.children[i]
+        for (var i = 0; i < parent.children.length; i++) {
+            var childNode = parent.children[i]
             var firstKeyPos = layersCollecter[childNode.keys[0].key].layer("Transform")("Position").valueAtTime(shotTime, false)
             childrenPosArr.push([firstKeyPos[0]-QUE_ELEM_WIDTH/2+childNode.keys.length*QUE_ELEM_WIDTH/2, firstKeyPos[1]-QUE_ELEM_HEIGHT/2])
             // var childLayerName = ''
@@ -899,27 +899,30 @@ PrecompUtil.prototype._bTreeSplitChildren = function (items, parentComp, node, i
             // 隐藏旧的edges
             if (layersCollecter[layerName]) {
                 // layersCollecter[layerName].layer("Transform")("Opacity").setValueAtTime(shotTime, 0)
-                shareUtil.configKeyframes(
-                    layersCollecter[layerName].layer,
-                    {
-                        "Transform.Opacity": [
-                            [conf["startTime"], shotTime-2],
-                            [100, 0],
-                            {"spatial": precompUtil.spatial}
-                        ]
-                    }
-                )
+                var prop = layersCollecter[layerName].layer("Transform")("Opacity")
+                prop.setValueAtTime(shotTime-2, 0)
+                prop.setInterpolationTypeAtKey(prop.nearestKeyIndex(shotTime-2), TYPE_DIC["HOLD"])
+                // shareUtil.configKeyframes(
+                //     layersCollecter[layerName].layer,
+                //     {
+                //         "Transform.Opacity": [
+                //             [conf["startTime"], shotTime-2],
+                //             [100, 0],
+                //             {"spatial": precompUtil.spatial}
+                //         ]
+                //     }
+                // )
             }
             layersCollecter[layerName] = {}
             shapeUtil.addOne(parentComp, unit, layersCollecter[layerName])
-            node.childrenEdges.splice(i, 0, layersCollecter[layerName])
-            node.children[i].parentEdge = layersCollecter[layerName]
+            parent.childrenEdges.splice(i, 0, layersCollecter[layerName])
+            parent.children[i].parentEdge = layersCollecter[layerName]
         }
         shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     }
 
     animationSplit()
-    this._bTreeIndicatorResetPos(conf, node, layersCollecter)
+    this._bTreeIndicatorResetPos(conf, parent, layersCollecter)
 }
 
 PrecompUtil.prototype._bTreeIndicatorResetPos = function (conf, node, layersCollecter) {
@@ -935,9 +938,11 @@ PrecompUtil.prototype._bTreeIndicatorResetPos = function (conf, node, layersColl
     // var left = nodeLayer.sourceRectAtTime(frameTime, false).left
     // var width = nodeLayer.sourceRectAtTime(frameTime, false).width
     var pos = keyLayer("Transform")("Position").valueAtTime(shotTime, false)
-    indicator["layer"]("Transform")("Position").setValueAtTime(
+    var indicatorPosProp = indicator["layer"]("Transform")("Position")
+    indicatorPosProp.setValueAtTime(
         shotTime, [pos[0]+QUE_ELEM_WIDTH/2, pos[1]]
     )
+    indicatorPosProp.setInterpolationTypeAtKey(indicatorPosProp.nearestKeyIndex(shotTime), TYPE_DIC["HOLD"])
 }
 
 PrecompUtil.prototype._bTreeIndicator = function (conf) {
@@ -1050,10 +1055,10 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
         // shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
     }
 
-    // for (var i = node.keys.length-1; i > idx; i--) {
-    //     this._bTreeMoveIndicator(conf, 0.5, 0)
-    //     _moveKey(i, QUE_ELEM_WIDTH/2)
-    // }
+    for (var i = node.keys.length-1; i > idx; i--) {
+        this._bTreeMoveIndicator(conf, 0.5, 0)
+        _moveKey(i, QUE_ELEM_WIDTH/2)
+    }
     
     shotTime = shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"]
     var indicatorPos = this._bTreeIndicatorPos(conf)
@@ -1107,7 +1112,7 @@ PrecompUtil.prototype._bTreeAnimationAddKey = function (items, parentComp, node,
             edgeLayer,
             {
                 "Contents.Group 1.Contents.Path 1.Path": [
-                    [shotTime, shotTime + 1],
+                    [shotTime + 1, shotTime + 2],
                     [
                         {
                             "vertices": path.vertices,
@@ -1190,7 +1195,7 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
         i += 1
         var splited = false
         if (node.children[i].keys.length === this._btree.order - 1) {
-            this._bTreeSplitChildren(items, parentComp, node, i, conf, layersCollecter, true)
+            this._bTreeSplitChildren(items, parentComp, node, i, conf, layersCollecter)
             // this._bTreeMoveIndicator(conf, node.children[i+1].keys.length, 1)
             if (key["key"] > node.keys[i]["key"]) {
                 i += 1
@@ -1198,6 +1203,12 @@ PrecompUtil.prototype._bTreeInsertNonFull = function (items, parentComp, node, k
             splited = true
             // this._bTreeMoveIndicator(conf, node.children[i].keys.length, 1)
         }
+        if (moved) {
+            this._bTreeMoveIndicator(conf, 0, 1)
+        } else {
+            this._bTreeMoveIndicator(conf, node.children[i].keys.length, 1)
+        }
+        
         // if (splited) {
         //     this._bTreeMoveIndicator(conf, node.children[i].keys.length, 1)
         // } else {
@@ -1245,7 +1256,7 @@ PrecompUtil.prototype._bTreeInsert = function (items, parentComp, elem, conf, la
         root.level += 1
         new_root.children.unshift(root)
         this._btree.root = new_root
-        this._bTreeSplitChildren(items, parentComp, new_root, 0, conf, layersCollecter, false)
+        this._bTreeSplitChildren(items, parentComp, new_root, 0, conf, layersCollecter)
         this._bTreeInsertNonFull(items, parentComp, new_root, key, conf, layersCollecter)
     }else {
         this._bTreeInsertNonFull(items, parentComp, root, key, conf, layersCollecter)
@@ -1414,7 +1425,7 @@ PrecompUtil.prototype._bTreeAnimation = function (items, parentComp, conf, layer
                 insert(elem)
         }
         shareUtil.scenes[shareUtil.sName][shareUtil.shot]["time"] += 1
-        if (i === 3) {
+        if (i === 4) {
             break
         }
     }
