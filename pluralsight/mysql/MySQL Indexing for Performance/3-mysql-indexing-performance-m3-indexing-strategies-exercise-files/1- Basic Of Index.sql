@@ -32,6 +32,15 @@ FROM staff INNER JOIN payment
      payment.payment_date LIKE '2005-08%'
 GROUP BY first_name, last_name;
 
+SELECT CONNECTION_ID();
+EXPLAIN FOR CONNECTION 9;
+
+SHOW CHARACTER SET;
+
+SELECT count(*) FROM payment WHERE  payment.payment_date LIKE '2005-08%';
+SELECT count(*) FROM payment WHERE staff_id=2;
+SELECT * FROM INFORMATION_SCHEMA.SCHEMATA;
+
 
 EXPLAIN ANALYZE
 SELECT first_name, last_name, SUM(amount) AS total
