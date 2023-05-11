@@ -125,7 +125,7 @@ ShareUtil.prototype.delItems = function (items) {
 ShareUtil.prototype.findItemByName = function (name) {
 	for (var i = 1; i <= project.items.length; i++) {
 		var item = project.items[i];
-		if (item.name == name) {
+		if (item.name === name) {
 			return item;
 		}
 	}
@@ -139,7 +139,7 @@ ShareUtil.prototype.configMasks = function (layer, masks) {
 	for (var i = 0; i < masks.length; i++) {
 		var conf_mask = masks[i]
 		var mask = layer.Masks.addProperty("Mask");
-		maskShape = mask("maskShape");
+		var maskShape = mask("maskShape");
 		var shape = maskShape.value;
 		if (conf_mask["vertices"]) {
 			shape.vertices = conf_mask["vertices"];
@@ -270,10 +270,11 @@ ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
 	if (direction === null) {
 		return
 	}
-	var top = layer.sourceRectAtTime(0, false).top
-    var left = layer.sourceRectAtTime(0, false).left
-    var width = layer.sourceRectAtTime(0, false).width
-	var height = layer.sourceRectAtTime(0, false).height
+	var rect = layer.sourceRectAtTime(0, false)
+	var top = rect.top
+    var left = rect.left
+    var width = rect.width
+	var height = rect.height
     var prop = layer("Transform")("Anchor Point")
     var value = prop.value
 

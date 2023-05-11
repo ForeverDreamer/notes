@@ -76,7 +76,7 @@ git clone https://github.com/nusco/how-git-works
 # 查看远程和本地的所有分支
 git branch --all
 
-# 查看所有dev指向的commit
+# 查看所有dev分支指向的commit, 包括local和remote
 git show-ref dev
 git show-ref master
 git show-ref main

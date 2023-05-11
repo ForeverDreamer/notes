@@ -1,3 +1,5 @@
+// TODO 拆分重构
+
 function PrecompUtil() {
     this.temporal = [[[0, 0.1], [500,  65]], [[0.1, 75], [0, 0.1]]]
     this.spatial = [{"type": 'HOLD'}, {"type": 'HOLD'}]

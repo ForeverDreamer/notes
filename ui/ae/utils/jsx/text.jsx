@@ -48,6 +48,9 @@ TextUtil.prototype.addOne = function(parentComp, layerName, props) {
 		textLayer.inPoint = props["span"]["inPoint"];
         textLayer.outPoint = props["span"]["outPoint"];
 	}
+    if (props['expression']) {
+		textLayer("Source Text").expression = props['expression'].join("\n");
+	}
     textLayer("Transform")("Position").setValue(props["Position"])
     shareUtil.configKeyframes(textLayer, props["keyframes"])
     // textLayer.threeDLayer = true

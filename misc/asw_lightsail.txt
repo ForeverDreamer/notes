@@ -1,0 +1,5 @@
+ubuntu系统
+# 切换到root
+sudo su
+# 切换回ubuntu
+su ubuntu

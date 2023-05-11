@@ -63,6 +63,20 @@ def shot_0(start_time):
         #         }
         #     }
         # ],
+        'texts': [
+            {
+                'name': 'expression_test', 'text': 'expression_test', 'Position': [500, 500],
+                'font': FONTS['subtitle'], 'fillColor': COLORS['subtitle'], 'fontSize': 100,
+                'expression': [
+                    'var layerNames = [];',
+                    'var myComp = comp(thisComp.layer(2).name);',
+                    'for (var i = 1; i <= myComp.numLayers; i ++) {',
+                    '    layerNames.push(myComp.layer(i).name)',
+                    '}',
+                    'layerNames;',
+                ]
+            }
+        ],
         'misc': {
             'layerName': 'B-Tree合成', 'width': 1920, 'height': 1080, 'startTime': start_time, 'duration': duration,
             'texts': texts,
