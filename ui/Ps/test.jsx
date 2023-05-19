@@ -1,8 +1,6 @@
 #includepath "./utils/jsx";
+#include "constants.jsx";
 #include "misc.jsx";
-
-var BASE_DIR = "~/Desktop"
-var fileName = 'myDocument'
 
 app.bringToFront();
 // var doc = app.documents.add(800, 500, 72, fileName, NewDocumentMode.RGB)
