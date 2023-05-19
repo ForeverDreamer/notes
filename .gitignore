@@ -103,6 +103,8 @@ target/
 data
 *.pdf
 !e262-3.pdf
+!photoshop-javascript-ref-2020.pdf
+!photoshop-scripting-guide-2020_unlocked.pdf
 intellij_idea_demo
 
 ui/ae/tmp
