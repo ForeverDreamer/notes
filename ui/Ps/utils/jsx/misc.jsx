@@ -1,7 +1,4 @@
 function MiscUtil() {
-	this.scenes = {}
-	this.sName = null
-	this.shot = null
 }
 
 MiscUtil.prototype.closeAllDocuments = function () {
