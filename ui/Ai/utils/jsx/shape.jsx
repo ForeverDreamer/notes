@@ -2,7 +2,7 @@ function ShapeUtil() {
 }
 
 ShapeUtil.prototype.add = function (doc, conf) {
-    var shape
+    var pathItem
     switch (conf['type']) {
         case SHAPE_TYPES[0]:
             shape = doc.pathItems.ellipse(conf['top'], conf['left'], conf['width'], conf['height'], conf['reversed']);
@@ -23,6 +23,8 @@ ShapeUtil.prototype.add = function (doc, conf) {
             throw new Error('未知SHAPE类型')
     }
     miscUtil.setColor(shape, 'fillColor', '#FFFF00')
+    shape.opacity = Math.random() * 100;
+    return shape
 }
 
 
