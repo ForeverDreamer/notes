@@ -2,7 +2,7 @@ function ShapeUtil() {
 }
 
 ShapeUtil.prototype.add = function (doc, conf) {
-    var pathItem
+    var shape
     switch (conf['type']) {
         case SHAPE_TYPES[0]:
             shape = doc.pathItems.ellipse(conf['top'], conf['left'], conf['width'], conf['height'], conf['reversed']);
