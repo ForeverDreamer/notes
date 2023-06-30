@@ -1,0 +1,29 @@
+https://imagehub.shop:3000
+
+# 申请证书
+docker run -it --rm --name certbot \
+            -v "/etc/letsencrypt:/etc/letsencrypt" \
+            -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+            -p 80:80 \
+            certbot/certbot certonly --standalone -d imagehub.shop -d www.imagehub.shop
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/imagehub.shop/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/imagehub.shop/privkey.pem
+This certificate expires on 2023-09-28.
+These files will be updated when the certificate renews.
+
+# 证书续期
+docker run -it --rm --name certbot \
+            -v "/etc/letsencrypt:/etc/letsencrypt" \
+            -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+            -p 80:80 \
+            certbot/certbot renew --standalone
+
+sudo apt-get install nginx
+sudo cp /etc/letsencrypt/live/imagehub.shop/privkey.pem /etc/nginx
+sudo ls -l /etc/nginx/
+sudo chmod 400 /etc/nginx/privkey.pem
+sudo cp /etc/letsencrypt/live/imagehub.shop/fullchain.pem /etc/nginx
+sudo vim /etc/nginx/sites-enabled/default
+sudo systemctl restart nginx
