@@ -1,0 +1,22 @@
+sudo apt-get update
+sudo apt install g++ build-essential git curl python2-minimal
+
+# v2ray记得先设为全局代理，避免安装过程中网络错误
+# 查看windows系统的内网ip, 从ubuntu虚拟机ping一下确认网络是通的
+export http_proxy=http://172.20.10.5:10811
+export https_proxy=http://172.20.10.5:10811
+curl https://install.meteor.com/ | sh
+meteor node -v
+meteor npm -v
+meteor npm install --global yarn
+meteor yarn add node-gyp
+
+git config --global proxy.http 172.20.10.5:10811
+git config --global proxy.https 172.20.10.5:10811
+git clone https://github.com/ForeverDreamer/Rocket.Chat.git
+cd Rocket.Chat
+meteor yarn
+# 报错就查看日志文件
+cd /tmp/xfs-3179a0d9/
+tail -f build.log 
+meteor yarn dsv

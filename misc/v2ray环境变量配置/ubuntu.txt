@@ -1,0 +1,11 @@
+# 配置代理
+export http_proxy=http://172.20.10.5:10811
+export https_proxy=http://172.20.10.5:10811
+git config --global proxy.http 172.20.10.5:10811
+git config --global proxy.https 172.20.10.5:10811
+
+# 清除代理
+unset http_proxy
+unset https_proxy
+git config --global --unset proxy.http
+git config --global --unset proxy.https

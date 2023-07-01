@@ -1,4 +1,6 @@
-https://imagehub.shop:3000
+# 抽空把所有命令步骤封装成shell脚本
+
+https://imagehub.shop
 
 # 申请证书
 docker run -it --rm --name certbot \
