@@ -30,7 +30,7 @@ INNER JOIN Employee e2
 ON e1.ManagerID = e2.EmployeeID;
 
 -- Outer Join
-SELECT e1.EmployeeId EId, e1.Name EmployeeName, e2.EmployeeId MId, IFNULL(e2.name, 'Top Manager') AS ManagerName
+SELECT e1.EmployeeId EId, e1.Name EmployeeName, e2.EmployeeId MId, IFNULL(e2.name, 'I am Boss') AS ManagerName
 FROM Employee e1
 LEFT JOIN Employee e2
 ON e1.ManagerID = e2.EmployeeID;

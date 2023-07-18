@@ -10,7 +10,6 @@ conda deactivate
 
 conda remove --name crawler_learning --all
 
-
 conda install django
 
 conda uninstall django

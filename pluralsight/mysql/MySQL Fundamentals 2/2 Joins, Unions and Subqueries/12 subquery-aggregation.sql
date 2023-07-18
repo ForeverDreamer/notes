@@ -1,5 +1,6 @@
 USE sakila;
 
+-- 太复杂的嵌套语句，可以通过局部运行梳理逻辑
 SELECT fm.title, cat.name, dt.CountofCategory
 FROM film fm
          INNER JOIN film_category fc ON fc.film_id = fm.film_id

@@ -8,7 +8,7 @@ FROM INFORMATION_SCHEMA.STATISTICS
 WHERE TABLE_NAME = 'film';
 
 -- SELECT Statement
-EXPLAIN ANALYZE SELECT title, rental_duration, length
+EXPLAIN SELECT title, rental_duration, length
 FROM film
 WHERE rental_duration = 6 OR length = 100;
 SHOW WARNINGS;

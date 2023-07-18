@@ -4,6 +4,7 @@ Find customers who like to watch action movies?
 */
 USE sakila;
 
+-- 太复杂的嵌套语句，可以通过局部运行梳理逻辑
 -- Subquery
 SELECT cust.customer_id, cust.first_name, cust.last_name
 FROM customer cust

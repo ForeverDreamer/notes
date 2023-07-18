@@ -4,7 +4,7 @@ USE sakila;
 Problem Statement:
 Find all the customer's payments which are over their average payment.
 */
-
+-- 太复杂的嵌套语句，可以通过局部运行梳理逻辑
 SELECT payment_id, cust.first_name, cust.last_name, amount
 FROM payment pt
          INNER JOIN customer cust ON cust.customer_id = pt.customer_id

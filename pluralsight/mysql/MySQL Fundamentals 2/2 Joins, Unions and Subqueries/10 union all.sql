@@ -33,6 +33,7 @@ FROM Table1;
 SELECT *
 FROM Table2;
 
+-- 纵向拼接，列的数据必须一致，不去重
 /* UNION ALL */
 SELECT t1.ID T1ID, t1.Value AS T1Value
 FROM Table1 t1
@@ -49,6 +50,7 @@ UNION ALL
 SELECT  t2.ID AS T2ID, t2.Value AS T2Value
 FROM Table2 t2;
 
+-- 必须至少一个字段不一样，所有字段都一样的行会自动去重
 /* UNION */
 SELECT t1.ID T1ID, t1.Value AS T1Value
 FROM Table1 t1
@@ -67,6 +69,7 @@ SELECT  t2.ID AS T2ID, t2.Value AS T2Value
 FROM Table2 t2
 ORDER BY T1Value DESC;
 
+-- 横向拼接
 -- ----------------------------------
 -- FULL OUTER JOIN
 -- ----------------------------------
