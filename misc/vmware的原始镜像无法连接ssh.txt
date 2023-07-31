@@ -1,0 +1,5 @@
+# 参考链接
+https://askubuntu.com/questions/218344/why-am-i-getting-a-port-22-connection-refused-error
+
+sudo apt-get update
+sudo apt-get install openssh-client openssh-server

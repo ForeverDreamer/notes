@@ -55,6 +55,8 @@ cfe
 cfe@cfe.com
 PassForCfe123
 
+# 修改用户密码
+python manage.py changepassword admin
 
 
 

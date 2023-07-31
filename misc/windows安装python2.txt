@@ -1,0 +1,8 @@
+# 下载安装包
+https://www.python.org/download/releases/2.7/
+
+# 改名
+C:\Python27目录下，python.exe改为python2.exe
+
+# 系统的Path路径增加以下目录
+C:\Python27
