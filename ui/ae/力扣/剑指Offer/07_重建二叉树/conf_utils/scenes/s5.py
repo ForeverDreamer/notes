@@ -1,8 +1,8 @@
 import json
 
-from ae.constants.share import *
+from constants.share import *
 from .transcript import scenes
-from ae.utils.py.color import hex_to_rgb1
+from utils.py.color import hex_to_rgb1
 
 name = 's5'
 
@@ -59,10 +59,11 @@ def shot_0(start_time):
 
     annotation_height = 50
 
-    with open(BASE_DIR + '力扣/剑指Offer/07_重建二叉树/conf_utils/scenes/s5.json', "r") as f:
+    with open(BASE_DIR + '/力扣/剑指Offer/07_重建二叉树/conf_utils/scenes/s5.json', "r") as f:
         conf_shot_0 = json.loads(f.read())
 
     conf = {
+        'layerName': prefix, 'duration': duration,
         'subtitles': subtitles,
         'misc': [
             {

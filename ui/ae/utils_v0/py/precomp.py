@@ -1,6 +1,6 @@
-from ae.constants.share import PIXEL_ASPECT, FRAME_RATE
-from ae.utils.py.color import hex_to_rgb1
-from ae.utils.py.share import ShareUtil
+from constants.share import PIXEL_ASPECT, FRAME_RATE
+from utils.py.color import hex_to_rgb1
+from utils.py.share import ShareUtil
 
 
 class PrecompUtil:

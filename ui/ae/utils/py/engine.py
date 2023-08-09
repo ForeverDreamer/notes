@@ -8,8 +8,8 @@ import time
 import winreg
 import json
 
-from ae.constants.share import BASE_DIR
-from ae.utils.py.date import now
+from Ae.constants.share import BASE_DIR
+from Ae.utils.py.date import now
 
 
 # A Mini Python wrapper for the JS commands...

@@ -1,6 +1,6 @@
-from ae.constants.share import *
+from constants.share import *
 from .transcript import scenes
-from ae.utils.py.color import hex_to_rgb1
+from utils.py.color import hex_to_rgb1
 
 name = 's2'
 
@@ -22,6 +22,7 @@ def shot_0(start_time):
     duration = end_time - start_time
 
     conf = {
+        'layerName': prefix, 'duration': duration,
         'subtitles': subtitles,
         'annotations': [
             {

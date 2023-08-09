@@ -1,11 +1,10 @@
 import json
 import time
 
-from ae.constants.share import BASE_DIR, CALL_INTERVAL
-from ae.utils.py.camera import CameraUtil
-from ae.utils.py.engine import Engine
-from ae.utils.py.precomp import PrecompUtil
-from ae.utils.py.share import ensure_app_started, ShareUtil
+from Ae.constants.share import BASE_DIR, CALL_INTERVAL
+from Ae.utils_v0.py.camera import CameraUtil
+from Ae.utils_v0.py.engine import Engine
+from Ae.utils_v0.py.share import ensure_app_started, ShareUtil
 
 # Ae窗口最小化时找不到标题，导致程序阻塞，坑！
 # ensure_app_started()

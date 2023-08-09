@@ -1,15 +1,15 @@
 import inspect
 import json
 
-from ae.constants.share import *
+from Ae.constants.share import *
 import scenes
 
-CONF_BASE_DIR = 'D:/沉浸式学习/数据结构与算法/基础/树/b-tree/'
+ASSETS_DIR = ASSETS_DIR + '/数据结构与算法/基础/树/b-tree'
 
 conf = {
     'files': [
         {
-            'path': f'{CONF_BASE_DIR}Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0]
+            'path': f'{ASSETS_DIR}/Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0]
         },
     ],
     'scenes': {},
@@ -23,5 +23,5 @@ for name, func in inspect.getmembers(scenes, inspect.isfunction):
     conf['scenes'][scene_name] = scene
 
 obj = json.dumps(conf, indent=4)
-with open(f"{BASE_DIR}基础/树/b-tree/conf.json", 'w', encoding='utf-8') as f:
+with open(f"{BASE_DIR}/基础/树/b-tree/conf.json", 'w', encoding='utf-8') as f:
     f.write(obj)

@@ -1,5 +1,5 @@
-from ae.constants.share import *
-from ae.utils.py.color import hex_to_rgb1
+from constants.share import *
+from utils.py.color import hex_to_rgb1
 from .transcript import scenes
 
 name = 's4'
@@ -17,6 +17,7 @@ def shot_0(start_time):
     duration = end_time - start_time
 
     conf = {
+        'layerName': prefix, 'duration': duration,
         'images': [
             {
                 'name': '题目描述.jpg',

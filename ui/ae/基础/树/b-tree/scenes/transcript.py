@@ -3,10 +3,10 @@ scenes = {
     's0': [
         [
             # 开场白start
-            'Write the code, change the world!',
-            '大家好，我是IT学长',
+            # 'Write the code, change the world!',
+            # '大家好，我是IT学长',
             # 开场白end
-            '今天跟大家分享的是B-Tree',
+            # '今天跟大家分享的是B-Tree',
             'B-tree是一种特殊类型的自平衡搜索树',
             '其中每个节点可以包含多个键，并且可以有两个以上的子节点',
             '它是二叉搜索树的一般形式',

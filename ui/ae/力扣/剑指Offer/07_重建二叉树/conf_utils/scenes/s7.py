@@ -1,6 +1,6 @@
-from ae.constants.share import *
+from constants.share import *
 from .transcript import scenes
-from ae.utils.py.color import hex_to_rgb1
+from utils.py.color import hex_to_rgb1
 
 name = 's7'
 
@@ -13,7 +13,7 @@ def shot_0(start_time):
         subtitles.append([start_time + i * SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
+    end_time = subtitles[0][-1] + SUBTITLES_INTERVAL
     QUE_ELEM_WIDTH = 40
     QUE_ELEM_HEIGHT = 40
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
@@ -68,7 +68,8 @@ def shot_0(start_time):
                 'Source Text': [
                     [0, 9, 15],
                     [
-                        'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4', 'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
+                        'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
+                        'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
                         'idx_pl: 1  idx_pr: 1  idx_il: 0  idx_ir: 0'
                     ],
                     # {"spatial": SPATIAL_HOLD * 3}
@@ -154,7 +155,7 @@ def shot_0(start_time):
                     [0, 100],
                     {"spatial": [{"type": 'HOLD'}] * 2}
                 ],
-                'Position':  [
+                'Position': [
                     [0, 16, 26, 26.5],
                     [[108, 103.5], [148, 103.5], [148, 103.5], [108, 103.5]],
                     # {"spatial": [{"type": 'HOLD'}] * 3 + [{"type": 'LINEAR'}]}
@@ -166,7 +167,7 @@ def shot_0(start_time):
                     [0, 100],
                     {"spatial": SPATIAL_HOLD * 2}
                 ],
-                'Position':[
+                'Position': [
                     [9, 14, 14.5, 20, 20.5, 22, 22.5, 24, 24.5, 26, 26.5],
                     [
                         [108, 52.5], [108, 52.5], [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5],
@@ -189,6 +190,7 @@ def shot_0(start_time):
     }
 
     conf = {
+        'layerName': prefix, 'duration': duration,
         'subtitles': subtitles,
         # 'annotations': [
         #     {
@@ -602,46 +604,67 @@ def shot_0(start_time):
                         }
                     },
                     'lines': [
-                        [0, {'text': 'class', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
-                         {'text': 'TreeNode:'}],
+                        [
+                            0,
+                            {'text': 'class', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
+                            {'text': 'TreeNode:'}
+                        ],
                         [
                             1,
-                            {'text': 'def', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
-                            {'text': '__init__', 'fillColor': CODE_COLORS['dunder']}, {'text': '('},
-                            {'text': 'self', 'fillColor': CODE_COLORS['self']}, {'text': ', values):'},
+                            {'text': 'def', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
+                            {'text': '__init__', 'fillColor': CODE_COLORS['dunder']},
+                            {'text': '('},
+                            {'text': 'self', 'fillColor': CODE_COLORS['self']},
+                            {'text': ', values):'},
                         ],
                         [
                             2,
-                            {'text': 'self', 'fillColor': CODE_COLORS['self']}, {'text': '.key = key'},
+                            {'text': 'self', 'fillColor': CODE_COLORS['self']},
+                            {'text': '.key = key'},
                         ],
                         [
                             2,
-                            {'text': 'self', 'fillColor': CODE_COLORS['self']}, {'text': '.left ='}, {'text': ' '},
+                            {'text': 'self', 'fillColor': CODE_COLORS['self']},
+                            {'text': '.left ='},
+                            {'text': ' '},
                             {'text': 'None', 'fillColor': CODE_COLORS['keyword']},
                         ],
                         [
                             2,
-                            {'text': 'self', 'fillColor': CODE_COLORS['self']}, {'text': '.right ='}, {'text': ' '},
+                            {'text': 'self', 'fillColor': CODE_COLORS['self']},
+                            {'text': '.right ='},
+                            {'text': ' '},
                             {'text': 'None', 'fillColor': CODE_COLORS['keyword']},
                         ],
                         [],
-                        [0, {'text': 'class', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
-                         {'text': 'Solution:'}],
+                        [
+                            0,
+                            {'text': 'class', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
+                            {'text': 'Solution:'}
+                        ],
                         [
                             1,
-                            {'text': 'def', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
-                            {'text': 'buildTree', 'fillColor': CODE_COLORS['func']}, {'text': '('},
-                            {'text': 'self', 'fillColor': CODE_COLORS['self']}, {'text': ', preorder, inorder):'},
+                            {'text': 'def', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
+                            {'text': 'buildTree', 'fillColor': CODE_COLORS['func']},
+                            {'text': '('},
+                            {'text': 'self', 'fillColor': CODE_COLORS['self']},
+                            {'text': ', preorder, inorder):'},
                         ],
                         [
                             2,
-                            {'text': 'def', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                            {'text': 'def', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
                             {'text': 'rebuild', 'fillColor': CODE_COLORS['func']},
                             {'text': '(idx_pl, idx_pr, idx_il, idx_ir):'},
                         ],
                         [
                             3,
-                            {'text': 'if', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                            {'text': 'if', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
                             {'text': 'idx_pl > idx_pr:'},
                         ],
                         [
@@ -668,66 +691,115 @@ def shot_0(start_time):
                         [],
                         [
                             3,
-                            {'text': 'root.left = rebuild(idx_pl +'}, {'text': ' '},
+                            {'text': 'root.left = rebuild(idx_pl +'},
+                            {'text': ' '},
                             {'text': '1', 'fillColor': CODE_COLORS['number']},
                             {'text': ', idx_pl + size_left, idx_il, idx_i_root -'},
-                            {'text': ' '}, {'text': '1', 'fillColor': CODE_COLORS['number']}, {'text': ')'},
+                            {'text': ' '}, {'text': '1', 'fillColor': CODE_COLORS['number']},
+                            {'text': ')'},
                         ],
                         [
                             3,
-                            {'text': 'root.right = rebuild(idx_pl + size_left +'}, {'text': ' '},
+                            {'text': 'root.right = rebuild(idx_pl + size_left +'},
+                            {'text': ' '},
                             {'text': '1', 'fillColor': CODE_COLORS['number']},
-                            {'text': ', idx_pr, idx_i_root +'}, {'text': ' '},
+                            {'text': ', idx_pr, idx_i_root +'},
+                            {'text': ' '},
                             {'text': '1', 'fillColor': CODE_COLORS['number']},
                             {'text': ', idx_ir)'},
                         ],
-                        [3, {'text': 'return', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '}, {'text': 'root'}],
-                        [],
-                        [2, {'text': 'idx_pl ='}, {'text': ' '}, {'text': '0', 'fillColor': CODE_COLORS['number']}],
                         [
-                            2,
-                            {'text': 'idx_pr ='}, {'text': ' '}, {'text': 'len', 'fillColor': CODE_COLORS['builtin']},
-                            {'text': '(preorder) -'}, {'text': ' '}, {'text': '1', 'fillColor': CODE_COLORS['number']},
-                        ],
-                        [2, {'text': 'idx_il ='}, {'text': ' '}, {'text': '0', 'fillColor': CODE_COLORS['number']}],
-                        [
-                            2,
-                            {'text': 'idx_ir ='}, {'text': ' '}, {'text': 'len', 'fillColor': CODE_COLORS['builtin']},
-                            {'text': '(inorder) -'}, {'text': ' '}, {'text': '1', 'fillColor': CODE_COLORS['number']},
+                            3,
+                            {'text': 'return', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
+                            {'text': 'root'}
                         ],
                         [],
                         [
                             2,
-                            {'text': 'idx_dic = {element: i'}, {'text': ' '},
+                            {'text': 'idx_pl ='},
+                            {'text': ' '},
+                            {'text': '0', 'fillColor': CODE_COLORS['number']}
+                        ],
+                        [
+                            2,
+                            {'text': 'idx_pr ='},
+                            {'text': ' '},
+                            {'text': 'len', 'fillColor': CODE_COLORS['builtin']},
+                            {'text': '(preorder) -'},
+                            {'text': ' '},
+                            {'text': '1', 'fillColor': CODE_COLORS['number']},
+                        ],
+                        [
+                            2,
+                            {'text': 'idx_il ='},
+                            {'text': ' '},
+                            {'text': '0', 'fillColor': CODE_COLORS['number']}
+                        ],
+                        [
+                            2,
+                            {'text': 'idx_ir ='},
+                            {'text': ' '},
+                            {'text': 'len', 'fillColor': CODE_COLORS['builtin']},
+                            {'text': '(inorder) -'},
+                            {'text': ' '},
+                            {'text': '1', 'fillColor': CODE_COLORS['number']},
+                        ],
+                        [],
+                        [
+                            2,
+                            {'text': 'idx_dic = {element: i'},
+                            {'text': ' '},
                             {'text': 'for', 'fillColor': CODE_COLORS['keyword']},
-                            {'text': ' '}, {'text': ' i, element'}, {'text': ' '},
-                            {'text': 'in', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                            {'text': ' '},
+                            {'text': ' i, element'},
+                            {'text': ' '},
+                            {'text': 'in', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
                             {'text': 'enumerate', 'fillColor': CODE_COLORS['builtin']},
                             {'text': '(inorder)'}
                         ],
                         [
                             2,
-                            {'text': 'return', 'fillColor': CODE_COLORS['keyword']}, {'text': ' '},
+                            {'text': 'return', 'fillColor': CODE_COLORS['keyword']},
+                            {'text': ' '},
                             {'text': 'rebuild(idx_pl, idx_pr, idx_il, idx_ir)'}
                         ],
                         [],
                         [
                             0,
-                            {'text': 'print', 'fillColor': CODE_COLORS['builtin']}, {'text': '(Solution().buildTree('},
-                            {'text': 'preorder', 'fillColor': CODE_COLORS['kwargs']}, {'text': '=['},
-                            {'text': '3', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
-                            {'text': '9', 'fillColor': CODE_COLORS['number']},
-                            {'text': ','}, {'text': ' '}, {'text': '20', 'fillColor': CODE_COLORS['number']},
-                            {'text': ','}, {'text': ' '},
-                            {'text': '15', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
-                            {'text': '7', 'fillColor': CODE_COLORS['number']},
-                            {'text': '],'}, {'text': ' '},
-                            {'text': 'inorder', 'fillColor': CODE_COLORS['kwargs']}, {'text': '=['},
-                            {'text': '9', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
+                            {'text': 'print', 'fillColor': CODE_COLORS['builtin']},
+                            {'text': '(Solution().buildTree('},
+                            {'text': 'preorder', 'fillColor': CODE_COLORS['kwargs']},
+                            {'text': '=['},
                             {'text': '3', 'fillColor': CODE_COLORS['number']},
-                            {'text': ','}, {'text': ' '}, {'text': '15', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','},
+                            {'text': ' '},
+                            {'text': '9', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','},
+                            {'text': ' '},
+                            {'text': '20', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','},
+                            {'text': ' '},
+                            {'text': '15', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','},
+                            {'text': ' '},
+                            {'text': '7', 'fillColor': CODE_COLORS['number']},
+                            {'text': '],'},
+                            {'text': ' '},
+                            {'text': 'inorder', 'fillColor': CODE_COLORS['kwargs']},
+                            {'text': '=['},
+                            {'text': '9', 'fillColor': CODE_COLORS['number']},
                             {'text': ','}, {'text': ' '},
-                            {'text': '20', 'fillColor': CODE_COLORS['number']}, {'text': ','}, {'text': ' '},
+                            {'text': '3', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','},
+                            {'text': ' '},
+                            {'text': '15', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','},
+                            {'text': ' '},
+                            {'text': '20', 'fillColor': CODE_COLORS['number']},
+                            {'text': ','},
+                            {'text': ' '},
                             {'text': '7', 'fillColor': CODE_COLORS['number']},
                             {'text': ']))'},
                         ],

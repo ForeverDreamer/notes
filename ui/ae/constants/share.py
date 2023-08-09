@@ -1,10 +1,11 @@
 import importlib
-from ae.utils.py.color import hex_to_rgb1
+from Ae.utils.py.color import hex_to_rgb1
 
-mdl = importlib.import_module(f'ae.constants.themes.t{3}')
+mdl = importlib.import_module(f'Ae.constants.themes.t{3}')
 
 AE_WINDOW_NAME = 'Adobe After Effects'
-BASE_DIR = 'D:/data_files/notes/ui/ae/'
+ASSETS_DIR = 'G:/沉浸式学习'
+BASE_DIR = 'D:/data_files/notes/ui/Ae'
 # 脚本调用间隔，否则会各种报错
 CALL_INTERVAL = 0
 

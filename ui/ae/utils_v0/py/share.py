@@ -1,8 +1,8 @@
 import time
 import ctypes
 
-from ae.constants.share import AE_WINDOW_NAME, IMPORT_AS_TYPE
-from ae.utils.py.date import now
+from constants.share import AE_WINDOW_NAME, IMPORT_AS_TYPE
+from utils.py.date import now
 
 
 # def ensure_ok(error_code):
@@ -57,9 +57,9 @@ class ShareUtil:
     def head(self, conf_path):
         statements = [
             '//share_util.head',
-            '#includepath "../utils/jsx";',
+            '#includepath "../utils_v0/jsx";',
             '#include "json.jsx";',
-            'var BASE_DIR = "D:/data_files/notes/ui/ae/"',
+            'var BASE_DIR = "D:/data_files/notes/ui/Ae/"',
             f'var conf = jsonUtil.read(BASE_DIR + "{conf_path}");',
             '#include "constants.jsx";',
             '#include "color.jsx";',

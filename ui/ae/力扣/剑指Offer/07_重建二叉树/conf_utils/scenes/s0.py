@@ -1,4 +1,4 @@
-from ae.constants.share import *
+from constants.share import *
 from .transcript import scenes
 
 

@@ -95,9 +95,9 @@ PrecompUtil.prototype.comp = function (items, parentComp, conf) {
     if (conf["precomps"]) {
         this.createMany(compFolder.items, newComp, conf['precomps'])
     }
-    if (conf['codes']) {
-        this.create_codes(compFolder.items, newComp, conf['codes'])
-    }
+    // if (conf['codes']) {
+    //     this.create_codes(compFolder.items, newComp, conf['codes'])
+    // }
     if (conf["comp"]) {
         this.comp(compFolder.items, newComp, conf['comp'])
     }

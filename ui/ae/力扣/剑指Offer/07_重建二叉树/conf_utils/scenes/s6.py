@@ -1,4 +1,4 @@
-from ae.constants.share import *
+from constants.share import *
 from .transcript import scenes
 
 
@@ -17,6 +17,7 @@ def shot_0(start_time):
     duration = end_time - start_time
 
     conf = {
+        'layerName': prefix, 'duration': duration,
         'images': [
             {
                 'name': 'Linus Torvalds.jfif',

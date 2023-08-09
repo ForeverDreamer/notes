@@ -1,6 +1,6 @@
 from .transcript import scenes
-from ae.constants.share import *
-from ae.utils.py.color import hex_to_rgb1
+from constants.share import *
+from utils.py.color import hex_to_rgb1
 
 name = 's1'
 scene = scenes[name]
