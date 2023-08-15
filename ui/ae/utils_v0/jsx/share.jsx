@@ -44,9 +44,14 @@ ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {
 	}
 }
 
-ShareUtil.prototype.importFiles = function (files) {
+ShareUtil.prototype.importFiles = function (parentObj, files) {
 	for (var i = 0; i < files.length; i++) {
 		var conf = files[i]
+		if (conf["folder"]) {
+			var folder = parentObj.items.addFolder(conf["folder"])
+			shareUtil.importFiles(folder, conf["files"]);
+			continue
+		}
 		var importOptions = new ImportOptions();
 		importOptions.file = new File(conf["path"]);
 		switch (conf["import_as_type"]) {
@@ -62,15 +67,18 @@ ShareUtil.prototype.importFiles = function (files) {
 			default:
 				importOptions.importAs = ImportAsType.FOOTAGE;
 		}
-		project.importFile(importOptions);
+		var importedObj = project.importFile(importOptions);
+		if (parentObj.typeName === "Folder") {
+			importedObj.parentFolder = parentObj;
+		}
 		var layers = conf["layers"]
 		if (layers) {
-			for (var j = 0; j < layers.length; j++) {
-				var parent = shareUtil.addLayer(mainComp, layers[j])
-				children = layers[j]["children"]
+			for (var k = 0; k < layers.length; k++) {
+				var parentLayer = shareUtil.addLayer(mainComp, layers[k])
+				children = layers[k]["children"]
 				if (children) {
-					for (var k = 0; k < children.length; k++) {
-						shareUtil.addLayer(mainComp, children[k], null, parent)
+					for (var h = 0; h < children.length; h++) {
+						shareUtil.addLayer(mainComp, children[h], null, parentLayer)
 					}
 				}
 			}
@@ -140,14 +148,26 @@ ShareUtil.prototype.delItems = function (items) {
 	}
 }
 
-ShareUtil.prototype.findItemByName = function (name) {
-	for (var i = 1; i <= project.items.length; i++) {
-		var item = project.items[i];
-		if (item.name == name) {
-			return item;
+ShareUtil.prototype.findItemByName = function (name, parentObj) {
+	if (!parentObj) {
+		parentObj = project
+	}
+	var obj = null
+	for (var i = 1; i <= parentObj.items.length; i++) {
+		var item = parentObj.items[i];
+		if (item.typeName === "Folder") {
+			obj = shareUtil.findItemByName(name, item)
+			if (obj) {
+				break
+			}
+		} else {
+			if (item.name == name) {
+				obj = item
+				break
+			}
 		}
 	}
-	return null;
+	return obj;
 }
 
 ShareUtil.prototype.configMasks = function (layer, masks) {

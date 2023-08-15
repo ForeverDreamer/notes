@@ -27,6 +27,8 @@ tasklist|findstr '14500'
 
 docker container start lishenglin-mongodb
 docker container stop lishenglin-mongodb
+# 停止所有容器
+docker stop $(docker ps -a -q)
 
 docker run -it --rm --name lishenglin-redis -p 10001:10001 redis 
 

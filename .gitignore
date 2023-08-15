@@ -108,3 +108,5 @@ data
 intellij_idea_demo
 
 ui/ae/tmp
+*.mp3
+*.wav

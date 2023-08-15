@@ -98,7 +98,7 @@ class ShareUtil:
             'var subtitlesLayer = textUtil.add(mainComp, "字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025], "font": "KaiTi", "fontSize": 40, "fillColor": COLORS["subtitle"]});',
             f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
             'cameraLayer.moveToEnd();',
-            'shareUtil.importFiles(conf["files"]);',
+            'shareUtil.importFiles(project, conf["files"]);',
             'shareUtil.createScenes(conf["scenes"])',
             '\n',
         ]
