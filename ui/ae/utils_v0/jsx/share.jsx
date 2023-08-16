@@ -16,13 +16,13 @@ function js_null(v) {
 	}
 }
 
-ShareUtil.prototype.createShots = function (shots) {
+ShareUtil.prototype.addShots = function (shots) {
 	for (var sn in shots) {
 		$.writeln('Creating s' + sn)
 		var conf = shots[sn]
 		conf['width'] = WIDTH
 		conf['height'] = HEIGHT
-		precompUtil.comp(project.items, mainComp, conf)
+		compUtil.addOne(project, mainComp, conf)
 	}
 }
 

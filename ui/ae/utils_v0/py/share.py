@@ -67,10 +67,14 @@ class ShareUtil:
             '#include "shape.jsx";',
             '#include "share.jsx";',
             '#include "effects.jsx";',
-            '#include "precomp.jsx";',
-            '#include "animation.jsx";',
             '#include "presets.jsx";',
             '#include "camera.jsx";',
+            '#include "comp.jsx";',
+            '#include "dsa/binarytree.jsx"',
+            '#include "dsa/codes.jsx"',
+            '#include "dsa/queue.jsx"',
+            '#include "dsa/stack.jsx"',
+            '#include "dsa/dsa.jsx"',
             '\n',
         ]
         # return self._engine.execute('ShareUtil.eval', statements)
@@ -95,11 +99,11 @@ class ShareUtil:
             'shareUtil.delItems(project.items);',
             'var mainComp = project.items.addComp(NAME, WIDTH, HEIGHT, PIXEL_ASPECT, DURATION, FRAME_RATE);',
             'mainComp.openInViewer();',
-            'var subtitlesLayer = textUtil.add(mainComp, "字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025], "font": "KaiTi", "fontSize": 40, "fillColor": COLORS["subtitle"]});',
+            'var subtitlesLayer = textUtil.addOne(mainComp, "字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025], "font": "KaiTi", "fontSize": 40, "fillColor": COLORS["subtitle"]});',
             f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
             'cameraLayer.moveToEnd();',
             'shareUtil.importFiles(project, conf["files"]);',
-            'shareUtil.createShots(conf["shots"])',
+            'shareUtil.addShots(conf["shots"])',
             '\n',
         ]
         # return self._engine.execute('ShareUtil.eval', statements)

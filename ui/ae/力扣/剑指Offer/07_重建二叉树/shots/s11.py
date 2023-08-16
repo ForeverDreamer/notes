@@ -245,7 +245,7 @@ def build_conf(start_time):
         #         'span': {'inPoint': start_time, 'outPoint': end_time},
         #     },
         # ],
-        'precomps': [
+        'dsa': [
             {
                 'layerName': f'{prefix}.二叉树', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
                 'startTime': start_time, 'duration': duration, 'Anchor Point': 'LEFT_TOP', 'Position': [50, 250],
@@ -316,7 +316,7 @@ def build_conf(start_time):
                 }
             }
         ],
-        'misc': [
+        'comps': [
             {
                 'layerName': f'{prefix}.队列.前序', 'width': 300, 'height': 150, 'Position': [771.5, 135.5],
                 'startTime': start_time, 'duration': duration,
@@ -329,7 +329,7 @@ def build_conf(start_time):
                         'Anchor Point': 'LEFT', 'Position': [0, 75], 'font': FONTS['cn'], 'fontSize': 40,
                     },
                 ],
-                'precomps': [
+                'dsa': [
                     {
                         'layerName': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
                         'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}],
@@ -337,7 +337,7 @@ def build_conf(start_time):
                         'unit': QUE_UNIT, 'duration': duration,
                     },
                 ],
-                'misc': [
+                'comps': [
                     {
                         'layerName': '根节点.选中框', 'width': 150, 'height': 100, 'Position': [108, 103.5],
                         'duration': duration,
@@ -404,7 +404,7 @@ def build_conf(start_time):
                         'Anchor Point': 'LEFT', 'Position': [0, 75], 'font': FONTS['cn'], 'fontSize': 40,
                     },
                 ],
-                'precomps': [
+                'dsa': [
                     {
                         'layerName': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
                         'elems': [{'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}],
@@ -413,7 +413,7 @@ def build_conf(start_time):
                         'unit': QUE_UNIT,
                     },
                 ],
-                'misc': [
+                'comps': [
                     {
                         'layerName': '根节点.选中框', 'Position': [108, 103.5],
                         'width': 150, 'height': 100, 'duration': duration,
@@ -548,7 +548,7 @@ def build_conf(start_time):
                         }
                     },
                 ],
-                'precomps': [
+                'dsa': [
                     {
                         'layerName': '函数调用栈', 'type': 'STACK', 'Position': [8, 618], 'Anchor Point': 'LEFT_TOP',
                         'width': STACK_ELEM_WIDTH + stroke_add, 'height': STACK_ELEM_HEIGHT * 6 + stroke_add,
