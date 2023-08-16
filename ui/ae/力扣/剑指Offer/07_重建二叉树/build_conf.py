@@ -87,9 +87,6 @@ conf = {
         #     'import_as_type': IMPORT_AS_TYPE[1],
         # },
     ],
-    'folders': [
-
-    ],
     'scenes': {},
     'theme': THEME,
 }

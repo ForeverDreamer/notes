@@ -73,12 +73,12 @@ ShareUtil.prototype.importFiles = function (parentObj, files) {
 		}
 		var layers = conf["layers"]
 		if (layers) {
-			for (var k = 0; k < layers.length; k++) {
-				var parentLayer = shareUtil.addLayer(mainComp, layers[k])
-				children = layers[k]["children"]
+			for (var j = 0; j < layers.length; j++) {
+				var parentLayer = shareUtil.addLayer(mainComp, layers[j])
+				children = layers[j]["children"]
 				if (children) {
-					for (var h = 0; h < children.length; h++) {
-						shareUtil.addLayer(mainComp, children[h], null, parentLayer)
+					for (var k = 0; k < children.length; k++) {
+						shareUtil.addLayer(mainComp, children[k], null, parentLayer)
 					}
 				}
 			}

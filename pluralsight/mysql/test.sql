@@ -1,1 +1,2 @@
-SELECT * FROM INFORMATION_SCHEMA.ENGINES;
+use flaskshop;
+SELECT * FROM order_order;
