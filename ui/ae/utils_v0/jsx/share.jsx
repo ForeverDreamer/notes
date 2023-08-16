@@ -16,15 +16,13 @@ function js_null(v) {
 	}
 }
 
-ShareUtil.prototype.createScenes = function (scenes) {
-	for (var sName in scenes) {
-		for (var i = 0; i < scenes[sName].length; i++) {
-			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
-			var shot = scenes[sName][i]
-			shot['width'] = WIDTH
-			shot['height'] = HEIGHT
-			precompUtil.comp(project.items, mainComp, shot)
-		}
+ShareUtil.prototype.createShots = function (shots) {
+	for (var sn in shots) {
+		$.writeln('Creating s' + sn)
+		var conf = shots[sn]
+		conf['width'] = WIDTH
+		conf['height'] = HEIGHT
+		precompUtil.comp(project.items, mainComp, conf)
 	}
 }
 

@@ -1,24 +1,64 @@
+from glob import glob
+from operator import itemgetter
+
+from mutagen.mp3 import MP3
+
 from constants.share import *
-from .transcript import scenes
+from .consts import ASSETS_DIR
+from .transcript import subtitles as all_subtitles
 from utils.py.color import hex_to_rgb1
 
-name = 's7'
+sn = 11
+prefix = f's{sn}'
 
+def audios_subtitles():
+    files = glob(f'{ASSETS_DIR}/audios/{prefix}/*.mp3')
+    names = []
+    for f in files:
+        elems = []
+        for x in f.split('\\')[-1].split('.'):
+            try:
+                elems.append(int(x))
+            except ValueError:
+                pass
+        elems.append(f)
+        elems = tuple(elems)
+        names.append(elems)
 
-def shot_0(start_time):
-    sn = 0
-    prefix = f'{name}.{sn}'
+    names = sorted(names, key=itemgetter(0, 1))
+    audios = []
     subtitles = []
-    for i, text in enumerate(scenes[name][0]):
-        subtitles.append([start_time + i * SUBTITLES_INTERVAL, text])
-        i += 1
-    subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1] + SUBTITLES_INTERVAL
+    start_time = 0
+    for i, af in enumerate(names):
+        audio = MP3(af[-1])
+        audios.append(
+            {
+                'path': af[-1],
+                'layers': [
+                    {
+                        'name': af[-1].split('\\')[-1],
+                        'startTime': start_time,
+                        'Anchor Point': 'null',
+                    }
+                ],
+            }
+        )
+        subtitles.append([start_time, all_subtitles[sn][i]])
+        start_time += audio.info.length + 0.5
+
+    subtitles = list(zip(*subtitles))
+    end_time = subtitles[0][-1] + SHOTS_INTERVAL
+    return audios, subtitles, end_time
+
+
+
+def build_conf(start_time):
+    audios, subtitles, end_time = audios_subtitles()
     QUE_ELEM_WIDTH = 40
     QUE_ELEM_HEIGHT = 40
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
     stroke_add = QUE_UNIT['Stroke']['Stroke Width'] * 4
-    duration = end_time - start_time
+    duration = end_time - start_time + SHOTS_INTERVAL
     temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
 
     # 工作量大或相互关联的配置提到前边统一填写，避免滚轮滚上滚下到处找，头都晕了~
@@ -191,6 +231,12 @@ def shot_0(start_time):
 
     conf = {
         'layerName': prefix, 'duration': duration,
+        'files': [
+            {
+                'folder': 'audios',
+                'files': audios,
+            },
+        ],
         'subtitles': subtitles,
         # 'annotations': [
         #     {
@@ -812,6 +858,10 @@ def shot_0(start_time):
     return conf
 
 
-def create_all(start_time):
-    conf_0 = shot_0(start_time)
-    return name, [conf_0], conf_0['end_time']
+def build(start_time):
+    conf = build_conf(start_time)
+    return sn, build_conf(start_time), conf['end_time']
+
+
+if __name__ == '__main__':
+    build(0)

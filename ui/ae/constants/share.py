@@ -37,7 +37,8 @@ STACK_UNIT = {
 
 IMPORT_AS_TYPE = ('COMP_CROPPED_LAYERS', 'FOOTAGE', 'COMP', 'PROJECT')
 
-SUBTITLES_INTERVAL = 5
+SUBTITLES_INTERVAL = 0.5
+SHOTS_INTERVAL = 1
 
 # 这种方式虽然可行但会导致ide报错提示！
 # # is there an __all__?  if so respect it

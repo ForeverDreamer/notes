@@ -74,8 +74,8 @@ PrecompUtil.prototype.comp = function (items, parentComp, conf) {
     var compFolder = items.addFolder(conf["layerName"])
     var newComp = compFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     newComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
-    if (conf['audios']) {
-
+    if (conf['files']) {
+        shareUtil.importFiles(project, conf["files"]);
     }
     if (conf['images']) {
         shareUtil.addLayers(newComp, conf['images'])
