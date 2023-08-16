@@ -1,4 +1,5 @@
 function Queue() {
+    this.queueLayers = {}
 }
 
 Queue.prototype.add = function (items, parentComp, conf) {
@@ -27,7 +28,7 @@ Queue.prototype.add = function (items, parentComp, conf) {
             unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i]["Color"])
         }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
-        var shapeLayer = shapeUtil.create_one(queueComp, unit)
+        var shapeLayer = shapeUtil.addOne(queueComp, unit)
         if (elems[i]["keyframes"]) {
             shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
         }

@@ -49,9 +49,9 @@ CompUtil.prototype.addOne = function (parentObj, parentComp, conf) {
     shareUtil.addLayer(parentComp, conf, newComp);
 }
 
-CompUtil.prototype.addMany = function(parentComp, comps) {
+CompUtil.prototype.addMany = function(parentObj, parentComp, comps) {
     for (var i = 0; i < comps.length; i++) {
-        this.addOne(parentComp, comps[i])
+        this.addOne(parentObj, parentComp, comps[i])
     }
 }
 

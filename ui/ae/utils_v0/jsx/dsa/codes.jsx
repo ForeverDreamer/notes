@@ -26,8 +26,11 @@ Codes.prototype.addLine = function (items, parentComp, line, conf) {
         var width = textLayer.sourceRectAtTime(0, false).width
         pos_x += width + 2
     }
-    var conf = { "layerName": "line." + sn, "Anchor Point": "LEFT", "Position": [indent * 48, sn * conf['heightLine'] + 30] }
-    return shareUtil.addLayer(parentComp, conf, lineComp);
+    return shareUtil.addLayer(
+        parentComp,
+        { "layerName": "line." + sn, "Anchor Point": "LEFT", "Position": [indent * 48, sn * conf['heightLine'] + 30] },
+        lineComp
+    );
 }
 
 Codes.prototype.add = function (items, parentComp, conf) {
@@ -57,14 +60,14 @@ Codes.prototype.add = function (items, parentComp, conf) {
     var times = []
     var values = []
     var extra = currentLine["keyframes"]["Transform.Position"][2]
-    for (var i = 0; i < 72; i++) {
-        times.push(conf["startTime"] + 1 + i * 1)
+    for (var i = 0; i < currentLine['steps']; i++) {
+        // times.push(conf["startTime"] + 1 + i * 1)
         var sn = currentLine["keyframes"]["Transform.Position"][1][i]
         values.push(lineLayers[sn]("Transform")("Position").value)
     }
-    currentLine["keyframes"]["Transform.Position"] = [times, values, extra]
+    currentLine["keyframes"]["Transform.Position"][1] = values
     currentLine["Position"] = [indent * 48, sn * conf['heightLine'] + 30]
-    currentLineLayer = shapeUtil.create_one(codesComp, currentLine)
+    currentLineLayer = shapeUtil.addOne(codesComp, currentLine)
     currentLineLayer.moveToEnd()
     shareUtil.addLayer(parentComp, conf, codesComp);
 }

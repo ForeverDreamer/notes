@@ -51,14 +51,40 @@ def audios_subtitles():
     return audios, subtitles, end_time
 
 
+def currentline_times(subtitles, steps):
+    times = []
+    intervals = subtitles[2]
+    i = 0
+    while i < len(subtitles[2]):
+        if intervals[i] == 0:
+            i += 1
+            continue
+        elif intervals[i] == 1:
+            times.append(subtitles[0][i])
+        else:
+            times.append(subtitles[0][i])
+            interval = (subtitles[0][i+1] - subtitles[0][i])/intervals[i]
+            times += [times[-1]+interval*j for j in range(1, intervals[i])]
+        i += 1
+
+    i = len(times) - 1
+    while len(times) < steps:
+        times.append(times[i]+1)
+        i += 1
+
+    return times
+
 
 def build_conf(start_time):
     audios, subtitles, end_time = audios_subtitles()
+    subtitles.append([1, 1, 4, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1])
+    _CURRENTLINE_STEPS = 72
+    _currentline_times = currentline_times(subtitles, _CURRENTLINE_STEPS)
     QUE_ELEM_WIDTH = 40
     QUE_ELEM_HEIGHT = 40
     QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
     stroke_add = QUE_UNIT['Stroke']['Stroke Width'] * 4
-    duration = end_time - start_time + SHOTS_INTERVAL
+    duration = _currentline_times[-1] + SHOTS_INTERVAL
     temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
 
     # 工作量大或相互关联的配置提到前边统一填写，避免滚轮滚上滚下到处找，头都晕了~
@@ -295,7 +321,7 @@ def build_conf(start_time):
                         'key': 7,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 56, 56.5],
+                                [0, 50, 50.5],
                                 [0, 0, 100],
                                 # {"temporal": temporal}
                             ]
@@ -630,9 +656,11 @@ def build_conf(start_time):
                         # 'span': {'inPoint': start_time, 'outPoint': end_time + 3},
                         'pathGroup': {'type': 'Rect', 'Size': [1200, 30]},
                         'Fill': {'Color': hex_to_rgb1(CODE_COLORS['currentLine'])},
+                        'steps': _CURRENTLINE_STEPS,
+                        'intervals': [1, 1, 4, 1, 1, 1, 0, 1, 1, 1, 1, 0.5, 0.5, 1, 0, 0],
                         'keyframes': {
                             'Transform.Position': [
-                                None,
+                                _currentline_times,
                                 [
                                     18, 2, 12, 13, 14, 15, 16, 17, 3, 5, 6, 7, 8, 9, 3, 5, 6, 7, 8, 9, 3, 4, 9, 10, 3,
                                     4, 10, 11,
