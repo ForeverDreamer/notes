@@ -1,4 +1,14 @@
 function BinaryTree() {
+    this.nodeLayers = {}
+    this.edgeLayers = {}
+    this.times = [0, 0.5]
+    this.step = [0.5, 0.5]
+    this.rootNodePos = [392.5, 75]
+    this.horizontalDist = 160
+    this.edgeOffset = 45
+    this.verticalDist = 240
+    this.NODE_PREFIX = "Node"
+    this.EDGE_PREFIX = "Edge"
 }
 
 BinaryTree.prototype.add = function (items, parentComp, conf) {
@@ -7,37 +17,26 @@ BinaryTree.prototype.add = function (items, parentComp, conf) {
 
     var elems = conf["elems"];
 
-    var nodeShape = conf["node"]["shape"];
     var selected = conf["node"]["selected"];
     var drop = conf["node"]["drop"];
+    var nodeShape = conf["node"]["shape"];
     var nodePath = conf["node"]["path"];
 
     var edgeShape = conf["edge"]["shape"];
     var edgePath = conf["edge"]["path"];
 
     var nodeScale = nodeShape["Scale"][0] / 100
-    var edgeOffset = 45 * nodeScale;
-    var horizontalDist = 160 * nodeScale;
-    var verticalDist = 240 * nodeScale;
-
-    var NODE_PREFIX = "Node";
-    var EDGE_PREFIX = "Edge";
-
-    var rootNodePos = [235 * nodeScale, 75 * nodeScale]
-    this.nodeLayers = {}
-    this.edgeLayers = {}
+    this.rootNodePos *= nodeScale
+    this.edgeOffset *= nodeScale
+    this.horizontalDist *= nodeScale
+    this.verticalDist *= nodeScale
 
     if (nodePath) {
         var offset = nodePath["Trim Paths"]["Offset"]
     }
-    var rotation = edgeShape["Rotation"]
-
-    this.times = [0, 0.5]
-    var step = [0.5, 0.5]
+    this.rotation = edgeShape["Rotation"]
 
     function addNode(elem, parentNode, direction, selected, drop, upEdge) {
-        var times = precompUtil.times
-        var nodeLayers = precompUtil.nodeLayers
         var key = elem["key"]
 
         if (parentNode) {
@@ -46,33 +45,33 @@ BinaryTree.prototype.add = function (items, parentComp, conf) {
 
         switch (direction) {
             case 'left':
-                nodeShape["Position"] = [parentPos[0] - horizontalDist, parentPos[1] + verticalDist]
+                nodeShape["Position"] = [parentPos[0] - binaryTree.horizontalDist, parentPos[1] + binaryTree.verticalDist]
                 if (nodePath) {
                     nodePath["Trim Paths"]["Offset"] = offset
                 }
                 break;
             case 'right':
-                nodeShape["Position"] = [parentPos[0] + horizontalDist, parentPos[1] + verticalDist]
+                nodeShape["Position"] = [parentPos[0] + binaryTree.horizontalDist, parentPos[1] + binaryTree.verticalDist]
                 if (nodePath) {
                     nodePath["Trim Paths"]["Offset"] = -offset
                 }
                 break;
             case null:
-                nodeShape["Position"] = rootNodePos
+                nodeShape["Position"] = binaryTree.rootNodePos
                 break;
             default:
                 throw new TypeError("参数[direction]类型错误")
         }
 
         var shapeKeyframes = {
-            "Transform.Opacity": [times, [0, 100], { "temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]] }]
+            "Transform.Opacity": [binaryTree.times, [0, 100], { "temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]] }]
         }
-        nodeShape["layerName"] = NODE_PREFIX + "." + "Shape" + "." + key
+        nodeShape["layerName"] = binaryTree.NODE_PREFIX + "." + "Shape" + "." + key
         var shapeTextProps = { "text": key }
         if (js_bool(conf["animation"])) {
             nodeShape["keyframes"] = shapeKeyframes
             shapeTextProps["keyframes"] = shapeKeyframes
-            precompUtil.times += step
+            binaryTree.times += binaryTree.step
         }
         if (elem["keyframes"]) {
             nodeShape["keyframes"] = elem["keyframes"]
@@ -85,7 +84,7 @@ BinaryTree.prototype.add = function (items, parentComp, conf) {
 
         if (selected) {
             selected["Position"] = nodeShape["Position"]
-            selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
+            selected["layerName"] = binaryTree.NODE_PREFIX + "." + "Selected" + "." + key
             selected["keyframes"] = elem["selectedKeyframes"]
             if (elem["Color"]) {
                 selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem["Color"])
@@ -93,27 +92,27 @@ BinaryTree.prototype.add = function (items, parentComp, conf) {
             var selectedLayer = shapeUtil.create_one(comp, selected)
             // selectedLayers[selected["layerName"]] = selectedLayer
         }
-        var shapeTextLayer = textUtil.overlay(comp, shapeLayer, NODE_PREFIX + "." + "Text" + "." + key, shapeTextProps);
+        var shapeTextLayer = textUtil.overlay(comp, shapeLayer, binaryTree.NODE_PREFIX + "." + "Text" + "." + key, shapeTextProps);
 
         if (drop) {
             // drop["Fill"]["Color"] = drop["Fill"]["Color"]
-            drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + key
+            drop["layerName"] = binaryTree.NODE_PREFIX + "." + "Drop" + "." + key
             drop["Position"] = nodeShape["Position"]
             var dropLayer = shapeUtil.create_one(comp, drop)
             // dropLayers[drop["layerName"]] = dropLayer
-            var dropTextLayer = textUtil.overlay(comp, dropLayer, NODE_PREFIX + "." + "Drop" + '.' + "Text" + "." + key, { "text": key, "Opacity": 0 });
+            var dropTextLayer = textUtil.overlay(comp, dropLayer, binaryTree.NODE_PREFIX + "." + "Drop" + '.' + "Text" + "." + key, { "text": key, "Opacity": 0 });
         }
 
         if (nodePath) {
             nodePath["pathGroup"]["type"] = "Group"
-            nodePath["layerName"] = NODE_PREFIX + "." + "Path" + "." + key;
+            nodePath["layerName"] = binaryTree.NODE_PREFIX + "." + "Path" + "." + key;
             // path["Position"] = shapeLayer("Transform")("Position").value.slice(0, 2)
             nodePath["Position"] = nodeShape["Position"]
             var pathLayer = shapeUtil.create_one(comp, nodePath)
             // nodePathLayers.push(pathLayer)
         }
 
-        nodeLayers[key] = {
+        binaryTree.nodeLayers[key] = {
             "key": key,
             "Position": shapeLayer("Transform")("Position").value,
             "shapeLayer": shapeLayer, "shapeTextLayer": shapeTextLayer, "selectedLayer": selectedLayer, "dropLayer": dropLayer, "dropTextLayer": dropTextLayer, "pathLayer": pathLayer,
@@ -124,31 +123,28 @@ BinaryTree.prototype.add = function (items, parentComp, conf) {
             "left": null, "right": null
         }
         if (parentNode) {
-            parentNode[direction] = nodeLayers[key]
+            parentNode[direction] = binaryTree.nodeLayers[key]
         }
 
-        return nodeLayers[key]
+        return binaryTree.nodeLayers[key]
     }
 
     function addEdge(elem, upNode, direction) {
-        var times = precompUtil.times
-        var edgeLayers = precompUtil.edgeLayers
-
         var key = elem[0]
         var upKey = upNode["key"];
         var upPos = upNode["Position"];
 
         if (direction === "left") {
-            edgeShape["Position"] = [upPos[0] - edgeOffset, upPos[1] + edgeOffset]
-            edgeShape["Rotation"] = rotation
+            edgeShape["Position"] = [upPos[0] - binaryTree.edgeOffset, upPos[1] + binaryTree.edgeOffset]
+            edgeShape["Rotation"] = binaryTree.rotation
             if (edgePath) {
                 edgePath["Rotation"] = 0
             }
         } else if (direction === "right") {
-            edgeShape["Position"] = [upPos[0] + edgeOffset, upPos[1] + edgeOffset]
-            edgeShape["Rotation"] = -rotation
+            edgeShape["Position"] = [upPos[0] + binaryTree.edgeOffset, upPos[1] + binaryTree.edgeOffset]
+            edgeShape["Rotation"] = -binaryTree.rotation
             if (edgePath) {
-                edgePath["Rotation"] = -rotation * 2
+                edgePath["Rotation"] = -binaryTree.rotation * 2
             }
         } else {
             throw new TypeError("参数[direction]类型错误")
@@ -156,23 +152,23 @@ BinaryTree.prototype.add = function (items, parentComp, conf) {
 
         var edgeKeyframes = {
             // "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], {"temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]]}]
-            "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], { "temporal": [[[0, 0.1], [300, 100]], [[0, 75], [0, 0.1]]] }]
+            "Transform.Scale": [binaryTree.times, [[0, 0, 0], edgeShape["Scale"]], { "temporal": [[[0, 0.1], [300, 100]], [[0, 75], [0, 0.1]]] }]
         }
-        edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '.' + key
+        edgeShape["layerName"] = binaryTree.EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '.' + key
         if (js_bool(conf["animation"])) {
             edgeShape["keyframes"] = edgeKeyframes
-            precompUtil.times += step
+            binaryTree.times += binaryTree.step
         }
         var shapeLayer = shareUtil.addLayer(comp, edgeShape)
 
         if (edgePath) {
             edgePath["pathGroup"]["type"] = "Group"
-            edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '.' + key
+            edgePath["layerName"] = binaryTree.EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '.' + key
             edgePath["Position"] = edgeShape["Position"]
             var pathLayer = shapeUtil.create_one(comp, edgePath)
         }
 
-        edgeLayers[key] = {
+        binaryTree.edgeLayers[key] = {
             "key": key,
             "shapeLayer": shapeLayer, "pathLayer": pathLayer,
             "nodeLayers": {
@@ -180,9 +176,9 @@ BinaryTree.prototype.add = function (items, parentComp, conf) {
                 "down": null,
             }
         }
-        upNode["edgeLayers"]["down"][direction] = edgeLayers[key]
+        upNode["edgeLayers"]["down"][direction] = binaryTree.edgeLayers[key]
 
-        return edgeLayers[key]
+        return binaryTree.edgeLayers[key]
     }
 
     this.rootNode = addNode(elems[0], null, null, selected, drop)

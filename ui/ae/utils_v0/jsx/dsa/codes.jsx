@@ -57,11 +57,8 @@ Codes.prototype.add = function (items, parentComp, conf) {
     }
 
     var currentLine = conf["currentLine"]
-    var times = []
     var values = []
-    var extra = currentLine["keyframes"]["Transform.Position"][2]
     for (var i = 0; i < currentLine['steps']; i++) {
-        // times.push(conf["startTime"] + 1 + i * 1)
         var sn = currentLine["keyframes"]["Transform.Position"][1][i]
         values.push(lineLayers[sn]("Transform")("Position").value)
     }
@@ -69,7 +66,8 @@ Codes.prototype.add = function (items, parentComp, conf) {
     currentLine["Position"] = [indent * 48, sn * conf['heightLine'] + 30]
     currentLineLayer = shapeUtil.addOne(codesComp, currentLine)
     currentLineLayer.moveToEnd()
-    shareUtil.addLayer(parentComp, conf, codesComp);
+    var codesLayer = shareUtil.addLayer(parentComp, conf, codesComp);
+    codesLayer.moveToEnd()
 }
 
 var codes = new Codes();

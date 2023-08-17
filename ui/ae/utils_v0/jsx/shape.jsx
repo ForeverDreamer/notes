@@ -22,7 +22,8 @@ ShapeUtil.prototype.addOne = function(parentComp, conf) {
         if (conf_pg["Size"]) {
             pathGroup("Size").setValue(conf_pg["Size"])
         }
-        pathGroup("Position").setValue(conf["Position"] ? conf["Position"] : [0, 0])
+        // pathGroup("Position").setValue(conf["Position"] ? conf["Position"] : [0, 0])
+        pathGroup("Position").setValue([0, 0])
     }
 
     if (conf["Stroke"]) {
@@ -55,8 +56,8 @@ ShapeUtil.prototype.addOne = function(parentComp, conf) {
     }
     shareUtil.setAnchorPoint(shapeLayer, conf["Anchor Point"])
     shapeLayer("Transform")("Position").setValue(conf["Position"])
-    shapeGroup("Transform")("Anchor Point").setValue(conf["Position"]);
-    shapeGroup("Transform")("Position").setValue(conf["Position"]);
+    shapeGroup("Transform")("Anchor Point").setValue([0, 0]);
+    shapeGroup("Transform")("Position").setValue([0, 0]);
 
     if (conf['startTime']) {
 		shapeLayer.startTime = conf['startTime'];
