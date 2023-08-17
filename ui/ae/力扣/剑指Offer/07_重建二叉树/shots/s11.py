@@ -364,7 +364,7 @@ def build_conf(start_time):
                         'key': 3,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 12, 12.5],
+                                [0, _currentline_times[11]-0.5, _currentline_times[11]],
                                 [0, 0, 100],
                                 # {"temporal": temporal}
                             ]
@@ -374,7 +374,7 @@ def build_conf(start_time):
                         'key': 9,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 18, 18.5],
+                                [0, _currentline_times[17]-0.5, _currentline_times[17]],
                                 [0, 0, 100],
                                 # {"temporal": temporal}
                             ]
@@ -384,7 +384,7 @@ def build_conf(start_time):
                         'key': 20,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 34, 34.5],
+                                [0, _currentline_times[33] - 0.5, _currentline_times[33]],
                                 [0, 0, 100],
                                 # {"temporal": temporal}
                             ]
@@ -394,7 +394,7 @@ def build_conf(start_time):
                         'key': '空',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 36, 36.5, 37],
+                                [0, _currentline_times[21] - 0.5, _currentline_times[21], _currentline_times[21] + 1],
                                 [0, 0, 100, 0],
                                 # {"temporal": temporal}
                             ]
@@ -404,7 +404,7 @@ def build_conf(start_time):
                         'key': '空',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 38, 38.5, 39.5],
+                                [0, _currentline_times[25] - 0.5, _currentline_times[25], _currentline_times[25] + 1],
                                 [0, 0, 100, 0],
                                 # {"temporal": temporal}
                             ]
@@ -414,7 +414,7 @@ def build_conf(start_time):
                         'key': 15,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 40, 40.5],
+                                [0, _currentline_times[40] - 0.5, _currentline_times[40]],
                                 [0, 0, 100],
                                 # {"temporal": temporal}
                             ]
@@ -424,7 +424,7 @@ def build_conf(start_time):
                         'key': 7,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 45, 45.5],
+                                [0, _currentline_times[56] - 0.5, _currentline_times[56]],
                                 [0, 0, 100],
                                 # {"temporal": temporal}
                             ]
@@ -435,7 +435,7 @@ def build_conf(start_time):
                         'key': '空',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 50, 50.5, 52],
+                                [0, _currentline_times[43] - 0.5, _currentline_times[43], _currentline_times[43] + 1],
                                 [0, 0, 100, 0],
                                 # {"temporal": temporal}
                             ]
@@ -445,7 +445,7 @@ def build_conf(start_time):
                         'key': '空',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 55, 55.5, 57],
+                                [0, _currentline_times[47] - 0.5, _currentline_times[47], _currentline_times[47] + 1],
                                 [0, 0, 100, 0],
                                 # {"temporal": temporal}
                             ]
@@ -455,7 +455,7 @@ def build_conf(start_time):
                         'key': '空',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 60, 60.5, 62],
+                                [0, _currentline_times[60] - 0.5, _currentline_times[60], _currentline_times[60] + 1],
                                 [0, 0, 100, 0],
                                 # {"temporal": temporal}
                             ]
@@ -465,13 +465,14 @@ def build_conf(start_time):
                         'key': '空',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 65, 65.5, 67],
+                                [0, _currentline_times[64] - 0.5, _currentline_times[64], _currentline_times[64] + 1],
                                 [0, 0, 100, 0],
                                 # {"temporal": temporal}
                             ]
                         }
                     },
-                    {'key': None}, {'key': None}, {'key': None}, {'key': None}, {'key': None}, {'key': None}, {'key': None}, {'key': None},
+                    {'key': None}, {'key': None}, {'key': None}, {'key': None},
+                    {'key': None}, {'key': None}, {'key': None}, {'key': None},
                 ],
                 'animation': 'false',
                 'node': {
