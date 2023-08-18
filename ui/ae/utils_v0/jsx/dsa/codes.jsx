@@ -33,8 +33,8 @@ Codes.prototype.addLine = function (line, conf, parentComp, parentObj) {
 }
 
 Codes.prototype.add = function (conf, parentComp, parentObj) {
-    var folder = parentObj.items.addFolder("Codes")
-    var codesComp = folder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    var parentObj = parentObj.items.addFolder(conf["layerName"])
+    var codesComp = parentObj.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     codesComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     var lines = conf["lines"]
     var indent
@@ -49,7 +49,7 @@ Codes.prototype.add = function (conf, parentComp, parentObj) {
         line.push(i)
         indent = line[0]
         sn = i
-        var layer = this.addLine(line, conf, codesComp, folder)
+        var layer = this.addLine(line, conf, codesComp, parentObj)
         if (i > 4) {
             lineLayers.push(layer)
         }

@@ -531,7 +531,7 @@ def build_conf(start_time):
                     {
                         'layerName': '左边界.选中框', 'width': 150, 'height': 100, 'Position': [148, 52.5],
                         'duration': duration,
-                        'keyframes': keyframes['preorder']['left'],
+                        # 'keyframes': keyframes['preorder']['left'],
                         'texts': [
                             {
                                 'text': 'idx_pl', 'fillColor': COLORS['queue']['fillColor']['left'],

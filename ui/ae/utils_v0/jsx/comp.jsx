@@ -1,8 +1,10 @@
 function CompUtil() {}
 
 CompUtil.prototype.addOne = function (conf, parentComp, parentObj) {
-    var folder = parentObj.items.addFolder(conf["layerName"])
-    var comp = folder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    if (conf["comps"] || conf["dsa"]) {
+        parentObj = parentObj.items.addFolder(conf["layerName"])
+    }
+    var comp = parentObj.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     comp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     if (conf['files']) {
         shareUtil.importFiles(conf["files"], parentObj);
@@ -26,19 +28,19 @@ CompUtil.prototype.addOne = function (conf, parentComp, parentObj) {
         shapeUtil.addMany(conf["shapes"], comp)
     }
     if (conf["dsa"]) {
-        dsa.addMany(conf['dsa'], comp, folder)
+        dsa.addMany(conf['dsa'], comp, parentObj)
     }
     // if (conf['codes']) {
     //     this.create_codes(compFolder.items, newComp, conf['codes'])
     // }
     if (conf["comps"]) {
-        compUtil.addMany(conf['comps'], comp, folder)
+        compUtil.addMany(conf['comps'], comp, parentObj)
     }
     // if (conf["misc"]) {
     //     this.misc(compFolder.items, comp, conf['misc'])
     // }
     if (conf['codes']) {
-        codes.add(conf['codes'], comp, folder)
+        codes.add(conf['codes'], comp, parentObj)
     }
     if (conf['subtitles']) {
         shareUtil.createSubtitles(conf['subtitles'])

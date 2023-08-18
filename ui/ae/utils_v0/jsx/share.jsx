@@ -128,9 +128,9 @@ ShareUtil.prototype.addLayer = function (conf, comp) {
 	return layer;
 }
 
-ShareUtil.prototype.addLayers = function (comp, layers, item, parent) {
+ShareUtil.prototype.addLayers = function (layers, comp) {
 	for (var i = 0; i < layers.length; i++) {
-		this.addLayer(comp, layers[i], item, parent)
+		this.addLayer(layers[i], comp)
 	}
 }
 
@@ -371,6 +371,17 @@ ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
 
 	prop.setValue(value);
 	return value
+}
+
+// s11_s11.队列.前序_数据_Shape.3
+ShareUtil.prototype.getPosition = function (path) {
+	var layerNames = path.split('_')
+	var item = null
+	for (var i = 0; i < layerNames.length-1; i++) {
+		// parentComp.layers.byName("数据")("Transform")("Position").value
+        item = this.findItemByName(layerNames[i])
+    }
+	return item.layer(layerNames[i])("Transform")("Position").value
 }
 
 var shareUtil = new ShareUtil();
