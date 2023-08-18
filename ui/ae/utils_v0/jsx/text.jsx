@@ -21,7 +21,7 @@ TextUtil.prototype.configTextDocument = function(textProp, props) {
     textProp.setValue(textDocument);
 }
 
-TextUtil.prototype.addOne = function(comp, name, props) {
+TextUtil.prototype.addOne = function(props, comp) {
     var textLayer;
     if (props["box"]) {
         textLayer = comp.layers.addBoxText(props["rect"]);
@@ -37,7 +37,7 @@ TextUtil.prototype.addOne = function(comp, name, props) {
         }
         textLayer = comp.layers.addText(props["text"]);
     }
-    textLayer.name = name;
+    textLayer.name = props["layerName"] ? props["layerName"] : props["text"];
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
     shareUtil.setAnchorPoint(textLayer, props["Anchor Point"])
@@ -55,16 +55,15 @@ TextUtil.prototype.addOne = function(comp, name, props) {
     return textLayer
 }
 
-TextUtil.prototype.addMany = function(comp, texts) {
+TextUtil.prototype.addMany = function(texts, comp) {
     for (var i = 0; i < texts.length; i++) {
-        var layerName = texts[i]["layerName"] ? texts[i]["layerName"] : texts[i]["text"]
-        this.addOne(comp, layerName, texts[i])
+        this.addOne(texts[i], comp)
     }
 }
 
-TextUtil.prototype.overlay = function(comp, parent, name, props) {
+TextUtil.prototype.overlay = function(props, comp, parent) {
     var textLayer = comp.layers.addText(props["text"]);
-    textLayer.name = name;
+    textLayer.name = props["layerName"];
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
     // textLayer("Transform")("Anchor Point").setValue(parent("Transform")("Anchor Point").value)
@@ -80,7 +79,6 @@ TextUtil.prototype.overlay = function(comp, parent, name, props) {
     if (props["keyframes"]) {
 		shareUtil.configKeyframes(textLayer, props["keyframes"])
 	}
-
     return textLayer
 }
 

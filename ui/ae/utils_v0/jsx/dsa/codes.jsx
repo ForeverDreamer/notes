@@ -1,10 +1,10 @@
 function Codes() {
 }
 
-Codes.prototype.addLine = function (items, parentComp, line, conf) {
+Codes.prototype.addLine = function (line, conf, parentComp, parentObj) {
     var indent = line.shift()
     var sn = line.pop()
-    var lineComp = items.addComp("line." + sn, conf['widthLine'], conf['heightLine'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    var lineComp = parentObj.items.addComp("line." + sn, conf['widthLine'], conf['heightLine'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     lineComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     var pos_x = 0
     for (var i = 0; i < line.length; i++) {
@@ -22,20 +22,19 @@ Codes.prototype.addLine = function (items, parentComp, line, conf) {
         snippet["Position"] = [pos_x, pos_y]
         snippet["font"] = conf["font"]
         snippet["fontSize"] = conf["fontSize"]
-        var textLayer = textUtil.addOne(lineComp, snippet["text"], snippet)
+        var textLayer = textUtil.addOne(snippet, lineComp)
         var width = textLayer.sourceRectAtTime(0, false).width
         pos_x += width + 2
     }
     return shareUtil.addLayer(
-        parentComp,
-        { "layerName": "line." + sn, "Anchor Point": "LEFT", "Position": [indent * 48, sn * conf['heightLine'] + 30] },
-        lineComp
+        { "item": lineComp, "layerName": "line." + sn, "Anchor Point": "LEFT", "Position": [indent * 48, sn * conf['heightLine'] + 30]},
+        parentComp
     );
 }
 
-Codes.prototype.add = function (items, parentComp, conf) {
-    var codesFolder = items.addFolder("Codes")
-    var codesComp = codesFolder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+Codes.prototype.add = function (conf, parentComp, parentObj) {
+    var folder = parentObj.items.addFolder("Codes")
+    var codesComp = folder.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     codesComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     var lines = conf["lines"]
     var indent
@@ -50,7 +49,7 @@ Codes.prototype.add = function (items, parentComp, conf) {
         line.push(i)
         indent = line[0]
         sn = i
-        var layer = this.addLine(codesFolder.items, codesComp, line, conf)
+        var layer = this.addLine(line, conf, codesComp, folder)
         if (i > 4) {
             lineLayers.push(layer)
         }
@@ -64,9 +63,10 @@ Codes.prototype.add = function (items, parentComp, conf) {
     }
     currentLine["keyframes"]["Transform.Position"][1] = values
     currentLine["Position"] = [indent * 48, sn * conf['heightLine'] + 30]
-    currentLineLayer = shapeUtil.addOne(codesComp, currentLine)
+    currentLineLayer = shapeUtil.addOne(currentLine, codesComp)
     currentLineLayer.moveToEnd()
-    var codesLayer = shareUtil.addLayer(parentComp, conf, codesComp);
+    conf['item'] = codesComp
+    var codesLayer = shareUtil.addLayer(conf, parentComp);
     codesLayer.moveToEnd()
 }
 

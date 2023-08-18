@@ -19,10 +19,10 @@ function js_null(v) {
 ShareUtil.prototype.addShots = function (shots) {
 	for (var sn in shots) {
 		$.writeln('Creating s' + sn)
-		var conf = shots[sn]
-		conf['width'] = WIDTH
-		conf['height'] = HEIGHT
-		compUtil.addOne(project, mainComp, conf)
+		var shot = shots[sn]
+		shot['width'] = WIDTH
+		shot['height'] = HEIGHT
+		compUtil.addOne(shot, mainComp, project)
 	}
 }
 
@@ -42,12 +42,12 @@ ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {
 	}
 }
 
-ShareUtil.prototype.importFiles = function (parentObj, files) {
+ShareUtil.prototype.importFiles = function (files, parentObj) {
 	for (var i = 0; i < files.length; i++) {
 		var conf = files[i]
 		if (conf["folder"]) {
 			var folder = parentObj.items.addFolder(conf["folder"])
-			shareUtil.importFiles(folder, conf["files"]);
+			shareUtil.importFiles(conf["files"], folder);
 			continue
 		}
 		var importOptions = new ImportOptions();
@@ -72,11 +72,12 @@ ShareUtil.prototype.importFiles = function (parentObj, files) {
 		var layers = conf["layers"]
 		if (layers) {
 			for (var j = 0; j < layers.length; j++) {
-				var parentLayer = shareUtil.addLayer(mainComp, layers[j])
+				var parentLayer = shareUtil.addLayer(layers[j], mainComp)
 				children = layers[j]["children"]
 				if (children) {
 					for (var k = 0; k < children.length; k++) {
-						shareUtil.addLayer(mainComp, children[k], null, parentLayer)
+						children[k]['parent'] = parentLayer
+						shareUtil.addLayer(children[k], mainComp)
 					}
 				}
 			}
@@ -84,12 +85,12 @@ ShareUtil.prototype.importFiles = function (parentObj, files) {
 	}
 }
 
-ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
+ShareUtil.prototype.addLayer = function (conf, comp) {
 	var layer;
-	if (item) {
-		layer = parentComp.layers.add(item);
+	if (conf["item"]) {
+		layer = comp.layers.add(conf["item"]);
 	} else {
-		layer = parentComp.layers.add(this.findItemByName(conf["name"]));
+		layer = comp.layers.add(this.findItemByName(conf["sourceName"]));
 	}
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];
@@ -117,8 +118,8 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	if (js_bool(conf['3D'])) {
 		layer.threeDLayer = true;
 	}
-	if (parent) {
-		layer.setParentWithJump(parent)
+	if (conf["parent"]) {
+		layer.setParentWithJump(conf["parent"])
 	}
 	this.configMasks(layer, conf["Masks"])
 	this.configKeyframes(layer, conf["keyframes"])

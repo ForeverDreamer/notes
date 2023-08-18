@@ -2,13 +2,13 @@ function Queue() {
     this.queueLayers = {}
 }
 
-Queue.prototype.add = function (items, parentComp, conf) {
+Queue.prototype.add = function (conf, parentComp, parentObj) {
     var traverse = conf["traverse"]
     this.queueLayers[traverse] = {}
     var elems = conf['elems']
     var unit = conf["unit"];
 
-    var queueComp = items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
+    var queueComp = parentObj.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     queueComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
 
     var elemWidth = unit["pathGroup"]["Size"][0]
@@ -28,17 +28,24 @@ Queue.prototype.add = function (items, parentComp, conf) {
             unit["Fill"]["Color"] = colorUtil.hexToRgb1(elems[i]["Color"])
         }
         // var shapeLayer = shareUtil.addLayer(queueComp, unit);
-        var shapeLayer = shapeUtil.addOne(queueComp, unit)
+        var shapeLayer = shapeUtil.addOne(unit, queueComp)
         if (elems[i]["keyframes"]) {
             shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
         }
         var textLayer = textUtil.overlay(
-            queueComp, shapeLayer, "Text" + "." + key,
-            { "text": key, "font": "Arial-BoldItalicMT", "fontSize": unit["fontSize"], "Position": [elemWidth / 2, elemHeight / 2] }
-        );
+            {
+                "layerName": "Text" + "." + key,
+                "text": key,
+                "font": "Arial-BoldItalicMT",
+                "fontSize": unit["fontSize"],
+                "Position": [elemWidth / 2, elemHeight / 2]
+            },
+            queueComp, shapeLayer
+        )
         this.queueLayers[traverse][key] = { 'shapeLayer': shapeLayer, "textLayer": textLayer }
     }
-    shareUtil.addLayer(parentComp, conf, queueComp);
+    conf["item"] = queueComp
+    shareUtil.addLayer(conf, parentComp);
     // effectsUtil.add(queueLayer, "ADBE Drop Shadow", {"Distance": 10, "Softness": 30, "Opacity": 255});
     return queueComp
 }
