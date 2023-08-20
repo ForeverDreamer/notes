@@ -147,26 +147,18 @@ ShareUtil.prototype.delItems = function (items) {
 	}
 }
 
-ShareUtil.prototype.findItemByName = function (name, parentObj) {
-	if (!parentObj) {
-		parentObj = project
-	}
-	var obj = null
-	for (var i = 1; i <= parentObj.items.length; i++) {
-		var item = parentObj.items[i];
-		if (item.typeName === "Folder") {
-			obj = shareUtil.findItemByName(name, item)
-			if (obj) {
-				break
-			}
-		} else {
-			if (item.name == name) {
-				obj = item
-				break
-			}
+ShareUtil.prototype.findItemByName = function (name, parentFolderName, typeName) {
+	for (var i = 1; i <= project.items.length; i++) {
+		var item = project.items[i];
+		if (
+			(item.name !== name) ||
+			(parentFolderName && item.parentFolder.name !== parentFolderName) ||
+			(typeName && item.typeName !== typeName)
+		) {
+			continue
 		}
+		return item
 	}
-	return obj;
 }
 
 ShareUtil.prototype.configMasks = function (layer, masks) {
@@ -374,14 +366,13 @@ ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
 }
 
 // s11_s11.队列.前序_数据_Shape.3
-ShareUtil.prototype.getPosition = function (path) {
-	var layerNames = path.split('_')
-	var item = null
-	for (var i = 0; i < layerNames.length-1; i++) {
-		// parentComp.layers.byName("数据")("Transform")("Position").value
-        item = this.findItemByName(layerNames[i])
-    }
-	return item.layer(layerNames[i])("Transform")("Position").value
+ShareUtil.prototype.getPosition = function (params) {
+	var layerName = params["layerName"]
+	var itemName = params["itemName"]
+	var parentFolderName = params["parentFolderName"]
+	var typeName = params["typeName"]
+	var item = this.findItemByName(itemName, parentFolderName, typeName)
+	return item.layer(layerName)("Transform")("Position").value
 }
 
 var shareUtil = new ShareUtil();

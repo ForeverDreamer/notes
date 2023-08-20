@@ -54,10 +54,10 @@ ShapeUtil.prototype.addOne = function(conf, comp) {
     if (conf["Rotation"]) {
         shapeLayer("Transform")("Rotation").setValue(conf["Rotation"])
     }
-    shareUtil.setAnchorPoint(shapeLayer, conf["Anchor Point"])
-    shapeLayer("Transform")("Position").setValue(conf["Position"])
     shapeGroup("Transform")("Anchor Point").setValue([0, 0]);
     shapeGroup("Transform")("Position").setValue([0, 0]);
+    shareUtil.setAnchorPoint(shapeLayer, conf["Anchor Point"])
+    shapeLayer("Transform")("Position").setValue(conf["Position"])
 
     if (conf['startTime']) {
 		shapeLayer.startTime = conf['startTime'];

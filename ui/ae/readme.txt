@@ -1,0 +1,3 @@
+1.Anchor Point坐标参考的是自己的layer
+
+2.Position坐标参考的是parentLayer

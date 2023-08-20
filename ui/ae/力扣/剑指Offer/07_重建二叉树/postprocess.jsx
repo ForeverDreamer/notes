@@ -24,32 +24,31 @@ function printArray(array) {
     }
 }
 
-function dataPositions(parentPath, data) {
-    var parentPosition = shareUtil.getPosition(parentPath)
-    // $.writeln(parentPosition)
-
-    var paths = []
-    for (var i = 0; i < data.length; i++) {
-        paths.push(parentPath + '_Shape.' + data[i])
+function dataPositions(data, parentFolderName) {
+    var params = {
+        "itemName": "数据",
+        "parentFolderName": parentFolderName
     }
-    
+    var parentPosition = shareUtil.getPosition({"layerName": "数据", "itemName": parentFolderName, "parentFolderName": parentFolderName})
     var positions = []
-    for (var i = 0; i < paths.length; i++) {
-            // parentComp.layers.byName("数据")("Transform")("Position").value
-        var position = shareUtil.getPosition(paths[i])
+    for (var i = 0; i < data.length; i++) {
+        params["layerName"] = "Shape." + data[i]
+        var position = shareUtil.getPosition(params)
         position[0] += parentPosition[0]
         // $.writeln(position)
         positions.push(position)
     }
-
     return positions
 }
 // printArray(dataPositions('s11_s11.队列.前序_数据'))
 // $.writeln("================")
 // printArray(dataPositions('s11_s11.队列.中序_数据'))
 
-preorderPositions = dataPositions('s11_s11.队列.前序_数据', [3, 9, 20, 15, 7])
-inorderPositions = dataPositions('s11_s11.队列.中序_数据', [9, 3, 15, 20, 7])
+preorderPositions = dataPositions([3, 9, 20, 15, 7], 's11.队列.前序')
+inorderPositions = dataPositions([9, 3, 15, 20, 7], 's11.队列.中序')
+printArray(preorderPositions)
+$.writeln("================")
+printArray(inorderPositions)
 
 var preorderQueueComp = shareUtil.findItemByName("s11.队列.前序")
 var leftSelectedLayer = preorderQueueComp.layer('左边界.选中框')
