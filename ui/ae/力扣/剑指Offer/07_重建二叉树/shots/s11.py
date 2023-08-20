@@ -490,7 +490,7 @@ def build_conf(start_time):
         # ],
         'comps': [
             {
-                'layerName': f'{prefix}.队列.前序', 'width': 300, 'height': 150, 'Position': [771.5, 135.5],
+                'layerName': f'{prefix}.前序遍历结果', 'width': 300, 'height': 150, 'Position': [771.5, 135.5],
                 'startTime': start_time, 'duration': duration,
                 'keyframes': {
                     'Transform.Opacity': [[0, 1], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
@@ -511,9 +511,9 @@ def build_conf(start_time):
                 ],
                 'comps': [
                     {
-                        'layerName': '根节点.选中框', 'width': 150, 'height': 100, 'Position': [108, 103.5],
+                        'layerName': '根选中框', 'width': 150, 'height': 100, 'Position': [108, 103.5],
                         'duration': duration,
-                        'keyframes': keyframes['preorder']['root'],
+                        # 'keyframes': keyframes['preorder']['root'],
                         'texts': [
                             {
                                 'text': 'idx_p_root',
@@ -529,7 +529,7 @@ def build_conf(start_time):
                         ],
                     },
                     {
-                        'layerName': '左边界.选中框', 'width': 150, 'height': 100, 'Position': [148, 52.5],
+                        'layerName': '左选中框', 'width': 150, 'height': 100, 'Position': [148, 52.5],
                         'duration': duration,
                         # 'keyframes': keyframes['preorder']['left'],
                         'texts': [
@@ -546,9 +546,9 @@ def build_conf(start_time):
                         ],
                     },
                     {
-                        'layerName': '右边界.选中框', 'width': 150, 'height': 100, 'Position': [265, 52.5],
+                        'layerName': '右选中框', 'width': 150, 'height': 100, 'Position': [265, 52.5],
                         'duration': duration,
-                        'keyframes': keyframes['preorder']['right'],
+                        # 'keyframes': keyframes['preorder']['right'],
                         'texts': [
                             {
                                 'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
@@ -565,7 +565,7 @@ def build_conf(start_time):
                 ],
             },
             {
-                'layerName': f'{prefix}.队列.中序', 'width': 300, 'height': 150, 'Position': [771.5, 316],
+                'layerName': f'{prefix}.中序遍历结果', 'width': 300, 'height': 150, 'Position': [771.5, 316],
                 'startTime': start_time, 'duration': duration,
                 'keyframes': {
                     'Transform.Opacity': [[0, 1], [0, 100], {"spatial": [{"type": 'HOLD'}] * 2}],
@@ -587,12 +587,12 @@ def build_conf(start_time):
                 ],
                 'comps': [
                     {
-                        'layerName': '根节点.选中框', 'Position': [108, 103.5],
+                        'layerName': '根选中框', 'Position': [108, 103.5],
                         'width': 150, 'height': 100, 'duration': duration,
-                        'keyframes': {
-                            'Transform.Opacity': keyframes['inorder']['root']['Opacity'],
-                            'Transform.Position': keyframes['inorder']['root']['Position'],
-                        },
+                        # 'keyframes': {
+                        #     'Transform.Opacity': keyframes['inorder']['root']['Opacity'],
+                        #     'Transform.Position': keyframes['inorder']['root']['Position'],
+                        # },
                         'texts': [
                             {
                                 'text': 'idx_p_root',
@@ -609,12 +609,12 @@ def build_conf(start_time):
                         ],
                     },
                     {
-                        'layerName': '左边界.选中框', 'Position': [148, 52.5],
+                        'layerName': '左选中框', 'Position': [148, 52.5],
                         'width': 150, 'height': 100, 'duration': duration,
-                        'keyframes': {
-                            'Transform.Opacity': keyframes['inorder']['left']['Opacity'],
-                            'Transform.Position': keyframes['inorder']['left']['Position'],
-                        },
+                        # 'keyframes': {
+                        #     'Transform.Opacity': keyframes['inorder']['left']['Opacity'],
+                        #     'Transform.Position': keyframes['inorder']['left']['Position'],
+                        # },
                         'texts': [
                             {
                                 'text': 'idx_pl', 'fillColor': COLORS['queue']['fillColor']['left'],
@@ -630,12 +630,12 @@ def build_conf(start_time):
                         ],
                     },
                     {
-                        'layerName': '右边界.选中框', 'Position': [265, 52.5],
+                        'layerName': '右选中框', 'Position': [265, 52.5],
                         'width': 150, 'height': 100, 'duration': duration,
-                        'keyframes': {
-                            'Transform.Opacity': keyframes['inorder']['right']['Opacity'],
-                            'Transform.Position': keyframes['inorder']['right']['Position'],
-                        },
+                        # 'keyframes': {
+                        #     'Transform.Opacity': keyframes['inorder']['right']['Opacity'],
+                        #     'Transform.Position': keyframes['inorder']['right']['Position'],
+                        # },
                         'texts': [
                             {
                                 'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
@@ -652,7 +652,7 @@ def build_conf(start_time):
                 ],
             },
             {
-                'layerName': f'{prefix}.代码', 'width': 1419, 'height': 934,
+                'layerName': f'{prefix}.代码调试', 'width': 1419, 'height': 934,
                 'Anchor Point': 'LEFT_TOP', 'Position': [595, 45],
                 'startTime': start_time, 'duration': duration,
                 'texts': [
@@ -822,7 +822,7 @@ def build_conf(start_time):
                     },
                 ],
                 'codes': {
-                    'layerName': '代码', 'Position': [370, 0], 'duration': duration, 'width': 1200, 'height': 934,
+                    'layerName': f'{prefix}.代码', 'Position': [370, 0], 'duration': duration, 'width': 1200, 'height': 934,
                     'widthLine': 1200, 'heightLine': 30, 'font': 'MicrosoftSansSerif', 'fontSize': FONT_SIZES['code'],
                     'startTime': start_time, 'Anchor Point': 'LEFT_TOP',
                     'currentLine': {
