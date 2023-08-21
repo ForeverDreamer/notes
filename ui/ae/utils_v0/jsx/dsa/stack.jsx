@@ -15,7 +15,8 @@ Stack.prototype.add = function (conf, parentComp, parentObj) {
     var pos_y = elemHeight * elems.length - elemHeight / 2
     for (var i = 0; i < elems.length; i++) {
         var key = elems[i]["key"]
-        unit["layerName"] = "Shape" + "." + key
+        var layerName = elems[i]["layerName"] ? elems[i]["layerName"] : key
+        unit["layerName"] = "Shape." + layerName
         if (i > 0) {
             pos_y -= elemHeight
             pos_y += 1
@@ -31,7 +32,7 @@ Stack.prototype.add = function (conf, parentComp, parentObj) {
             shareUtil.configKeyframes(shapeLayer, elems[i]["keyframes"])
             textProps["keyframes"] = elems[i]["keyframes"]
         }
-        textProps["layerName"] = "Text" + "." + key
+        textProps["layerName"] = "Text." + layerName
         textUtil.overlay(textProps, stackComp, shapeLayer);
     }
     conf["item"] = stackComp

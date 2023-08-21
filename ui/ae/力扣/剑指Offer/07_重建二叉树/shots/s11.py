@@ -355,142 +355,142 @@ def build_conf(start_time):
         #     },
         # ],
         'subtitles': subtitles,
-        # 'dsa': [
-        #     {
-        #         'layerName': f'{prefix}.二叉树', 'type': 'BINARY_TREE', 'width': 760, 'height': 700,
-        #         'startTime': start_time, 'duration': duration, 'Anchor Point': 'LEFT_TOP', 'Position': [50, 250],
-        #         'elems': [
-        #             {
-        #                 'key': 3,
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[11]-0.5, _currentline_times[11]],
-        #                         [0, 0, 100],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': 9,
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[17]-0.5, _currentline_times[17]],
-        #                         [0, 0, 100],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': 20,
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[33] - 0.5, _currentline_times[33]],
-        #                         [0, 0, 100],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': '空',
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[21] - 0.5, _currentline_times[21], _currentline_times[21] + 1],
-        #                         [0, 0, 100, 0],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': '空',
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[25] - 0.5, _currentline_times[25], _currentline_times[25] + 1],
-        #                         [0, 0, 100, 0],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': 15,
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[40] - 0.5, _currentline_times[40]],
-        #                         [0, 0, 100],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': 7,
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[56] - 0.5, _currentline_times[56]],
-        #                         [0, 0, 100],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {'key': None}, {'key': None}, {'key': None}, {'key': None},
-        #             {
-        #                 'key': '空',
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[43] - 0.5, _currentline_times[43], _currentline_times[43] + 1],
-        #                         [0, 0, 100, 0],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': '空',
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[47] - 0.5, _currentline_times[47], _currentline_times[47] + 1],
-        #                         [0, 0, 100, 0],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': '空',
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[60] - 0.5, _currentline_times[60], _currentline_times[60] + 1],
-        #                         [0, 0, 100, 0],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {
-        #                 'key': '空',
-        #                 'keyframes': {
-        #                     "Transform.Opacity": [
-        #                         [0, _currentline_times[64] - 0.5, _currentline_times[64], _currentline_times[64] + 1],
-        #                         [0, 0, 100, 0],
-        #                         # {"temporal": temporal}
-        #                     ]
-        #                 }
-        #             },
-        #             {'key': None}, {'key': None}, {'key': None}, {'key': None},
-        #             {'key': None}, {'key': None}, {'key': None}, {'key': None},
-        #         ],
-        #         'animation': 'false',
-        #         'node': {
-        #             'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
-        #         },
-        #         'edge': {
-        #             'shape': {'name': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80],
-        #                       'Rotation': 30},
-        #         },
-        #         # '3D': 'true'
-        #         'keyframes': {
-        #
-        #         }
-        #     }
-        # ],
+        'dsa': [
+            {
+                'layerName': f'{prefix}.二叉树', 'type': 'BINARY_TREE', 'width': 760, 'height': 700,
+                'startTime': start_time, 'duration': duration, 'Anchor Point': 'LEFT_TOP', 'Position': [0, 160],
+                'elems': [
+                    {
+                        'key': 3,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[12]],
+                                [0, 100],
+                                {"spatial": [{"type": 'HOLD'}] * 2}
+                            ]
+                        }
+                    },
+                    {
+                        'key': 9,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[18]],
+                                [0, 100],
+                                {"spatial": [{"type": 'HOLD'}] * 2}
+                            ]
+                        }
+                    },
+                    {
+                        'key': 20,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[34]],
+                                [0, 100],
+                                {"spatial": [{"type": 'HOLD'}] * 2}
+                            ]
+                        }
+                    },
+                    {
+                        'key': '空',
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[22], _currentline_times[22] + 1],
+                                [0, 100, 0],
+                                {"spatial": [{"type": 'HOLD'}] * 3}
+                            ]
+                        }
+                    },
+                    {
+                        'key': '空',
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[26], _currentline_times[26] + 1],
+                                [0, 100, 0],
+                                {"spatial": [{"type": 'HOLD'}] * 3}
+                            ]
+                        }
+                    },
+                    {
+                        'key': 15,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[41]],
+                                [0, 100],
+                                {"spatial": [{"type": 'HOLD'}] * 2}
+                            ]
+                        }
+                    },
+                    {
+                        'key': 7,
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[57]],
+                                [0, 100],
+                                {"spatial": [{"type": 'HOLD'}] * 2}
+                            ]
+                        }
+                    },
+                    {'key': None}, {'key': None}, {'key': None}, {'key': None},
+                    {
+                        'key': '空',
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[44], _currentline_times[44] + 1],
+                                [0, 100, 0],
+                                {"spatial": [{"type": 'HOLD'}] * 3}
+                            ]
+                        }
+                    },
+                    {
+                        'key': '空',
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[48], _currentline_times[48] + 1],
+                                [0, 100, 0],
+                                {"spatial": [{"type": 'HOLD'}] * 3}
+                            ]
+                        }
+                    },
+                    {
+                        'key': '空',
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[61], _currentline_times[61] + 1],
+                                [0, 100, 0],
+                                {"spatial": [{"type": 'HOLD'}] * 3}
+                            ]
+                        }
+                    },
+                    {
+                        'key': '空',
+                        'keyframes': {
+                            "Transform.Opacity": [
+                                [0, _currentline_times[65], _currentline_times[65] + 1],
+                                [0, 100, 0],
+                                {"spatial": [{"type": 'HOLD'}] * 3}
+                            ]
+                        }
+                    },
+                    {'key': None}, {'key': None}, {'key': None}, {'key': None},
+                    {'key': None}, {'key': None}, {'key': None}, {'key': None},
+                ],
+                'animation': 'false',
+                'node': {
+                    'shape': {'sourceName': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
+                },
+                'edge': {
+                    'shape': {'sourceName': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80],
+                              'Rotation': 30},
+                },
+                # '3D': 'true'
+                'keyframes': {
+
+                }
+            }
+        ],
         'comps': [
             {
-                'layerName': f'{prefix}.前序遍历结果', 'width': 300, 'height': 150, 'Position': [771.5, 135.5],
+                'layerName': f'{prefix}.前序遍历结果', 'width': 330, 'height': 150, 'Position': [771.5, 135.5],
                 'startTime': start_time, 'duration': duration,
                 'keyframes': {
                     'Transform.Opacity': [[0, 1], [0, 100], {"spatial": [{"type": 'HOLD'}]}],
@@ -565,7 +565,7 @@ def build_conf(start_time):
                 ],
             },
             {
-                'layerName': f'{prefix}.中序遍历结果', 'width': 300, 'height': 150, 'Position': [771.5, 316],
+                'layerName': f'{prefix}.中序遍历结果', 'width': 330, 'height': 150, 'Position': [771.5, 316],
                 'startTime': start_time, 'duration': duration,
                 'keyframes': {
                     'Transform.Opacity': [[0, 1], [0, 100], {"spatial": [{"type": 'HOLD'}] * 2}],
@@ -617,7 +617,7 @@ def build_conf(start_time):
                         # },
                         'texts': [
                             {
-                                'text': 'idx_pl', 'fillColor': COLORS['queue']['fillColor']['left'],
+                                'text': 'idx_il', 'fillColor': COLORS['queue']['fillColor']['left'],
                                 'Position': [75, 15], 'fontSize': 25,
                             },
                         ],
@@ -638,7 +638,7 @@ def build_conf(start_time):
                         # },
                         'texts': [
                             {
-                                'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
+                                'text': 'idx_ir', 'fillColor': COLORS['queue']['fillColor']['right'],
                                 'Position': [75, 83], 'fontSize': 25,
                             },
                         ],
@@ -659,53 +659,53 @@ def build_conf(start_time):
                     {
                         'layerName': 'idx_pl', 'text': 'idx_pl: 0',
                         'Position': [644, 660], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_pl']
+                        # 'keyframes': keyframes['vars']['idx_pl']
                     },
                     {
                         'layerName': 'idx_pr', 'text': 'idx_pr: 4',
                         'Position': [810, 691], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_pr']
+                        # 'keyframes': keyframes['vars']['idx_pr']
                     },
                     {
                         'layerName': 'idx_il', 'text': 'idx_il: 0',
                         'Position': [631, 722], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_il']
+                        # 'keyframes': keyframes['vars']['idx_il']
                     },
                     {
                         'layerName': 'idx_ir', 'text': 'idx_ir: 4',
                         'Position': [781, 751], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_ir']
+                        # 'keyframes': keyframes['vars']['idx_ir']
                     },
                     {
                         'layerName': 'idx_dic', 'text': 'idx_dic = {9: 0, 3: 1, 15: 2, 20: 3, 7: 4}',
                         'Position': [215, 484], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_dic']
+                        # 'keyframes': keyframes['vars']['idx_dic']
                     },
                     {
                         'layerName': 'idx_pl.idx_pr.idx_il.idx_ir',
                         'text': 'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
                         'Position': [1111, 270], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_pl.idx_pr.idx_il.idx_ir']
+                        # 'keyframes': keyframes['vars']['idx_pl.idx_pr.idx_il.idx_ir']
                     },
                     {
                         'layerName': 'idx_p_root', 'text': 'idx_p_root: 0',
                         'Position': [818, 390], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_p_root']
+                        # 'keyframes': keyframes['vars']['idx_p_root']
                     },
                     {
                         'layerName': 'idx_i_root', 'text': 'idx_i_root: 1',
                         'Position': [1057, 420], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['idx_i_root']
+                        # 'keyframes': keyframes['vars']['idx_i_root']
                     },
                     {
                         'layerName': 'root', 'text': 'root: 3',
                         'Position': [995, 447], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['root']
+                        # 'keyframes': keyframes['vars']['root']
                     },
                     {
                         'layerName': 'size_left', 'text': 'size_left: 1',
                         'Position': [900, 480], 'fontSize': FONT_SIZES['code'], 'fillColor': CODE_COLORS['annotation'],
-                        'keyframes': keyframes['vars']['size_left']
+                        # 'keyframes': keyframes['vars']['size_left']
                     },
                 ],
                 'shapes': [
@@ -742,7 +742,7 @@ def build_conf(start_time):
                 ],
                 'dsa': [
                     {
-                        'layerName': '函数调用栈', 'type': 'STACK', 'Position': [8, 618], 'Anchor Point': 'LEFT_TOP',
+                        'layerName': '函数调用栈', 'type': 'STACK', 'Position': [185, 618], 'Anchor Point': 'LEFT_TOP',
                         'width': STACK_ELEM_WIDTH + stroke_add, 'height': STACK_ELEM_HEIGHT * 6 + stroke_add,
                         'duration': duration,
                         'startTime': start_time,
@@ -750,73 +750,24 @@ def build_conf(start_time):
                         'elems': [
                             {
                                 'key': '<module>',
-                                'keyframes': {
-                                    "Transform.Opacity": [
-                                        [0, 1],
-                                        [0, 100],
-                                        {'spatial': [{"type": 'HOLD'}] * 2}
-                                    ]
-                                }
                             },
                             {
                                 'key': 'buildTree( )',
-                                'keyframes': {
-                                    "Transform.Opacity": [
-                                        [0, _currentline_times[1], _currentline_times[-2]],
-                                        [0, 100, 0],
-                                        {'spatial': [{"type": 'HOLD'}] * 3}
-                                    ]
-                                }
                             },
                             {
                                 'key': 'rebuild( )',
-                                'keyframes': {
-                                    "Transform.Opacity": [
-                                        [0, _currentline_times[8], _currentline_times[71]],
-                                        [0, 100, 0],
-                                        {'spatial': [{"type": 'HOLD'}] * 3}
-                                    ]
-                                }
+                                'layerName': 'rebuild( ).0',
                             }, {
                                 'key': 'rebuild( )',
-                                'keyframes': {
-                                    "Transform.Opacity": [
-                                        [
-                                            0, _currentline_times[14], _currentline_times[28], _currentline_times[30],
-                                            _currentline_times[69],
-                                        ],
-                                        [0, 100, 0, 100, 0],
-                                        {'spatial': [{"type": 'HOLD'}] * 5}
-                                    ]
-                                }
+                                'layerName': 'rebuild( ).1',
                             },
                             {
                                 'key': 'rebuild( )',
-                                'keyframes': {
-                                    "Transform.Opacity": [
-                                        [
-                                            0, _currentline_times[20], _currentline_times[22], _currentline_times[24],
-                                            _currentline_times[26], _currentline_times[36], _currentline_times[51],
-                                            _currentline_times[53], _currentline_times[67],
-                                        ],
-                                        [0, 100, 0, 100, 0, 100, 0, 100, 0],
-                                        {'spatial': [{"type": 'HOLD'}] * 9}
-                                    ]
-                                }
+                                'layerName': 'rebuild( ).2',
                             },
                             {
                                 'key': 'rebuild( )',
-                                'keyframes': {
-                                    "Transform.Opacity": [
-                                        [
-                                            0, _currentline_times[42], _currentline_times[44], _currentline_times[46],
-                                            _currentline_times[48], _currentline_times[59], _currentline_times[61],
-                                            _currentline_times[63], _currentline_times[65],
-                                        ],
-                                        [0, 100, 0, 100, 0, 100, 0, 100, 0],
-                                        {'spatial': [{"type": 'HOLD'}] * 9}
-                                    ]
-                                }
+                                'layerName': 'rebuild( ).3',
                             }
                         ],
                     },
