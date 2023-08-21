@@ -44,8 +44,12 @@ function dataPositions(data, parentFolderName) {
 // $.writeln("================")
 // printArray(dataPositions('s11_s11.队列.中序_数据'))
 
-preorderPositions = dataPositions([3, 9, 20, 15, 7], 's11.前序遍历结果')
-inorderPositions = dataPositions([9, 3, 15, 20, 7], 's11.中序遍历结果')
+var preorderPositions = dataPositions([3, 9, 20, 15, 7], 's11.前序遍历结果')
+var lastOne = preorderPositions[preorderPositions.length-1]
+preorderPositions.push([lastOne[0]+39, lastOne[1]])
+var inorderPositions = dataPositions([9, 3, 15, 20, 7], 's11.中序遍历结果')
+var lastOne = inorderPositions[inorderPositions.length-1]
+inorderPositions.push([lastOne[0]+39, lastOne[1]])
 printArray(preorderPositions)
 $.writeln("================")
 printArray(inorderPositions)
@@ -60,53 +64,71 @@ var currentLinePosition = currentLineLayer("Transform")("Position");
 
 var Keyframes = {
     "Transform.Position": [
-        [
-            currentLinePosition.keyTime(9), currentLinePosition.keyTime(15), currentLinePosition.keyTime(21),
-            currentLinePosition.keyTime(23), currentLinePosition.keyTime(25),
-        ],
-        [
-            // preorderPositions[0], preorderPositions[1], preorderPositions[2],
-            // preorderPositions[1], preorderPositions[2],
-        ],
-        {"spatial": [{"type": 'HOLD'}, {"type": 'HOLD'}, {"type": 'HOLD'}, {"type": 'HOLD'}, {"type": 'HOLD'}]}
+        [],
+        [],
+        {}
     ]
 }
 
-for (var i = 0; i < preorderPositions.length; i++) {
-    preorderPositions[i][1] = 103.5
+function procOpacity(idxes) {
+
 }
 
-// var positions = []
-// var idxes = [0, 1, 2, 1, 2]
-// for (var i = 0; i < idxes.length; i++) {
-//     positions.push(preorderPositions[idxes[i]])
-// }
-// Keyframes["Transform.Position"][1] = positions
+function procPosition(times, idxes, posY) {
+    Keyframes["Transform.Position"][0] = times
 
-// shareUtil.configKeyframes(rootSelectedLayer, Keyframes)
+    var positions = []
+    for (var i = 0; i < idxes.length; i++) {
+        positions.push(preorderPositions[idxes[i]])
+    }
+    Keyframes["Transform.Position"][1] = positions
 
-
-// 此段重复代码封装成函数
-for (var i = 0; i < preorderPositions.length; i++) {
-    preorderPositions[i][1] = 52.5
+    for (var i = 0; i < preorderPositions.length; i++) {
+        preorderPositions[i][1] = posY
+    }
 }
 
-// 此段重复代码封装成函数
-var positions = []
-var idxes = [0, 1, 2, 1, 2]
-for (var i = 0; i < idxes.length; i++) {
-    positions.push(preorderPositions[idxes[i]])
-}
-Keyframes["Transform.Position"][1] = positions
+var times = [
+    currentLinePosition.keyTime(9), currentLinePosition.keyTime(15), currentLinePosition.keyTime(21),
+    currentLinePosition.keyTime(23), currentLinePosition.keyTime(25), currentLinePosition.keyTime(27),
+    currentLinePosition.keyTime(29), currentLinePosition.keyTime(31), currentLinePosition.keyTime(37),
+    currentLinePosition.keyTime(43), currentLinePosition.keyTime(45), currentLinePosition.keyTime(47),
+    currentLinePosition.keyTime(49), currentLinePosition.keyTime(53), currentLinePosition.keyTime(59),
+    currentLinePosition.keyTime(61), currentLinePosition.keyTime(63), currentLinePosition.keyTime(65),
+    currentLinePosition.keyTime(67), currentLinePosition.keyTime(69)
+]
 
+var spatial = []
+
+for (var i = 0; i < times.length; i++) {
+    spatial.push({"type": 'HOLD'})
+}
+
+Keyframes["Transform.Position"][2] = {"spatial": spatial}
+
+var idxes = [
+    0, 1, 2, 
+    1, 2, 1, 
+    0, 2, 3, 
+    4, 3, 4,
+    3, 4, 5,
+    4, 5, 4,
+    2, 0
+]
+
+procPosition(times, idxes, 52.5)
 shareUtil.configKeyframes(leftSelectedLayer, Keyframes)
 
-var positions = []
-var idxes = [4, 1, 1, 1, 1]
-for (var i = 0; i < idxes.length; i++) {
-    positions.push(preorderPositions[idxes[i]])
-}
-Keyframes["Transform.Position"][1] = positions
+idxes = [
+    4, 1, 1, 
+    1, 1, 1, 
+    4, 4, 3, 
+    3, 3, 3,
+    3, 4, 4,
+    4, 4, 4,
+    4, 4
+]
 
+procPosition(times, idxes, 104.5)
 shareUtil.configKeyframes(rightSelectedLayer, Keyframes)
 

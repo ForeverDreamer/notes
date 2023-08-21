@@ -9,14 +9,14 @@ CompUtil.prototype.addOne = function (conf, parentComp, parentObj) {
     if (conf['files']) {
         shareUtil.importFiles(conf["files"], parentObj);
     }
-    // if (conf['images']) {
-    //     shareUtil.addLayers(comp, conf['images'])
-    // }
-    // if (conf['videos']) {
-    //
-    // }
-    if (conf["texts"]) {
-        textUtil.addMany(conf["texts"], comp)
+    if (conf['codes']) {
+        codes.add(conf['codes'], comp, parentObj)
+    }
+    if (conf["dsa"]) {
+        dsa.addMany(conf['dsa'], comp, parentObj)
+    }
+    if (conf["comps"]) {
+        compUtil.addMany(conf['comps'], comp, parentObj)
     }
     if (conf["vectors"]) {
         var vectors = conf['vectors']
@@ -27,20 +27,8 @@ CompUtil.prototype.addOne = function (conf, parentComp, parentObj) {
     if (conf["shapes"]) {
         shapeUtil.addMany(conf["shapes"], comp)
     }
-    if (conf["dsa"]) {
-        dsa.addMany(conf['dsa'], comp, parentObj)
-    }
-    // if (conf['codes']) {
-    //     this.create_codes(compFolder.items, newComp, conf['codes'])
-    // }
-    if (conf["comps"]) {
-        compUtil.addMany(conf['comps'], comp, parentObj)
-    }
-    // if (conf["misc"]) {
-    //     this.misc(compFolder.items, comp, conf['misc'])
-    // }
-    if (conf['codes']) {
-        codes.add(conf['codes'], comp, parentObj)
+    if (conf["texts"]) {
+        textUtil.addMany(conf["texts"], comp)
     }
     if (conf['subtitles']) {
         shareUtil.createSubtitles(conf['subtitles'])

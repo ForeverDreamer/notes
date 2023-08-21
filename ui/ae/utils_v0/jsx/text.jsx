@@ -52,6 +52,7 @@ TextUtil.prototype.addOne = function(props, comp) {
     shareUtil.configKeyframes(textLayer, props["keyframes"])
     // textLayer.threeDLayer = true
     presetsUtil.add(textLayer, props["presets"])
+    // textLayer.moveToBeginning()
     return textLayer
 }
 

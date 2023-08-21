@@ -511,21 +511,21 @@ def build_conf(start_time):
                 ],
                 'comps': [
                     {
-                        'layerName': '根选中框', 'width': 150, 'height': 100, 'Position': [108, 103.5],
+                        'layerName': '根选中框', 'width': 44, 'height': 44, 'Position': [108, 78.5],
                         'duration': duration,
                         # 'keyframes': keyframes['preorder']['root'],
-                        'texts': [
-                            {
-                                'text': 'idx_p_root',
-                                'fillColor': COLORS['queue']['fillColor']['root'],
-                                'Position': [75, 80], 'fontSize': 25,
-                            },
-                        ],
                         'vectors': [
                             {
                                 'sourceName': 'Queue Code Selected Root/Elements.ai',
-                                'Scale': [100, 100, 100], 'Position': [75, 37],
+                                'Scale': [100, 100, 100], 'Position': [22, 22],
                             }
+                        ],
+                        'texts': [
+                            {
+                                'text': 'root',
+                                'fillColor': COLORS['text'],
+                                'Position': [22, 19.2], 'fontSize': 20,
+                            },
                         ],
                     },
                     {
@@ -546,19 +546,19 @@ def build_conf(start_time):
                         ],
                     },
                     {
-                        'layerName': '右选中框', 'width': 150, 'height': 100, 'Position': [265, 52.5],
+                        'layerName': '右选中框', 'width': 150, 'height': 100, 'Position': [265, 104.5],
                         'duration': duration,
                         # 'keyframes': keyframes['preorder']['right'],
                         'texts': [
                             {
                                 'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
-                                'Position': [75, 15], 'fontSize': 25,
+                                'Position': [75, 83], 'fontSize': 25,
                             },
                         ],
                         'vectors': [
                             {
                                 'sourceName': 'Queue Code Selected Right/Elements.ai',
-                                'Scale': [100, 100, 100], 'Position': [75, 100 - 37],
+                                'Scale': [100, 100, 100], 'Position': [75, 36],
                             }
                         ],
                     }
@@ -587,25 +587,25 @@ def build_conf(start_time):
                 ],
                 'comps': [
                     {
-                        'layerName': '根选中框', 'Position': [108, 103.5],
-                        'width': 150, 'height': 100, 'duration': duration,
+                        'layerName': '根选中框', 'Position': [108, 78.5],
+                        'width': 44, 'height': 44, 'duration': duration,
                         # 'keyframes': {
                         #     'Transform.Opacity': keyframes['inorder']['root']['Opacity'],
                         #     'Transform.Position': keyframes['inorder']['root']['Position'],
                         # },
-                        'texts': [
-                            {
-                                'text': 'idx_p_root',
-                                'fillColor': COLORS['queue']['fillColor']['root'],
-                                'Position': [75, 80], 'fontSize': 25,
-                                'span': {'inPoint': start_time, 'outPoint': end_time},
-                            },
-                        ],
                         'vectors': [
                             {
                                 'sourceName': 'Queue Code Selected Root/Elements.ai',
-                                'Scale': [100, 100, 100], 'Position': [75, 37],
+                                'Scale': [100, 100, 100], 'Position': [22, 22],
                             }
+                        ],
+                        'texts': [
+                            {
+                                'text': 'root',
+                                'fillColor': COLORS['text'],
+                                'Position': [22, 19.2], 'fontSize': 20,
+                                # 'span': {'inPoint': start_time, 'outPoint': end_time},
+                            },
                         ],
                     },
                     {
@@ -630,7 +630,7 @@ def build_conf(start_time):
                         ],
                     },
                     {
-                        'layerName': '右选中框', 'Position': [265, 52.5],
+                        'layerName': '右选中框', 'Position': [265, 104.5],
                         'width': 150, 'height': 100, 'duration': duration,
                         # 'keyframes': {
                         #     'Transform.Opacity': keyframes['inorder']['right']['Opacity'],
@@ -639,13 +639,13 @@ def build_conf(start_time):
                         'texts': [
                             {
                                 'text': 'idx_pr', 'fillColor': COLORS['queue']['fillColor']['right'],
-                                'Position': [75, 15], 'fontSize': 25,
+                                'Position': [75, 83], 'fontSize': 25,
                             },
                         ],
                         'vectors': [
                             {
                                 'sourceName': 'Queue Code Selected Right/Elements.ai',
-                                'Scale': [100, 100, 100], 'Position': [75, 100 - 37],
+                                'Scale': [100, 100, 100], 'Position': [75, 36],
                             }
                         ],
                     }
