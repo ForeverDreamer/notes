@@ -1,19 +1,13 @@
-from constants.share import *
-from .transcript import scenes
+from .consts import ASSETS_DIR
+from .transcript import subtitles as all_subtitles
+from utils_v0.py.audio import audios_subtitles
+
+sn = 0
+prefix = f's{sn}'
 
 
-name = 's0'
-
-
-def shot_0(start_time):
-    sn = 0
-    prefix = f'{name}.{sn}'
-    subtitles = []
-    for i, text in enumerate(scenes[name][0]):
-        subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
-        i += 1
-    subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
+def build_conf(start_time):
+    audios, subtitles, end_time = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.mp3', all_subtitles[sn])
     duration = end_time - start_time
 
     conf = {
@@ -31,14 +25,23 @@ def shot_0(start_time):
                 }
             }
         ],
-        'images': [
+        'files': [
             {
-                'name': '题目描述.jpg',
-                'layerName': f'{prefix}.题目描述',
-                'Scale': [90, 90, 90],
-                'Position': [960, 540],
-                'startTime': start_time,
-                'span': {'inPoint': start_time, 'outPoint': end_time},
+                'folder': 'audios',
+                'files': audios,
+            },
+            {
+                'path': f'{ASSETS_DIR}/题目描述.jpg',
+                'layers': [
+                    {
+                        'sourceName': '题目描述.jpg',
+                        'layerName': f'{prefix}.题目描述',
+                        'Scale': [90, 90, 90],
+                        'Position': [960, 540],
+                        'startTime': start_time,
+                        'span': {'inPoint': start_time, 'outPoint': end_time},
+                    }
+                ],
             }
         ],
         'subtitles': subtitles,
@@ -55,6 +58,6 @@ def shot_0(start_time):
     return conf
 
 
-def create_all(start_time):
-    conf_0 = shot_0(start_time)
-    return name, [conf_0], conf_0['end_time']
+def build(start_time):
+    conf = build_conf(start_time)
+    return sn, conf, conf['end_time']

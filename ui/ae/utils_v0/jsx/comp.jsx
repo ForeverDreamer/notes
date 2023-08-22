@@ -1,13 +1,13 @@
 function CompUtil() {}
 
 CompUtil.prototype.addOne = function (conf, parentComp, parentObj) {
-    if (conf["comps"] || conf["dsa"]) {
+    if (conf["comps"] || conf["dsa"] || parentComp.name == "Main") {
         parentObj = parentObj.items.addFolder(conf["layerName"])
     }
     var comp = parentObj.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     comp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
     if (conf['files']) {
-        shareUtil.importFiles(conf["files"], parentObj);
+        shareUtil.importFiles(conf["files"], parentObj, comp);
     }
     if (conf['codes']) {
         codes.add(conf['codes'], comp, parentObj)

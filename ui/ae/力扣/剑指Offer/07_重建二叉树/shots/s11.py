@@ -1,82 +1,16 @@
-from glob import glob
-from operator import itemgetter
-
-from mutagen.mp3 import MP3
-
 from constants.share import *
 from .consts import ASSETS_DIR
 from .transcript import subtitles as all_subtitles
-from utils.py.color import hex_to_rgb1
+from utils_v0.py.color import hex_to_rgb1
+from utils_v0.py.audio import audios_subtitles
+from utils_v0.py.code import currentline_times
 
 sn = 11
 prefix = f's{sn}'
 
-def audios_subtitles():
-    files = glob(f'{ASSETS_DIR}/audios/{prefix}/*.mp3')
-    names = []
-    for f in files:
-        elems = []
-        for x in f.split('\\')[-1].split('.'):
-            try:
-                elems.append(int(x))
-            except ValueError:
-                pass
-        elems.append(f)
-        elems = tuple(elems)
-        names.append(elems)
-
-    names = sorted(names, key=itemgetter(0, 1))
-    audios = []
-    subtitles = []
-    start_time = 0
-    for i, af in enumerate(names):
-        audio = MP3(af[-1])
-        audios.append(
-            {
-                'path': af[-1],
-                'layers': [
-                    {
-                        'sourceName': af[-1].split('\\')[-1],
-                        'startTime': start_time,
-                        'Anchor Point': 'null',
-                    }
-                ],
-            }
-        )
-        subtitles.append([start_time, all_subtitles[sn][i]])
-        start_time += audio.info.length + 0.5
-
-    subtitles = list(zip(*subtitles))
-    end_time = subtitles[0][-1] + SHOTS_INTERVAL
-    return audios, subtitles, end_time
-
-
-def currentline_times(subtitles, steps):
-    times = []
-    intervals = subtitles[2]
-    i = 0
-    while i < len(subtitles[2]):
-        if intervals[i] == 0:
-            i += 1
-            continue
-        elif intervals[i] == 1:
-            times.append(subtitles[0][i])
-        else:
-            times.append(subtitles[0][i])
-            interval = (subtitles[0][i+1] - subtitles[0][i])/intervals[i]
-            times += [times[-1]+interval*j for j in range(1, intervals[i])]
-        i += 1
-
-    i = len(times) - 1
-    while len(times) < steps:
-        times.append(times[i]+1)
-        i += 1
-
-    return times
-
 
 def build_conf(start_time):
-    audios, subtitles, end_time = audios_subtitles()
+    audios, subtitles, end_time = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.mp3', all_subtitles[sn])
     subtitles.append([1, 1, 4, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1])
     _CURRENTLINE_STEPS = 72
     _currentline_times = currentline_times(subtitles, _CURRENTLINE_STEPS)
@@ -91,12 +25,12 @@ def build_conf(start_time):
     # 代码每断点调试一次只核对一个变量，多了容易出错
     conf = {
         'layerName': prefix, 'duration': duration,
-        # 'files': [
-        #     {
-        #         'folder': 'audios',
-        #         'files': audios,
-        #     },
-        # ],
+        'files': [
+            {
+                'folder': 'audios',
+                'files': audios,
+            },
+        ],
         'subtitles': subtitles,
         'dsa': [
             {
@@ -799,7 +733,7 @@ def build_conf(start_time):
 
 def build(start_time):
     conf = build_conf(start_time)
-    return sn, build_conf(start_time), conf['end_time']
+    return sn, conf, conf['end_time']
 
 
 if __name__ == '__main__':

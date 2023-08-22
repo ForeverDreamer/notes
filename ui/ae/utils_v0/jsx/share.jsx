@@ -42,12 +42,13 @@ ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {
 	}
 }
 
-ShareUtil.prototype.importFiles = function (files, parentObj) {
+ShareUtil.prototype.importFiles = function (files, parentObj, comp) {
+	var _comp = comp ? comp : mainComp
 	for (var i = 0; i < files.length; i++) {
 		var conf = files[i]
 		if (conf["folder"]) {
 			var folder = parentObj.items.addFolder(conf["folder"])
-			shareUtil.importFiles(conf["files"], folder);
+			shareUtil.importFiles(conf["files"], folder, _comp);
 			continue
 		}
 		var importOptions = new ImportOptions();
@@ -72,12 +73,12 @@ ShareUtil.prototype.importFiles = function (files, parentObj) {
 		var layers = conf["layers"]
 		if (layers) {
 			for (var j = 0; j < layers.length; j++) {
-				var parentLayer = shareUtil.addLayer(layers[j], mainComp)
+				var parentLayer = shareUtil.addLayer(layers[j], _comp)
 				children = layers[j]["children"]
 				if (children) {
 					for (var k = 0; k < children.length; k++) {
 						children[k]['parent'] = parentLayer
-						shareUtil.addLayer(children[k], mainComp)
+						shareUtil.addLayer(children[k], _comp)
 					}
 				}
 			}
@@ -296,7 +297,7 @@ ShareUtil.prototype.configKeyframes = function (propGroup, keyframes) {
 }
 
 ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
-	if (js_null(direction) === null) {
+	if (direction === null) {
 		return
 	}
 	var top = layer.sourceRectAtTime(0, false).top

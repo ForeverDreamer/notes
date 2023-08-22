@@ -15,9 +15,9 @@ conf = {
         {
             'path': f'{ASSETS_DIR}/Elements.ai', 'import_as_type': IMPORT_AS_TYPE[0]
         },
-        {
-            'path': f'{ASSETS_DIR}/题目描述.jpg',
-        },
+        # {
+        #     'path': f'{ASSETS_DIR}/题目描述.jpg',
+        # },
         {
             'path': f'{ASSETS_DIR}/Linus Torvalds.jfif',
         },
