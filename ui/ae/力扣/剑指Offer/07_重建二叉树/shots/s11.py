@@ -36,7 +36,7 @@ def audios_subtitles():
                 'path': af[-1],
                 'layers': [
                     {
-                        'name': af[-1].split('\\')[-1],
+                        'sourceName': af[-1].split('\\')[-1],
                         'startTime': start_time,
                         'Anchor Point': 'null',
                     }
@@ -91,12 +91,12 @@ def build_conf(start_time):
     # 代码每断点调试一次只核对一个变量，多了容易出错
     conf = {
         'layerName': prefix, 'duration': duration,
-        'files': [
-            {
-                'folder': 'audios',
-                'files': audios,
-            },
-        ],
+        # 'files': [
+        #     {
+        #         'folder': 'audios',
+        #         'files': audios,
+        #     },
+        # ],
         'subtitles': subtitles,
         'dsa': [
             {
@@ -471,6 +471,9 @@ def build_conf(start_time):
                                 [0, 100, 0],
                                 {"spatial": [{"type": 'HOLD'}] * 3}
                             ]
+                        },
+                        'effects': {
+                            "ADBE Glo2": {}
                         }
                     },
                     {
@@ -486,6 +489,38 @@ def build_conf(start_time):
                                 [0, 100, 0],
                                 {"spatial": [{"type": 'HOLD'}] * 3}
                             ]
+                        },
+                        'effects': {
+                            "ADBE Glo2": {}
+                        }
+                    },
+                    {
+                        'layerName': '根节点定位选中框',
+                        'Position': [198, 502],
+                        # 'startTime': start_time,
+                        # 'span': {'inPoint': start_time, 'outPoint': end_time + 3},
+                        'pathGroup': {'type': 'Rect', 'Size': [40, 1]},
+                        'Stroke': {'Stroke Width': 3, 'Color': hex_to_rgb1('#FF0000')},
+                        'keyframes': {
+                            "Opacity": [
+                                [0, _currentline_times[11], _currentline_times[-1]],
+                                [0, 100, 0],
+                                {"spatial": [{"type": 'HOLD'}] * 3}
+                            ],
+                            "Position": [
+                                [
+                                    _currentline_times[11], _currentline_times[17], _currentline_times[33],
+                                    _currentline_times[39], _currentline_times[55],
+                                ],
+                                [
+                                    [198, 502], [143, 502], [328, 502],
+                                    [262, 502], [391, 502],
+                                ],
+                                {"spatial": [{"type": 'HOLD'}] * 5}
+                            ]
+                        },
+                        'effects': {
+                            "ADBE Glo2": {}
                         }
                     },
                 ],
