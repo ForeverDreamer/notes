@@ -89,271 +89,14 @@ def build_conf(start_time):
 
     # 工作量大或相互关联的配置提到前边统一填写，避免滚轮滚上滚下到处找，头都晕了~，
     # 代码每断点调试一次只核对一个变量，多了容易出错
-    keyframes = {
-        'vars': {
-            'idx_pl': {
-                'Opacity': [
-                    [0, _currentline_times[2], _currentline_times[8]],
-                    [0, 100, 0],
-                    {"spatial": SPATIAL_HOLD * 3}
-                ],
-            },
-            'idx_pr': {
-                'Opacity': [
-                    [0, _currentline_times[3], _currentline_times[8]],
-                    [0, 100, 0],
-                    {"spatial": SPATIAL_HOLD * 3}
-                ],
-            },
-            'idx_il': {
-                'Opacity': [
-                    [0, _currentline_times[4], _currentline_times[8]],
-                    [0, 100, 0],
-                    {"spatial": SPATIAL_HOLD * 3}
-                ],
-            },
-            'idx_ir': {
-                'Opacity': [
-                    [0, _currentline_times[5], _currentline_times[8]],
-                    [0, 100, 0],
-                    {"spatial": SPATIAL_HOLD * 3}
-                ],
-            },
-            'idx_dic': {
-                'Opacity': [
-                    [0, _currentline_times[6]],
-                    [0, 100],
-                    {"spatial": SPATIAL_HOLD * 2}
-                ],
-            },
-            'idx_pl.idx_pr.idx_il.idx_ir': {
-                'Opacity': [
-                    [0, _currentline_times[8], _currentline_times[71]],
-                    [0, 100, 0],
-                    {"spatial": SPATIAL_HOLD * 3}
-                ],
-                'Source Text': [
-                    [
-                        _currentline_times[8], _currentline_times[14], _currentline_times[20], _currentline_times[24],
-                        _currentline_times[30], _currentline_times[36], _currentline_times[42], _currentline_times[46],
-                        _currentline_times[52], _currentline_times[58], _currentline_times[62],
-                    ],
-                    [
-                        'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
-                        'idx_pl: 1  idx_pr: 1  idx_il: 0  idx_ir: 0',
-                        'idx_pl: 2  idx_pr: 1  idx_il: 0  idx_ir: -1',
-                        'idx_pl: 2  idx_pr: 1  idx_il: 1  idx_ir: 0',
-                        'idx_pl: 2  idx_pr: 4  idx_il: 2  idx_ir: 4',
-                        'idx_pl: 3  idx_pr: 3  idx_il: 2  idx_ir: 2',
-                        'idx_pl: 4  idx_pr: 3  idx_il: 2  idx_ir: 1',
-                        'idx_pl: 4  idx_pr: 3  idx_il: 3  idx_ir: 2',
-                        'idx_pl: 4  idx_pr: 4  idx_il: 4  idx_ir: 4',
-                        'idx_pl: 5  idx_pr: 4  idx_il: 4  idx_ir: 3',
-                        'idx_pl: 5  idx_pr: 4  idx_il: 5  idx_ir: 4',
-                    ],
-                    # {"spatial": SPATIAL_HOLD * 3}
-                ]
-            },
-            'idx_p_root': {
-                'Opacity': [
-                    [
-                        0, _currentline_times[9], _currentline_times[14], _currentline_times[15], _currentline_times[20],
-                        _currentline_times[22], _currentline_times[24], _currentline_times[26],
-                    ],
-                    [0, 100, 0, 100, 0, 100, 0, 100],
-                    {"spatial": SPATIAL_HOLD * 8}
-                ],
-                'Source Text': [
-                    [0, _currentline_times[15], _currentline_times[28]],
-                    [
-                        'idx_p_root: 0',
-                        'idx_p_root: 1',
-                        'idx_p_root: 0',
-                    ],
-                    # {"spatial": SPATIAL_HOLD * 3}
-                ]
-            },
-            'idx_i_root': {
-                'Opacity': [
-                    [
-                        0, _currentline_times[10], _currentline_times[14], _currentline_times[16], _currentline_times[20],
-                        _currentline_times[22], _currentline_times[24], _currentline_times[26],
-                    ],
-                    [0, 100, 0, 100, 0, 100, 0, 100],
-                    {"spatial": SPATIAL_HOLD * 8}
-                ],
-                'Source Text': [
-                    [0, _currentline_times[16], _currentline_times[28]],
-                    [
-                        'idx_i_root: 1',
-                        'idx_i_root: 0',
-                        'idx_i_root: 1',
-                    ],
-                    # {"spatial": SPATIAL_HOLD * 3}
-                ]
-            },
-            'root': {
-                'Opacity': [
-                    [
-                        0, _currentline_times[11], _currentline_times[14], _currentline_times[17], _currentline_times[20],
-                        _currentline_times[22], _currentline_times[24], _currentline_times[26],
-                    ],
-                    [0, 100, 0, 100, 0, 100, 0, 100],
-                    {"spatial": SPATIAL_HOLD * 8}
-                ],
-                'Source Text': [
-                    [0, _currentline_times[17], _currentline_times[28]],
-                    [
-                        'root: 3',
-                        'root: 9',
-                        'root: 3',
-                    ],
-                    # {"spatial": SPATIAL_HOLD * 3}
-                ]
-            },
-            'size_left': {
-                'Opacity': [
-                    [
-                        0, _currentline_times[12], _currentline_times[14], _currentline_times[18], _currentline_times[20],
-                        _currentline_times[22], _currentline_times[24], _currentline_times[26],
-                    ],
-                    [0, 100, 0, 100, 0, 100, 0, 100],
-                    {"spatial": SPATIAL_HOLD * 8}
-                ],
-                'Source Text': [
-                    [0, _currentline_times[18], _currentline_times[28]],
-                    [
-                        'size_left: 1',
-                        'size_left: 0',
-                        'size_left: 1',
-                    ],
-                    # {"spatial": SPATIAL_HOLD * 3}
-                ]
-            },
-            'root.left': {
-                'Opacity': [
-                    [0, _currentline_times[12], _currentline_times[14], _currentline_times[18], _currentline_times[20]],
-                    [0, 100, 0, 100, 0],
-                    {"spatial": SPATIAL_HOLD * 5}
-                ],
-                'Source Text': [
-                    [0, _currentline_times[18]],
-                    [
-                        'root.left: None',
-                        'size_left: 0',
-                    ],
-                    # {"spatial": SPATIAL_HOLD * 3}
-                ]
-            },
-            'root.right': {
-                'Opacity': [
-                    [0, _currentline_times[12], _currentline_times[14], _currentline_times[18], _currentline_times[20]],
-                    [0, 100, 0, 100, 0],
-                    {"spatial": SPATIAL_HOLD * 5}
-                ],
-                'Source Text': [
-                    [0, _currentline_times[18]],
-                    [
-                        'size_left: 1',
-                        'size_left: 0',
-                    ],
-                    # {"spatial": SPATIAL_HOLD * 3}
-                ]
-            },
-        },
-        'preorder': {
-            'root': {
-                'Opacity': [
-                    [0, _currentline_times[10]],
-                    [0, 100],
-                    {"spatial": SPATIAL_HOLD * 2}
-                ],
-                'Position': [
-                    [0, _currentline_times[10]],
-                    [
-                        [108, 103.5], [108, 103.5]
-                    ],
-                    {"spatial": SPATIAL_HOLD * 2}
-                    # {"spatial": [{"type": 'HOLD'}] * 3 + [{"type": 'LINEAR'}]}
-                ],
-            },
-            'left': {
-                'Opacity': [
-                    [0, 9],
-                    [0, 100],
-                    {"spatial": SPATIAL_HOLD * 2}
-                ],
-                'Position': [
-                    [9, 15, 15.3, 21, 21.3, 23, 23.3, 24, 24.5, 26, 26.5],
-                    [
-                        [108, 52.5], [108, 52.5], [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5],
-                        [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5], [148, 52.5]
-                    ],
-                ]
-            },
-            'right': {
-                'Opacity': [
-                    [0, 9],
-                    [0, 100],
-                    {"spatial": SPATIAL_HOLD * 2}
-                ],
-                'Position': [
-                    [8, 15, 15.3],
-                    [
-                        [265, 52.5], [265, 52.5], [148, 52.5]
-                    ]
-                ]
-            },
-        },
-        'inorder': {
-            'root': {
-                'Opacity': [
-                    [0, 12],
-                    [0, 100],
-                    {"spatial": [{"type": 'HOLD'}] * 2}
-                ],
-                'Position': [
-                    [0, 16, 26, 26.5],
-                    [[108, 103.5], [148, 103.5], [148, 103.5], [108, 103.5]],
-                    # {"spatial": [{"type": 'HOLD'}] * 3 + [{"type": 'LINEAR'}]}
-                ],
-            },
-            'left': {
-                'Opacity': [
-                    [0, 9],
-                    [0, 100],
-                    {"spatial": SPATIAL_HOLD * 2}
-                ],
-                'Position': [
-                    [9, 14, 14.5, 20, 20.5, 22, 22.5, 24, 24.5, 26, 26.5],
-                    [
-                        [108, 52.5], [108, 52.5], [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5],
-                        [148, 52.5], [148, 52.5], [188, 52.5], [188, 52.5], [148, 52.5]
-                    ],
-                ]
-            },
-            'right': {
-                'Opacity': [
-                    [0, 9],
-                    [0, 100],
-                    {"spatial": SPATIAL_HOLD * 2}
-                ],
-                'Position': [[8, 14, 14.5], [[265, 52.5], [265, 52.5], [148, 52.5]]]
-            },
-        },
-        'tree': {
-
-        }
-    }
-
     conf = {
         'layerName': prefix, 'duration': duration,
-        # 'files': [
-        #     {
-        #         'folder': 'audios',
-        #         'files': audios,
-        #     },
-        # ],
+        'files': [
+            {
+                'folder': 'audios',
+                'files': audios,
+            },
+        ],
         'subtitles': subtitles,
         'dsa': [
             {
@@ -392,9 +135,10 @@ def build_conf(start_time):
                     },
                     {
                         'key': '空',
+                        'layerName': '9.空.left',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, _currentline_times[22], _currentline_times[22] + 1],
+                                [0, _currentline_times[23], _currentline_times[23] + 1],
                                 [0, 100, 0],
                                 {"spatial": [{"type": 'HOLD'}] * 3}
                             ]
@@ -402,9 +146,10 @@ def build_conf(start_time):
                     },
                     {
                         'key': '空',
+                        'layerName': '9.空.right',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, _currentline_times[26], _currentline_times[26] + 1],
+                                [0, _currentline_times[27], _currentline_times[27] + 1],
                                 [0, 100, 0],
                                 {"spatial": [{"type": 'HOLD'}] * 3}
                             ]
@@ -414,7 +159,7 @@ def build_conf(start_time):
                         'key': 15,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, _currentline_times[41]],
+                                [0, _currentline_times[40]],
                                 [0, 100],
                                 {"spatial": [{"type": 'HOLD'}] * 2}
                             ]
@@ -424,7 +169,7 @@ def build_conf(start_time):
                         'key': 7,
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, _currentline_times[57]],
+                                [0, _currentline_times[56]],
                                 [0, 100],
                                 {"spatial": [{"type": 'HOLD'}] * 2}
                             ]
@@ -433,9 +178,10 @@ def build_conf(start_time):
                     {'key': None}, {'key': None}, {'key': None}, {'key': None},
                     {
                         'key': '空',
+                        'layerName': '15.空.left',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, _currentline_times[44], _currentline_times[44] + 1],
+                                [0, _currentline_times[45], _currentline_times[45] + 1],
                                 [0, 100, 0],
                                 {"spatial": [{"type": 'HOLD'}] * 3}
                             ]
@@ -443,9 +189,10 @@ def build_conf(start_time):
                     },
                     {
                         'key': '空',
+                        'layerName': '15.空.right',
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, _currentline_times[48], _currentline_times[48] + 1],
+                                [0, _currentline_times[49], _currentline_times[49] + 1],
                                 [0, 100, 0],
                                 {"spatial": [{"type": 'HOLD'}] * 3}
                             ]
@@ -453,6 +200,7 @@ def build_conf(start_time):
                     },
                     {
                         'key': '空',
+                        'layerName': '7.空.left',
                         'keyframes': {
                             "Transform.Opacity": [
                                 [0, _currentline_times[61], _currentline_times[61] + 1],
@@ -463,6 +211,7 @@ def build_conf(start_time):
                     },
                     {
                         'key': '空',
+                        'layerName': '7.空.right',
                         'keyframes': {
                             "Transform.Opacity": [
                                 [0, _currentline_times[65], _currentline_times[65] + 1],
@@ -718,7 +467,7 @@ def build_conf(start_time):
                         'Stroke': {'Stroke Width': 3, 'Color': hex_to_rgb1('#FF0000')},
                         'keyframes': {
                             "Transform.Opacity": [
-                                [0, 1, _currentline_times[2]],
+                                [0, 1, _currentline_times[1]],
                                 [0, 100, 0],
                                 {"spatial": [{"type": 'HOLD'}] * 3}
                             ]

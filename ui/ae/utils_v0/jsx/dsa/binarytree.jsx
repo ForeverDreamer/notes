@@ -40,6 +40,7 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
 
     function addNode(elem, parentNode, direction, selected, drop, upEdge) {
         var key = elem["key"]
+        var layerName = elem["layerName"] ? elem["layerName"] : key
 
         if (parentNode) {
             var parentPos = parentNode["Position"]
@@ -68,7 +69,7 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
         var shapeKeyframes = {
             "Transform.Opacity": [times, [0, 100], { "temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]] }]
         }
-        nodeShape["layerName"] = NODE_PREFIX + "." + "Shape" + "." + key
+        nodeShape["layerName"] = NODE_PREFIX + "." + "Shape" + "." + layerName
         var shapeTextProps = { "text": key }
         if (js_bool(conf["animation"])) {
             nodeShape["keyframes"] = shapeKeyframes
@@ -86,7 +87,7 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
 
         if (selected) {
             selected["Position"] = nodeShape["Position"]
-            selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + key
+            selected["layerName"] = NODE_PREFIX + "." + "Selected" + "." + layerName
             selected["keyframes"] = elem["selectedKeyframes"]
             if (elem["Color"]) {
                 selected["Fill"]["Color"] = colorUtil.hexToRgb1(elem["Color"])
@@ -94,12 +95,12 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
             var selectedLayer = shapeUtil.create_one(comp, selected)
             // selectedLayers[selected["layerName"]] = selectedLayer
         }
-        shapeTextProps["layerName"] = NODE_PREFIX + "." + "Text" + "." + key
+        shapeTextProps["layerName"] = NODE_PREFIX + "." + "Text" + "." + layerName
         var shapeTextLayer = textUtil.overlay(shapeTextProps, comp, shapeLayer);
 
         if (drop) {
             // drop["Fill"]["Color"] = drop["Fill"]["Color"]
-            drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + key
+            drop["layerName"] = NODE_PREFIX + "." + "Drop" + "." + layerName
             drop["Position"] = nodeShape["Position"]
             var dropLayer = shapeUtil.create_one(comp, drop)
             // dropLayers[drop["layerName"]] = dropLayer
@@ -111,14 +112,15 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
 
         if (nodePath) {
             nodePath["pathGroup"]["type"] = "Group"
-            nodePath["layerName"] = NODE_PREFIX + "." + "Path" + "." + key;
+            nodePath["layerName"] = NODE_PREFIX + "." + "Path" + "." + layerName;
             // path["Position"] = shapeLayer("Transform")("Position").value.slice(0, 2)
             nodePath["Position"] = nodeShape["Position"]
             var pathLayer = shapeUtil.create_one(comp, nodePath)
             // nodePathLayers.push(pathLayer)
         }
 
-        nodeLayers[key] = {
+        nodeLayers[layerName] = {
+            "layerName": layerName,
             "key": key,
             "Position": shapeLayer("Transform")("Position").value,
             "shapeLayer": shapeLayer, "shapeTextLayer": shapeTextLayer, "selectedLayer": selectedLayer, "dropLayer": dropLayer, "dropTextLayer": dropTextLayer, "pathLayer": pathLayer,
@@ -129,15 +131,16 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
             "left": null, "right": null
         }
         if (parentNode) {
-            parentNode[direction] = nodeLayers[key]
+            parentNode[direction] = nodeLayers[layerName]
         }
 
-        return nodeLayers[key]
+        return nodeLayers[layerName]
     }
 
     function addEdge(elem, upNode, direction) {
-        var key = elem[0]
-        var upKey = upNode["key"];
+        var key = elem["key"]
+        var layerName = elems["layerName"] ? elems["layerName"] : key
+        var upLayerName = upNode["layerName"];
         var upPos = upNode["Position"];
 
         if (direction === "left") {
@@ -160,7 +163,7 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
             // "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], {"temporal": [[[0, 0.1], [200, 100]], [[0, 75], [0, 0.1]]]}]
             "Transform.Scale": [times, [[0, 0, 0], edgeShape["Scale"]], { "temporal": [[[0, 0.1], [300, 100]], [[0, 75], [0, 0.1]]] }]
         }
-        edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upKey + '.' + key
+        edgeShape["layerName"] = EDGE_PREFIX + "." + direction + "." + "Shape" + "." + upLayerName + '.' + layerName
         if (js_bool(conf["animation"])) {
             edgeShape["keyframes"] = edgeKeyframes
             times += STEP
@@ -169,12 +172,13 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
 
         if (edgePath) {
             edgePath["pathGroup"]["type"] = "Group"
-            edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upKey + '.' + key
+            edgePath["layerName"] = EDGE_PREFIX + "." + direction + "." + "Path" + "." + upLayerName + '.' + layerName
             edgePath["Position"] = edgeShape["Position"]
             var pathLayer = shapeUtil.create_one(comp, edgePath)
         }
 
-        edgeLayers[key] = {
+        edgeLayers[layerName] = {
+            "layerName": layerName,
             "key": key,
             "shapeLayer": shapeLayer, "pathLayer": pathLayer,
             "nodeLayers": {
@@ -182,9 +186,9 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
                 "down": null,
             }
         }
-        upNode["edgeLayers"]["down"][direction] = edgeLayers[key]
+        upNode["edgeLayers"]["down"][direction] = edgeLayers[layerName]
 
-        return edgeLayers[key]
+        return edgeLayers[layerName]
     }
 
     this.rootNode = addNode(elems[0], null, null, selected, drop)

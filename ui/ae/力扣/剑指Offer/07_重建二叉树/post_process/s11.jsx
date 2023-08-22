@@ -74,8 +74,16 @@ function procSpatial(key, times) {
     Keyframes[key][3] = true
 }
 
+function procSourceText(times, texts) {
+    var key = "Source Text"
+    Keyframes[key] = []
+    Keyframes[key][0] = times
+    Keyframes[key][1] = texts
+    procSpatial(key, times)
+}
+
 function procOpacity(times, opacities) {
-    var key = "Transform.Opacity"
+    var key = "Opacity"
     Keyframes[key] = []
     Keyframes[key][0] = times
     Keyframes[key][1] = opacities
@@ -83,7 +91,7 @@ function procOpacity(times, opacities) {
 }
 
 function procPosition(times, idxes, posY) {
-    var key = "Transform.Position"
+    var key = "Position"
     Keyframes[key] = []
     Keyframes[key][0] = times
 
@@ -301,3 +309,240 @@ shareUtil.configKeyframes(rebuild3Layer, Keyframes)
 shareUtil.configKeyframes(rebuild3TextLayer, Keyframes)
 
 // 变量文本
+var Keyframes = {}
+var codeDebugComp = shareUtil.findItemByName("s11.代码调试", "s11.代码调试")
+
+var idx_plLayer = codeDebugComp.layer("idx_pl")
+var times = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(4), currentLinePosition.keyTime(9), 
+    currentLinePosition.keyTime(71), currentLinePosition.keyTime(72), 
+]
+var opacities = [
+    0, 100, 0,
+    100, 0
+]
+procOpacity(times, opacities)
+shareUtil.configKeyframes(idx_plLayer, Keyframes)
+
+var idx_prLayer = codeDebugComp.layer("idx_pr")
+var times = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(5), currentLinePosition.keyTime(9),
+    currentLinePosition.keyTime(71), currentLinePosition.keyTime(72),
+]
+var opacities = [
+    0, 100, 0,
+    100, 0
+]
+procOpacity(times, opacities)
+shareUtil.configKeyframes(idx_prLayer, Keyframes)
+
+var idx_ilLayer = codeDebugComp.layer("idx_il")
+var times = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(6), currentLinePosition.keyTime(9),
+    currentLinePosition.keyTime(71), currentLinePosition.keyTime(72),
+]
+var opacities = [
+    0, 100, 0,
+    100, 0
+]
+procOpacity(times, opacities)
+shareUtil.configKeyframes(idx_ilLayer, Keyframes)
+
+var idx_irLayer = codeDebugComp.layer("idx_ir")
+var times = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(7), currentLinePosition.keyTime(9),
+    currentLinePosition.keyTime(71), currentLinePosition.keyTime(72),
+]
+var opacities = [
+    0, 100, 0,
+    100, 0
+]
+procOpacity(times, opacities)
+shareUtil.configKeyframes(idx_irLayer, Keyframes)
+
+var idx_dicLayer = codeDebugComp.layer("idx_dic")
+var times = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(8), currentLinePosition.keyTime(72),
+]
+var opacities = [
+    0, 100, 0,
+]
+procOpacity(times, opacities)
+shareUtil.configKeyframes(idx_dicLayer, Keyframes)
+
+var piLayer = codeDebugComp.layer("idx_pl.idx_pr.idx_il.idx_ir")
+var timesOpacities = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(9), currentLinePosition.keyTime(71)
+]
+var opacities = [
+    0, 100, 0
+]
+var timesSourceTexts = [
+    currentLinePosition.keyTime(9), currentLinePosition.keyTime(15),
+    currentLinePosition.keyTime(21), currentLinePosition.keyTime(23),
+    currentLinePosition.keyTime(25), currentLinePosition.keyTime(27),
+    currentLinePosition.keyTime(29), currentLinePosition.keyTime(31),
+    currentLinePosition.keyTime(37), currentLinePosition.keyTime(43),
+    currentLinePosition.keyTime(45), currentLinePosition.keyTime(47),
+    currentLinePosition.keyTime(49), currentLinePosition.keyTime(51),
+    currentLinePosition.keyTime(53), currentLinePosition.keyTime(59),
+    currentLinePosition.keyTime(61), currentLinePosition.keyTime(63),
+    currentLinePosition.keyTime(65), currentLinePosition.keyTime(67),
+    currentLinePosition.keyTime(69),
+]
+var sourceTexts = [
+    'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4', 'idx_pl: 1  idx_pr: 1  idx_il: 0  idx_ir: 0',
+    'idx_pl: 2  idx_pr: 1  idx_il: 0  idx_ir: -1', 'idx_pl: 1  idx_pr: 1  idx_il: 0  idx_ir: 0',
+    'idx_pl: 2  idx_pr: 1  idx_il: 1  idx_ir: 0', 'idx_pl: 1  idx_pr: 1  idx_il: 0  idx_ir: 0',
+    'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4', 'idx_pl: 2  idx_pr: 4  idx_il: 2  idx_ir: 4',
+    'idx_pl: 3  idx_pr: 3  idx_il: 2  idx_ir: 2', 'idx_pl: 4  idx_pr: 3  idx_il: 2  idx_ir: 1',
+    'idx_pl: 3  idx_pr: 3  idx_il: 2  idx_ir: 2', 'idx_pl: 4  idx_pr: 3  idx_il: 3  idx_ir: 2',
+    'idx_pl: 3  idx_pr: 3  idx_il: 2  idx_ir: 2', 'idx_pl: 2  idx_pr: 4  idx_il: 2  idx_ir: 4',
+    'idx_pl: 4  idx_pr: 4  idx_il: 4  idx_ir: 4', 'idx_pl: 5  idx_pr: 4  idx_il: 4  idx_ir: 3',
+    'idx_pl: 4  idx_pr: 4  idx_il: 4  idx_ir: 4', 'idx_pl: 5  idx_pr: 4  idx_il: 5  idx_ir: 4',
+    'idx_pl: 4  idx_pr: 4  idx_il: 4  idx_ir: 4', 'idx_pl: 2  idx_pr: 4  idx_il: 2  idx_ir: 4',
+    'idx_pl: 0  idx_pr: 4  idx_il: 0  idx_ir: 4',
+]
+procOpacity(timesOpacities, opacities)
+procSourceText(timesSourceTexts, sourceTexts)
+shareUtil.configKeyframes(piLayer, Keyframes)
+
+var idx_p_rootLayer = codeDebugComp.layer("idx_p_root")
+var timesOpacities = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(11), currentLinePosition.keyTime(15),
+    currentLinePosition.keyTime(17), currentLinePosition.keyTime(21), currentLinePosition.keyTime(23),
+    currentLinePosition.keyTime(25), currentLinePosition.keyTime(27), currentLinePosition.keyTime(31),
+    currentLinePosition.keyTime(33), currentLinePosition.keyTime(37), currentLinePosition.keyTime(39),
+    currentLinePosition.keyTime(43), currentLinePosition.keyTime(45), currentLinePosition.keyTime(47),
+    currentLinePosition.keyTime(49), currentLinePosition.keyTime(53), currentLinePosition.keyTime(55),
+    currentLinePosition.keyTime(59), currentLinePosition.keyTime(61), currentLinePosition.keyTime(63),
+    currentLinePosition.keyTime(65), currentLinePosition.keyTime(71),
+]
+var opacities = [
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0
+]
+var timesSourceTexts = [
+    currentLinePosition.keyTime(11), currentLinePosition.keyTime(17), currentLinePosition.keyTime(29),
+    currentLinePosition.keyTime(33), currentLinePosition.keyTime(39), currentLinePosition.keyTime(51),
+    currentLinePosition.keyTime(55), currentLinePosition.keyTime(67), currentLinePosition.keyTime(69),
+]
+var sourceTexts = [
+    "idx_p_root: 0", "idx_p_root: 1", "idx_p_root: 0",
+    "idx_p_root: 2", "idx_p_root: 3", "idx_p_root: 2",
+    "idx_p_root: 4", "idx_p_root: 2", "idx_p_root: 0"
+]
+procOpacity(timesOpacities, opacities)
+procSourceText(timesSourceTexts, sourceTexts)
+shareUtil.configKeyframes(idx_p_rootLayer, Keyframes)
+
+var idx_i_rootLayer = codeDebugComp.layer("idx_i_root")
+var timesOpacities = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(12), currentLinePosition.keyTime(15),
+    currentLinePosition.keyTime(18), currentLinePosition.keyTime(21), currentLinePosition.keyTime(23),
+    currentLinePosition.keyTime(25), currentLinePosition.keyTime(27), currentLinePosition.keyTime(31),
+    currentLinePosition.keyTime(34), currentLinePosition.keyTime(37), currentLinePosition.keyTime(40),
+    currentLinePosition.keyTime(43), currentLinePosition.keyTime(45), currentLinePosition.keyTime(47),
+    currentLinePosition.keyTime(49), currentLinePosition.keyTime(53), currentLinePosition.keyTime(56),
+    currentLinePosition.keyTime(59), currentLinePosition.keyTime(61), currentLinePosition.keyTime(63),
+    currentLinePosition.keyTime(65), currentLinePosition.keyTime(71),
+]
+var opacities = [
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0
+]
+var timesSourceTexts = [
+    currentLinePosition.keyTime(12), currentLinePosition.keyTime(18), currentLinePosition.keyTime(29),
+    currentLinePosition.keyTime(34), currentLinePosition.keyTime(40), currentLinePosition.keyTime(51),
+    currentLinePosition.keyTime(56), currentLinePosition.keyTime(67), currentLinePosition.keyTime(69),
+]
+var sourceTexts = [
+    "idx_i_root: 1", "idx_i_root: 0", "idx_i_root: 1",
+    "idx_i_root: 3", "idx_i_root: 2", "idx_i_root: 3",
+    "idx_i_root: 4", "idx_i_root: 3", "idx_i_root: 1",
+]
+procOpacity(timesOpacities, opacities)
+procSourceText(timesSourceTexts, sourceTexts)
+shareUtil.configKeyframes(idx_i_rootLayer, Keyframes)
+
+var rootLayer = codeDebugComp.layer("root")
+var timesOpacities = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(13), currentLinePosition.keyTime(15),
+    currentLinePosition.keyTime(19), currentLinePosition.keyTime(21), currentLinePosition.keyTime(23),
+    currentLinePosition.keyTime(25), currentLinePosition.keyTime(27), currentLinePosition.keyTime(31),
+    currentLinePosition.keyTime(35), currentLinePosition.keyTime(37), currentLinePosition.keyTime(41),
+    currentLinePosition.keyTime(43), currentLinePosition.keyTime(45), currentLinePosition.keyTime(47),
+    currentLinePosition.keyTime(49), currentLinePosition.keyTime(53), currentLinePosition.keyTime(57),
+    currentLinePosition.keyTime(59), currentLinePosition.keyTime(61), currentLinePosition.keyTime(63),
+    currentLinePosition.keyTime(65), currentLinePosition.keyTime(71),
+]
+var opacities = [
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0
+]
+var timesSourceTexts = [
+    currentLinePosition.keyTime(13), currentLinePosition.keyTime(19), currentLinePosition.keyTime(29),
+    currentLinePosition.keyTime(35), currentLinePosition.keyTime(41), currentLinePosition.keyTime(51),
+    currentLinePosition.keyTime(57), currentLinePosition.keyTime(67), currentLinePosition.keyTime(69),
+]
+var sourceTexts = [
+    "root: 3", "root: 9", "root: 3",
+    "root: 20", "root: 15", "root: 20",
+    "root: 7", "root: 20", "root: 3",
+]
+procOpacity(timesOpacities, opacities)
+procSourceText(timesSourceTexts, sourceTexts)
+shareUtil.configKeyframes(rootLayer, Keyframes)
+
+var size_leftLayer = codeDebugComp.layer("size_left")
+var timesOpacities = [
+    currentLinePosition.keyTime(1), currentLinePosition.keyTime(14), currentLinePosition.keyTime(15),
+    currentLinePosition.keyTime(20), currentLinePosition.keyTime(21), currentLinePosition.keyTime(23),
+    currentLinePosition.keyTime(25), currentLinePosition.keyTime(27), currentLinePosition.keyTime(31),
+    currentLinePosition.keyTime(36), currentLinePosition.keyTime(37), currentLinePosition.keyTime(42),
+    currentLinePosition.keyTime(43), currentLinePosition.keyTime(45), currentLinePosition.keyTime(47),
+    currentLinePosition.keyTime(49), currentLinePosition.keyTime(53), currentLinePosition.keyTime(58),
+    currentLinePosition.keyTime(59), currentLinePosition.keyTime(61), currentLinePosition.keyTime(63),
+    currentLinePosition.keyTime(65), currentLinePosition.keyTime(71),
+]
+var opacities = [
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0, 100,
+    0, 100, 0,
+    100, 0
+]
+var timesSourceTexts = [
+    currentLinePosition.keyTime(14), currentLinePosition.keyTime(20), currentLinePosition.keyTime(29),
+    currentLinePosition.keyTime(36), currentLinePosition.keyTime(42), currentLinePosition.keyTime(51),
+    currentLinePosition.keyTime(58), currentLinePosition.keyTime(67), currentLinePosition.keyTime(69),
+]
+var sourceTexts = [
+    "size_left: 1", "size_left: 0", "size_left: 1",
+    "size_left: 1", "size_left: 0", "size_left: 1",
+    "size_left: 0", "size_left: 1", "size_left: 1",
+]
+procOpacity(timesOpacities, opacities)
+procSourceText(timesSourceTexts, sourceTexts)
+shareUtil.configKeyframes(size_leftLayer, Keyframes)
