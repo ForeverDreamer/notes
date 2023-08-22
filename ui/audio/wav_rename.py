@@ -6,7 +6,6 @@ from pprint import pprint as pp
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 
 
-# 转换成mp3格式之后音频有问题，暂时转换了，直接用wav格式
 audio_files = glob('*.wav')
 names = []
 for af in audio_files:
@@ -24,27 +23,12 @@ for af in audio_files:
 names = sorted(names, key=itemgetter(0, 1))
 print(len(names))
 pp(names)
-sn_line = 0
-sn_snippet = 0
 i = 0
 
 while i < len(names):
     audio_file = names[i][-1]
-    scene = audio_file.split('.')[0].split('#')[0]
-    target_name = f"{sn_line}.{sn_snippet}.mp3" if len(names[i]) == 3 else f"{sn_line}.mp3"
-    target_name = f'{scene}.{target_name}'
+    shot = audio_file.split('.')[0].split('#')[0]
+    target_name = f'{shot}.{i}.wav'
     print(target_name)
-    snd = AudioFileClip(names[i][-1])
-    snd.write_audiofile(os.path.join('audios', target_name))
-    snd.close()
-
-    try:
-        if names[i][0] != names[i+1][0]:
-            sn_line += 1
-            sn_snippet = 0
-        else:
-            sn_snippet += 1
-    except IndexError:
-        pass
-
+    os.rename(audio_file, os.path.join('audios', target_name))
     i += 1

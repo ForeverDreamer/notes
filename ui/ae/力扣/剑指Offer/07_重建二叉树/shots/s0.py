@@ -7,7 +7,7 @@ prefix = f's{sn}'
 
 
 def build_conf(start_time):
-    audios, subtitles, end_time = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.mp3', all_subtitles[sn])
+    audios, subtitles, end_time = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn])
     duration = end_time - start_time
 
     conf = {

@@ -1,7 +1,7 @@
 from glob import glob
 from operator import itemgetter
 
-from mutagen.mp3 import MP3
+from mutagen.wave import WAVE
 
 from constants.share import SHOTS_INTERVAL
 
@@ -25,7 +25,7 @@ def audios_subtitles(path, raw_subtitles):
     subtitles = []
     start_time = 0
     for i, af in enumerate(names):
-        audio = MP3(af[-1])
+        audio = WAVE(af[-1])
         audios.append(
             {
                 'path': af[-1],
