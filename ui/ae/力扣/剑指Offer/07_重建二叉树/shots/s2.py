@@ -8,13 +8,21 @@ prefix = f's{sn}'
 
 
 def build_conf(start_time):
-    audios, subtitles, end_time = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn])
-    times = subtitles[0]
+    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn], start_time)
+    g_times = subtitles[0]
+    # 二叉树动画时间
+    end_time += 5
     duration = end_time - start_time
 
     conf = {
         'layerName': prefix, 'startTime': start_time, 'duration': duration,
         'subtitles': subtitles,
+        'files': [
+            {
+                'folder': 'audios',
+                'files': audios,
+            },
+        ],
         'texts': [
             {
                 'name': f'{prefix}.示例1', 'box': True, 'rect': [1000, 300],
@@ -23,22 +31,22 @@ def build_conf(start_time):
                 'presets': [
                     {
                         'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
-                        'keyframes': {'Type_on.Slider': [[0, duration], [0, 100], None, True]}
+                        'keyframes': {'Type_on.Slider': [[0, l_times[-1]], [0, 100], None, True]}
                     }
                 ]
             },
         ],
-        'precomps': [
+        'dsa': [
             {
                 'layerName': f'{prefix}.示例1.二叉树', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
-                'duration': duration, 'Position': [960, 600],
+                'startTime': l_times[-1], 'duration': 5, 'Position': [960, 600], 'rootNodePos': [186, 60],
                 'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
                 'animation': 'true',
                 'node': {
-                    'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
+                    'shape': {'sourceName': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
                 },
                 'edge': {
-                    'shape': {'name': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80], 'Rotation': 30},
+                    'shape': {'sourceName': 'Edge Black/Elements.ai', 'Anchor Point': 'TOP', 'Scale': [80, 80, 80], 'Rotation': 30},
                 },
                 # '3D': 'true'
             }

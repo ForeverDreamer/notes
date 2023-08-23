@@ -26,7 +26,7 @@ BinaryTree.prototype.add = function (conf, parentComp, parentObj) {
     const NODE_PREFIX = "Node"
     const EDGE_PREFIX = "Edge"
 
-    const ROOT_NODE_POS = [392.5, 75] * NODE_SCALE
+    const ROOT_NODE_POS = conf["rootNodePos"]
     const EDGE_OFFSET = 45 * NODE_SCALE
     const HORIZONTAL_DIST = 160 * NODE_SCALE
     const VERTICAL_DIST = 240 * NODE_SCALE

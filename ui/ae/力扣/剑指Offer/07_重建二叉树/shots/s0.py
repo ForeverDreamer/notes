@@ -7,7 +7,7 @@ prefix = f's{sn}'
 
 
 def build_conf(start_time):
-    audios, subtitles, end_time = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn])
+    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn], start_time)
     times = subtitles[0]
     duration = end_time - start_time
 
@@ -54,7 +54,7 @@ def build_conf(start_time):
                 # 'span': {'inPoint': start_time, 'outPoint': end_time},
                 'keyframes': {
                             "Transform.Opacity": [
-                                [times[3], times[3]+0.5, times[4], times[4]+0.5],
+                                [l_times[3], l_times[3]+0.5, l_times[4], l_times[4]+0.5],
                                 [0, 100, 100, 0],
                                 # {"spatial": [{"type": 'HOLD'}] * 3}
                             ]

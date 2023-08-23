@@ -6,7 +6,7 @@ from mutagen.wave import WAVE
 from constants.share import SHOTS_INTERVAL
 
 
-def audios_subtitles(path, raw_subtitles):
+def audios_subtitles(path, raw_subtitles, start_time):
     files = glob(path)
     names = []
     for f in files:
@@ -23,7 +23,8 @@ def audios_subtitles(path, raw_subtitles):
     names = sorted(names, key=itemgetter(0, 1))
     audios = []
     subtitles = []
-    start_time = 0
+    l_start_time = 0
+    l_times = [l_start_time]
     for i, af in enumerate(names):
         audio = WAVE(af[-1])
         audios.append(
@@ -32,15 +33,18 @@ def audios_subtitles(path, raw_subtitles):
                 'layers': [
                     {
                         'sourceName': af[-1].split('\\')[-1],
-                        'startTime': start_time,
+                        'startTime': l_start_time,
                         'Anchor Point': None,
                     }
                 ],
             }
         )
         subtitles.append([start_time, raw_subtitles[i]])
-        start_time += audio.info.length + 0.5
+        length = audio.info.length
+        start_time += length + 0.5
+        l_start_time += length + 0.5
+        l_times.append(l_start_time)
 
     subtitles = list(zip(*subtitles))
-    end_time = start_time + SHOTS_INTERVAL
-    return audios, subtitles, end_time
+    end_time = start_time
+    return audios, subtitles, end_time, l_times

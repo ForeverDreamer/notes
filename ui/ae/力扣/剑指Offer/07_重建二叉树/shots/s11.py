@@ -36,6 +36,7 @@ def build_conf(start_time):
             {
                 'layerName': f'{prefix}.二叉树', 'type': 'BINARY_TREE', 'width': 760, 'height': 700,
                 'startTime': start_time, 'duration': duration, 'Anchor Point': 'LEFT_TOP', 'Position': [0, 160],
+                'rootNodePos': [314, 60],
                 'elems': [
                     {
                         'key': 3,
