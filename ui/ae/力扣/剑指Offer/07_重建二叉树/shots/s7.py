@@ -2,7 +2,7 @@ from constants.share import *
 from .transcript import scenes
 from utils.py.color import hex_to_rgb1
 
-name = 's2'
+name = 's3'
 
 
 def shot_0(start_time):
@@ -26,7 +26,7 @@ def shot_0(start_time):
         'subtitles': subtitles,
         'annotations': [
             {
-                'name': f'{prefix}注解', 'text': '遍历结果按照[根节点|左子树|右子树]排序\n第一个元素就是根节点，但无法确定左子树和右子树',
+                'name': f'{prefix}注解', 'text': '遍历结果按照[左子树|根节点|右子树]排序\n需要先定位根节点，才能确定左子树和右子树',
                 'Anchor Point': 'LEFT_TOP', 'Position': [695, 710],
                 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY',
                 'startTime': start_time, 'span': {'inPoint': start_time, 'outPoint': end_time}
@@ -36,24 +36,8 @@ def shot_0(start_time):
             {
                 'layerName': f'{prefix}.队列', 'type': 'QUEUE',
                 'Anchor Point': 'LEFT_TOP', 'Position': [695, 849],
-                # 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], [15, '#CEF2ED'], [7, '#CEF2ED']],
-                'elems': [
-                    {
-                        'key': 3,
-                        'keyframes': {
-                            'Contents.Group 1.Contents.Fill 1.Color': [
-                                [start_time, duration - 1],
-                                [
-                                    hex_to_rgb1(COLORS["tree"]["fillColor"]["default"]),
-                                    hex_to_rgb1(COLORS["tree"]["fillColor"]["root"])
-                                ],
-                                {"spatial": SPATIAL_HOLD * 2},
-                            ]
-                        }
-                    },
-                    {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}
-                ],
-                'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5 + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
+                'elems': [{'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}],
+                'traverse': 'inorder', 'width': QUE_ELEM_WIDTH * 5 + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
                 'startTime': start_time, 'duration': duration,
                 'unit': QUE_UNIT,
                 # 'effects': {'ADBE Drop Shadow': {}},
@@ -61,27 +45,10 @@ def shot_0(start_time):
             {
                 'layerName': f'{prefix}.二叉树', 'type': 'BINARY_TREE',
                 'width': 500, 'height': 850, 'Anchor Point': 'LEFT_TOP', 'Position': [695, 86],
-                # 'duration': 20, 'Position': [960, 600], 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], ['null'], ['null'], [15, '#CEF2ED'], [7, '#CEF2ED']],
-                'elems': [
-                    {
-                        'key': 3,
-                        'selectedKeyframes': {
-                            'Contents.Group 1.Contents.Fill 1.Color': [
-                                [start_time, duration - 1],
-                                [
-                                    hex_to_rgb1(COLORS["tree"]["fillColor"]["default"]),
-                                    hex_to_rgb1(COLORS["tree"]["fillColor"]["root"])
-                                ],
-                                {"spatial": SPATIAL_HOLD * 2},
-                            ]
-                        }
-                    },
-                    {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}
-                ],
-                'startTime': start_time,  'duration': duration, 'animation': 'false', 'traverse': 'preorder',
+                'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
+                'startTime': start_time,  'duration': duration, 'animation': 'false', 'traverse': 'inorder',
                 'node': {
                     'shape': {'name': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
-                    # 可以用AtomX或其它插件的precomp,preset,effets替换
                     'selected': {
                         'pathGroup': {'type': 'Ellipse', 'Size': [100, 100]},
                         "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
@@ -143,7 +110,7 @@ def shot_0(start_time):
                 # '3D': 'true'
             }
         ],
-        'end_time': end_time,
+        'end_time': end_time+21,
     }
     return conf
 

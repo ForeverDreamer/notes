@@ -42,5 +42,5 @@ def audios_subtitles(path, raw_subtitles):
         start_time += audio.info.length + 0.5
 
     subtitles = list(zip(*subtitles))
-    end_time = subtitles[0][-1] + SHOTS_INTERVAL
+    end_time = start_time + SHOTS_INTERVAL
     return audios, subtitles, end_time

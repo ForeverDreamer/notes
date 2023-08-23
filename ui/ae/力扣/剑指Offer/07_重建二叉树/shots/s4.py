@@ -1,66 +1,46 @@
-from constants.share import *
-from utils.py.color import hex_to_rgb1
-from .transcript import scenes
+from .consts import ASSETS_DIR
+from .transcript import subtitles as all_subtitles
+from utils_v0.py.audio import audios_subtitles
 
-name = 's4'
+sn = 0
+prefix = f's{sn}'
 
 
-def shot_0(start_time):
-    sn = 0
+def shot_3(start_time):
+    sn = 3
     prefix = f'{name}.{sn}'
     subtitles = []
-    for i, text in enumerate(scenes[name][0]):
+    for i, text in enumerate(scene[3]):
         subtitles.append([start_time+i*SUBTITLES_INTERVAL, text])
         i += 1
     subtitles = list(map(list, zip(*subtitles)))
-    end_time = subtitles[0][-1]+SUBTITLES_INTERVAL
+    end_time = subtitles[0][-1] + SUBTITLES_INTERVAL
     duration = end_time - start_time
 
     conf = {
-        'layerName': prefix, 'duration': duration,
-        'images': [
-            {
-                'name': '题目描述.jpg',
-                'layerName': f'{prefix}.题目描述',
-                'Scale': [90, 90, 90],
-                'Position': [960, 540],
-                'startTime': start_time,
-                'span': {'inPoint': start_time, 'outPoint': end_time},
-                '3D': 'true',
-            }
-        ],
+        'layerName': prefix, 'startTime': start_time, 'duration': duration,
         'subtitles': subtitles,
-        'shapes': [
+        'texts': [
             {
-                'layerName': f'{prefix}.选中框',
-                'Position': [694, 540],
-                'startTime': start_time,
-                'span': {'inPoint': start_time, 'outPoint': end_time},
-                'pathGroup': {'type': 'Rect', 'Size': [525, 33]},
-                'Stroke': {'Stroke Width': 3, 'Color': hex_to_rgb1('#FF0000')},
-                "Trim Paths": {
-                    'Offset': -85,
-                },
-                'keyframes': {
-                    'Contents.Group 1.Contents.Trim Paths 1.Start': [
-                        [0.5, 1], [50, 0]
-                    ],
-                    'Contents.Group 1.Contents.Trim Paths 1.End': [
-                        [0.5, 1], [50, 100]
-                    ],
-                    'Transform.Opacity': [[2.9, 3], [100, 0], {'spatial': SPATIAL_HOLD*2}]
-                }
+                'name': '限制条件', 'box': 'true', 'rect': [1500, 300],
+                'text': '限制条件：0 <= 节点个数 <= 5000\n我们实现算法时需要根据限制条件考虑时间复杂度和空间复杂度问题\n否则即使本地调试通过，提交到力扣依然会因为复杂度太高而无法通过全部测试用例',
+                'Position': [960, 200], 'font': FONTS["cn"],
+                'presets': [
+                    {
+                        'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Text/Multi-Line/Word Processor.ffx',
+                        'keyframes': {'Type_on.Slider': [[0, duration], [0, 100], None, True]}
+                    }
+                ]
             },
         ],
-        'camera': {
-            'Transform.Point of Interest': [[0, 0.5, 3, 3.5], [[960, 540, 0], [600, 311, 0], [600, 311, 0], [960, 540, 0]]],
-            'Transform.Position': [[0, 0.5, 3, 3.5], [[960, 540, -800], [600, 311, -475], [600, 311, -475], [960, 540, -800]]],
-        },
         'end_time': end_time,
     }
     return conf
 
 
-def create_all(start_time):
+def build(start_time):
     conf_0 = shot_0(start_time)
-    return name, [conf_0], conf_0['end_time']
+    conf_1 = shot_1(conf_0['end_time'])
+    conf_2 = shot_2(conf_1['end_time'])
+    conf_3 = shot_3(conf_2['end_time'])
+    return name, [conf_0, conf_1, conf_2, conf_3], conf_3['end_time']

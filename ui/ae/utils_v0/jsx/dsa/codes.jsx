@@ -6,6 +6,7 @@ Codes.prototype.addLine = function (line, conf, parentComp, parentObj) {
     var sn = line.pop()
     var lineComp = parentObj.items.addComp("line." + sn, conf['widthLine'], conf['heightLine'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     lineComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
+    lineComp.resolutionFactor = RESOLUTION_FACTOR
     var pos_x = 0
     for (var i = 0; i < line.length; i++) {
         var snippet = line[i]
@@ -36,6 +37,7 @@ Codes.prototype.add = function (conf, parentComp, parentObj) {
     var parentObj = parentObj.items.addFolder(conf["layerName"])
     var codesComp = parentObj.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     codesComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
+    codesComp.resolutionFactor = RESOLUTION_FACTOR
     var lines = conf["lines"]
     var indent
     var sn

@@ -1,7 +1,6 @@
 #includepath "../../utils/jsx;";
 #include "constants.jsx";
 #include "json.jsx";
-#include "animation.jsx";
 #include "share.jsx";
 #include "color.jsx";
 #include "effects.jsx";
@@ -10,9 +9,9 @@
 #include "shape.jsx";
 #include "precomp.jsx"
 
-var project = app.project;
-var mainComp = project.activeItem;
-var layer = mainComp.layer(1)
+// var project = app.project;
+// var mainComp = project.activeItem;
+// var layer = mainComp.layer(1)
 // var aiLayer = comp.layer(7)
 // $.writeln(aiLayer("Transform")("Anchor Point").value)
 // var preorderLayer = comp.layer(5)
@@ -57,11 +56,11 @@ var layer = mainComp.layer(1)
 // [colorUtil.hexToRgb("#FF0000", true), colorUtil.hexToRgb("#00FF18", true), colorUtil.hexToRgb("#005FB8", true)]
 // $.writeln(colorUtil.hexToRgb("#005FB8", true))
 
-// var effects = app.effects
-// $.writeln(effects.length)
-// for (var i = 0; i < effects.length; i++) {
-//     $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
-// }
+var effects = app.effects
+$.writeln(effects.length)
+for (var i = 0; i < effects.length; i++) {
+    $.writeln(effects[i].category + ',' + effects[i].displayName + ',' + effects[i].matchName)
+}
 
 // var taskId = app.scheduleTask('$.writeln(app.findMenuCommandId("AtomX"))', 1000, true)
 // $.writeln(taskId)
@@ -132,12 +131,12 @@ var layer = mainComp.layer(1)
 // compLayer("Transform")("Scale").setValue([50, 50])
 // compLayer("Transform")("Position").setValue([328, 350])
 
-var dic = {"a": 1, "nested": {"b": 1, "c": 2}}
-$.writeln(dic["a"])
-// 注意：此处并没有清空原变量的数据，"a"和"nested"仍然可以正常访问，坑！！！
-var dic;
-$.writeln(dic["a"])
-dic["a"] = 2
-$.writeln(dic["a"])
-$.writeln(dic["nested"])
+// var dic = {"a": 1, "nested": {"b": 1, "c": 2}}
+// $.writeln(dic["a"])
+// // 注意：此处并没有清空原变量的数据，"a"和"nested"仍然可以正常访问，坑！！！
+// var dic;
+// $.writeln(dic["a"])
+// dic["a"] = 2
+// $.writeln(dic["a"])
+// $.writeln(dic["nested"])
 

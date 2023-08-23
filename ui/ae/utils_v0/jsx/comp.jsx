@@ -6,6 +6,7 @@ CompUtil.prototype.addOne = function (conf, parentComp, parentObj) {
     }
     var comp = parentObj.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     comp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
+    comp.resolutionFactor = RESOLUTION_FACTOR
     if (conf['files']) {
         shareUtil.importFiles(conf["files"], parentObj, comp);
     }

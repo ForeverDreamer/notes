@@ -10,6 +10,7 @@ Queue.prototype.add = function (conf, parentComp, parentObj) {
 
     var queueComp = parentObj.items.addComp(conf["layerName"], conf['width'], conf['height'], PIXEL_ASPECT, conf['duration'], FRAME_RATE);
     queueComp.bgColor = colorUtil.hexToRgb1(COLORS["bg"])
+    queueComp.resolutionFactor = RESOLUTION_FACTOR
 
     var elemWidth = unit["pathGroup"]["Size"][0]
     var elemHeight = unit["pathGroup"]["Size"][1]

@@ -8,10 +8,12 @@ prefix = f's{sn}'
 
 def build_conf(start_time):
     audios, subtitles, end_time = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn])
+    times = subtitles[0]
     duration = end_time - start_time
 
     conf = {
         'layerName': prefix, 'startTime': start_time, 'duration': duration,
+        'subtitles': subtitles,
         'presets': [
             {
                 'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Transitions - Movement/Slide - drop.ffx',
@@ -39,18 +41,24 @@ def build_conf(start_time):
                         'Scale': [90, 90, 90],
                         'Position': [960, 540],
                         'startTime': start_time,
-                        'span': {'inPoint': start_time, 'outPoint': end_time},
+                        # 'span': {'inPoint': start_time, 'outPoint': end_time},
                     }
                 ],
             }
         ],
-        'subtitles': subtitles,
         'texts': [
             {
                 'name': f'{prefix}.题目官网链接', 'text': 'https://leetcode.cn/problems/zhong-jian-er-cha-shu-lcof/',
                 'fillColor': '#FFA119', 'Position': [1200, 890],
-                'start_time': start_time,
-                'span': {'inPoint': start_time, 'outPoint': end_time}, 'keyframes': {'Opacity': [[0, 0.5, 5, 9], [0, 100, 100, 0]]}
+                # 'start_time': start_time,
+                # 'span': {'inPoint': start_time, 'outPoint': end_time},
+                'keyframes': {
+                            "Transform.Opacity": [
+                                [times[3], times[3]+0.5, times[4], times[4]+0.5],
+                                [0, 100, 100, 0],
+                                # {"spatial": [{"type": 'HOLD'}] * 3}
+                            ]
+                        }
             },
         ],
         'end_time': end_time,

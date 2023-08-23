@@ -48,6 +48,7 @@ for name, func in inspect.getmembers(shots, inspect.isfunction):
     print(name, func)
     sn, shot, start_time = func(start_time)
     conf['shots'][sn] = shot
+conf['duration'] = start_time
 
 obj = json.dumps(conf, ensure_ascii=False, indent=4)
 with open(f"{BASE_DIR}/力扣/剑指Offer/07_重建二叉树/conf.json", 'w', encoding='utf-8') as f:
