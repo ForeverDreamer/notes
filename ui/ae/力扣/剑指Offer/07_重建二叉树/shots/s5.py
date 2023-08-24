@@ -29,7 +29,7 @@ def build_conf(start_time):
     QUE_UNIT['fontSize'] = None
 
     conf = {
-        'layerName': prefix, 'duration': duration,
+        'layerName': prefix, 'startTime': start_time, 'duration': duration,
         'subtitles': subtitles,
         'files': [
             {
@@ -42,7 +42,6 @@ def build_conf(start_time):
                 'layerName': f'{prefix}.注解', 'text': '遍历结果按照[根节点|左子树|右子树]排序\n第一个元素就是根节点，但无法确定左子树和右子树',
                 'Anchor Point': 'LEFT_TOP', 'Position': [450, 157],
                 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY',
-                'startTime': start_time, 'span': {'inPoint': start_time, 'outPoint': end_time}
             },
         ],
         'shapes': [
@@ -68,14 +67,13 @@ def build_conf(start_time):
         ],
         'dsa': [
             {
-                'layerName': f'{prefix}.队列', 'type': 'QUEUE',
+                'layerName': f'{prefix}.队列', 'type': 'QUEUE', 'duration': duration,
                 'Anchor Point': 'LEFT_TOP', 'Position': [1050, 512],
                 # 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], [15, '#CEF2ED'], [7, '#CEF2ED']],
                 'elems': [
                     {'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}
                 ],
                 'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5 + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
-                'startTime': start_time, 'duration': duration,
                 'unit': QUE_UNIT,
                 # 'effects': {'ADBE Drop Shadow': {}},
             },
@@ -86,7 +84,7 @@ def build_conf(start_time):
                 'elems': [
                     {'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}
                 ],
-                'startTime': start_time,  'duration': duration, 'animation': False, 'traverse': 'preorder',
+                'duration': duration, 'animation': False, 'traverse': 'preorder',
                 'node': {
                     'shape': {'sourceName': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
                     # 可以用AtomX或其它插件的precomp,preset,effets替换
