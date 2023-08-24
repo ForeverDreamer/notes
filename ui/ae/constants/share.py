@@ -52,7 +52,7 @@ SHOTS_INTERVAL = 1
 # globals().update({k: getattr(mdl, k) for k in names})
 
 PATH_EFFECTS = {'ADBE Glo2': {}}
-PATH_STROKE = 8
+PATH_STROKE = 5
 
 FONTS = mdl.FONTS
 FONT_SIZES = mdl.FONT_SIZES
@@ -74,4 +74,4 @@ THEME = {
     'STROKE_ADD': STROKE_ADD
 }
 
-PATH_COLOR = COLORS['subtitle']
+PATH_COLOR = COLORS['tree']['fillColor']['pathColor']

@@ -41,7 +41,7 @@ def build_conf(start_time):
                 'layerName': f'{prefix}.示例1.二叉树', 'type': 'BINARY_TREE', 'width': 500, 'height': 500,
                 'startTime': l_times[-1], 'duration': 5, 'Position': [960, 600], 'rootNodePos': [186, 60],
                 'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': None}, {'key': None}, {'key': 15}, {'key': 7}],
-                'animation': 'true',
+                'animation': True,
                 'node': {
                     'shape': {'sourceName': 'Node Shape Black/Elements.ai', 'Scale': [80, 80, 80]},
                 },

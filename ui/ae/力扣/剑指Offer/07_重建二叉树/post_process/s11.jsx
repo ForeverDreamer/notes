@@ -1,4 +1,3 @@
-//share_util.head
 #includepath "../../../../utils_v0/jsx";
 #include "json.jsx";
 var BASE_DIR = "D:/data_files/notes/ui/Ae/"

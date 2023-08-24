@@ -12,16 +12,17 @@ FONT_SIZES = {
 COLORS = {
     'bg': '#FFFFFF',
     'text': '#000000',
-    'subtitle': '#F20CCC',
+    'subtitle': '#000000',
     'annotation': '#000000',
+    'markBox': '#FF0000',
     'tree': {
         'fillColor': {
             'default': '#FFFFFF',
             'root': '#0476D9',
             'left': '#F20CCC',
             'right': '#F2CC0C',
+            'pathColor': '#0476D9'
         },
-        'pathColor': '#0476D9'
     },
     'queue': {
         'fillColor': {

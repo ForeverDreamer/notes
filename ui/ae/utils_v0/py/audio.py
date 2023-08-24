@@ -3,7 +3,7 @@ from operator import itemgetter
 
 from mutagen.wave import WAVE
 
-from constants.share import SHOTS_INTERVAL
+from constants.share import SUBTITLES_INTERVAL
 
 
 def audios_subtitles(path, raw_subtitles, start_time):
@@ -41,10 +41,10 @@ def audios_subtitles(path, raw_subtitles, start_time):
         )
         subtitles.append([start_time, raw_subtitles[i]])
         length = audio.info.length
-        start_time += length + 0.5
-        l_start_time += length + 0.5
+        start_time += length + SUBTITLES_INTERVAL
+        l_start_time += length + SUBTITLES_INTERVAL
         l_times.append(l_start_time)
 
-    subtitles = list(zip(*subtitles))
+    subtitles = list(map(list, zip(*subtitles)))
     end_time = start_time
     return audios, subtitles, end_time, l_times
