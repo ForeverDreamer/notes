@@ -22,6 +22,9 @@ ShapeUtil.prototype.addOne = function(conf, comp) {
         if (conf_pg["Size"]) {
             pathGroup("Size").setValue(conf_pg["Size"])
         }
+        if (conf_pg["Roundness"]) {
+            pathGroup("Roundness").setValue(conf_pg["Roundness"])
+        }
         // pathGroup("Position").setValue(conf["Position"] ? conf["Position"] : [0, 0])
         pathGroup("Position").setValue([0, 0])
     }

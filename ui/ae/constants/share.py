@@ -17,10 +17,9 @@ FRAME_RATE = 30
 QUE_ELEM_WIDTH = 60
 QUE_ELEM_HEIGHT = 60
 QUE_UNIT = {
-    'pathGroup': {'type': 'Rect', 'Size': [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]},
+    'pathGroup': {'type': 'Rect', 'Size': [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT], 'Roundness': 10},
     'Fill': {'Color': hex_to_rgb1('#FFFFFF')},
     'Stroke': {'Stroke Width': 1, 'Color': hex_to_rgb1(mdl.COLORS['text'])},
-    'RC': {'Radius': 10},
     'fontSize': 25,
 }
 STROKE_ADD = QUE_UNIT['Stroke']['Stroke Width'] * 4
@@ -29,7 +28,7 @@ STROKE_ADD = QUE_UNIT['Stroke']['Stroke Width'] * 4
 STACK_ELEM_WIDTH = 150
 STACK_ELEM_HEIGHT = 50
 STACK_UNIT = {
-    'pathGroup': {'type': 'Rect', 'Size': [STACK_ELEM_WIDTH, STACK_ELEM_HEIGHT]},
+    'pathGroup': {'type': 'Rect', 'Size': [STACK_ELEM_WIDTH, STACK_ELEM_HEIGHT], 'Roundness': 10},
     "Fill": {"Color": hex_to_rgb1("#FFFFFF")},
     "Stroke": {'Stroke Width': 1, "Color": hex_to_rgb1("#000000")},
     'fontSize': 25,
