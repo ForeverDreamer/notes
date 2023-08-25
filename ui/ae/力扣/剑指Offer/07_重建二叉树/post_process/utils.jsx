@@ -9,7 +9,7 @@ function procSpatial(times, type) {
     return spatial
 }
 
-function propertyKeyframes(times, values, spatial, temporal) {
+function propertyKeyframes(times, values, spatial, temporal, clear) {
     var keyframes = []
     keyframes[0] = times
     keyframes[1] = values
@@ -22,7 +22,11 @@ function propertyKeyframes(times, values, spatial, temporal) {
        keyframes[2]["temporal"] = temporal
     }
 
-    keyframes[3] = true
+    if (clear === false) {
+        keyframes[3] = false
+    } else {
+        keyframes[3] = true
+    }
 
     return keyframes
 }

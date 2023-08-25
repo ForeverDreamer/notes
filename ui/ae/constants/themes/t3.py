@@ -22,7 +22,7 @@ COLORS = {
             'root': '#0476D9',
             'left': '#F20CCC',
             'right': '#F2CC0C',
-            'pathColor': '#0476D9'
+            'pathColor': '#00FF7E'
         },
     },
     'queue': {
