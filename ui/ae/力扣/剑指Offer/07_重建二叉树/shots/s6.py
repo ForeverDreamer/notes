@@ -43,6 +43,77 @@ def build_conf(start_time):
                 'Anchor Point': 'LEFT_TOP', 'Position': [450, 157],
                 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY',
             },
+            {
+                'layerName': f'{prefix}.左', 'text': '左',
+                'Anchor Point': 'LEFT_DOWN', 'Position': [1065, 680.5],
+                'font': FONTS['cn'],
+                'keyframes': {
+                    "Transform.Opacity": [
+                        [14.5, 15],
+                        [0, 100],
+                        {"spatial": [{"type": 'HOLD'}] * 2}
+                    ]
+                },
+            },
+            {
+                'layerName': f'{prefix}.根', 'text': '根',
+                'Anchor Point': 'LEFT_DOWN', 'Position': [1146, 677.8],
+                'font': FONTS['cn'],
+                'keyframes': {
+                    "Transform.Opacity": [
+                        [15.5, 16],
+                        [0, 100],
+                        {"spatial": [{"type": 'HOLD'}] * 2}
+                    ]
+                },
+            },
+            {
+                'layerName': f'{prefix}.右', 'text': '右',
+                'Anchor Point': 'LEFT_DOWN', 'Position': [1303, 679.1],
+                'font': FONTS['cn'],
+                'keyframes': {
+                    "Transform.Opacity": [
+                        [16.5, 17],
+                        [0, 100],
+                        {"spatial": [{"type": 'HOLD'}] * 2}
+                    ]
+                },
+            },
+        ],
+        'vectors': [
+            {
+                'sourceName': 'Tree Length Left Down/Elements.ai',
+                'Scale': [75, 75], 'Position': [1090.6, 619.3],
+                'keyframes': {
+                    "Transform.Opacity": [
+                        [14.5, 15],
+                        [0, 100],
+                        {"spatial": [{"type": 'HOLD'}] * 2}
+                    ]
+                },
+            },
+            {
+                'sourceName': 'Tree Length Root Down/Elements.ai',
+                'Scale': [75, 75], 'Position': [1172, 619.3],
+                'keyframes': {
+                    "Transform.Opacity": [
+                        [15.5, 16],
+                        [0, 100],
+                        {"spatial": [{"type": 'HOLD'}] * 2}
+                    ]
+                },
+            },
+            {
+                'sourceName': 'Tree Length Right Down 3x/Elements.ai',
+                'Scale': [75, 75], 'Position': [1328.6, 619.3],
+                'keyframes': {
+                    "Transform.Opacity": [
+                        [16.5, 17],
+                        [0, 100],
+                        {"spatial": [{"type": 'HOLD'}] * 2}
+                    ]
+                },
+            },
         ],
         'shapes': [
             {

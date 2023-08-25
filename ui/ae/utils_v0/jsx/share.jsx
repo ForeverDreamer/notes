@@ -91,7 +91,7 @@ ShareUtil.prototype.addLayer = function (conf, comp) {
 	if (conf["item"]) {
 		layer = comp.layers.add(conf["item"]);
 	} else {
-		layer = comp.layers.add(this.findItemByName(conf["sourceName"]));
+		layer = comp.layers.add(this.findItemByName(conf["sourceName"], conf["parentFolderName"], conf["typeName"]));
 	}
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];
@@ -116,7 +116,7 @@ ShareUtil.prototype.addLayer = function (conf, comp) {
 		layer.inPoint = conf["span"]['inPoint'];
 		layer.outPoint = conf["span"]['outPoint'];
 	}
-	if (js_bool(conf['3D'])) {
+	if (conf['3D']) {
 		layer.threeDLayer = true;
 	}
 	if (conf["parent"]) {
@@ -148,11 +148,11 @@ ShareUtil.prototype.delItems = function (items) {
 	}
 }
 
-ShareUtil.prototype.findItemByName = function (name, parentFolderName, typeName) {
+ShareUtil.prototype.findItemByName = function (sourceName, parentFolderName, typeName) {
 	for (var i = 1; i <= project.items.length; i++) {
 		var item = project.items[i];
 		if (
-			(item.name !== name) ||
+			(item.name !== sourceName) ||
 			(parentFolderName && item.parentFolder.name !== parentFolderName) ||
 			(typeName && item.typeName !== typeName)
 		) {
