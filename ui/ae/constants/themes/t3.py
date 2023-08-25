@@ -1,5 +1,6 @@
 FONTS = {
-    'cn': 'slideyouran-Regular',
+    # 'cn': 'slideyouran-Regular',
+    'cn': 'KaiTi',
     # 'en': 'Arial-BoldMT',
     'en': 'MicrosoftSansSerif',
     'subtitle': 'KaiTi',

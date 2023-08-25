@@ -52,7 +52,7 @@ SHOTS_INTERVAL = 1
 # globals().update({k: getattr(mdl, k) for k in names})
 
 PATH_EFFECTS = {'ADBE Glo2': {}}
-PATH_STROKE = 5
+PATH_STROKE = 10
 
 FONTS = mdl.FONTS
 FONT_SIZES = mdl.FONT_SIZES

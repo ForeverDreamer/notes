@@ -6,14 +6,14 @@ from .transcript import subtitles as all_subtitles
 from utils_v0.py.audio import audios_subtitles
 from utils_v0.py.color import hex_to_rgb1
 
-sn = 5
+sn = 6
 prefix = f's{sn}'
 
 
 def build_conf(start_time):
     audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn], start_time)
-    BINARY_TREE_TIME = 5.5
-    START_IDX = 3
+    BINARY_TREE_TIME = 6.5
+    START_IDX = 2
     for i in range(START_IDX, len(subtitles[0])):
         subtitles[0][i] += BINARY_TREE_TIME
     for i in range(START_IDX, len(audios)):
@@ -39,14 +39,14 @@ def build_conf(start_time):
         ],
         'texts': [
             {
-                'layerName': f'{prefix}.注解', 'text': '遍历结果按照[根节点|左子树|右子树]排序\n第一个元素就是根节点，但无法确定左子树和右子树',
+                'layerName': f'{prefix}.注解', 'text': '遍历结果按照[左子树|根节点|右子树]排序\n需要先定位根节点，才能确定左子树和右子树',
                 'Anchor Point': 'LEFT_TOP', 'Position': [450, 157],
                 'font': FONTS['cn'], 'justification': 'LEFT_JUSTIFY',
             },
         ],
         'shapes': [
             {
-                'layerName': '根节点|左子树|右子树.选中框',
+                'layerName': '[左子树|根节点|右子树].选中框',
                 'Position': [1023, 182],
                 # 'startTime': start_time,
                 # 'span': {'inPoint': start_time, 'outPoint': end_time + 3},
@@ -55,7 +55,7 @@ def build_conf(start_time):
                 'Stroke': {'Stroke Width': 3, 'Color': hex_to_rgb1(COLORS['markBox'])},
                 'keyframes': {
                     "Transform.Opacity": [
-                        [0, l_times[3], l_times[4]-SUBTITLES_INTERVAL],
+                        [0, l_times[2], l_times[3]-SUBTITLES_INTERVAL],
                         [0, 50, 0],
                         {"spatial": [{"type": 'HOLD'}] * 3}
                     ]
@@ -71,7 +71,7 @@ def build_conf(start_time):
                 'Anchor Point': 'LEFT_TOP', 'Position': [1050, 512],
                 # 'elems': [[3, '#0573E1'], [9, '#FADED8'], [20, '#CEF2ED'], [15, '#CEF2ED'], [7, '#CEF2ED']],
                 'elems': [
-                    {'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}
+                    {'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}
                 ],
                 'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5 + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
                 'unit': QUE_UNIT,
