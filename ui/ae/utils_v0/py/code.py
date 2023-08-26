@@ -1,5 +1,5 @@
 
-def currentline_times(subtitles, steps):
+def currentline_times(subtitles, l_times, steps):
     times = []
     intervals = subtitles[2]
     i = 0
@@ -8,10 +8,10 @@ def currentline_times(subtitles, steps):
             i += 1
             continue
         elif intervals[i] == 1:
-            times.append(subtitles[0][i])
+            times.append(l_times[i])
         else:
-            times.append(subtitles[0][i])
-            interval = (subtitles[0][i+1] - subtitles[0][i])/intervals[i]
+            times.append(l_times[i])
+            interval = (l_times[i+1] - l_times[i])/intervals[i]
             times += [times[-1]+interval*j for j in range(1, intervals[i])]
         i += 1
 

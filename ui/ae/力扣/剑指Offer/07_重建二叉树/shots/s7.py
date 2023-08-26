@@ -34,7 +34,7 @@ def build_conf(start_time):
         ],
         'shapes': [
             {
-                'layerName': '主函数选中框', 'Position': [441, 312],
+                'layerName': '选中框', 'Position': [441, 312],
                 'pathGroup': {'type': 'Rect', 'Size': [315, 25]},
                 'Stroke': {'Stroke Width': 3, 'Color': hex_to_rgb1('#FF0000')},
                 'keyframes': {

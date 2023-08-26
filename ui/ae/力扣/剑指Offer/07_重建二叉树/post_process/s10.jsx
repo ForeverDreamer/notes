@@ -39,14 +39,14 @@ function dataPositions(data, parentFolderName) {
     }
     return positions
 }
-// printArray(dataPositions('s11_s11.队列.前序_数据'))
+// printArray(dataPositions('s10_s10.队列.前序_数据'))
 // $.writeln("================")
-// printArray(dataPositions('s11_s11.队列.中序_数据'))
+// printArray(dataPositions('s10_s10.队列.中序_数据'))
 
-var preorderPositions = dataPositions([3, 9, 20, 15, 7], 's11.前序遍历结果')
+var preorderPositions = dataPositions([3, 9, 20, 15, 7], 's10.前序遍历结果')
 var lastOne = preorderPositions[preorderPositions.length-1]
 preorderPositions.push([lastOne[0]+39, lastOne[1]])
-var inorderPositions = dataPositions([9, 3, 15, 20, 7], 's11.中序遍历结果')
+var inorderPositions = dataPositions([9, 3, 15, 20, 7], 's10.中序遍历结果')
 var lastOne = inorderPositions[inorderPositions.length-1]
 inorderPositions.push([lastOne[0]+39, lastOne[1]])
 // printArray(preorderPositions)
@@ -54,11 +54,11 @@ inorderPositions.push([lastOne[0]+39, lastOne[1]])
 // printArray(inorderPositions)
 
 // 前序遍历结果
-var preorderDataComp = shareUtil.findItemByName("s11.前序遍历结果", "s11.前序遍历结果")
+var preorderDataComp = shareUtil.findItemByName("s10.前序遍历结果", "s10.前序遍历结果")
 var rootSelectedLayer = preorderDataComp.layer('根选中框')
 var leftSelectedLayer = preorderDataComp.layer('左选中框')
 var rightSelectedLayer = preorderDataComp.layer('右选中框')
-var codeComp = shareUtil.findItemByName("s11.代码", "s11.代码")
+var codeComp = shareUtil.findItemByName("s10.代码", "s10.代码")
 var currentLineLayer = codeComp.layer('currentLine')
 var currentLinePosition = currentLineLayer("Transform")("Position");
 
@@ -168,7 +168,7 @@ procPosition(times, idxes, 78.5)
 shareUtil.configKeyframes(rootSelectedLayer, Keyframes)
 
 // 中序遍历结果
-var inorderDataComp = shareUtil.findItemByName("s11.中序遍历结果", "s11.中序遍历结果")
+var inorderDataComp = shareUtil.findItemByName("s10.中序遍历结果", "s10.中序遍历结果")
 var rootSelectedLayer = inorderDataComp.layer('根选中框')
 var leftSelectedLayer = inorderDataComp.layer('左选中框')
 var rightSelectedLayer = inorderDataComp.layer('右选中框')
@@ -228,7 +228,7 @@ procPosition(times, idxes, 78.5)
 shareUtil.configKeyframes(rootSelectedLayer, Keyframes)
 
 // 函数调用栈
-var funcCallStackComp = shareUtil.findItemByName("函数调用栈", "s11.代码调试")
+var funcCallStackComp = shareUtil.findItemByName("函数调用栈", "s10.代码调试")
 var moduleShapeLayer = funcCallStackComp.layer("Shape.<module>")
 var moduleTextLayer = funcCallStackComp.layer("Text.<module>")
 var buildTreeLayer = funcCallStackComp.layer("Shape.buildTree( )")
@@ -309,7 +309,7 @@ shareUtil.configKeyframes(rebuild3TextLayer, Keyframes)
 
 // 变量文本
 var Keyframes = {}
-var codeDebugComp = shareUtil.findItemByName("s11.代码调试", "s11.代码调试")
+var codeDebugComp = shareUtil.findItemByName("s10.代码调试", "s10.代码调试")
 
 var idx_plLayer = codeDebugComp.layer("idx_pl")
 var times = [

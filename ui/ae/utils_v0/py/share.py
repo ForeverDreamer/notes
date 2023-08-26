@@ -114,7 +114,7 @@ class ShareUtil:
     def tail(self):
         subtitles_bg = {
             'sourceName': 'Subtitles BG/Elements.ai', 'layerName': '字幕背景',
-            'Scale': [100, 100, 100], 'Position': [960, 1025],
+            'Scale': [100, 100, 100], 'Position': [960, 1025], 'Opacity': 50,
         }
         statements = [
             '//share_util.tail',
