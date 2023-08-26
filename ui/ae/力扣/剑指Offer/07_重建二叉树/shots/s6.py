@@ -1,3 +1,5 @@
+import copy
+
 from constants.share import (
     FONTS, QUE_UNIT, COLORS, SPATIAL_HOLD, STROKE_ADD, PATH_STROKE, PATH_COLOR, PATH_EFFECTS, SUBTITLES_INTERVAL
 )
@@ -25,8 +27,9 @@ def build_conf(start_time):
 
     QUE_ELEM_WIDTH = 80
     QUE_ELEM_HEIGHT = 80
-    QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
-    QUE_UNIT['fontSize'] = None
+    _QUE_UNIT = copy.deepcopy(QUE_UNIT)
+    _QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
+    _QUE_UNIT['fontSize'] = None
 
     conf = {
         'layerName': prefix, 'startTime': start_time, 'duration': duration,
@@ -118,19 +121,19 @@ def build_conf(start_time):
         'shapes': [
             {
                 'layerName': '[左子树|根节点|右子树].选中框',
-                'Position': [1023, 182],
+                'Position': [1023, 182], 'Opacity': 50,
                 # 'startTime': start_time,
                 # 'span': {'inPoint': start_time, 'outPoint': end_time + 3},
                 'pathGroup': {'type': 'Rect', 'Size': [522, 55]},
                 'Fill': {'Color': hex_to_rgb1(COLORS['markBox'])},
                 'Stroke': {'Stroke Width': 3, 'Color': hex_to_rgb1(COLORS['markBox'])},
-                'keyframes': {
-                    "Transform.Opacity": [
-                        [0, l_times[2], l_times[3]-SUBTITLES_INTERVAL],
-                        [0, 50, 0],
-                        {"spatial": [{"type": 'HOLD'}] * 3}
-                    ]
-                },
+                # 'keyframes': {
+                #     "Transform.Opacity": [
+                #         [0, l_times[2], l_times[3]-SUBTITLES_INTERVAL],
+                #         [0, 50, 0],
+                #         {"spatial": [{"type": 'HOLD'}] * 3}
+                #     ]
+                # },
                 'effects': {
                     "ADBE Glo2": {}
                 }
@@ -145,7 +148,7 @@ def build_conf(start_time):
                     {'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}
                 ],
                 'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5 + STROKE_ADD, 'height': QUE_ELEM_HEIGHT + STROKE_ADD,
-                'unit': QUE_UNIT,
+                'unit': _QUE_UNIT,
                 # 'effects': {'ADBE Drop Shadow': {}},
             },
             {

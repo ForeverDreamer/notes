@@ -20,6 +20,8 @@ var conf = jsonUtil.read(BASE_DIR + "力扣/剑指Offer/07_重建二叉树/conf.
 
 
 // 二叉树
+var START_TIME = 10.5
+var INTERVAL = 0.5
 var btComp = shareUtil.findItemByName("s5.二叉树")
 var layerNames = ['3', '3.9', '9', '3.20', '20', '20.15', '15', '20.7', '7']
 var times = [10.33, 10.83]
@@ -147,3 +149,5 @@ for (var layerName in queueLayerKeyframes) {
     )
     shareUtil.configKeyframes(selectedLayer, selectedKeyframes)
 }
+
+$.writeln("post process s5 done!")

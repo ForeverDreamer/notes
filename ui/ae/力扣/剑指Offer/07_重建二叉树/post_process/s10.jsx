@@ -545,3 +545,5 @@ var sourceTexts = [
 procOpacity(timesOpacities, opacities)
 procSourceText(timesSourceTexts, sourceTexts)
 shareUtil.configKeyframes(size_leftLayer, Keyframes)
+
+$.writeln("post process s10 done!")

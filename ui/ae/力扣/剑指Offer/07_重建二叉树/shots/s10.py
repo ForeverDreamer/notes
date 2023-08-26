@@ -1,3 +1,5 @@
+import copy
+
 from constants.share import *
 from .consts import ASSETS_DIR
 from .transcript import subtitles as all_subtitles
@@ -16,8 +18,11 @@ def build_conf(start_time):
     _currentline_times = currentline_times(subtitles, l_times, _CURRENTLINE_STEPS)
     QUE_ELEM_WIDTH = 40
     QUE_ELEM_HEIGHT = 40
-    QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
-    stroke_add = QUE_UNIT['Stroke']['Stroke Width'] * 4
+    _QUE_UNIT = copy.deepcopy(QUE_UNIT)
+    _QUE_UNIT['pathGroup']['Size'] = [QUE_ELEM_WIDTH, QUE_ELEM_HEIGHT]
+    _QUE_UNIT['pathGroup']['Roundness'] = 0
+    _QUE_UNIT['fontSize'] = 30
+    stroke_add = _QUE_UNIT['Stroke']['Stroke Width'] * 4
 
     CODE_EXEC_TIME = 56
     START_IDX = 14
@@ -200,7 +205,7 @@ def build_conf(start_time):
                         'layerName': '数据', 'type': 'QUEUE', 'Position': [86.5, 56], 'Anchor Point': 'LEFT_TOP',
                         'elems': [{'key': 3}, {'key': 9}, {'key': 20}, {'key': 15}, {'key': 7}],
                         'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5, 'height': QUE_ELEM_HEIGHT + stroke_add,
-                        'unit': QUE_UNIT, 'duration': duration,
+                        'unit': _QUE_UNIT, 'duration': duration,
                     },
                 ],
                 'comps': [
@@ -276,7 +281,7 @@ def build_conf(start_time):
                         'elems': [{'key': 9}, {'key': 3}, {'key': 15}, {'key': 20}, {'key': 7}],
                         'traverse': 'preorder', 'width': QUE_ELEM_WIDTH * 5, 'height': QUE_ELEM_HEIGHT + stroke_add,
                         'duration': duration,
-                        'unit': QUE_UNIT,
+                        'unit': _QUE_UNIT,
                     },
                 ],
                 'comps': [
