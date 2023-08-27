@@ -24,15 +24,16 @@ def build_conf(start_time):
     _QUE_UNIT['fontSize'] = 30
     stroke_add = _QUE_UNIT['Stroke']['Stroke Width'] * 4
 
-    CODE_EXEC_TIME = 56
-    START_IDX = 14
-    for i in range(START_IDX, len(subtitles[0])):
-        subtitles[0][i] += CODE_EXEC_TIME
-    for i in range(START_IDX, len(audios)):
-        audios[i]['layers'][0]['startTime'] += CODE_EXEC_TIME
-    for i in range(START_IDX, len(l_times)):
-        l_times[i] += CODE_EXEC_TIME
-    end_time += CODE_EXEC_TIME
+    # # 执行动画56s+提交力扣执行过程18s
+    # CODE_EXEC_TIME = 56 + 18
+    # START_IDX = 14
+    # for i in range(START_IDX, len(subtitles[0])):
+    #     subtitles[0][i] += CODE_EXEC_TIME
+    # for i in range(START_IDX, len(audios)):
+    #     audios[i]['layers'][0]['startTime'] += CODE_EXEC_TIME
+    # for i in range(START_IDX, len(l_times)):
+    #     l_times[i] += CODE_EXEC_TIME
+    # end_time += CODE_EXEC_TIME
     duration = end_time - start_time
     temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
 
@@ -213,7 +214,7 @@ def build_conf(start_time):
                         'layerName': '根选中框', 'width': 44, 'height': 44, 'Position': [108, 78.5],
                         'duration': duration,
                         # 'keyframes': keyframes['preorder']['root'],
-                        'vectors': [
+                        'layers': [
                             {
                                 'sourceName': 'Queue Code Selected Root/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [22, 22],
@@ -237,7 +238,7 @@ def build_conf(start_time):
                                 'Position': [75, 15], 'fontSize': 25,
                             },
                         ],
-                        'vectors': [
+                        'layers': [
                             {
                                 'sourceName': 'Queue Code Selected Left/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 100 - 37],
@@ -254,7 +255,7 @@ def build_conf(start_time):
                                 'Position': [75, 83], 'fontSize': 25,
                             },
                         ],
-                        'vectors': [
+                        'layers': [
                             {
                                 'sourceName': 'Queue Code Selected Right/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 36],
@@ -292,7 +293,7 @@ def build_conf(start_time):
                         #     'Transform.Opacity': keyframes['inorder']['root']['Opacity'],
                         #     'Transform.Position': keyframes['inorder']['root']['Position'],
                         # },
-                        'vectors': [
+                        'layers': [
                             {
                                 'sourceName': 'Queue Code Selected Root/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [22, 22],
@@ -320,7 +321,7 @@ def build_conf(start_time):
                                 'Position': [75, 15], 'fontSize': 25,
                             },
                         ],
-                        'vectors': [
+                        'layers': [
                             {
                                 'sourceName': 'Queue Code Selected Left/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 100 - 37],
@@ -340,7 +341,7 @@ def build_conf(start_time):
                                 'Position': [75, 83], 'fontSize': 25,
                             },
                         ],
-                        'vectors': [
+                        'layers': [
                             {
                                 'sourceName': 'Queue Code Selected Right/Elements.ai',
                                 'Scale': [100, 100, 100], 'Position': [75, 36],

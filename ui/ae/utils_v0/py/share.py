@@ -118,7 +118,7 @@ class ShareUtil:
         }
         statements = [
             '//share_util.tail',
-            f'var subtitlesBg = shareUtil.addLayer({subtitles_bg}, mainComp)',
+            f'var subtitlesBgLayer = shareUtil.addLayer({subtitles_bg}, mainComp)',
             'subtitlesLayer.moveToBeginning();',
             'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1(COLORS["bg"]), "BG", WIDTH, HEIGHT, PIXEL_ASPECT);',
             'bgLayer.moveToEnd();',

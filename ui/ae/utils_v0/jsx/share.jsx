@@ -86,12 +86,21 @@ ShareUtil.prototype.importFiles = function (files, parentObj, comp) {
 	}
 }
 
+ShareUtil.prototype.addSolid  = function (conf, comp) {
+
+}
+
 ShareUtil.prototype.addLayer = function (conf, comp) {
 	var layer;
 	if (conf["item"]) {
 		layer = comp.layers.add(conf["item"]);
-	} else {
+	} else if (conf["sourceName"]) {
 		layer = comp.layers.add(this.findItemByName(conf["sourceName"], conf["parentFolderName"], conf["typeName"]));
+	} else if (conf["solid"]) {
+		layer = comp.layers.addSolid(conf["color"], conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"]);
+		if (conf["adjustmentLayer"]) {
+			layer.adjustmentLayer = true;
+		}
 	}
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];

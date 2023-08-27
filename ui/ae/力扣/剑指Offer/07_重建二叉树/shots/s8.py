@@ -112,7 +112,7 @@ def build_conf(start_time):
                 },
             },
         ],
-        'vectors': [
+        'layers': [
             {
                 'layerName': f'{prefix}.前序v0.左',
                 'sourceName': 'Tree Length Left Down/Elements.ai',

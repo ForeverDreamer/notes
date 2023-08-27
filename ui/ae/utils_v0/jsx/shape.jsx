@@ -60,6 +60,10 @@ ShapeUtil.prototype.addOne = function(conf, comp) {
     if (conf["Opacity"]) {
         shapeLayer("Opacity").setValue(conf["Opacity"])
     }
+    if (conf["adjustmentLayer"]) {
+        shapeLayer.adjustmentLayer = true;
+    }
+
     shapeGroup("Transform")("Anchor Point").setValue([0, 0]);
     shapeGroup("Transform")("Position").setValue([0, 0]);
     shareUtil.setAnchorPoint(shapeLayer, conf["Anchor Point"])

@@ -19,14 +19,11 @@ CompUtil.prototype.addOne = function (conf, parentComp, parentObj) {
     if (conf["comps"]) {
         compUtil.addMany(conf['comps'], comp, parentObj)
     }
-    if (conf["vectors"]) {
-        var vectors = conf['vectors']
-        for (var i = 0; i < vectors.length; i++) {
-            shareUtil.addLayer(vectors[i], comp)
-        }
-    }
     if (conf["shapes"]) {
         shapeUtil.addMany(conf["shapes"], comp)
+    }
+    if (conf["layers"]) {
+        shareUtil.addLayers(conf['layers'], comp)
     }
     if (conf["texts"]) {
         textUtil.addMany(conf["texts"], comp)

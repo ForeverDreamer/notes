@@ -83,7 +83,7 @@ def build_conf(start_time):
                 },
             },
         ],
-        'vectors': [
+        'layers': [
             {
                 'sourceName': 'Tree Length Left Down/Elements.ai',
                 'Scale': [75, 75], 'Position': [1090.6, 619.3],
