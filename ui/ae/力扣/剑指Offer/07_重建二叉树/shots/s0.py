@@ -14,19 +14,19 @@ def build_conf(start_time):
     conf = {
         'layerName': prefix, 'startTime': start_time, 'duration': duration,
         'subtitles': subtitles,
-        'presets': [
-            {
-                'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Transitions - Movement/Slide - drop.ffx',
-                'keyframes': {
-                    'Slide Master Control.Transition Completion': [
-                        [0, 1],
-                        [0, 100],
-                        {"temporal": [[[0, 0.1], [200, 50]], [[0, 30], [0, 0.1]]]},
-                        True
-                    ]
-                }
-            }
-        ],
+        # 'presets': [
+        #     {
+        #         'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Transitions - Movement/Slide - drop.ffx',
+        #         'keyframes': {
+        #             'Slide Master Control.Transition Completion': [
+        #                 [0, 1],
+        #                 [0, 100],
+        #                 {"temporal": [[[0, 0.1], [200, 50]], [[0, 30], [0, 0.1]]]},
+        #                 True
+        #             ]
+        #         }
+        #     }
+        # ],
         'files': [
             {
                 'folder': 'audios',

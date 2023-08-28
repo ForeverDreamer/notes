@@ -46,7 +46,21 @@ conf = {
 start_time = 0
 for name, func in inspect.getmembers(shots, inspect.isfunction):
     print(name, func)
+    presets = [
+        {
+            'path': 'D:/Program Files/Adobe/Adobe After Effects 2021/Support Files/Presets/Transitions - Wipes/Grid Wipe.ffx',
+            'keyframes': {
+                'Grid Wipe.Transition Completion': [
+                    [start_time, start_time+0.3],
+                    [0, 100],
+                    None,
+                    True
+                ]
+            }
+        }
+    ]
     sn, shot, start_time = func(start_time)
+    shot['presets'] = presets
     conf['shots'][sn] = shot
 conf['duration'] = start_time
 
