@@ -1,6 +1,7 @@
 from constants.share import FONTS
 from .consts import ASSETS_DIR
-from .transcript import subtitles as all_subtitles
+from .transcript_cn import subtitles as all_subtitles_cn
+from .transcript_en import subtitles as all_subtitles_en
 from utils_v0.py.audio import audios_subtitles
 
 sn = 3
@@ -8,7 +9,8 @@ prefix = f's{sn}'
 
 
 def build_conf(start_time):
-    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn], start_time)
+    all_subtitles = list(map(list, zip(all_subtitles_cn[sn], all_subtitles_en[sn])))
+    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles, start_time)
     duration = end_time - start_time
 
     conf = {

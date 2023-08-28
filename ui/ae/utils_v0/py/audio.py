@@ -22,7 +22,7 @@ def audios_subtitles(path, raw_subtitles, start_time):
 
     names = sorted(names, key=itemgetter(0, 1))
     audios = []
-    subtitles = []
+    subtitles = {'cn': [], 'en': []}
     l_start_time = 0
     l_times = [l_start_time]
     for i, af in enumerate(names):
@@ -39,12 +39,14 @@ def audios_subtitles(path, raw_subtitles, start_time):
                 ],
             }
         )
-        subtitles.append([start_time, raw_subtitles[i]])
+        subtitles['cn'].append([start_time, raw_subtitles[i][0]])
+        subtitles['en'].append([start_time, raw_subtitles[i][1]])
         length = audio.info.length
         start_time += length + SUBTITLES_INTERVAL
         l_start_time += length + SUBTITLES_INTERVAL
         l_times.append(l_start_time)
 
-    subtitles = list(map(list, zip(*subtitles)))
+    subtitles['cn'] = list(map(list, zip(*subtitles['cn'])))
+    subtitles['en'] = list(map(list, zip(*subtitles['en'])))
     end_time = start_time
     return audios, subtitles, end_time, l_times

@@ -24,7 +24,9 @@ var mainComp = shareUtil.findItemByName("Main")
 var opacityKeyframes = {
     'Opacity': [[260, 260.1, 278], [100, 0, 100]]
 }
-var subtitlesLayer = mainComp.layer("字幕")
+var subtitlesCnLayer = mainComp.layer("字幕cn")
+shareUtil.configKeyframes(subtitlesLayer, opacityKeyframes)
+var subtitlesEnLayer = mainComp.layer("字幕en")
 shareUtil.configKeyframes(subtitlesLayer, opacityKeyframes)
 var subtitlesBgLayer = mainComp.layer("字幕背景")
 shareUtil.configKeyframes(subtitlesBgLayer, opacityKeyframes)

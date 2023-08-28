@@ -28,7 +28,19 @@ ShareUtil.prototype.addShots = function (shots) {
 
 ShareUtil.prototype.createSubtitles = function (subtitles) {
 	// var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": 'KaiTi', "fontSize": 40, "fillColor": COLORS["subtitles"]});
-	subtitlesLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
+	subtitlesCnLayer("Source Text").setValuesAtTimes(subtitles["cn"][0], subtitles["cn"][1])
+	subtitlesEnLayer("Source Text").setValuesAtTimes(subtitles["en"][0], subtitles["en"][1])
+	effects = {
+		"ADBE Drop Shadow": {'props': {'Distance': 2.5, 'Softness': 10}}
+	}
+	effectsUtil.add(
+		subtitlesCnLayer,
+		effects
+	)
+	effectsUtil.add(
+		subtitlesEnLayer,
+		effects
+	)
 }
 
 ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {

@@ -101,7 +101,8 @@ class ShareUtil:
             'var mainComp = project.items.addComp(NAME, WIDTH, HEIGHT, PIXEL_ASPECT, duration, FRAME_RATE);',
             'mainComp.resolutionFactor = RESOLUTION_FACTOR;',
             'mainComp.openInViewer();',
-            'var subtitlesLayer = textUtil.addOne({"layerName": "字幕", "text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025], "font": "KaiTi", "fontSize": 40, "fillColor": COLORS["subtitle"]}, mainComp);',
+            'var subtitlesCnLayer = textUtil.addOne({"layerName": "字幕cn", "text": "Write the code, change the world!", "Position": [960, 1017], "font": FONTS["cn"], "fontSize": 40, "fillColor": COLORS["subtitle"]}, mainComp);',
+            'var subtitlesEnLayer = textUtil.addOne({"layerName": "字幕en", "text": "Write the code, change the world!", "Position": [960, 1052], "font": FONTS["en"], "fontSize": 30, "fillColor": COLORS["subtitle"]}, mainComp);',
             f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
             'cameraLayer.moveToEnd();',
             'shareUtil.importFiles(conf["files"], project);',
@@ -118,8 +119,9 @@ class ShareUtil:
         }
         statements = [
             '//share_util.tail',
-            f'var subtitlesBgLayer = shareUtil.addLayer({subtitles_bg}, mainComp)',
-            'subtitlesLayer.moveToBeginning();',
+            # f'var subtitlesBgLayer = shareUtil.addLayer({subtitles_bg}, mainComp)',
+            'subtitlesCnLayer.moveToBeginning();',
+            'subtitlesEnLayer.moveToBeginning();',
             'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1(COLORS["bg"]), "BG", WIDTH, HEIGHT, PIXEL_ASPECT);',
             'bgLayer.moveToEnd();',
             # 'var bgBlackLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", WIDTH, HEIGHT, PIXEL_ASPECT);',

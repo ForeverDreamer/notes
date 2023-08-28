@@ -1,6 +1,7 @@
 from constants.share import COLORS
 from .consts import ASSETS_DIR
-from .transcript import subtitles as all_subtitles
+from .transcript_cn import subtitles as all_subtitles_cn
+from .transcript_en import subtitles as all_subtitles_en
 from utils_v0.py.audio import audios_subtitles
 from utils_v0.py.color import hex_to_rgb1
 
@@ -9,11 +10,15 @@ prefix = f's{sn}'
 
 
 def build_conf(start_time):
-    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn], start_time)
+    all_subtitles = list(map(list, zip(all_subtitles_cn[sn], all_subtitles_en[sn])))
+    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles, start_time)
+
     LEETCODE_TIME = 18
     START_IDX = 0
-    for i in range(START_IDX, len(subtitles[0])):
-        subtitles[0][i] += LEETCODE_TIME
+    for i in range(START_IDX, len(subtitles['cn'][0])):
+        subtitles['cn'][0][i] += LEETCODE_TIME
+    for i in range(START_IDX, len(subtitles['en'][0])):
+        subtitles['en'][0][i] += LEETCODE_TIME
     for i in range(START_IDX, len(audios)):
         audios[i]['layers'][0]['startTime'] += LEETCODE_TIME
     for i in range(START_IDX, len(l_times)):

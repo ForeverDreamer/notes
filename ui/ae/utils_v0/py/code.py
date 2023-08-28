@@ -1,9 +1,9 @@
 
-def currentline_times(subtitles, l_times, steps):
+def currentline_times(intervals, l_times, steps):
     times = []
-    intervals = subtitles[2]
+    intervals = intervals
     i = 0
-    while i < len(subtitles[2]):
+    while i < len(intervals):
         if intervals[i] == 0:
             i += 1
             continue

@@ -2,7 +2,8 @@ import copy
 
 from constants.share import *
 from .consts import ASSETS_DIR
-from .transcript import subtitles as all_subtitles
+from .transcript_cn import subtitles as all_subtitles_cn
+from .transcript_en import subtitles as all_subtitles_en
 from utils_v0.py.color import hex_to_rgb1
 from utils_v0.py.audio import audios_subtitles
 from utils_v0.py.code import currentline_times
@@ -12,10 +13,10 @@ prefix = f's{sn}'
 
 
 def build_conf(start_time):
-    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn], start_time)
-    subtitles.append([1, 1, 4, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1])
+    all_subtitles = list(map(list, zip(all_subtitles_cn[sn], all_subtitles_en[sn])))
+    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles, start_time)
     _CURRENTLINE_STEPS = 72
-    _currentline_times = currentline_times(subtitles, l_times, _CURRENTLINE_STEPS)
+    _currentline_times = currentline_times([1, 1, 4, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1], l_times, _CURRENTLINE_STEPS)
     QUE_ELEM_WIDTH = 40
     QUE_ELEM_HEIGHT = 40
     _QUE_UNIT = copy.deepcopy(QUE_UNIT)
@@ -24,16 +25,18 @@ def build_conf(start_time):
     _QUE_UNIT['fontSize'] = 30
     stroke_add = _QUE_UNIT['Stroke']['Stroke Width'] * 4
 
-    # # 执行动画56s+提交力扣执行过程18s
-    # CODE_EXEC_TIME = 56 + 18
-    # START_IDX = 14
-    # for i in range(START_IDX, len(subtitles[0])):
-    #     subtitles[0][i] += CODE_EXEC_TIME
-    # for i in range(START_IDX, len(audios)):
-    #     audios[i]['layers'][0]['startTime'] += CODE_EXEC_TIME
-    # for i in range(START_IDX, len(l_times)):
-    #     l_times[i] += CODE_EXEC_TIME
-    # end_time += CODE_EXEC_TIME
+    # 执行动画56s+提交力扣执行过程18s
+    CODE_EXEC_TIME = 56 + 18
+    START_IDX = 14
+    for i in range(START_IDX, len(subtitles['cn'][0])):
+        subtitles['cn'][0][i] += CODE_EXEC_TIME
+    for i in range(START_IDX, len(subtitles['en'][0])):
+        subtitles['en'][0][i] += CODE_EXEC_TIME
+    for i in range(START_IDX, len(audios)):
+        audios[i]['layers'][0]['startTime'] += CODE_EXEC_TIME
+    for i in range(START_IDX, len(l_times)):
+        l_times[i] += CODE_EXEC_TIME
+    end_time += CODE_EXEC_TIME
     duration = end_time - start_time
     temporal = [[[0, 0.1], [0, 0.1], [200, 100]], [[0, 75], [0, 75], [0, 0.1]]]
 

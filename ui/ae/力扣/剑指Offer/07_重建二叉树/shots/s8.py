@@ -2,7 +2,8 @@ from constants.share import (
     FONTS, QUE_UNIT, COLORS, SPATIAL_HOLD, STROKE_ADD, PATH_STROKE, PATH_COLOR, PATH_EFFECTS, SUBTITLES_INTERVAL
 )
 from .consts import ASSETS_DIR
-from .transcript import subtitles as all_subtitles
+from .transcript_cn import subtitles as all_subtitles_cn
+from .transcript_en import subtitles as all_subtitles_en
 from utils_v0.py.audio import audios_subtitles
 from utils_v0.py.color import hex_to_rgb1
 
@@ -11,7 +12,8 @@ prefix = f's{sn}'
 
 
 def build_conf(start_time):
-    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles[sn], start_time)
+    all_subtitles = list(map(list, zip(all_subtitles_cn[sn], all_subtitles_en[sn])))
+    audios, subtitles, end_time, l_times = audios_subtitles(f'{ASSETS_DIR}/audios/{prefix}/*.wav', all_subtitles, start_time)
     duration = end_time - start_time
 
     QUE_ELEM_WIDTH = 80
