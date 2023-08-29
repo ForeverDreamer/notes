@@ -1,5 +1,5 @@
-from ae.constants.share import PIXEL_ASPECT, FRAME_RATE
-from ae.utils.py.date import now
+from constants.share import PIXEL_ASPECT, FRAME_RATE
+from utils.py.date import now
 
 
 class CameraUtil:

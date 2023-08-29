@@ -8,8 +8,8 @@ import time
 import winreg
 import json
 
-from Ae.constants.share import BASE_DIR
-from Ae.utils.py.date import now
+from constants.share import BASE_DIR
+from utils.py.date import now
 
 
 # A Mini Python wrapper for the JS commands...
@@ -55,8 +55,8 @@ class Engine:
         print(f'{now()}, {func_name}=====================================', file=sys.stderr, flush=True)
         print(script + '\n', flush=True)
         tmp_file = self._compile(func_name, script)
-        cmd = [self._app, "-r", tmp_file]
-        result = subprocess.run(cmd)
+        # cmd = [self._app, "-r", tmp_file]
+        # result = subprocess.run(cmd)
         # with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
         #     with open("run.log", "a", encoding='utf-8') as f:
         #         # f.write(f'returncode: {result.returncode}\n')

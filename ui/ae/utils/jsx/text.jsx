@@ -21,10 +21,10 @@ TextUtil.prototype.configTextDocument = function(textProp, props) {
     textProp.setValue(textDocument);
 }
 
-TextUtil.prototype.addOne = function(parentComp, layerName, props) {
+TextUtil.prototype.addOne = function(props, comp) {
     var textLayer;
     if (props["box"]) {
-        textLayer = parentComp.layers.addBoxText(props["rect"]);
+        textLayer = comp.layers.addBoxText(props["rect"]);
         props["justification"] = ParagraphJustification.LEFT_JUSTIFY
     } else {
         switch (props["justification"]) {
@@ -35,9 +35,9 @@ TextUtil.prototype.addOne = function(parentComp, layerName, props) {
                 props["justification"] = ParagraphJustification.RIGHT_JUSTIFY
                 break;
         }
-        textLayer = parentComp.layers.addText(props["text"]);
+        textLayer = comp.layers.addText(props["text"]);
     }
-    textLayer.name = layerName;
+    textLayer.name = props["layerName"] ? props["layerName"] : props["text"];
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
     shareUtil.setAnchorPoint(textLayer, props["Anchor Point"])
@@ -48,31 +48,28 @@ TextUtil.prototype.addOne = function(parentComp, layerName, props) {
 		textLayer.inPoint = props["span"]["inPoint"];
         textLayer.outPoint = props["span"]["outPoint"];
 	}
-    if (props['expression']) {
-		textLayer("Source Text").expression = props['expression'].join("\n");
-	}
     textLayer("Transform")("Position").setValue(props["Position"])
     shareUtil.configKeyframes(textLayer, props["keyframes"])
     // textLayer.threeDLayer = true
     presetsUtil.add(textLayer, props["presets"])
+    // textLayer.moveToBeginning()
     return textLayer
 }
 
-TextUtil.prototype.addMany = function(parentComp, texts) {
+TextUtil.prototype.addMany = function(texts, comp) {
     for (var i = 0; i < texts.length; i++) {
-        var layerName = texts[i]["layerName"] ? texts[i]["layerName"] : texts[i]["text"]
-        this.addOne(parentComp, layerName, texts[i])
+        this.addOne(texts[i], comp)
     }
 }
 
-TextUtil.prototype.overlay = function(comp, parent, name, props) {
+TextUtil.prototype.overlay = function(props, comp, parent) {
     var textLayer = comp.layers.addText(props["text"]);
-    textLayer.name = name;
+    textLayer.name = props["layerName"];
     var textProp = textLayer("Source Text");
     this.configTextDocument(textProp, props)
     // textLayer("Transform")("Anchor Point").setValue(parent("Transform")("Anchor Point").value)
-    shareUtil.setAnchorPoint(textLayer)
     textLayer.setParentWithJump(parent)
+    shareUtil.setAnchorPoint(textLayer)
     textLayer("Transform")("Position").setValue(parent("Transform")("Anchor Point").value)
     if (props["Rotation"]) {
         textLayer("Transform")("Rotation").setValue(props["Rotation"])
@@ -83,7 +80,6 @@ TextUtil.prototype.overlay = function(comp, parent, name, props) {
     if (props["keyframes"]) {
 		shareUtil.configKeyframes(textLayer, props["keyframes"])
 	}
-
     return textLayer
 }
 

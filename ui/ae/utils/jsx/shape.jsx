@@ -1,9 +1,8 @@
 function ShapeUtil() {}
 
-ShapeUtil.prototype.addOne = function(parentComp, conf, layersCollecter) {
-    var shapeLayer = parentComp.layers.addShape();
-    var layerName = conf["layerName"];
-    shapeLayer.name = layerName;
+ShapeUtil.prototype.addOne = function(conf, comp) {
+    var shapeLayer = comp.layers.addShape();
+    shapeLayer.name = conf["layerName"];
     conf_pg = conf["pathGroup"]
     var shapeGroup = shapeLayer("Contents").addProperty("ADBE Vector Group");
     var pathGroup = shapeGroup("Contents").addProperty("ADBE Vector Shape - " + conf_pg["type"]);
@@ -17,18 +16,17 @@ ShapeUtil.prototype.addOne = function(parentComp, conf, layersCollecter) {
         if (conf_pg["outTangents"]) {
             shape.outTangents = conf_pg["outTangents"]
         }
-        shape.closed = conf_pg["closed"];
+        shape.closed = js_bool(conf_pg["closed"]);
         pathGroup("Path").setValue(shape);
     } else {
         if (conf_pg["Size"]) {
             pathGroup("Size").setValue(conf_pg["Size"])
         }
-        pathGroup("Position").setValue(conf["Position"] ? conf["Position"] : [0, 0])
-    }
-
-    if (conf["RC"]) {
-        var rcGroup = shapeGroup("Contents").addProperty("ADBE Vector Filter - RC")
-        rcGroup("Radius").setValue(conf["RC"]['Radius'])
+        if (conf_pg["Roundness"]) {
+            pathGroup("Roundness").setValue(conf_pg["Roundness"])
+        }
+        // pathGroup("Position").setValue(conf["Position"] ? conf["Position"] : [0, 0])
+        pathGroup("Position").setValue([0, 0])
     }
 
     if (conf["Stroke"]) {
@@ -57,12 +55,19 @@ ShapeUtil.prototype.addOne = function(parentComp, conf, layersCollecter) {
     }
 
     if (conf["Rotation"]) {
-        shapeLayer("Transform")("Rotation").setValue(conf["Rotation"])
+        shapeLayer("Rotation").setValue(conf["Rotation"])
     }
+    if (conf["Opacity"]) {
+        shapeLayer("Opacity").setValue(conf["Opacity"])
+    }
+    if (conf["adjustmentLayer"]) {
+        shapeLayer.adjustmentLayer = true;
+    }
+
+    shapeGroup("Transform")("Anchor Point").setValue([0, 0]);
+    shapeGroup("Transform")("Position").setValue([0, 0]);
     shareUtil.setAnchorPoint(shapeLayer, conf["Anchor Point"])
-    shapeLayer("Transform")("Position").setValue(conf["Position"])
-    shapeGroup("Transform")("Anchor Point").setValue(conf["Position"]);
-    shapeGroup("Transform")("Position").setValue(conf["Position"]);
+    shapeLayer("Position").setValue(conf["Position"])
 
     if (conf['startTime']) {
 		shapeLayer.startTime = conf['startTime'];
@@ -72,31 +77,21 @@ ShapeUtil.prototype.addOne = function(parentComp, conf, layersCollecter) {
 		shapeLayer.outPoint = conf["span"]['outPoint'];
 	}
 
-    effectsUtil.add(shapeLayer, conf["effects"])
+    if (conf["effects"]) {
+        effectsUtil.add(shapeLayer, conf["effects"])
+    }
 
-    shareUtil.configKeyframes(shapeLayer, conf["keyframes"])
-    layersCollecter["layer"] = shapeLayer
+    if (conf["keyframes"]) {
+        shareUtil.configKeyframes(shapeLayer, conf["keyframes"])
+    }
+
     return shapeLayer
 }
 
-ShapeUtil.prototype.addMany = function(parentComp, shapes, layersCollecter) {
+ShapeUtil.prototype.addMany = function(shapes, comp) {
     for (var i = 0; i < shapes.length; i++) {
-        this.addOne(parentComp, shapes[i], layersCollecter)
+        this.addOne(shapes[i], comp)
     }
-}
-
-ShapeUtil.prototype.addVectors = function(parentComp, vectors, layersCollecter) {
-    for (var i = 0; i < vectors.length; i++) {
-        var layerName = vectors[i]["layerName"]
-        layersCollecter[layerName] = {
-            "layer": shareUtil.addLayer(parentComp, vectors[i]),
-            // "keyframes": {},
-            // "time": 0
-        }
-    }
-}
-
-ShapeUtil.prototype.remove = function(comp, conf) {
 }
 
 var shapeUtil = new ShapeUtil();

@@ -1,34 +1,57 @@
-function ShareUtil() {
-	this.scenes = {}
-	this.sName = null
-	this.shot = null
-}
+function ShareUtil() { }
 
-ShareUtil.prototype.addScenes = function (scenes) {
-	for (var sName in scenes) {
-		this.sName = sName
-		this.scenes[sName] = {}
-		for (var i = 0; i < scenes[sName].length; i++) {
-			this.shot = i
-			var conf = scenes[sName][i]
-			this.scenes[sName][i] = {"time": conf["startTime"]}
-			$.writeln('Creating ' + sName + ', ' + 'shot ' + i)
-			conf['width'] = WIDTH
-			conf['height'] = HEIGHT
-			precompUtil.misc(project.items, mainComp, conf, this.scenes[sName][i])
-		}
+function js_bool(v) {
+	if (v === 'true') {
+		return true
+	} else {
+		return false
 	}
 }
 
-ShareUtil.prototype.addSubtitles = function (subtitles) {
-	// var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": 'KaiTi', "fontSize": 40, "fillColor": COLORS["subtitles"]});
-	subtitlesLayer("Source Text").setValuesAtTimes(subtitles[0], subtitles[1])
+function js_null(v) {
+	if (v === 'null') {
+		return null
+	} else {
+		return v
+	}
 }
 
+ShareUtil.prototype.addShots = function (shots) {
+	for (var sn in shots) {
+		$.writeln('Creating s' + sn)
+		var shot = shots[sn]
+		shot['width'] = WIDTH
+		shot['height'] = HEIGHT
+		compUtil.addOne(shot, mainComp, project)
+	}
+}
 
-ShareUtil.prototype.importFiles = function (files) {
+ShareUtil.prototype.createSubtitles = function (subtitles) {
+	// var textLayer = textUtil.add(mainComp, "视频字幕", {"text": subtitles[1][0], "Position": [960, 1025, 0], "font": 'KaiTi', "fontSize": 40, "fillColor": COLORS["subtitles"]});
+	subtitlesCnLayer("Source Text").setValuesAtTimes(subtitles["cn"][0], subtitles["cn"][1])
+	subtitlesEnLayer("Source Text").setValuesAtTimes(subtitles["en"][0], subtitles["en"][1])
+}
+
+ShareUtil.prototype.createAnnotations = function (parentComp, annotations) {
+	for (var i = 0; i < annotations.length; i++) {
+		var conf = annotations[i]
+		if (!conf["fillColor"]) {
+			conf["fillColor"] = COLORS["annotation"]
+		}
+
+		textUtil.add(parentComp, conf["name"], conf)
+	}
+}
+
+ShareUtil.prototype.importFiles = function (files, parentObj, comp) {
+	var _comp = comp ? comp : mainComp
 	for (var i = 0; i < files.length; i++) {
 		var conf = files[i]
+		if (conf["folder"]) {
+			var folder = parentObj.items.addFolder(conf["folder"])
+			shareUtil.importFiles(conf["files"], folder, _comp);
+			continue
+		}
 		var importOptions = new ImportOptions();
 		importOptions.file = new File(conf["path"]);
 		switch (conf["import_as_type"]) {
@@ -44,15 +67,19 @@ ShareUtil.prototype.importFiles = function (files) {
 			default:
 				importOptions.importAs = ImportAsType.FOOTAGE;
 		}
-		project.importFile(importOptions);
+		var importedObj = project.importFile(importOptions);
+		if (parentObj.typeName === "Folder") {
+			importedObj.parentFolder = parentObj;
+		}
 		var layers = conf["layers"]
 		if (layers) {
 			for (var j = 0; j < layers.length; j++) {
-				var parent = shareUtil.addLayer(mainComp, layers[j])
+				var parentLayer = shareUtil.addLayer(layers[j], _comp)
 				children = layers[j]["children"]
 				if (children) {
 					for (var k = 0; k < children.length; k++) {
-						shareUtil.addLayer(mainComp, children[k], null, parent)
+						children[k]['parent'] = parentLayer
+						shareUtil.addLayer(children[k], _comp)
 					}
 				}
 			}
@@ -60,15 +87,27 @@ ShareUtil.prototype.importFiles = function (files) {
 	}
 }
 
-ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
+ShareUtil.prototype.addSolid  = function (conf, comp) {
+
+}
+
+ShareUtil.prototype.addLayer = function (conf, comp) {
 	var layer;
-	if (item) {
-		layer = parentComp.layers.add(item);
-	} else {
-		layer = parentComp.layers.add(this.findItemByName(conf["name"]));
+	if (conf["item"]) {
+		layer = comp.layers.add(conf["item"]);
+	} else if (conf["sourceName"]) {
+		layer = comp.layers.add(this.findItemByName(conf["sourceName"], conf["parentFolderName"], conf["typeName"]));
+	} else if (conf["solid"]) {
+		layer = comp.layers.addSolid(conf["color"], conf["name"], conf["width"], conf["height"], PIXEL_ASPECT, conf["duration"]);
+		if (conf["adjustmentLayer"]) {
+			layer.adjustmentLayer = true;
+		}
 	}
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];
+	}
+	if (conf["Audio Levels"]) {
+		layer("Audio")("Audio Levels").setValue(conf["Audio Levels"]);
 	}
 	this.setAnchorPoint(layer, conf["Anchor Point"]);
 	if (conf['Position']) {
@@ -93,19 +132,19 @@ ShareUtil.prototype.addLayer = function (parentComp, conf, item, parent) {
 	if (conf['3D']) {
 		layer.threeDLayer = true;
 	}
-	if (parent) {
-		layer.setParentWithJump(parent)
+	if (conf["parent"]) {
+		layer.setParentWithJump(conf["parent"])
 	}
 	this.configMasks(layer, conf["Masks"])
 	this.configKeyframes(layer, conf["keyframes"])
 	presetsUtil.add(layer, conf["presets"])
-	effectsUtil.add(layer, conf["effects"])
+	effectsUtil.add(layer, (conf["effects"]))
 	return layer;
 }
 
-ShareUtil.prototype.addLayers = function (parentComp, layers, item, parent) {
+ShareUtil.prototype.addLayers = function (layers, comp) {
 	for (var i = 0; i < layers.length; i++) {
-		this.addLayer(parentComp, layers[i], item, parent)
+		this.addLayer(layers[i], comp)
 	}
 }
 
@@ -122,14 +161,18 @@ ShareUtil.prototype.delItems = function (items) {
 	}
 }
 
-ShareUtil.prototype.findItemByName = function (name) {
+ShareUtil.prototype.findItemByName = function (sourceName, parentFolderName, typeName) {
 	for (var i = 1; i <= project.items.length; i++) {
 		var item = project.items[i];
-		if (item.name === name) {
-			return item;
+		if (
+			(item.name !== sourceName) ||
+			(parentFolderName && item.parentFolder.name !== parentFolderName) ||
+			(typeName && item.typeName !== typeName)
+		) {
+			continue
 		}
+		return item
 	}
-	return null;
 }
 
 ShareUtil.prototype.configMasks = function (layer, masks) {
@@ -139,7 +182,7 @@ ShareUtil.prototype.configMasks = function (layer, masks) {
 	for (var i = 0; i < masks.length; i++) {
 		var conf_mask = masks[i]
 		var mask = layer.Masks.addProperty("Mask");
-		var maskShape = mask("maskShape");
+		maskShape = mask("maskShape");
 		var shape = maskShape.value;
 		if (conf_mask["vertices"]) {
 			shape.vertices = conf_mask["vertices"];
@@ -246,7 +289,7 @@ ShareUtil.prototype.configKeyframes = function (propGroup, keyframes) {
 			if (confExtra["spatial"]) {
 				var confSpatial = confExtra["spatial"]
 				for (var i = 0; i < confSpatial.length; i++) {
-					prop.setInterpolationTypeAtKey(prop.numKeys-i, TYPE_DIC[confSpatial[i]["type"]])
+					prop.setInterpolationTypeAtKey(i+1, TYPE_DIC[confSpatial[i]["type"]])
 					var inTangents = confSpatial[i]["inTangents"]
 					if (!inTangents) {
 						continue
@@ -270,11 +313,10 @@ ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
 	if (direction === null) {
 		return
 	}
-	var rect = layer.sourceRectAtTime(0, false)
-	var top = rect.top
-    var left = rect.left
-    var width = rect.width
-	var height = rect.height
+	var top = layer.sourceRectAtTime(0, false).top
+    var left = layer.sourceRectAtTime(0, false).left
+    var width = layer.sourceRectAtTime(0, false).width
+	var height = layer.sourceRectAtTime(0, false).height
     var prop = layer("Transform")("Anchor Point")
     var value = prop.value
 
@@ -335,6 +377,16 @@ ShareUtil.prototype.setAnchorPoint = function (layer, direction) {
 
 	prop.setValue(value);
 	return value
+}
+
+// s11_s11.队列.前序_数据_Shape.3
+ShareUtil.prototype.getPosition = function (params) {
+	var layerName = params["layerName"]
+	var itemName = params["itemName"]
+	var parentFolderName = params["parentFolderName"]
+	var typeName = params["typeName"]
+	var item = this.findItemByName(itemName, parentFolderName, typeName)
+	return item.layer(layerName)("Transform")("Position").value
 }
 
 var shareUtil = new ShareUtil();

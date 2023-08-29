@@ -18,15 +18,15 @@ conf = {
         # {
         #     'path': f'{ASSETS_DIR}/题目描述.jpg',
         # },
-        {
-            'path': f'{ASSETS_DIR}/Linus Torvalds.jfif',
-        },
-        {
-            'path': f'{ASSETS_DIR}/linux.png',
-        },
-        {
-            'path': f'{ASSETS_DIR}/git.bmp',
-        },
+        # {
+        #     'path': f'{ASSETS_DIR}/Linus Torvalds.jfif',
+        # },
+        # {
+        #     'path': f'{ASSETS_DIR}/linux.png',
+        # },
+        # {
+        #     'path': f'{ASSETS_DIR}/git.bmp',
+        # },
         # {
         #     'path': f'{BASE_DIR}代码调试.mp4',
         # },

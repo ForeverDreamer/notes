@@ -25,8 +25,8 @@ def build_conf(start_time):
     _QUE_UNIT['fontSize'] = 30
     stroke_add = _QUE_UNIT['Stroke']['Stroke Width'] * 4
 
-    # 执行动画56s+提交力扣执行过程18s
-    CODE_EXEC_TIME = 56 + 18
+    # 执行动画56s
+    CODE_EXEC_TIME = 56
     START_IDX = 14
     for i in range(START_IDX, len(subtitles['cn'][0])):
         subtitles['cn'][0][i] += CODE_EXEC_TIME
@@ -49,6 +49,19 @@ def build_conf(start_time):
                 'folder': 'audios',
                 'files': audios,
             },
+            # {
+            #     'path': f'{ASSETS_DIR}/Bg Music.wav',
+            #     'layers': [
+            #         {
+            #             'sourceName': 'Bg Music.wav',
+            #             'layerName': f'{prefix}.Bg Music',
+            #             'startTime': end_time - CODE_EXEC_TIME,
+            #             'span': {'inPoint': end_time - CODE_EXEC_TIME, 'outPoint': end_time},
+            #             'Audio Levels': [-10, -10],
+            #             'Anchor Point': None,
+            #         }
+            #     ],
+            # }
         ],
         'subtitles': subtitles,
         'dsa': [

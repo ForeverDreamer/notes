@@ -1,8 +1,8 @@
 import time
 import ctypes
 
-from Ae.constants.share import AE_WINDOW_NAME, IMPORT_AS_TYPE
-from Ae.utils.py.date import now
+from constants.share import AE_WINDOW_NAME, IMPORT_AS_TYPE
+from utils.py.date import now
 
 
 # def ensure_ok(error_code):
@@ -57,18 +57,24 @@ class ShareUtil:
     def head(self, conf_path):
         statements = [
             '//share_util.head',
-            '#includepath "../utils/jsx";',
+            '#includepath "../utils_v0/jsx";',
             '#include "json.jsx";',
-            f'var conf = jsonUtil.read("{conf_path}");',
+            'var BASE_DIR = "D:/data_files/notes/ui/Ae/"',
+            f'var conf = jsonUtil.read(BASE_DIR + "{conf_path}");',
             '#include "constants.jsx";',
             '#include "color.jsx";',
             '#include "text.jsx";',
             '#include "shape.jsx";',
             '#include "share.jsx";',
             '#include "effects.jsx";',
-            '#include "precomp.jsx";',
             '#include "presets.jsx";',
             '#include "camera.jsx";',
+            '#include "comp.jsx";',
+            '#include "dsa/binarytree.jsx"',
+            '#include "dsa/codes.jsx"',
+            '#include "dsa/queue.jsx"',
+            '#include "dsa/stack.jsx"',
+            '#include "dsa/dsa.jsx"',
             '\n',
         ]
         # return self._engine.execute('ShareUtil.eval', statements)
@@ -91,13 +97,19 @@ class ShareUtil:
             'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
             'shareUtil.delItems(project.items);',
-            'var mainComp = project.items.addComp(NAME, WIDTH, HEIGHT, PIXEL_ASPECT, DURATION, FRAME_RATE);',
+            'var duration = conf["duration"]',
+            'var mainComp = project.items.addComp(NAME, WIDTH, HEIGHT, PIXEL_ASPECT, duration, FRAME_RATE);',
+            'mainComp.resolutionFactor = RESOLUTION_FACTOR;',
             'mainComp.openInViewer();',
-            'var subtitlesLayer = textUtil.addOne(mainComp, "字幕", {"text": "大家好，我是IT学长，今天跟大家分享的是力扣 剑指Offer 07. 重建二叉树", "Position": [960, 1025], "font": FONTS["subtitle"], "fontSize": 40, "fillColor": COLORS["subtitle"]});',
+            'var subtitlesCnLayer = textUtil.addOne({"layerName": "字幕cn", "text": "Write the code, change the world!", "Position": [960, 1017], "font": FONTS["cn"], "fontSize": 40, "fillColor": COLORS["subtitle"]}, mainComp);',
+            'var subtitlesEnLayer = textUtil.addOne({"layerName": "字幕en", "text": "Write the code, change the world!", "Position": [960, 1052], "font": FONTS["en"], "fontSize": 30, "fillColor": COLORS["subtitle"]}, mainComp);',
+            'var effects = {"ADBE Drop Shadow": {"props": {"Distance": 2.5, "Softness": 10}}}',
+            'effectsUtil.add(subtitlesCnLayer, effects)',
+            'effectsUtil.add(subtitlesEnLayer, effects)',
             f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
             'cameraLayer.moveToEnd();',
-            'shareUtil.importFiles(conf["files"]);',
-            'shareUtil.addScenes(conf["scenes"])',
+            'shareUtil.importFiles(conf["files"], project);',
+            'shareUtil.addShots(conf["shots"])',
             '\n',
         ]
         # return self._engine.execute('ShareUtil.eval', statements)
@@ -105,13 +117,14 @@ class ShareUtil:
 
     def tail(self):
         subtitles_bg = {
-            'name': 'Subtitles BG/Elements.ai', 'layerName': '字幕背景',
-            'Scale': [100, 100, 100], 'Position': [960, 1025],
+            'sourceName': 'Subtitles BG/Elements.ai', 'layerName': '字幕背景',
+            'Scale': [100, 100, 100], 'Position': [960, 1025], 'Opacity': 50,
         }
         statements = [
             '//share_util.tail',
-            f'var subtitlesBg = shareUtil.addLayer(mainComp, {subtitles_bg})',
-            'subtitlesLayer.moveToBeginning();',
+            # f'var subtitlesBgLayer = shareUtil.addLayer({subtitles_bg}, mainComp)',
+            'subtitlesCnLayer.moveToBeginning();',
+            'subtitlesEnLayer.moveToBeginning();',
             'var bgLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1(COLORS["bg"]), "BG", WIDTH, HEIGHT, PIXEL_ASPECT);',
             'bgLayer.moveToEnd();',
             # 'var bgBlackLayer = mainComp.layers.addSolid(colorUtil.hexToRgb1("#0B0909"), "BG", WIDTH, HEIGHT, PIXEL_ASPECT);',
