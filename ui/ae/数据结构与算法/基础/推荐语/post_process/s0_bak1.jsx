@@ -47,60 +47,46 @@ atomxTypographyUtil.titleBig_20(
 )
 var layer1 = parentComp.layer(compName)
 layer1("Scale").setValue([30, 30])
-layer1("Position").setValue([400, 540])
+layer1("Position").setValue([250, 540])
 layer1.startTime = 0;
+// startTime += layer1.outPoint - layer2.inPoint
 
 // 副标题：数据结构
 var compName = "s0.数据结构"
 var comp = shareUtil.findItemByName(compName)
-atomxTypographyUtil.titleBig_20(
+atomxTypographyUtil.titleCalloutL1(
     {
         // "text": "数据结构：\n数据结构是以有效且有组织的方式在计算机内存中组织和存储数据的方法\n它们为存储、访问和操作数据提供了基础\n数据结构的示例包括数组、链表、堆栈、队列、树和图",
         "text": "数据结构",
         "textColor": color,
-        "elementColor": color,
+        "lineColor": color,
+        "dotColor": color,
     },
     comp
 )
 
 var layer2 = parentComp.layer(compName)
-layer2("Scale").setValue([25, 25])
-layer2("Position").setValue([1420, 217])
+layer2("Scale").setValue([55, 55])
+layer2("Position").setValue([780, 217])
 layer2.startTime = 5;
+// startTime += layer2.outPoint - layer2.inPoint
 
-// 副标题：算法
+// // 副标题：算法
 var compName = "s0.算法"
 var comp = shareUtil.findItemByName(compName)
-atomxTypographyUtil.titleBig_20(
+atomxTypographyUtil.titleCalloutL1(
     {
         // "text": "数据结构：\n数据结构是以有效且有组织的方式在计算机内存中组织和存储数据的方法\n它们为存储、访问和操作数据提供了基础\n数据结构的示例包括数组、链表、堆栈、队列、树和图",
         "text": "算法",
+        "textScale": [65.6, -65.6],
         "textColor": color,
-        "elementColor": color,
+        "lineColor": color,
+        "dotColor": color,
     },
     comp
 )
 
 var layer3 = parentComp.layer(compName)
-layer3("Scale").setValue([25, 25])
-layer3("Position").setValue([1420, 827])
+layer3("Scale").setValue([55, -55])
+layer3("Position").setValue([780, 760])
 layer3.startTime = 10;
-
-// outPoint
-layer1.outPoint = 15
-layer2.outPoint = 15
-
-// markers
-var i = 2
-var keyTime = parentComp.layer("s0.算法").marker.keyTime(i)
-$.writeln(keyTime)
-
-var marker = parentComp.layer("s0.主标题").marker
-var mv = marker.keyValue(i);
-marker.setValueAtTime(13, mv);
-marker.removeKey(i)
-
-var marker = parentComp.layer("s0.数据结构").marker
-var mv = marker.keyValue(i);
-marker.setValueAtTime(13, mv);
-marker.removeKey(i)

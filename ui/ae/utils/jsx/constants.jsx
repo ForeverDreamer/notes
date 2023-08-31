@@ -5,6 +5,7 @@ var HEIGHT = 1080
 var PIXEL_ASPECT = 1
 var FRAME_RATE = 30
 var RESOLUTION_FACTOR = [2, 2]
+DURATION = 30
 
 var TYPE_DIC = {
     'LINEAR': KeyframeInterpolationType.LINEAR,
