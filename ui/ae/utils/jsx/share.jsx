@@ -148,15 +148,10 @@ ShareUtil.prototype.addLayers = function (layers, comp) {
 	}
 }
 
-ShareUtil.prototype.delItems = function (items) {
-	var numItems = items.length;
+ShareUtil.prototype.delItems = function () {
+	var numItems = project.items.length;
 	for (var i = numItems; i >= 1; i--) {
 		var item = items[i];
-		// if (item instanceof FolderItem) {
-		//     delItems(item.items);
-		// } else {
-		//     item.remove()
-		// }
 		item.remove();
 	}
 }
