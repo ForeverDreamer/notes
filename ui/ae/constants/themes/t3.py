@@ -13,7 +13,8 @@ FONT_SIZES = {
 COLORS = {
     'bg': '#FFFFFF',
     'text': '#000000',
-    'subtitle': '#9D00EE',
+    # 'subtitle': '#9D00EE',
+    'subtitle': '#000000',
     'annotation': '#000000',
     'markBox': '#FF0000',
     'tree': {

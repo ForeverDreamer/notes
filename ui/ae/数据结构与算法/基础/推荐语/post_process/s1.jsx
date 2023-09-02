@@ -28,7 +28,7 @@ var sn = 1
 // compUtil.addOne(shot, mainComp, project)
 
 var parentName = "s1"
-var color = COLORS["markBox"]
+var color = COLORS["text"]
 
 // 副标题：数据结构
 var parentComp = shareUtil.findItemByName(parentName, parentName)

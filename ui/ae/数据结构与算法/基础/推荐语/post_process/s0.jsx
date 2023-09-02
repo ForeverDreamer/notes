@@ -31,7 +31,7 @@ var sn = 0
 // 配置镜头中的各个元素，配置复杂就用python生成json文件，给jsx读取使用
 var parentName = "s0"
 var startTime = 0
-var color = COLORS["markBox"]
+var color = COLORS["text"]
 
 // 主标题：什么是数据结构和算法？
 var parentComp = shareUtil.findItemByName(parentName, parentName)

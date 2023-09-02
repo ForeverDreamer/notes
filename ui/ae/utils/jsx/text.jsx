@@ -1,8 +1,8 @@
 function TextUtil() {}
 
-TextUtil.prototype.configTextDocument = function(textProp, props) {
-    textProp.setValue(new TextDocument(props["text"]));
-    var textDocument = textProp.value;
+TextUtil.prototype.configTextDocument = function(sourceText, props) {
+    sourceText.setValue(new TextDocument(props["text"]));
+    var textDocument = sourceText.value;
 
     textDocument.resetCharStyle();
     textDocument.resetParagraphStyle();
@@ -18,7 +18,7 @@ TextUtil.prototype.configTextDocument = function(textProp, props) {
     textDocument.tracking = props["tracking"] ? props["tracking"] : 0;
     // textDocument.text = props["text"];
 
-    textProp.setValue(textDocument);
+    sourceText.setValue(textDocument);
 }
 
 TextUtil.prototype.addOne = function(props, comp) {
@@ -38,8 +38,8 @@ TextUtil.prototype.addOne = function(props, comp) {
         textLayer = comp.layers.addText(props["text"]);
     }
     textLayer.name = props["layerName"] ? props["layerName"] : props["text"];
-    var textProp = textLayer("Source Text");
-    this.configTextDocument(textProp, props)
+    var sourceText = textLayer("Source Text");
+    this.configTextDocument(sourceText, props)
     shareUtil.setAnchorPoint(textLayer, props["Anchor Point"])
     if (props['startTime']) {
 		textLayer.startTime = props['startTime'];
