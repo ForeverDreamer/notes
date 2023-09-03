@@ -8,5 +8,5 @@ statements = []
 share_util = ShareUtil(engine)
 statements += share_util.head(CONF_PATH)
 statements += share_util.body()
-# statements += share_util.tail()
+statements += share_util.tail()
 engine.execute('__main__', statements)

@@ -8,11 +8,15 @@ function js_bool(v) {
 	}
 }
 
-function js_null(v) {
-	if (v === 'null') {
-		return null
-	} else {
-		return v
+ShareUtil.prototype.configShots = function (shots) {
+	for (var sn in shots) {
+		$.writeln('Configing s' + sn)
+		var shot = shots[sn]
+		for (var i = 0; i < shot.length; i++) {
+			var conf = shot[i]
+			var comp = shareUtil.findItemByName(conf["sourceName"], conf["parentFolderName"], conf["typeName"])
+			shareUtil.configLayer(shot[i], comp.layer(conf["layerName"]))
+		}
 	}
 }
 
@@ -87,12 +91,49 @@ ShareUtil.prototype.importFiles = function (files, parentObj, comp) {
 	}
 }
 
-ShareUtil.prototype.addSolid  = function (conf, comp) {
-
+ShareUtil.prototype.configLayer = function (conf, layer) {
+	if (conf['layerName']) {
+		layer.name = conf['layerName'];
+	}
+	if (conf["Audio Levels"]) {
+		layer("Audio")("Audio Levels").setValue(conf["Audio Levels"]);
+	}
+	this.setAnchorPoint(layer, conf["Anchor Point"]);
+	if (conf['Position']) {
+		layer("Position").setValue(conf["Position"]);
+	}
+	if (conf['Scale']) {
+		layer("Scale").setValue(conf["Scale"]);
+	}
+	if (conf['Rotation']) {
+		layer("Rotation").setValue(conf["Rotation"]);
+	}
+	if (typeof conf["Opacity"] !== "undefined") {
+		layer("Opacity").setValue(conf["Opacity"]);
+	}
+	if (conf['startTime']) {
+		layer.startTime = conf['startTime'];
+	}
+	if (conf["span"]) {
+		layer.inPoint = conf["span"]['inPoint'];
+		layer.outPoint = conf["span"]['outPoint'];
+	}
+	if (conf['3D']) {
+		layer.threeDLayer = true;
+	}
+	if (conf["parent"]) {
+		layer.setParentWithJump(conf["parent"])
+	}
+	this.configMasks(layer, conf["Masks"])
+	this.configKeyframes(layer, conf["keyframes"])
+	presetsUtil.add(layer, conf["presets"])
+	effectsUtil.add(layer, (conf["effects"]))
+	return layer;
 }
 
 ShareUtil.prototype.addLayer = function (conf, comp) {
 	var layer;
+
 	if (conf["item"]) {
 		layer = comp.layers.add(conf["item"]);
 	} else if (conf["sourceName"]) {
@@ -103,6 +144,7 @@ ShareUtil.prototype.addLayer = function (conf, comp) {
 			layer.adjustmentLayer = true;
 		}
 	}
+
 	if (conf['layerName']) {
 		layer.name = conf['layerName'];
 	}

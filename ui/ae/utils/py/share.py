@@ -34,35 +34,11 @@ class ShareUtil:
         return statements
 
     def body(self):
-        camera = {
-            'Transform.Position': [960, 540, -800], 'Transform.Point of Interest': [960, 540, 0],
-            'Camera Options.Zoom': 800, 'Camera Options.Focus Distance': 800, 'Camera Options.Aperture': 7.6,
-        }
-        # subtitles_bg = {
-        #                    'layerName': '字幕背景',
-        #                    'Position': [960, 1025],
-        #                    'pathGroup': {'type': 'Rect', 'Size': [1000, 40]},
-        #                    'Gradient Fill': {'Start Point': [-500, 0], 'End Point': [500, 0], 'Opacity': 70},
-        # }
-
         statements = [
             '//share_util.body',
             'app.purge(PurgeTarget.ALL_CACHES);',
             'var project = app.project;',
-            'var mainComp = shareUtil.findItemByName("Main");',
-            'if (!mainComp) {',
-            '    mainComp = project.items.addComp("Main", WIDTH, HEIGHT, PIXEL_ASPECT, DURATION, FRAME_RATE)',
-            '}',
-            'mainComp.openInViewer()',
-            'mainComp.resolutionFactor = RESOLUTION_FACTOR;',
-            'var subtitlesCnLayer = textUtil.addOne({"layerName": "字幕cn", "text": "Write the code, change the world!", "Position": [960, 1017], "font": FONTS["cn"], "fontSize": 40, "fillColor": COLORS["subtitle"]}, mainComp);',
-            'var subtitlesEnLayer = textUtil.addOne({"layerName": "字幕en", "text": "Write the code, change the world!", "Position": [960, 1052], "font": FONTS["en"], "fontSize": 30, "fillColor": COLORS["subtitle"]}, mainComp);',
-            'var effects = {"ADBE Drop Shadow": {"props": {"Distance": 2.5, "Softness": 10}}}',
-            'effectsUtil.add(subtitlesCnLayer, effects)',
-            'effectsUtil.add(subtitlesEnLayer, effects)',
-            f'var cameraLayer = cameraUtil.add("MainCamera", [960, 540], {camera})',
-            'cameraLayer.moveToEnd();',
-            'shareUtil.importFiles(conf["files"], project);',
+            'shareUtil.configShots(conf["shots"]);',
             '\n',
         ]
         # return self._engine.execute('ShareUtil.eval', statements)
