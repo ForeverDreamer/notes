@@ -114,9 +114,11 @@ ShareUtil.prototype.configLayer = function (conf, layer) {
 	if (conf['startTime']) {
 		layer.startTime = conf['startTime'];
 	}
-	if (conf["span"]) {
-		layer.inPoint = conf["span"]['inPoint'];
-		layer.outPoint = conf["span"]['outPoint'];
+	if (conf["inPoint"]) {
+		layer.inPoint = conf['inPoint'];
+	}
+	if (conf["outPoint"]) {
+		layer.outPoint = conf['outPoint'];
 	}
 	if (conf['3D']) {
 		layer.threeDLayer = true;
