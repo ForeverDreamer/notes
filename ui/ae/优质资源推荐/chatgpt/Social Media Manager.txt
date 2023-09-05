@@ -1,0 +1,50 @@
+Prompt
+I want you to act as a social media manager. 
+You will be responsible for developing and executing campaigns across all relevant platforms, 
+engage with the audience by responding to questions and comments, monitor conversations through community management tools, 
+use analytics to measure success, create engaging content and update regularly.
+Create complete and complex campaigns for [insert product, brands, service, company...] 
+in each of [social media platform 1], [social media platform 2], ..., [social media platform x].
+
+
+Extra prompt instructions
+To use this prompt you need to specify what you want to promote in [insert product, brands, service, company...] 
+(ex: a new gym supplement called GYMAX, My streetwear clothing brand...) AND IN WHAT PLATFORMS YOU WANT TO PROMOTE IT 
+IN [social media platform 1], [social media platform 2], ..., [social media platform x]. Example: Twitter, Instagram, Tiktok and Youtube...
+
+
+Prompt Details
+Model
+Chat - GPT-3.5 (gpt-3.5-turbo)
+Token size
+95 ($0.0002 / call)
+Example input
+My streetwear clothing brand in each of Twitter, TikTok, Instagram and YouTube.
+Example output
+Sure, here's a sample social media plan for your streetwear clothing brand across Twitter, TikTok, Instagram, and YouTube:
+
+Twitter:
+
+Theme: Behind the Scenes of Streetwear
+Objectives: Increase brand awareness, build a community of fans, increase engagement, drive website traffic.
+Campaign Strategy: Share behind-the-scenes photos and videos of the design process, production, and photoshoots. Use relevant hashtags to increase discoverability. Schedule regular Q&A sessions with the team and run a Twitter-exclusive giveaway for followers. Partner with influencers and collaborate on exclusive content.
+Content: Photos and videos of the design process, sneak peeks of new collections, Q&A sessions with the team, influencer takeovers, Twitter-exclusive giveaways.
+TikTok:
+
+Theme: Streetwear Meets Dance
+Objectives: Increase brand awareness, build a creative community, increase engagement, drive website traffic.
+Campaign Strategy: Collaborate with popular TikTok dancers to showcase your streetwear clothing in creative dance routines. Encourage your followers to create their own dance videos using your products as props and use relevant hashtags to increase discoverability. Offer a discount code for those who participate in the challenge.
+Content: Dance routines featuring your streetwear clothing, user-generated dance videos, behind-the-scenes of the collaborations with TikTok dancers, discount code announcements.
+Instagram:
+
+Theme: Streetwear Street Style
+Objectives: Increase brand awareness, build a fashion-forward community, increase engagement, drive website traffic.
+Campaign Strategy: Share street style photos of real people wearing your streetwear clothing in different cities. Use location-based hashtags to increase discoverability. Partner with Instagram influencers to showcase your clothing in their outfits. Offer a discount code for followers who share their own street style photos wearing your clothing.
+Content: Street style photos, influencer takeovers, user-generated street style photos, discount code announcements, behind-the-scenes of photoshoots.
+YouTube:
+
+Theme: Streetwear Culture
+Objectives: Increase brand awareness, build a community of streetwear enthusiasts, increase engagement, drive website traffic.
+Campaign Strategy: Create a series of videos exploring different aspects of streetwear culture, such as the history of streetwear, interviews with designers, and streetwear fashion tips. Encourage viewers to subscribe to your channel and offer a discount code for subscribers. Collaborate with popular YouTubers to create exclusive content.
+Content: Streetwear culture videos, designer interviews, streetwear fashion tips, YouTuber collaborations, discount code announcements for subscribers.
+This plan is just a starting point, and you can always adjust and modify based on your brand's needs and goals. I hope this helps!

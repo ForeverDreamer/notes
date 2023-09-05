@@ -1,0 +1,53 @@
+Prompt
+Act as an expert content creator. I will give you a theme and a duration for a YouTube video 
+and you will give a script for that video that will include: a SEO and engaging title for the video, 
+a complete and complex analysis on the video target audience, an attention-grabbing hook 
+that makes the audience want to watch more, This could be a surprising fact, a question, or a provocative statement; 
+a clear and concise structure for the script, including an introduction, body, and conclusion, 
+providing a complete structure for each stage; add creative shots, visuals, 
+and animations to complement the script and keep the audience engaged and provide examples of how to do that, 
+Add humor providing an example of how to implement it on the video, Incorporate calls to action 
+and After you've written the script give examples on how to edit it several times to make it as tight and engaging as possible.
+The video is a [duration] minute video about [theme]. Create the script now.
+
+
+Extra prompt instructions
+To use this prompt you need to specify the duration of your video in [duration] 
+(ex: 8 minutes) and the theme of the video on [theme] (ex: how to start making money online for begginers)
+
+
+Prompt Details
+Model
+Chat - GPT-3.5 (gpt-3.5-turbo)
+Token size
+200 ($0.0004 / call)
+Example input
+A 8 minute video about how to start making money online for begginers.
+Example output
+Title: "How to Make Money Online: The Complete Beginner’s Guide"
+
+Target Audience: People who are interested in making money online by working remotely, either on a part-time or full-time basis.
+
+Hook: Are you interested in making money online, but don't know where to start?
+
+Introduction: Hi everyone! Making money online can be overwhelming and intimidating, but it doesn't have to be. In this video, we'll cover all the steps you'll need to take to get started making money online. 
+
+Body: 
+
+1. Determine Your Goals: Before you get started, it's important to decide what you want to achieve by working online. Do you want to make a full-time income? Are you looking for a side hustle to supplement your regular income? Are you looking for a way to save money and earn extra cash? 
+
+2. Find the Right Platform: Once you know what you want to accomplish, it's time to find a platform that meets your goals. Do you want to start a blog? Sell products online? Become a virtual assistant? There are many different ways to make money online, so it's important to find the one that best suits your needs.
+
+3. Learn the Basics: Once you've chosen a platform, it's time to learn the basics of how it works. How do you set up a website? How do you create content? What are the best ways to promote your products or services? It may be helpful to find an online course or mentor to help you learn the ropes.
+
+4. Take Action: Once you've learned the basics, it's time to take action. Start creating content, promoting products, or setting up your website. Don't be afraid to make mistakes - every successful business starts with trial and error.
+
+Conclusion: Making money online is a great way to earn extra cash, supplement your regular income, or even start a full-time career. While it may seem intimidating, it's not as difficult as it seems. By following these steps, you can start making money online in no time. 
+
+Creative Shots, Visuals, and Animations: To keep the audience engaged and make the video more visually appealing, add screenshots, instructional videos, illustrations, or infographics. You can also use animations to create an interactive experience for your viewers.
+
+Humor: Adding humor is a great way to keep the audience engaged. For example, you could include a funny story about your own experience trying to make money online or poke fun at yourself for making silly mistakes. 
+
+Call to Action: At the end of the video, encourage your audience to take the next step. This can be something as simple as subscribing to your channel or signing up for your email list.
+
+Editing: After writing the script, edit it several times to make it as concise and engaging as possible. Cut out any unnecessary information and focus on the key points. Replace long sentences with shorter ones. Highlight key words and phrases to emphasize the main points. Make sure the language is conversational and easy to understand.

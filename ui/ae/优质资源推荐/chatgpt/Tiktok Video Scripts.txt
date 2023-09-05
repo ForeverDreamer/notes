@@ -1,0 +1,67 @@
+Prompt
+Create a 60-second script for a TikTok video about [insert theme]. 
+The video must be short, engaging, and clear in its message, with engaging and firendly language. 
+The script should incorporate a popular music or sound effect, be tailored to a specific target audience,
+and aim to increase visibility and engagement through consistent posting and audience interaction. 
+Visual appeal and the potential to go viral should also be considered.
+
+
+Extra prompt instructions
+To use this prompt you need to specify the video theme in [insert video theme] 
+(ex : MMA, SAAS, Dropshipping, Learning a High Earning skill and sell it as a freelancer and participate in online surveys.).
+NOTE: Specify very clearly the theme of the video to obtain the best results like i did in the example 
+(I specified that the 5 ideas that I wanted to appear in the video were SMMA, SAAS, Dropshipping, Learning a High Earning skill 
+and sell it as a freelancer and participate in online surveys.)
+
+
+Prompt Details
+Model
+Chat - GPT-3.5 (gpt-3.5-turbo)
+Token size
+84 ($0.0002 / call)
+Example input
+5 ways to make money online that are SMMA, SAAS, Dropshipping, Learning a High Earning skill and sell it as a freelancer and participate in online surveys.
+Example output
+[Intro music: Upbeat and catchy tune]
+
+[Visual: A person typing on a laptop with smiling emoji popping up on the screen]
+
+[Voiceover]
+Hey everyone, it's your favorite online money-making expert! Today, I'll show you 5 simple and effective ways to make money online!
+
+[Visual: The person stops typing and looks up, with a thumb's up emoji popping up on the screen]
+
+[Voiceover]
+
+SMMA: Start your own social media marketing agency and help businesses grow their online presence.
+[Visual: A hand swiping on a phone with social media logos popping up on the screen]
+
+[Voiceover]
+2. SaaS: Create a software as a service product and sell it to customers on a recurring basis.
+
+[Visual: A person looking at a laptop with graphs and charts popping up on the screen]
+
+[Voiceover]
+3. Dropshipping: Partner with suppliers to sell products without having to hold inventory.
+
+[Visual: A person holding a package with an arrow pointing to an online store on a phone screen]
+
+[Voiceover]
+4. High Earning Skill: Learn a skill in high demand and sell it as a freelancer.
+
+[Visual: A person using a stylus on a tablet with money symbols popping up on the screen]
+
+[Voiceover]
+5. Online Surveys: Participate in online surveys and get paid for your opinions.
+
+[Visual: A person holding a phone with a survey form on the screen and money symbols popping up]
+
+[Voiceover]
+There you have it, 5 simple and effective ways to make money online! Get started today and turn your passion into profits!
+
+[Outro music: Upbeat and catchy tune]
+
+[Visual: The person stands up, fist bumping with an emoji popping up on the screen]
+
+[Voiceover]
+Don't forget to follow my page for more tips and tricks on making money online! Let's get rich together!

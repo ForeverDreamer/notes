@@ -1,0 +1,77 @@
+Prompt
+I want you to act as a Content writer specialising in scripts for youtube videos*. 
+Please write a script for a 5-minute YouTube video based on the following description: [INSERT DESCRIPTION]. 
+Your script should be engaging, informative, and entertaining to keep the audience interested. 
+The script should also be optimized for YouTube, using elements such as captions, call-to-actions, 
+and visual aids to enhance the viewing experience. Please include an attention-grabbing opening and 
+a clear conclusion that leaves a lasting impression on the audience. 
+At the end of the script come up with three different catchy titles that relates to the script. 
+Do not remind me what I asked you for. Do not apologize. Do not self-reference.
+Do not explain what and why, just give me your best possible script. All output shall be in fluent English*
+
+
+Extra prompt instructions
+Replace [INSERT DESCRIPTION] with the description of your video
+
+
+Prompt Details
+Model
+Chat - GPT-3.5 (gpt-3.5-turbo)
+Token size
+171 ($0.0003 / call)
+Example input
+How to train for a marathon
+Example output
+[Intro]
+
+[Caption: How to Train for a Marathon]
+[Caption: In 5 Minutes]
+
+[Visual: A runner at the starting line of a marathon]
+[Visual: A timer counting down from 5:00 minutes]
+
+[Voice Over]: Are you ready to take on the challenge of a marathon? Whether you're a seasoned runner or just starting out, this video will help you get there.
+
+[Body]
+
+[Caption: Step 1: Set a Goal]
+[Visual: A runner writing their goal on a piece of paper]
+
+[Voice Over]: The first step to training for a marathon is to set a goal. Be realistic and set a goal that challenges you, but is also achievable. Write it down and make it visible. This will serve as your motivation and keep you on track.
+
+[Caption: Step 2: Build a Training Plan]
+[Visual: A runner looking at their calendar with training dates marked]
+
+[Voice Over]: Next, build a training plan. Start by setting aside time for training each week and gradually increase the distance as you get closer to race day. Make sure to include rest days in your plan to allow your body to recover.
+
+[Caption: Step 3: Incorporate Cross-Training]
+[Visual: A runner doing yoga or lifting weights]
+
+[Voice Over]: Cross-training is an important aspect of marathon training. Incorporate activities like yoga, strength training, or swimming to help improve your overall fitness and reduce the risk of injury.
+
+[Caption: Step 4: Fuel Your Body]
+[Visual: A runner eating a healthy meal or drinking water]
+
+[Voice Over]: Make sure to fuel your body with healthy, balanced meals and stay hydrated. A well-nourished body will perform better and recover faster.
+
+[Caption: Step 5: Stay Motivated]
+[Visual: A runner listening to music or surrounded by friends at a race]
+
+[Voice Over]: Finally, stay motivated. Surround yourself with a supportive community, listen to music, or find a running partner. Keeping a positive attitude will help you push through tough training days and get to the finish line.
+
+[Outro]
+
+[Caption: You Can Do It]
+[Visual: A runner crossing the finish line of a marathon]
+
+[Voice Over]: With dedication and a solid plan, anyone can train for a marathon. So set your goal, build your plan, and get ready to conquer the race. You got this!
+
+[Caption: Thank You for Watching]
+
+[Voice Over]: Thank you for watching. Don't forget to like and subscribe for more helpful videos.
+
+[Titles]
+
+"5 Steps to Marathon Success"
+"Train Like a Pro: A Guide to Marathon Training"
+"From Zero to Hero: How to Train for Your First Marathon"
