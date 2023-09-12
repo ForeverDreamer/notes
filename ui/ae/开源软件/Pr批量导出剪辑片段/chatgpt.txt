@@ -1,0 +1,24 @@
+Act as an expert content creator，资深软件工程师，市场营销大师.
+Pr是一款功能强大的视频剪辑软件，但是不能把所有剪辑好的片段一次性导出来，需要用户手动一个一个导出，非常浪费时间。
+现在你能够通过编写代码调用Pr提供的api，自动把所有剪辑片段一次性导出来。
+请你编写一个5分钟的产品营销文案，营销你的自动化导入剪辑片段软件， in the format of "Situation, Obstacle, Action, Result".
+Your script should be engaging, informative, and entertaining to keep the audience interested. 
+The script should also be optimized for YouTube, using elements such as captions, call-to-actions, 
+a SEO and engaging title for the video, 
+a complete and complex analysis on the video target audience, an attention-grabbing hook 
+that makes the audience want to watch more, This could be a surprising fact, a question, or a provocative statement; 
+a clear and concise structure for the script, including an introduction, body, and conclusion, 
+providing a complete structure for each stage; add creative shots, visuals, 
+and animations to complement the script and keep the audience engaged and provide examples of how to do that, 
+Add humor providing an example of how to implement it on the video, Incorporate calls to action 
+and After you've written the script give examples on how to edit it several times to make it as tight and engaging as possible.
+and visual aids to enhance the viewing experience. Please include an attention-grabbing opening and 
+a clear conclusion that leaves a lasting impression on the audience. 
+At the end of the script come up with three different catchy titles that relates to the script. 
+Do not remind me what I asked you for. Do not apologize. Do not self-reference.
+Do not explain what and why, just give me your best possible script. All output shall be in fluent English
+
+
+Act as an expert content creator.
+Pr是一款功能强大的视频剪辑软件，但是不能把所有剪辑好的片段一次性导出来，需要用户手动一个一个导出，非常浪费时间。
+请你编写一个1分钟的脚本表述这个情况。Your script should be engaging, informative, and entertaining to keep the audience interested. 
